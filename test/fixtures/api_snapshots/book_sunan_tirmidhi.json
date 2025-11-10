@@ -1,0 +1,32 @@
+{
+  "captured_at": "2025-11-02T21:48:51.786081",
+  "url": "https://www.dorar.net/hadith/book-card/13509",
+  "description": "Book: Sunan al-Tirmidhi",
+  "status_code": 200,
+  "headers": {
+    "connection": "keep-alive",
+    "set-cookie": "XSRF-TOKEN=REDACTED; SameSite=Lax; Secure; Path=/; Max-Age=7200000; Expires=Sun, 25 Jan 2026 02:48:51 GMT,laravel_session=REDACTED; HttpOnly; SameSite=Lax; Path=/; Max-Age=7200000; Expires=Sun, 25 Jan 2026 02:48:51 GMT",
+    "cache-control": "no-cache, private,max-age=2592000",
+    "transfer-encoding": "chunked",
+    "date": "Sun, 02 Nov 2025 18:48:51 GMT",
+    "content-encoding": "gzip",
+    "permissions-policy": "fullscreen=()",
+    "speculation-rules": "\"/cdn-cgi/speculation\"",
+    "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+    "referrer-policy": "strict-origin-when-cross-origin",
+    "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=4xSKWIqELr07%2FSQVB0S2XKHsIjV71Sl%2Bx5O1ON69ZMh1ROsdrmjo9cRQnxcAy9JbV8kKdUQuhXljKWnpDFWDFTHuM0OCyXq7\"}]}",
+    "server-timing": "cfCacheStatus;desc=\"DYNAMIC\",cfEdge;dur=5,cfOrigin;dur=35",
+    "cf-cache-status": "DYNAMIC",
+    "content-type": "application/json;charset=UTF-8",
+    "server": "cloudflare",
+    "content-security-policy-report-only": "default-src 'self'; style-src 'self' 'unsafe-inline' googletagmanager.com tagmanager.google.com fonts.googleapis.com; script-src 'self' www.google.com *.googletagmanager.com *.gstatic.com; img-src 'self' googletagmanager.com *.gstatic.com * data:; frame-src 'self' www.youtube.com www.google.com blob:;frame-ancestors 'none'; form-action 'self'; font-src 'self' fonts.gstatic.com data:; connect-src 'self' *.googleapis.com *.google-analytics.com *.analytics.google.com *.googletagmanager.com *.google.com",
+    "alt-svc": "h3=\":443\"; ma=86400",
+    "charset": "utf-8",
+    "nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+    "cf-ray": "9985cef90984d354-FRA",
+    "x-content-type-options": "nosniff",
+    "expires": "Tue, 02 Dec 2025 18:48:51 GMT"
+  },
+  "body": "\"<div class=\\\"pad-bot5\\\">\\n    <h5 style=\\\"color:black;\\\">13509 - الجامع الصحيح - سنن الترمذي<\\/h5>\\n    <p class=\\\"book-info\\\">المؤلف \\/ المشرف: \\n    <span class=\\\"color-ae8422\\\">محمد بن عيسى بن سورة الترمذي<\\/span> المحقق \\/ المترجم: \\n    <span class=\\\"color-ae8422\\\">أحمد بن محمد شاكر<\\/span> الناشر: <span class=\\\"color-ae8422\\\">دار الكتب العلمية - بيروت<\\/span>\\n    الطبعة: <span class=\\\"color-ae8422\\\">بدون<\\/span> سنة الطبع: <span class=\\\"color-ae8422\\\">بدون\\n    <\\/span>\\n\\n    <\\/p>\\n\\n<\\/div>\"",
+  "content_length": 507
+}

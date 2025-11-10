@@ -1,0 +1,10 @@
+targets:
+  $default:
+    builders:
+      drift_dev:
+        options:
+          # Generate database code with optimal settings
+          store_date_time_values_as_text: false  # Use unix timestamps (default)
+          sql:
+            dialects:
+              - sqlite  # Only need SQLite dialect

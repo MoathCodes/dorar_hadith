@@ -1,0 +1,32 @@
+{
+  "captured_at": "2025-11-02T21:48:48.502904",
+  "url": "https://www.dorar.net/hadith/book-card/3088",
+  "description": "Book: Sahih Muslim",
+  "status_code": 200,
+  "headers": {
+    "connection": "keep-alive",
+    "set-cookie": "XSRF-TOKEN=REDACTED; SameSite=Lax; Secure; Path=/; Max-Age=7200000; Expires=Sun, 25 Jan 2026 02:48:48 GMT,laravel_session=REDACTED; HttpOnly; SameSite=Lax; Path=/; Max-Age=7200000; Expires=Sun, 25 Jan 2026 02:48:48 GMT",
+    "cache-control": "no-cache, private,max-age=2592000",
+    "transfer-encoding": "chunked",
+    "date": "Sun, 02 Nov 2025 18:48:48 GMT",
+    "content-encoding": "gzip",
+    "permissions-policy": "fullscreen=()",
+    "speculation-rules": "\"/cdn-cgi/speculation\"",
+    "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+    "referrer-policy": "strict-origin-when-cross-origin",
+    "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=JlpVjIg0uDsWUHfa4IwQG2e0NcvmPWHIrXLPeGXtDi8xEaem8TvlTRphI8cHdtbOYiCfxymfLFn0NjNMu2edMKv2CLiUX8wJ\"}]}",
+    "server-timing": "cfCacheStatus;desc=\"DYNAMIC\",cfEdge;dur=6,cfOrigin;dur=37",
+    "cf-cache-status": "DYNAMIC",
+    "content-type": "application/json;charset=UTF-8",
+    "server": "cloudflare",
+    "content-security-policy-report-only": "default-src 'self'; style-src 'self' 'unsafe-inline' googletagmanager.com tagmanager.google.com fonts.googleapis.com; script-src 'self' www.google.com *.googletagmanager.com *.gstatic.com; img-src 'self' googletagmanager.com *.gstatic.com * data:; frame-src 'self' www.youtube.com www.google.com blob:;frame-ancestors 'none'; form-action 'self'; font-src 'self' fonts.gstatic.com data:; connect-src 'self' *.googleapis.com *.google-analytics.com *.analytics.google.com *.googletagmanager.com *.google.com",
+    "alt-svc": "h3=\":443\"; ma=86400",
+    "charset": "utf-8",
+    "nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+    "cf-ray": "9985cee61d73d354-FRA",
+    "x-content-type-options": "nosniff",
+    "expires": "Tue, 02 Dec 2025 18:48:48 GMT"
+  },
+  "body": "\"<div class=\\\"pad-bot5\\\">\\n    <h5 style=\\\"color:black;\\\">3088 - صحيح مسلم (المسند الصحيح المختصر من السنن بنقل العدل عن العدل عن رسول الله صلى الله عليه وسلم)<\\/h5>\\n    <p class=\\\"book-info\\\">المؤلف \\/ المشرف: \\n    <span class=\\\"color-ae8422\\\">مسلم بن الحجاج القشيري النيسابوري<\\/span> المحقق \\/ المترجم: \\n    <span class=\\\"color-ae8422\\\">محمد فؤاد عبدالباقي<\\/span> الناشر: <span class=\\\"color-ae8422\\\">دار إحياء الكتب العربية - عيسى البابي الحلبي وشركاه<\\/span>\\n    الطبعة: <span class=\\\"color-ae8422\\\">الأولى<\\/span> سنة الطبع: <span class=\\\"color-ae8422\\\">1374هـ\\n    <\\/span>\\n\\n    <\\/p>\\n\\n<\\/div>\"",
+  "content_length": 610
+}
