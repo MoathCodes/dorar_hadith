@@ -1,51 +1,55 @@
 # بسم الله الرحمن الرحيم
-# Change Language:[ 🇺🇸 EN](README_EN.md)
+# Dorar Hadith
 
---- 
-# درر الحديث - Dorar Hadith
+# تغيير اللغة: [ 🇸🇦 AR](README.md)
 
-مكتبة بلغة `Dart` تهدف إلى تسهيل التعامل والحصول على الأحاديث ومتعلقاتها من خلال موقع الدرر السنية.
+---
 
-مستوحاة وكثير من اجزاءها مبني على مستودع [dorar-hadith-api](https://github.com/AhmedElTabarani/dorar-hadith-api) من الأخ: [أحمد الطبراني](https://github.com/AhmedElTabarani).
-**تعمل المكتبة على كل برمجيات `Dart` دون الحاجة إلى `Flutter`.**
+A Dart library to search and retrieve hadith and related data from Dorar Al-Sanniyah.
+
+Inspired by and partially based on the repository [dorar-hadith-api](https://github.com/AhmedElTabarani/dorar-hadith-api) by [Ahmed Al-Tabarani](https://github.com/AhmedElTabarani).
+Works with any Dart program without requiring Flutter.
 
 [![pub package](https://img.shields.io/pub/v/dorar_hadith.svg)](https://pub.dev/packages/dorar_hadith)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
+## Terminology
 
-## مزايا المكتبة
+- In this README, the word "scholar" always means a hadith scholar (mohdith). We keep the term "mohdith" in code and types to match the API and models.
 
-- البحث عن الأحاديث بسرعة مع إمكانية الفلترة بحسب الراوي، الكتاب، الصحة، الراوي والمزيد.
-- الحصول على بيانات تفصيلة للحديث.
-- إمكانية البحث والحصول على الشرح للأحاديث.
-- البحث عن الأحاديث المشابه او البديل الصحيح.
-- البحث في الكتب، والرواة والمحديثين المتوفرين لفلترة النتائج بدون اتصال بالإنترنت.
+## Library Highlights
 
-### إمكانيات البحث
+- Fast hadith search with filters by narrator, book, grade, hadith scholar (mohdith), and more
+- Retrieve detailed hadith information
+- Search and fetch hadith explanations (Sharh)
+- Find similar hadiths and alternate sahih versions
+- Offline browsing for books, narrators, and hadith scholars (mohdith) used for filtering
 
-- البحث بنص (متن) الحديث.
-- فلترة بصحة الحديث.
-- فلترة بالمحدثين.
-- فلترة بالرواة.
-- فلترة بالكتب.
-- فلترة بنوع الحديث (قدسي، أثر، إلخ).
-- بيانات لترقيم الصفحات.
+### Search Capabilities
 
-## التثبيت
+- Search by hadith text
+- Filter by hadith grade
+- Filter by hadith scholars (mohdith)
+- Filter by narrators
+- Filter by books
+- Filter by hadith type (Qudsi, Athar, etc.)
+- Pagination metadata
 
-قم بتشغيل الأمر التالي :
+## Installation
+
+Run:
 
 ```bash
 dart pub add dorar_hadith
 ```
 
-أو بإستخدام `Flutter` :
+Or using Flutter:
 
 ```bash
 flutter pub add dorar_hadith
 ```
 
-## بداية سريعة
+## Quick Start
 
 ```dart
 import 'package:dorar_hadith/dorar_hadith.dart';
@@ -79,28 +83,29 @@ void main() async {
 }
 ```
 
-**لرؤية مثال كامل يتطرق لكل مزايا المكتبة انظر هنا:**
+For a complete example covering all library features, see:
 [`example/example.dart`](example/example.dart)
 
-## طريقة الإستخدام
+## Usage
 
-### ملاحظة مهمة
-أغلب العمليات في `DorarClient` والخدمات الباقية تعيد النتائج داخل `Object` بإسم `ApiResponse` وهذا لتسهيل عملية ترقيم الصفحات.
-يحتوي `ApiResponse` على عضوين:
-- الناتج: `data`
-- بيانات الترقيم: `SearchMetadata`
-وذلك لتسهيل عملية طلب بيانات جديدة عند الحاجة كالذهاب للصفحة التالية.
+### Important Note
+Most operations in `DorarClient` and the other services return results inside an `ApiResponse` object to simplify pagination.
+`ApiResponse` has two members:
+- The result: `data`
+- Pagination metadata: `SearchMetadata`
 
-### بحث سريع في الأحاديث
-البحث عن طريق `client.searchHadith` سريع لكن معلومات الحديث تكون ناقصة وبدون معرفات (`hadithId, bookId, etc`).
-- عدد النتائج لا يتجاوز 15 حديث، كما يمكن استخدام الفلاتر بلا إشكال.
-- نتائج البحث تحتوي على المعلومات التالية: 
-- متن(نص) الحديث: `Hadith.hadith`
-- الراوي: `Hadith.rawi`
-- المحدث: `Hadith.mohdith`
-- الكتاب المأخوذ منه الحديث:`Hadith.book`
-- رقم الحديث او الصفحة في الكتاب أعلاه: `Hadith.numberOrPage`
-- درجة صحة الحديث: `Hadith.grade`
+This makes it easier to request the next page when needed.
+
+### Quick Hadith Search
+Using `client.searchHadith` is fast, but the hadith info is partial and without identifiers (`hadithId, bookId, etc`).
+- Results are limited to ~15 hadiths, and filters can be used.
+- Each result includes:
+  - Text: `Hadith.hadith`
+  - Narrator: `Hadith.rawi`
+  - Scholar: `Hadith.mohdith`
+  - Book: `Hadith.book`
+  - Number or page in the book: `Hadith.numberOrPage`
+  - Grade: `Hadith.grade`
 
 ```dart
 final results = await client.searchHadith(
@@ -113,15 +118,14 @@ for (var hadith in results.data) {
 }
 ```
 
-### البحث المفصل مع الفلترة
-**ملاحظة:** بسبب طريقة عمل موقع الدرر السنية، حكم الحديث في البحث المفصل يظهر في `explainGrade`، ليس في `grade`.
+### Detailed Search with Filters
+Note: Due to how Dorar works, in detailed search the verdict appears in `explainGrade`, not `grade`.
 
 ```dart
-
 final params = HadithSearchParams(
   value: 'الصيام',
   page: 1,
-  degrees: [HadithDegree.authenticHadith], // الأحاديث الصحيحة فقط
+  degrees: [HadithDegree.authenticHadith], // Only sahih
   mohdith: [MohdithReference.bukhari],
   searchMethod: SearchMethod.anyWord,
   zone: SearchZone.qudsi,
@@ -130,7 +134,7 @@ final params = HadithSearchParams(
 final results = await client.searchHadithDetailed(params);
 ```
 
-### البحث عن حديث بالمعرف (ID)
+### Get Hadith by ID
 
 ```dart
 final hadith = await client.getHadithById('12345');
@@ -139,122 +143,121 @@ print('Book: ${hadith.book}');
 print('Grade: ${hadith.grade}');
 ```
 
-### الأحاديث المشابهة، الأصول، البديل الصحيح
-**ملاحظة:** يوجد داخل فئة `Hadith` خصائص للتأكد من توفر هذه الخيارات لهذا الحديث وهي كالتالي:
-- للتأكد من وجود صحيح بديل `hasAlternateHadithSahih`
-- للتأكد من وجود أحاديث مشابهة `hasSimilarHadith`
-- للتأكد من وجود الأصول `hasUsulHadith`
+### Similar, Usul (Sources), Alternate Sahih
+Note: The `Hadith` model has flags to check availability:
+- `hasAlternateHadithSahih` for alternate sahih
+- `hasSimilarHadith` for similar hadiths
+- `hasUsulHadith` for sources
 
 ```dart
-// الحصول على حديث مشابه
+// Get similar
 final similar = await client.hadith.getSimilar('12345');
 
-// الحصول على البديل الصحيح
+// Get alternate sahih
 final alternate = await client.hadith.getAlternate('12345');
 
-// الحصول على الأصول
+// Get sources
 final usul = await client.hadith.getUsul('12345');
 print('Main hadith: ${usul.hadith.hadith}');
 print('Sources: ${usul.count}');
 ```
 
-### البحث عن الشرح
-**ملاحظة:** عند البحث بإستخدام `client.searchHadithDetailed` وفي حال وجود حديث له شرح ستجد معرف الشرح داخل خصائص الحديث في عضو بإسم `sharhMetadata`، وتوجد خصائص للتأكد من وجود الشرح لهذا الحديث، في حال وجود الشرح ستجد المعرف قم بتمرير المعرف كما في المثال التالي:
+### Search for Sharh (Explanation)
+Note: When using `client.searchHadithDetailed`, if a hadith has a sharh, you will find its ID in `sharhMetadata`. Use it as follows:
 
 ```dart
-// الحصول على الشرح بالمعرف
+// Get sharh by ID
 final sharh = await client.sharh.getById('789');
 
-// البحث بنص الشرح
+// Search by sharh text
 final sharhByText = await client.sharh.getByText('إنما الأعمال بالنيات');
 ```
 
-### بيانات المرجعية (لا تحتاج إلى اتصال بالشبكة)
-هذه البيانات تستخدم في عملية الفلترة، كالبحث عن محدث معين او كتاب معين او راوي معين ثم تمريره في عملية البحث عن الحديث.
-وجعلت هذه العملية على الجهاز لكثرة البيانات ولجعل الوصول لها سهلًا.
+### Reference Data (Offline)
+Reference data is used for filtering (hadith scholar [mohdith], book, narrator) and is available offline for speed and usability.
 
-**ملاحظة:** القيم المرجعية تحتوي فقط على معرف المرجع `id` واسم المرجع مثال: صحيح البخاري، حتى تحصل على تفاصيل هذا المرجع يجب ان تقوم بطلبها راجع: [[#الحصول على تفاصيل المحدث او الكتاب]]  .
+Note: Reference items contain only `id` and `name` (e.g., Sahih al-Bukhari). For full details, fetch via the API. See: “Get Book/Scholar Details”.
 
-#### البحث في المحدثين
+#### Search Scholars (Hadith scholars – mohdith)
 
 ```dart
-// البحث بالإسم
+// By name
 final bukhari = await client.mohdithRef.searchMohdith('البخاري');
 
-// البحث بالمعرف
+// By ID
 final scholar = await client.mohdithRef.getMohdithById('256');
 
-// عرض الجميع مع الترقيم
+// List paginated
 final allScholars = await client.mohdithRef.getAllMohdith(limit: 50);
 
-// الحصول على اكثر من قيمة من اكثر من معرف
+// Multiple by IDs
 final scholars = await client.mohdithRef.getMohdithByIds(['256', '179']);
 
-// اختصار للبحث في المحدثين بدون الدخول في mohdithRef
+// Shortcut
 final results = await client.searchMohdith('أحمد');
 ```
 
-#### البحث في الكتب
+#### Search Books
 
 ```dart
-// البحث بالإسم
+// By name
 final sahihBooks = await client.bookRef.searchBook('صحيح');
 
-// البحث بالمعرف
+// By ID
 final book = await client.bookRef.getBookById('6216');
 
-// عرض الجميع مع الترقيم
+// List paginated
 final allBooks = await client.bookRef.getAllBooks(limit: 100, offset: 0);
 
-// اختصار للبحث في الكتب بدون الدخول في bookRef
+// Shortcut
 final results = await client.searchBooks('سنن');
 ```
 
-#### البحث في الرواة
+#### Search Narrators
 
 ```dart
-// البحث بالإسم 
+// By name
 final narrators = await client.rawiRef.searchRawi('أبو هريرة', limit: 10);
 
-// البحث بالمعرف
+// By ID
 final abuHurayrah = await client.rawiRef.getRawiById(4396);
 
-// عرض الجميع مع الترقيم
+// Paginated listing
 final page1 = await client.rawiRef.getAllRawi(limit: 50, offset: 0);
 
-// عدد النتائج
+// Counts
 final total = await client.rawiRef.countRawi();
 final searchCount = await client.rawiRef.countRawi(query: 'عبد الله');
 
-// اختصار للبحث في الرواة بدون الدخول في rawiRef
+// Shortcut
 final results = await client.searchRawi('عمر');
 
-// مهم: التخلص من الوسيط بعد الإنتهاء لتفادي بعض الإنذارات والأخطاء
+// Important: dispose after use to avoid warnings
 await client.dispose();
 ```
 
-#### قيم ثابتة
-حتى يسهل الفلترة بالكتب والرواة والمحدثين معروفين دون الحاجة على البحث عنهم كل مرة قمت بوضع ما اشتهر من هذه القيم كقيم جاهزة دون الحاجة للبحث، في الكتب مثلًا ستجد صحيح البخاري وصحيح مسلم وغيرهم.
-**في حال رغبة بإضافة قيم اخرى ثابتة يرجع فتح Issue على Github**
+#### Predefined Constants
+To make filtering easier without repeatedly searching, popular scholars, books, and narrators are provided as ready-to-use constants.
+If you’d like to add more, please open an issue on GitHub.
 
 ```dart
-// مثال على قيم المحدثين الثابتة
+// Sample scholar constants
 MohdithReference.bukhari  
 MohdithReference.muslim     
 MohdithReference.abuDawud   
-// ... 17 المجموع
+// ... 17 total
 
-// مثال على قيم الكتب الثابتة
+// Sample book constants
 BookReference.sahihBukhari  
 BookReference.sahihMuslim     
-// ... 20 المجموع
+// ... 20 total
 
-// مثال على قيم الرواة الثابتة
+// Sample narrator constants
 RawiReference.abuHurayrah     
 RawiReference.aisha          
-// ... 21 المجموع
+// ... 21 total
 
-// استخدام القيم هذه في الفلترة
+// Using constants in filters
 final params = HadithSearchParams(
   value: 'الصلاة',
   page: 1,
@@ -264,371 +267,369 @@ final params = HadithSearchParams(
 final results = await client.hadith.searchViaSite(params);
 ```
 
-### الحصول على تفاصيل المحدث او الكتاب
+### Get Book or Hadith Scholar (Mohdith) Details
 
 ```dart
-// الحصول على تفاصيل الكتاب من API
+// Book details from API
 final book = await client.book.getById('123');
 print('Book: ${book.name}');
 print('Author: ${book.author}');
 
-// الحصول على تفاصيل المحدث من API
+// Hadith scholar (mohdith) details from API
 final scholar = await client.mohdith.getById('456');
 print('Name: ${scholar.name}');
 print('Bio: ${scholar.info}');
 ```
 
-## الخيارات المتاحة
+## Available Options
 
-في هذا القسم سنتعرف على جميع الكائنات (Models) والخيارات المتاحة في المكتبة بشكل تفصيلي.
+This section describes all models and options provided by the library.
 
-### كائن الحديث (Hadith Model)
+### Hadith Model
 
-الكائن الرئيسي الذي يمثل الحديث مع جميع معلوماته وبياناته المرتبطة به.
+Represents a hadith with all its related information.
 
 ```dart
 class Hadith {
-  // المعلومات الأساسية للحديث
-  final String hadith;              // نص (متن) الحديث
-  final String? hadithId;           // المعرف الفريد للحديث
+  // Basic hadith info
+  final String hadith;              // Hadith text
+  final String? hadithId;           // Unique hadith ID
   
-  // معلومات الإسناد
-  final String rawi;                // اسم الراوي
-  final String mohdith;             // اسم المحدث (العالم)
-  final String? mohdithId;          // معرف المحدث
+  // Chain and scholars
+  final String rawi;                // Narrator name
+  final String mohdith;             // Scholar name
+  final String? mohdithId;          // Scholar ID
   
-  // معلومات المصدر
-  final String book;                // اسم الكتاب المصدر
-  final String? bookId;             // معرف الكتاب
-  final String numberOrPage;        // رقم الصفحة أو رقم الحديث في الكتاب
+  // Source info
+  final String book;                // Source book name
+  final String? bookId;             // Book ID
+  final String numberOrPage;        // Page number or hadith number in the book
   
-  // معلومات الصحة والتخريج
-  final String grade;               // درجة صحة الحديث (صحيح، ضعيف، إلخ)
-  final String? explainGrade;       // شرح تفصيلي لدرجة الحديث
-  final String? takhrij;            // معلومات التخريج (المصادر الأخرى)
+  // Grading and takhrij
+  final String grade;               // Hadith grade (Sahih, Da'if, etc.)
+  final String? explainGrade;       // Grade explanation
+  final String? takhrij;            // Takhrij information
   
-  // العلاقات والروابط
-  final bool hasSimilarHadith;           // هل يوجد أحاديث مشابهة؟
-  final bool hasAlternateHadithSahih;    // هل يوجد بديل صحيح؟
-  final bool hasUsulHadith;              // هل يوجد أصول للحديث؟
+  // Relations and links
+  final bool hasSimilarHadith;           // Has similar hadiths?
+  final bool hasAlternateHadithSahih;    // Has alternate sahih?
+  final bool hasUsulHadith;              // Has sources?
   
-  // روابط موقع الدرر السنية
-  final String? similarHadithDorar;        // رابط الأحاديث المشابهة
-  final String? alternateHadithSahihDorar; // رابط البديل الصحيح
-  final String? usulHadithDorar;           // رابط أصول الحديث
+  // Dorar links
+  final String? similarHadithDorar;        // Similar hadiths link
+  final String? alternateHadithSahihDorar; // Alternate sahih link
+  final String? usulHadithDorar;           // Sources link
   
-  // معلومات الشرح
-  final bool hasSharhMetadata;      // هل يوجد شرح متاح؟
-  final SharhMetadata? sharhMetadata; // بيانات الشرح (إن وجد)
+  // Sharh info
+  final bool hasSharhMetadata;      // Has sharh available?
+  final SharhMetadata? sharhMetadata; // Sharh metadata (if any)
 }
 ```
 
-**ملاحظات مهمة:**
-- استخدم `hasSimilarHadith` للتأكد من وجود أحاديث مشابهة قبل طلبها عبر `client.hadith.getSimilar()`
-- استخدم `hasAlternateHadithSahih` للتأكد من وجود بديل صحيح قبل طلبه عبر `client.hadith.getAlternate()`
-- استخدم `hasUsulHadith` للتأكد من وجود أصول قبل طلبها عبر `client.hadith.getUsul()`
-- استخدم `hasSharhMetadata` للتأكد من وجود شرح، وإذا كان موجودًا ستجد `sharhMetadata.id`
+Important:
+- Use `hasSimilarHadith` to check before calling `client.hadith.getSimilar()`
+- Use `hasAlternateHadithSahih` before `client.hadith.getAlternate()`
+- Use `hasUsulHadith` before `client.hadith.getUsul()`
+- Use `hasSharhMetadata`; if true, you’ll find `sharhMetadata.id`
 
-### كائن الشرح (Sharh Model)
+### Sharh Model
 
-يمثل الحديث مع شرحه التفصيلي.
+Represents a hadith with its explanation.
 
 ```dart
 class Sharh {
-  // معلومات الحديث الأساسية
-  final String hadith;              // نص الحديث
-  final String rawi;                // الراوي
-  final String mohdith;             // المحدث
-  final String book;                // الكتاب المصدر
-  final String numberOrPage;        // رقم الصفحة/الحديث
-  final String grade;               // درجة الحديث
-  final String? takhrij;            // التخريج
+  // Base hadith info
+  final String hadith;              // Hadith text
+  final String rawi;                // Narrator
+  final String mohdith;             // Scholar
+  final String book;                // Source book
+  final String numberOrPage;        // Page/hadith number
+  final String grade;               // Grade
+  final String? takhrij;            // Takhrij
   
-  // معلومات الشرح
-  final bool hasSharhMetadata;      // هل يوجد شرح؟
-  final SharhMetadata? sharhMetadata; // بيانات الشرح
+  // Sharh info
+  final bool hasSharhMetadata;      // Has sharh?
+  final SharhMetadata? sharhMetadata; // Sharh metadata
   
-  // خاصية مساعدة للحصول على نص الشرح مباشرة
+  // Helper to access sharh text directly
   String? get sharhText => sharhMetadata?.sharh;
 }
 ```
 
-**استخدام:**
+Usage:
 ```dart
 final sharh = await client.sharh.getById('789');
 if (sharh.hasSharhMetadata && sharh.sharhText != null) {
-  print('الشرح: ${sharh.sharhText}');
+  print('Sharh: ${sharh.sharhText}');
 }
 ```
 
-### معلومات الشرح (SharhMetadata)
-
-يحتوي على التفاصيل الخاصة بالشرح.
+### SharhMetadata
 
 ```dart
 class SharhMetadata {
-  final String id;                  // معرف الشرح
-  final bool isContainSharh;        // هل يحتوي على نص الشرح؟
-  final String? sharh;              // نص الشرح (إن وجد)
+  final String id;                  // Sharh ID
+  final bool isContainSharh;        // Whether sharh text is included
+  final String? sharh;              // Sharh text (if any)
 }
 ```
 
-### أصول الحديث (UsulHadith Model)
+### UsulHadith (Sources)
 
-يمثل الحديث مع جميع مصادره وأصوله.
+Represents a hadith with all its sources.
 
 ```dart
 class UsulHadith {
-  final Hadith hadith;              // الحديث الأساسي
-  final List<UsulSource> sources;   // قائمة جميع المصادر
-  final int count;                  // عدد المصادر
+  final Hadith hadith;              // Base hadith
+  final List<UsulSource> sources;   // All sources
+  final int count;                  // Sources count
 }
 
-// مصدر واحد من أصول الحديث
+// Single source entry
 class UsulSource {
-  final String source;              // اسم المصدر والصفحة
-  final String chain;               // سلسلة الإسناد
-  final String hadithText;          // نص الحديث في هذا المصدر
+  final String source;              // Source name and page
+  final String chain;               // Chain of narration
+  final String hadithText;          // Hadith text in this source
 }
 ```
 
-**مثال للاستخدام:**
+Example:
 ```dart
 final usulResponse = await client.hadith.getUsul('12345');
 final usul = usulResponse.data;
 
-print('عدد المصادر: ${usul.count}');
+print('Sources: ${usul.count}');
 for (var source in usul.sources) {
-  print('المصدر: ${source.source}');
-  print('الإسناد: ${source.chain}');
+  print('Source: ${source.source}');
+  print('Chain: ${source.chain}');
 }
 ```
 
-### معلومات الكتاب (BookInfo)
+### BookInfo
 
-يحتوي على التفاصيل الكاملة للكتاب (يُستخدم عبر API).
+Full book details (via API).
 
 ```dart
 class BookInfo {
-  final String name;                // اسم الكتاب
-  final String bookId;              // المعرف الفريد
-  final String author;              // المؤلف
-  final String reviewer;            // المحقق
-  final String publisher;           // الناشر
-  final String edition;             // رقم الطبعة
-  final String editionYear;         // سنة الطبعة
+  final String name;                // Book name
+  final String bookId;              // Unique ID
+  final String author;              // Author
+  final String reviewer;            // Reviewer
+  final String publisher;           // Publisher
+  final String edition;             // Edition
+  final String editionYear;         // Year of edition
 }
 ```
 
-**الحصول على معلومات كتاب:**
+Usage:
 ```dart
 final book = await client.book.getById('6216');
 print('${book.name} - ${book.author}');
-print('الناشر: ${book.publisher}');
+print('Publisher: ${book.publisher}');
 ```
 
-### معلومات المحدث (MohdithInfo)
+### MohdithInfo
 
-يحتوي على التفاصيل الكاملة للمحدث (يُستخدم عبر API).
+Full hadith scholar (mohdith) details (via API).
 
 ```dart
 class MohdithInfo {
-  final String name;                // اسم المحدث
-  final String mohdithId;           // المعرف الفريد
-  final String info;                // السيرة الذاتية والمعلومات التفصيلية
+  final String name;                // Scholar name
+  final String mohdithId;           // Unique ID
+  final String info;                // Biography and details
 }
 ```
 
-**الحصول على معلومات محدث:**
+Usage:
 ```dart
 final mohdith = await client.mohdith.getById('256');
-print('الاسم: ${mohdith.name}');
-print('نبذة: ${mohdith.info}');
+print('Name: ${mohdith.name}');
+print('Bio: ${mohdith.info}');
 ```
 
-### القيم المرجعية (Reference Items)
+### Reference Items
 
-القيم المرجعية هي بيانات خفيفة تُستخدم للبحث والفلترة بدون الحاجة للإنترنت. جميعها تمتد من `ReferenceItem`.
+Lightweight items for offline filtering. All extend `ReferenceItem`.
 
-#### الكتب المرجعية (BookItem)
+#### BookItem
 
 ```dart
 class BookItem extends ReferenceItem {
-  final String id;                  // معرف الكتاب
-  final String name;                // اسم الكتاب
-  final String? author;             // اسم المؤلف (إن وُجد)
-  final String? mohdithId;          // معرف المحدث المؤلف
-  final String? category;           // التصنيف (إن وُجد)
+  final String id;                  // Book ID
+  final String name;                // Book name
+  final String? author;             // Author (if any)
+  final String? mohdithId;          // Hadith scholar (mohdith) author ID
+  final String? category;           // Category (if any)
 }
 ```
 
-**استخدام:**
+Usage:
 ```dart
-// البحث في الكتب (بدون إنترنت)
+// Offline search in books
 final books = await client.bookRef.searchBook('صحيح', limit: 10);
 for (var book in books) {
   print('${book.name} - ${book.author}');
   
-  // للحصول على تفاصيل كاملة (يحتاج إنترنت)
+  // Get full details (online)
   final fullInfo = await client.book.getById(book.id);
 }
 ```
 
-#### المحدثين المرجعيين (MohdithItem)
+#### MohdithItem
 
 ```dart
 class MohdithItem extends ReferenceItem {
-  final String id;                  // معرف المحدث
-  final String name;                // اسم المحدث
-  final int? deathYear;             // سنة الوفاة بالهجري (إن وُجدت)
-  final String? era;                // الحقبة الزمنية (إن وُجدت)
+  final String id;                  // Scholar ID
+  final String name;                // Scholar name
+  final int? deathYear;             // Death year (Hijri)
+  final String? era;                // Era (if any)
 }
 ```
 
-**استخدام:**
+Usage:
 ```dart
-// البحث في المحدثين (بدون إنترنت)
+// Offline search in scholars
 final scholars = await client.mohdithRef.searchMohdith('البخاري', limit: 5);
 for (var scholar in scholars) {
   print('${scholar.name}');
   if (scholar.deathYear != null) {
-    print('توفي سنة: ${scholar.deathYear}هـ');
+    print('Died in: ${scholar.deathYear} AH');
   }
 }
 ```
 
-#### الرواة المرجعيين (RawiItem)
+#### RawiItem
 
 ```dart
 class RawiItem extends ReferenceItem {
-  final String id;                  // معرف الراوي
-  final String name;                // اسم الراوي
+  final String id;                  // Narrator ID
+  final String name;                // Narrator name
 }
 ```
 
-**استخدام:**
+Usage:
 ```dart
-// البحث في الرواة (بدون إنترنت)
+// Offline narrator search
 final narrators = await client.rawiRef.searchRawi('أبو هريرة', limit: 3);
 for (var narrator in narrators) {
   print(narrator.name);
 }
 
-// عد النتائج
+// Counts
 final total = await client.rawiRef.countRawi();
 final searchCount = await client.rawiRef.countRawi(query: 'عبد الله');
 ```
 
-### بيانات الاستجابة (ApiResponse)
+### ApiResponse
 
-جميع عمليات البحث والاسترجاع تُرجع النتائج داخل `ApiResponse` لتسهيل ترقيم الصفحات وإدارة البيانات.
+All search and retrieval operations return results inside `ApiResponse` to simplify pagination.
 
 ```dart
 class ApiResponse<T> {
-  final T data;                     // البيانات الفعلية (حديث، قائمة أحاديث، إلخ)
-  final SearchMetadata metadata;    // معلومات إضافية عن النتيجة
+  final T data;                     // Actual data (hadith, list, etc.)
+  final SearchMetadata metadata;    // Extra info about the result
 }
 ```
 
-**أمثلة للاستخدام:**
+Examples:
 ```dart
-// البحث يُرجع ApiResponse<List<Hadith>>
+// Search returns ApiResponse<List<Hadith>>
 final response = await client.searchHadith(
   HadithSearchParams(value: 'الصلاة', page: 1),
 );
 
-print('عدد النتائج: ${response.data.length}');
-print('الصفحة الحالية: ${response.metadata.page}');
-print('من الكاش: ${response.metadata.isCached}');
+print('Count: ${response.data.length}');
+print('Current page: ${response.metadata.page}');
+print('From cache: ${response.metadata.isCached}');
 
-// أصول الحديث تُرجع ApiResponse<UsulHadith>
+// Usul returns ApiResponse<UsulHadith>
 final usulResponse = await client.hadith.getUsul('12345');
-print('عدد المصادر: ${usulResponse.data.count}');
+print('Sources: ${usulResponse.data.count}');
 ```
 
-### بيانات البحث الوصفية (SearchMetadata)
+### SearchMetadata
 
-يحتوي على معلومات إضافية عن نتيجة البحث.
+Additional info about a search result.
 
 ```dart
 class SearchMetadata {
-  final int length;                      // عدد النتائج المُرجعة
-  final int? page;                       // رقم الصفحة الحالية
-  final bool? removeHtml;                // هل تم إزالة وسوم HTML؟
-  final bool? specialist;                // هل تشمل الأحاديث المتخصصة؟
-  final int? numberOfNonSpecialist;      // عدد الأحاديث غير المتخصصة
-  final int? numberOfSpecialist;         // عدد الأحاديث المتخصصة
-  final bool isCached;                   // هل النتيجة من الكاش؟
-  final int? usulSourcesCount;           // عدد المصادر (لطلبات أصول الحديث)
+  final int length;                      // Number of returned results
+  final int? page;                       // Current page number
+  final bool? removeHtml;                // Whether HTML tags were removed
+  final bool? specialist;                // Include specialist hadiths?
+  final int? numberOfNonSpecialist;      // Non-specialist count
+  final int? numberOfSpecialist;         // Specialist count
+  final bool isCached;                   // Result from cache?
+  final int? usulSourcesCount;           // Sources count (for Usul requests)
   
-  // دالة لإنشاء نسخة معدلة
+  // Create a modified copy
   SearchMetadata copyWith({...});
 }
 ```
 
-**استخدام:**
+Usage:
 ```dart
 final response = await client.searchHadith(params);
 final meta = response.metadata;
 
 if (meta.isCached) {
-  print('النتيجة من الكاش - سريعة!');
+  print('Result is from cache - fast!');
 }
 
-print('الصفحة ${meta.page} من أصل ???');
-print('النتائج: ${meta.length}');
+print('Page ${meta.page} of ???');
+print('Results: ${meta.length}');
 ```
 
-### معايير البحث (HadithSearchParams)
+### HadithSearchParams
 
-يحتوي على جميع معايير وفلاتر البحث عن الأحاديث.
+All search filters and parameters.
 
 ```dart
 class HadithSearchParams {
-  // إلزامي
-  final String value;                    // نص البحث (كلمات الحديث)
+  // Required
+  final String value;                    // Search text
   
-  // اختياري - خيارات البحث
-  final int page;                        // رقم الصفحة (افتراضي: 1)
-  final bool removeHtml;                 // إزالة وسوم HTML (افتراضي: true)
-  final bool specialist;                 // تضمين الأحاديث المتخصصة (افتراضي: false)
-  final String? exclude;                 // كلمات أو عبارات للاستبعاد
+  // Optional - search options
+  final int page;                        // Page (default: 1)
+  final bool removeHtml;                 // Remove HTML (default: true)
+  final bool specialist;                 // Include specialist hadiths (default: false)
+  final String? exclude;                 // Words/phrases to exclude
   
-  // اختياري - الفلاتر
-  final SearchMethod? searchMethod;      // طريقة البحث (جميع/أي/مطابق)
-  final SearchZone? zone;                // نوع الحديث (مرفوع/قدسي/آثار/شرح)
-  final List<HadithDegree>? degrees;     // فلترة بدرجة الصحة
-  final List<MohdithReference>? mohdith; // فلترة بالمحدثين
-  final List<BookReference>? books;      // فلترة بالكتب
-  final List<RawiReference>? rawi;       // فلترة بالرواة
+  // Optional - filters
+  final SearchMethod? searchMethod;      // Search method (all/any/exact)
+  final SearchZone? zone;                // Hadith type (Marfoo/Qudsi/Athar/Sharh)
+  final List<HadithDegree>? degrees;     // Filter by grade
+  final List<MohdithReference>? mohdith; // Filter by scholars
+  final List<BookReference>? books;      // Filter by books
+  final List<RawiReference>? rawi;       // Filter by narrators
   
-  // دالة لإنشاء نسخة معدلة
+  // Create a modified copy
   HadithSearchParams copyWith({...});
 }
 ```
 
-**أمثلة الاستخدام:**
+Examples:
 
 ```dart
-// بحث بسيط (الحد الأدنى)
+// Minimal search
 final simple = HadithSearchParams(value: 'الصلاة', page: 1);
 
-// بحث مع فلاتر محددة
+// With specific filters
 final filtered = HadithSearchParams(
   value: 'الإيمان',
   page: 1,
-  degrees: [HadithDegree.authenticHadith],      // صحيح فقط
-  mohdith: [MohdithReference.bukhari],          // البخاري فقط
-  books: [BookReference.sahihBukhari],          // صحيح البخاري فقط
-  searchMethod: SearchMethod.allWords,          // جميع الكلمات
-  zone: SearchZone.qudsi,                       // أحاديث قدسية
+  degrees: [HadithDegree.authenticHadith],      // Sahih only
+  mohdith: [MohdithReference.bukhari],          // Al-Bukhari only
+  books: [BookReference.sahihBukhari],          // Sahih al-Bukhari only
+  searchMethod: SearchMethod.allWords,          // All words
+  zone: SearchZone.qudsi,                       // Qudsi hadiths
 );
 
-// بحث متقدم مع استبعاد كلمات
+// Advanced with exclusions
 final advanced = HadithSearchParams(
   value: 'الجنة النار',
   page: 1,
-  exclude: 'الدنيا',                           // استبعاد كلمة "الدنيا"
+  exclude: 'الدنيا',                           // Exclude the word "الدنيا"
   degrees: [
     HadithDegree.authenticHadith,
     HadithDegree.authenticChain,
@@ -637,47 +638,47 @@ final advanced = HadithSearchParams(
     MohdithReference.bukhari,
     MohdithReference.muslim,
   ],
-  searchMethod: SearchMethod.anyWord,           // أي كلمة
-  removeHtml: true,                             // إزالة HTML
+  searchMethod: SearchMethod.anyWord,           // Any word
+  removeHtml: true,                             // Remove HTML
 );
 
-// تعديل معايير موجودة
+// Modify existing params
 final modified = simple.copyWith(
-  page: 2,                                      // الانتقال للصفحة الثانية
-  degrees: [HadithDegree.authenticHadith],     // إضافة فلتر
+  page: 2,                                      // Go to page 2
+  degrees: [HadithDegree.authenticHadith],     // Add filter
 );
 
 final results = await client.searchHadithDetailed(advanced);
 ```
 
-### درجات صحة الحديث (HadithDegree)
+### HadithDegree
 
-قيم ثابتة لدرجات صحة الأحاديث حسب أحكام المحدثين.
+Static values representing hadith grading according to scholars.
 
 ```dart
 enum HadithDegree {
-  all,                   // جميع الدرجات (بدون فلتر)
-  authenticHadith,       // أحاديث حكم المحدثون عليها بالصحة
-  authenticChain,        // أحاديث حكم المحدثون على أسانيدها بالصحة
-  weakHadith,            // أحاديث حكم المحدثون عليها بالضعف
-  weakChain,             // أحاديث حكم المحدثون على أسانيدها بالضعف
+  all,                   // All grades (no filter)
+  authenticHadith,       // Scholars ruled the hadith itself as sahih
+  authenticChain,        // Scholars ruled the chain as sahih
+  weakHadith,            // Scholars ruled the hadith as weak
+  weakChain,             // Scholars ruled the chain as weak
   
-  // كل قيمة لها:
-  final String id;       // المعرف للاستخدام في API
-  final String label;    // الوصف العربي
+  // Each value has:
+  final String id;       // ID used in the API
+  final String label;    // Arabic label
 }
 ```
 
-**استخدام:**
+Usage:
 ```dart
-// فلترة بالأحاديث الصحيحة فقط
+// Filter sahih only
 final params = HadithSearchParams(
   value: 'الصدقة',
   page: 1,
   degrees: [HadithDegree.authenticHadith],
 );
 
-// الأحاديث الصحيحة (الحديث أو السند)
+// Sahih (hadith or chain)
 final params2 = HadithSearchParams(
   value: 'الصدقة',
   page: 1,
@@ -687,214 +688,210 @@ final params2 = HadithSearchParams(
   ],
 );
 
-// استخدام الدالات المساعدة
-print(HadithDegree.authenticHadith.toString()); // يطبع الوصف العربي
-print(HadithDegree.authenticHadith.toQueryParam()); // يطبع المعرف للـAPI
+// Helpers
+print(HadithDegree.authenticHadith.toString()); // Arabic label
+print(HadithDegree.authenticHadith.toQueryParam()); // API id
 ```
 
-### طرق البحث (SearchMethod)
+### SearchMethod
 
-تحدد كيفية البحث في نص الحديث.
+How the text search is performed.
 
 ```dart
 enum SearchMethod {
-  allWords,                     // جميع الكلمات (AND)
-  anyWord,                      // أي كلمة (OR)
-  exactMatch,                   // بحث مطابق (عبارة كاملة)
+  allWords,                     // All words (AND)
+  anyWord,                      // Any word (OR)
+  exactMatch,                   // Exact phrase
   
-  // كل قيمة لها:
-  final String id;              // المعرف للاستخدام في API
-  final String label;           // الوصف العربي
+  // Each value has:
+  final String id;              // API id
+  final String label;           // Arabic label
 }
 ```
 
-**استخدام:**
+Usage:
 ```dart
-// البحث عن جميع الكلمات (AND)
+// All words (AND)
 final allWords = HadithSearchParams(
   value: 'الصلاة الزكاة',
   page: 1,
-  searchMethod: SearchMethod.allWords, // أحاديث تحتوي "الصلاة" و"الزكاة" معًا
+  searchMethod: SearchMethod.allWords, // Must contain both words
 );
 
-// البحث عن أي كلمة (OR)
+// Any word (OR)
 final anyWord = HadithSearchParams(
   value: 'الصلاة الزكاة',
   page: 1,
-  searchMethod: SearchMethod.anyWord,  // أحاديث تحتوي "الصلاة" أو "الزكاة"
+  searchMethod: SearchMethod.anyWord,  // Contains either word
 );
 
-// البحث المطابق (العبارة كاملة)
+// Exact phrase
 final exact = HadithSearchParams(
   value: 'إنما الأعمال بالنيات',
   page: 1,
-  searchMethod: SearchMethod.exactMatch, // العبارة كاملة تمامًا
+  searchMethod: SearchMethod.exactMatch, // Exact phrase
 );
 
-// استخدام الدالات المساعدة
+// Helpers
 print(SearchMethod.allWords.toString()); // "جميع الكلمات"
 print(SearchMethod.allWords.toQueryParam()); // "w"
 ```
 
-### مناطق البحث (SearchZone)
+### SearchZone
 
-تحدد تصنيف نوع الحديث للفلترة.
+Filters by hadith type.
 
 ```dart
 enum SearchZone {
-  all,                          // جميع الأحاديث (بدون فلتر)
-  marfoo,                       // الأحاديث المرفوعة (المنسوبة للنبي ﷺ)
-  qudsi,                        // الأحاديث القدسية (من الله تعالى)
-  sahabaAthar,                  // آثار الصحابة
-  sharh,                        // شروح الأحاديث
+  all,                          // All hadiths (no filter)
+  marfoo,                       // Marfoo (attributed to the Prophet ﷺ)
+  qudsi,                        // Qudsi (from Allah)
+  sahabaAthar,                  // Companions' athar
+  sharh,                        // Explanations (shuruh)
   
-  // كل قيمة لها:
-  final String id;              // المعرف للاستخدام في API
-  final String label;           // الوصف العربي
+  // Each value has:
+  final String id;              // API id
+  final String label;           // Arabic label
 }
 ```
 
-**استخدام:**
+Usage:
 ```dart
-// البحث في الأحاديث القدسية فقط
+// Qudsi only
 final qudsi = HadithSearchParams(
   value: 'الجنة',
   page: 1,
   zone: SearchZone.qudsi,
 );
 
-// البحث في الأحاديث المرفوعة
+// Marfoo only
 final marfoo = HadithSearchParams(
   value: 'الصلاة',
   page: 1,
   zone: SearchZone.marfoo,
 );
 
-// البحث في آثار الصحابة
+// Sahaba athar
 final athar = HadithSearchParams(
   value: 'عمر بن الخطاب',
   page: 1,
   zone: SearchZone.sahabaAthar,
 );
 
-// استخدام الدالات المساعدة
+// Helpers
 print(SearchZone.qudsi.toString()); // "الأحاديث القدسية"
 print(SearchZone.qudsi.toQueryParam()); // "1"
 ```
 
-### إعدادات العميل (Client Options)
-
-يمكنك تخصيص `DorarClient` عند إنشائه.
+### Client Options
 
 ```dart
 final client = DorarClient(
-  timeout: Duration(seconds: 15),       // مهلة الطلبات (افتراضي: 15 ثواني)
-  enableCache: true,                    // تفعيل الكاش (افتراضي: true)
-  cacheTtl: Duration(hours: 24),       // مدة بقاء الكاش (افتراضي: 24 ساعة)
+  timeout: Duration(seconds: 15),       // Request timeout (default: 15s)
+  enableCache: true,                    // Enable cache (default: true)
+  cacheTtl: Duration(hours: 24),       // Cache TTL (default: 24h)
 );
 ```
 
-### إدارة الكاش
+### Cache Management
 
 ```dart
-// الحصول على إحصائيات الكاش
+// Cache stats
 final stats = client.getCacheStats();
-print('إجمالي العناصر: ${stats.totalEntries}');
-print('العناصر الصالحة: ${stats.validEntries}');
-print('معدل الإصابة: ${(stats.hitRate * 100).toStringAsFixed(1)}%');
+print('Total entries: ${stats.totalEntries}');
+print('Valid entries: ${stats.validEntries}');
+print('Hit rate: ${(stats.hitRate * 100).toStringAsFixed(1)}%');
 
-// مسح كل الكاش
+// Clear all cache
 client.clearCache();
 
-// مسح كاش خدمة معينة
+// Clear per-service cache
 client.hadith.clearCache();
 client.sharh.clearCache();
 client.book.clearCache();
 ```
 
-### التخلص من الموارد
+### Resource Cleanup
 
-**مهم جدًا:** يجب دائمًا استدعاء `dispose()` عند الانتهاء من استخدام `DorarClient` لإغلاق اتصالات قاعدة البيانات وتجنب التحذيرات.
+Always call `dispose()` when done to close database connections and avoid warnings.
 
 ```dart
 void main() async {
   final client = DorarClient();
   
   try {
-    // استخدام المكتبة
+    // Use the library
     final results = await client.searchHadith(
       HadithSearchParams(value: 'الصلاة', page: 1),
     );
   } finally {
-    // التخلص من الموارد (إلزامي)
+    // Mandatory cleanup
     await client.dispose();
   }
 }
 ```
 
-### معالجة الأخطاء (Error Handling)
+### Error Handling
 
-المكتبة تستخدم `sealed class` لتمثيل الأخطاء، مما يجعل التعامل معها أكثر أمانًا ودقة باستخدام Pattern Matching.
+The library uses a sealed class hierarchy for exceptions, enabling safer handling with pattern matching.
 
-#### أنواع الأخطاء (DorarException)
+#### DorarException Types
 
-جميع الأخطاء في المكتبة ترث من `DorarException` وهو `sealed class` يحتوي على الأنواع التالية:
+All errors extend `DorarException` with the following types:
 
 ```dart
-// 1. خطأ الشبكة - مشكلة في الاتصال بالإنترنت
+// 1. Network error - connectivity issues
 DorarNetworkException {
   final String message;
   final String? details;
 }
 
-// 2. انتهاء المهلة - الطلب استغرق وقتًا طويلاً
+// 2. Timeout - request took too long
 DorarTimeoutException {
   final String message;
   final Duration timeout;
   final String? details;
 }
 
-// 3. غير موجود - المورد المطلوب غير متوفر
+// 3. Not found - missing resource
 DorarNotFoundException {
   final String message;
   final String resource;
   final String? details;
 }
 
-// 4. خطأ في التحقق - المدخلات غير صحيحة
+// 4. Validation error - invalid input
 DorarValidationException {
   final String message;
-  final String? field;        // اسم الحقل الذي به خطأ
-  final String? rule;         // القاعدة المخالفة
+  final String? field;        // Field name
+  final String? rule;         // Violated rule
   final String? details;
 }
 
-// 5. خطأ السيرفر - مشكلة في خادم الدرر السنية
+// 5. Server error - Dorar server issue
 DorarServerException {
   final String message;
-  final int statusCode;       // رمز حالة HTTP
+  final int statusCode;       // HTTP status code
   final String? details;
 }
 
-// 6. خطأ في المعالجة - مشكلة في تحليل الاستجابة
+// 6. Parse error - response parsing issue
 DorarParseException {
   final String message;
-  final String? expectedType; // النوع المتوقع
+  final String? expectedType; // Expected type
   final String? details;
 }
 
-// 7. تجاوز الحد - عدد طلبات كثير جدًا
+// 7. Rate limit - too many requests
 DorarRateLimitException {
   final String message;
-  final int? limit;           // الحد الأقصى للطلبات
-  final DateTime? resetAt;    // وقت إعادة التفعيل
+  final int? limit;           // Max requests
+  final DateTime? resetAt;    // Reset time
   final String? details;
 }
 ```
 
-#### معالجة شاملة باستخدام Switch Expression
-
-أفضل طريقة للتعامل مع الأخطاء هي استخدام Pattern Matching مع `switch`، حيث يضمن المترجم (Compiler) تغطية جميع الحالات:
+#### Comprehensive Handling with Switch Expression
 
 ```dart
 try {
@@ -902,42 +899,40 @@ try {
     HadithSearchParams(value: 'الصلاة', page: 1),
   );
 } on DorarException catch (e) {
-  // Pattern Matching - المترجم يضمن تغطية كل الحالات!
+  // Pattern matching - compiler ensures coverage!
   final message = switch (e) {
     DorarNetworkException() => 
-      '🌐 خطأ في الشبكة: ${e.message}\n'
-      'تحقق من اتصالك بالإنترنت',
+      '🌐 Network error: ${e.message}\n'
+      'Please check your internet connection',
       
     DorarTimeoutException() => 
-      '⏱️ انتهت المهلة بعد ${e.timeout.inSeconds} ثانية\n'
-      'حاول مرة أخرى',
+      '⏱️ Request timed out after ${e.timeout.inSeconds} seconds\n'
+      'Try again later',
       
     DorarNotFoundException() => 
-      '🔍 غير موجود: ${e.resource}\n'
-      'تأكد من صحة المعرف',
+      '🔍 Not found: ${e.resource}\n'
+      'Verify the identifier',
       
     DorarValidationException() => 
-      '✋ خطأ في المدخلات: ${e.message}\n'
-      '${e.field != null ? "الحقل: ${e.field}" : ""}',
+      '✋ Validation error: ${e.message}\n'
+      '${e.field != null ? "Field: ${e.field}" : ""}',
       
     DorarServerException() => 
-      '🖥️ خطأ في السيرفر (${e.statusCode}): ${e.message}',
+      '🖥️ Server error (${e.statusCode}): ${e.message}',
       
     DorarParseException() => 
-      '📄 خطأ في معالجة البيانات: ${e.message}',
+      '📄 Parse error: ${e.message}',
       
     DorarRateLimitException() => 
-      '🚫 تجاوزت الحد المسموح من الطلبات\n'
-      '${e.resetAt != null ? "حاول مرة أخرى بعد: ${e.resetAt}" : ""}',
+      '🚫 Rate limit exceeded\n'
+      '${e.resetAt != null ? "Retry after: ${e.resetAt}" : ""}',
   };
   
   print(message);
 }
 ```
 
-#### دالة مساعدة لرسائل الأخطاء
-
-المكتبة توفر دالة جاهزة لتحويل الأخطاء لرسائل مفهومة:
+#### Helper Function for Error Messages
 
 ```dart
 import 'package:dorar_hadith/dorar_hadith.dart';
@@ -945,327 +940,327 @@ import 'package:dorar_hadith/dorar_hadith.dart';
 try {
   final results = await client.searchHadith(params);
 } on DorarException catch (e) {
-  // استخدام الدالة المساعدة
+  // Use the helper
   print(getExceptionMessage(e));
 }
 ```
 
-## الخدمات المتاحة (Available Services)
+## Available Services
 
-`DorarClient` يوفر الوصول إلى عدة خدمات متخصصة، كل خدمة مسؤولة عن جزء معين من الوظائف.
+`DorarClient` exposes multiple focused services, each responsible for specific functionality.
 
-### خدمة الأحاديث (Hadith Service)
+### Hadith Service
 
-الخدمة الأساسية للبحث عن الأحاديث والحصول على تفاصيلها.
+The core service for searching and fetching hadiths.
 
 ```dart
 final client = DorarClient();
 
-// 1. البحث السريع (عبر API - ~15 نتيجة)
+// 1. Quick search (API - ~15 results)
 final quickResults = await client.searchHadith(
   HadithSearchParams(value: 'الصلاة', page: 1),
 );
 
-// 2. البحث المفصل (عبر الموقع - ~30 نتيجة)
+// 2. Detailed search (Site - ~30 results)
 final detailedResults = await client.searchHadithDetailed(
   HadithSearchParams(value: 'الصلاة', page: 1),
 );
 
-// 3. الحصول على حديث بالمعرف
+// 3. Get by ID
 final hadith = await client.getHadithById('12345');
 
-// أو استخدام الخدمة مباشرة
+// Or use the service directly
 final sameResults = await client.hadith.searchViaApi(params);
 final sameDetailed = await client.hadith.searchViaSite(params);
 final sameHadith = await client.hadith.getById('12345');
 
-// 4. الأحاديث المشابهة
+// 4. Similar hadiths
 if (hadith.hasSimilarHadith && hadith.hadithId != null) {
   final similar = await client.hadith.getSimilar(hadith.hadithId!);
-  print('وجدنا ${similar.length} حديث مشابه');
+  print('Found ${similar.length} similar hadiths');
 }
 
-// 5. البديل الصحيح
+// 5. Alternate sahih
 if (hadith.hasAlternateHadithSahih && hadith.hadithId != null) {
   final alternate = await client.hadith.getAlternate(hadith.hadithId!);
   if (alternate != null) {
-    print('البديل الصحيح: ${alternate.hadith}');
+    print('Alternate sahih: ${alternate.hadith}');
   }
 }
 
-// 6. أصول الحديث
+// 6. Usul (sources)
 if (hadith.hasUsulHadith && hadith.hadithId != null) {
   final usulResponse = await client.hadith.getUsul(hadith.hadithId!);
   final usul = usulResponse.data;
-  print('عدد المصادر: ${usul.count}');
+  print('Sources: ${usul.count}');
   for (var source in usul.sources) {
     print('- ${source.source}: ${source.chain}');
   }
 }
 
-// 7. مسح الكاش
+// 7. Clear cache
 client.hadith.clearCache();
 ```
 
-### خدمة الشروح (Sharh Service)
+### Sharh Service
 
-للبحث عن شروح الأحاديث والحصول عليها.
+Search and retrieve hadith explanations.
 
 ```dart
-// 1. البحث في الشروح بنص الحديث
+// 1. Search by hadith text
 final sharh = await client.sharh.getByText('إنما الأعمال بالنيات');
 
-// يمكن أيضًا البحث في الأحاديث المتخصصة
+// You can also search in specialist hadiths
 final specialistSharh = await client.sharh.getByText(
   'نص الحديث',
   specialist: true,
 );
 
-// 2. الحصول على شرح بالمعرف
-// (المعرف يأتي من hadith.sharhMetadata.id)
+// 2. Get by ID
+// (ID comes from hadith.sharhMetadata.id)
 final hadith = await client.getHadithById('12345');
 if (hadith.hasSharhMetadata && hadith.sharhMetadata != null) {
   final sharhId = hadith.sharhMetadata!.id;
   final sharh = await client.sharh.getById(sharhId);
   
   if (sharh.sharhText != null) {
-    print('الشرح: ${sharh.sharhText}');
+    print('Sharh: ${sharh.sharhText}');
   }
 }
 
-// 3. مسح الكاش
+// 3. Clear cache
 client.sharh.clearCache();
 ```
 
-### خدمة الكتب التفصيلية (Book Service)
+### Book Service (Detailed)
 
-للحصول على معلومات تفصيلية عن الكتب (يحتاج إنترنت).
+Fetch detailed book info (requires internet).
 
 ```dart
-// الحصول على معلومات كتاب بالمعرف
-final book = await client.book.getById('6216'); // صحيح البخاري
+// Get book by ID
+final book = await client.book.getById('6216'); // Sahih al-Bukhari
 
-print('الكتاب: ${book.name}');
-print('المؤلف: ${book.author}');
-print('المحقق: ${book.reviewer}');
-print('الناشر: ${book.publisher}');
-print('الطبعة: ${book.edition}');
-print('سنة النشر: ${book.editionYear}');
+print('Book: ${book.name}');
+print('Author: ${book.author}');
+print('Reviewer: ${book.reviewer}');
+print('Publisher: ${book.publisher}');
+print('Edition: ${book.edition}');
+print('Edition Year: ${book.editionYear}');
 
-// مسح الكاش
+// Clear cache
 client.book.clearCache();
 ```
 
-### خدمة المحدثين التفصيليين (Mohdith Service)
+### Mohdith Service (Detailed)
 
-للحصول على معلومات تفصيلية عن المحدثين (يحتاج إنترنت).
+Fetch detailed scholar info (requires internet).
 
 ```dart
-// الحصول على معلومات محدث بالمعرف
-final mohdith = await client.mohdith.getById('256'); // الإمام البخاري
+// Get scholar by ID
+final mohdith = await client.mohdith.getById('256'); // Imam al-Bukhari
 
-print('الاسم: ${mohdith.name}');
-print('السيرة: ${mohdith.info}');
+print('Name: ${mohdith.name}');
+print('Bio: ${mohdith.info}');
 
-// مسح الكاش
+// Clear cache
 client.mohdith.clearCache();
 ```
 
-### خدمة الكتب المرجعية (Book Reference Service)
+### Book Reference Service (Offline)
 
-للبحث في الكتب المتوفرة (بدون إنترنت).
+Search available books without internet.
 
 ```dart
-// 1. البحث بالاسم
+// 1. Search by name
 final books = await client.bookRef.searchBook('صحيح', limit: 10);
 
-// أو اختصار
+// Or shortcut
 final sameBooks = await client.searchBooks('صحيح');
 
 for (var book in books) {
   print('${book.name} - ${book.author}');
 }
 
-// 2. الحصول على كتاب بالمعرف
+// 2. Get by ID
 final bukhari = await client.bookRef.getBookById('6216');
 print(bukhari.name); // صحيح البخاري
 
-// 3. الحصول على عدة كتب دفعة واحدة
+// 3. Get multiple by IDs
 final multipleBooks = await client.bookRef.getBooksByIds([
-  '6216', // صحيح البخاري
-  '3662', // صحيح مسلم
+  '6216', // Sahih al-Bukhari
+  '3662', // Sahih Muslim
 ]);
 
-// 4. عرض جميع الكتب مع الترقيم
+// 4. List all with pagination
 final allBooks = await client.bookRef.getAllBookss(
   limit: 50,
   offset: 0,
 );
 
-// 5. عد النتائج
+// 5. Counts
 final totalBooks = await client.bookRef.countBooks();
 final sahihBooks = await client.bookRef.countBooks(query: 'صحيح');
-print('إجمالي الكتب: $totalBooks');
-print('كتب "صحيح": $sahihBooks');
+print('Total books: $totalBooks');
+print('"Sahih" books: $sahihBooks');
 ```
 
-### خدمة المحدثين المرجعيين (Mohdith Reference Service)
+### Mohdith Reference Service (Offline)
 
-للبحث في المحدثين المتوفرين (بدون إنترنت).
+Search available scholars without internet.
 
 ```dart
-// 1. البحث بالاسم
+// 1. Search by name
 final scholars = await client.mohdithRef.searchMohdith('البخاري', limit: 5);
 
-// أو اختصار
+// Or shortcut
 final sameScholars = await client.searchMohdith('البخاري');
 
 for (var scholar in scholars) {
   print('${scholar.name}');
   if (scholar.deathYear != null) {
-    print('سنة الوفاة: ${scholar.deathYear}هـ');
+    print('Death year: ${scholar.deathYear} AH');
   }
 }
 
-// 2. الحصول على محدث بالمعرف
+// 2. Get by ID
 final bukhari = await client.mohdithRef.getMohdithById('256');
 print(bukhari.name); // البخاري
 
-// 3. الحصول على عدة محدثين دفعة واحدة
+// 3. Get multiple by IDs
 final multipleScholars = await client.mohdithRef.getMohdithByIds([
-  '256',  // البخاري
-  '261',  // مسلم
+  '256',  // al-Bukhari
+  '261',  // Muslim
 ]);
 
-// 4. عرض جميع المحدثين مع الترقيم
+// 4. List all with pagination
 final allScholars = await client.mohdithRef.getAllMohdith(
   limit: 50,
   offset: 0,
 );
 
-// 5. عد النتائج
+// 5. Counts
 final totalScholars = await client.mohdithRef.countMohdith();
 final classicalScholars = await client.mohdithRef.countMohdith(
   query: 'أحمد',
 );
-print('إجمالي المحدثين: $totalScholars');
+print('Total scholars: $totalScholars');
 ```
 
-### خدمة الرواة المرجعيين (Rawi Reference Service)
+### Rawi Reference Service (Offline)
 
-للبحث في الرواة المتوفرين (بدون إنترنت).
+Search available narrators without internet.
 
 ```dart
-// 1. البحث بالاسم
+// 1. Search by name
 final narrators = await client.rawiRef.searchRawi('أبو هريرة', limit: 10);
 
-// أو اختصار
+// Or shortcut
 final sameNarrators = await client.searchRawi('أبو هريرة');
 
 for (var narrator in narrators) {
   print(narrator.name);
 }
 
-// 2. الحصول على راوي بالمعرف
+// 2. Get by ID
 final abuHurayrah = await client.rawiRef.getRawiById(4396);
 print(abuHurayrah.name); // أبو هريرة عبد الرحمن بن صخر الدوسي
 
-// 3. الحصول على عدة رواة دفعة واحدة
+// 3. Get multiple by IDs
 final multipleNarrators = await client.rawiRef.getRawiByIds([
-  4396,   // أبو هريرة
-  5593,   // عائشة
+  4396,   // Abu Hurayrah
+  5593,   // Aishah
 ]);
 
-// 4. عرض جميع الرواة مع الترقيم
+// 4. List all with pagination
 final allNarrators = await client.rawiRef.getAllRawi(
   limit: 100,
   offset: 0,
 );
 
-// 5. عد النتائج
+// 5. Counts
 final totalNarrators = await client.rawiRef.countRawi();
 final abdullahNarrators = await client.rawiRef.countRawi(query: 'عبد الله');
-print('إجمالي الرواة: $totalNarrators');
-print('رواة "عبد الله": $abdullahNarrators');
+print('Total narrators: $totalNarrators');
+print('"Abdullah" narrators: $abdullahNarrators');
 ```
 
-### القيم الثابتة للفلترة
+### Predefined Filter Constants
 
-المكتبة توفر قيم ثابتة جاهزة لأشهر المحدثين والكتب والرواة لتسهيل عملية الفلترة.
+The library provides predefined constants for common scholars, books, and narrators to simplify filtering.
 
-#### المحدثون الثابتون (MohdithReference)
+#### MohdithReference (Scholars)
 
 ```dart
-// القيم الثابتة المتاحة (20 محدث)
-MohdithReference.all             // الجميع (بدون فلتر) - ID: 0
-MohdithReference.malik           // الإمام مالك - ID: 179
-MohdithReference.shafii          // الإمام الشافعي - ID: 204
-MohdithReference.ahmad           // الإمام أحمد - ID: 241
-MohdithReference.bukhari         // البخاري - ID: 256
-MohdithReference.muslim          // مسلم - ID: 261
-MohdithReference.ibnMajah        // ابن ماجه - ID: 273
-MohdithReference.abuDawud        // أبو داود - ID: 275
-MohdithReference.tirmidhi        // الترمذي - ID: 279
-MohdithReference.nasai           // النسائي - ID: 303
-MohdithReference.sufyanThawri    // سفيان الثوري - ID: 161
-MohdithReference.ibnMubarak      // عبدالله بن المبارك - ID: 181
-MohdithReference.sufyanIbnUyaynah // سفيان بن عيينة - ID: 198
-MohdithReference.ishaqIbnRahawayh // إسحاق بن راهويه - ID: 238
-MohdithReference.darimi          // الدارمي - ID: 250
-MohdithReference.ibnKhuzaymah    // ابن خزيمة - ID: 311
-MohdithReference.ibnHibban       // ابن حبان - ID: 354
-MohdithReference.hakim           // الحاكم - ID: 405
-MohdithReference.bayhaqi         // البيهقي - ID: 458
-MohdithReference.tabarani        // الطبراني - ID: 360
+// 20 scholars
+MohdithReference.all             // All (no filter) - ID: 0
+MohdithReference.malik           // Imam Malik - ID: 179
+MohdithReference.shafii          // Imam al-Shafi'i - ID: 204
+MohdithReference.ahmad           // Imam Ahmad - ID: 241
+MohdithReference.bukhari         // al-Bukhari - ID: 256
+MohdithReference.muslim          // Muslim - ID: 261
+MohdithReference.ibnMajah        // Ibn Majah - ID: 273
+MohdithReference.abuDawud        // Abu Dawud - ID: 275
+MohdithReference.tirmidhi        // al-Tirmidhi - ID: 279
+MohdithReference.nasai           // al-Nasa'i - ID: 303
+MohdithReference.sufyanThawri    // Sufyan al-Thawri - ID: 161
+MohdithReference.ibnMubarak      // Abdullah b. al-Mubarak - ID: 181
+MohdithReference.sufyanIbnUyaynah // Sufyan b. 'Uyaynah - ID: 198
+MohdithReference.ishaqIbnRahawayh // Ishaq b. Rahawayh - ID: 238
+MohdithReference.darimi          // al-Darimi - ID: 250
+MohdithReference.ibnKhuzaymah    // Ibn Khuzaymah - ID: 311
+MohdithReference.ibnHibban       // Ibn Hibban - ID: 354
+MohdithReference.hakim           // al-Hakim - ID: 405
+MohdithReference.bayhaqi         // al-Bayhaqi - ID: 458
+MohdithReference.tabarani        // al-Tabarani - ID: 360
 
-// كل قيمة لها معرف واسم
+// Each value has id and name
 final bukhari = MohdithReference.bukhari;
 print(bukhari.id);    // "256"
 print(bukhari.name);  // "البخاري"
 
-// الاستخدام في الفلترة
+// Use in filters
 final params = HadithSearchParams(
   value: 'الصلاة',
   page: 1,
   mohdith: [MohdithReference.bukhari],
 );
 
-// الحصول على المعرف كرقم للاستخدام في الفلترة
+// Get numeric id if needed
 final bukhariId = int.parse(MohdithReference.bukhari.id);
 ```
 
-#### الكتب الثابتة (BookReference)
+#### BookReference (Books)
 
 ```dart
-// القيم الثابتة المتاحة (21 كتاب)
-BookReference.all                 // الجميع (بدون فلتر)
-BookReference.sahihBukhari        // صحيح البخاري (6216)
-BookReference.sahihMuslim         // صحيح مسلم (3088)
-BookReference.arbainNawawi        // الأربعون النووية (13457)
-BookReference.sahihMusnad         // الصحيح المسند (96)
-BookReference.sunanAbuDawud       // سنن أبي داود (4549)
-BookReference.jamiTirmidhi        // سنن الترمذي (3662)
-BookReference.sunanNasai          // سنن النسائي (5766)
-BookReference.sunanIbnMajah       // سنن ابن ماجه (5299)
-BookReference.musnadAhmad         // مسند أحمد (14)
-BookReference.muwattaMalik        // موطأ مالك (6453)
-BookReference.musnadDarimi        // سنن الدارمي (6277)
-BookReference.sahihIbnKhuzaymah   // صحيح ابن خزيمة (3024)
-BookReference.sahihIbnHibban      // صحيح ابن حبان (5876)
-BookReference.mustadrakHakim      // المستدرك على الصحيحين (2800)
-BookReference.sunanBayhaqiKubra   // السنن الكبرى للبيهقي (7989)
-BookReference.sunanDaraqutni      // سنن الدارقطني (3233)
-BookReference.musannafIbnAbiShaybah // مصنف ابن أبي شيبة (6598)
-BookReference.musannafAbdRazzaq   // مصنف عبد الرزاق (7613)
-BookReference.riyadSalihin        // رياض الصالحين (10106)
-BookReference.bulughMaram         // بلوغ المرام (9927)
+// 21 books
+BookReference.all                 // All (no filter)
+BookReference.sahihBukhari        // Sahih al-Bukhari (6216)
+BookReference.sahihMuslim         // Sahih Muslim (3088)
+BookReference.arbainNawawi        // Al-Arba'in al-Nawawiyyah (13457)
+BookReference.sahihMusnad         // Al-Sahih al-Musnad (96)
+BookReference.sunanAbuDawud       // Sunan Abi Dawud (4549)
+BookReference.jamiTirmidhi        // Jami' al-Tirmidhi (3662)
+BookReference.sunanNasai          // Sunan al-Nasa'i (5766)
+BookReference.sunanIbnMajah       // Sunan Ibn Majah (5299)
+BookReference.musnadAhmad         // Musnad Ahmad (14)
+BookReference.muwattaMalik        // Muwatta' Malik (6453)
+BookReference.musnadDarimi        // Sunan al-Darimi (6277)
+BookReference.sahihIbnKhuzaymah   // Sahih Ibn Khuzaymah (3024)
+BookReference.sahihIbnHibban      // Sahih Ibn Hibban (5876)
+BookReference.mustadrakHakim      // Al-Mustadrak (2800)
+BookReference.sunanBayhaqiKubra   // Al-Sunan al-Kubra (7989)
+BookReference.sunanDaraqutni      // Sunan al-Daraqutni (3233)
+BookReference.musannafIbnAbiShaybah // Musannaf Ibn Abi Shaybah (6598)
+BookReference.musannafAbdRazzaq   // Musannaf 'Abd al-Razzaq (7613)
+BookReference.riyadSalihin        // Riyad al-Salihin (10106)
+BookReference.bulughMaram         // Bulugh al-Maram (9927)
 
-// كل قيمة لها معرف واسم
+// Each value has id and name
 final bukhari = BookReference.sahihBukhari;
 print(bukhari.id);    // "6216"
 print(bukhari.name);  // "صحيح البخاري"
 
-// الاستخدام في الفلترة
+// Use in filters
 final params = HadithSearchParams(
   value: 'الزكاة',
   page: 1,
@@ -1275,73 +1270,73 @@ final params = HadithSearchParams(
   ],
 );
 
-// الحصول على المعرف كرقم للاستخدام في الفلترة
+// Get numeric id if needed
 final bukhariId = int.parse(BookReference.sahihBukhari.id);
 ```
 
-#### الرواة الثابتون (RawiReference)
+#### RawiReference (Narrators)
 
-**ملاحظة:** يوجد حوالي 14,000 راوي في قاعدة البيانات، لذلك تم توفير بعض الصحابة فقط كقيم ثابتة.
+Note: There are ~14,000 narrators in the database, so only some companions are provided as constants.
 
 ```dart
-// القيم الثابتة المتاحة (20 صحابي)
-RawiReference.all                // الجميع (بدون فلتر)
-RawiReference.abuHurayrah        // أبو هريرة (1416)
-RawiReference.aisha              // عائشة أم المؤمنين (6617)
-RawiReference.ibnAbbas           // ابن عباس (2664)
-RawiReference.ibnUmar            // عبدالله بن عمر (7687)
-RawiReference.anasBinMalik       // أنس بن مالك (2177)
-RawiReference.jabirIbnAbdullah  // جابر بن عبدالله (3971)
-RawiReference.abuSaidKhudri      // أبو سعيد الخدري (779)
-RawiReference.ibnMasud           // عبدالله بن مسعود (7918)
-RawiReference.abuMusaAshari      // أبو موسى الأشعري (1342)
-RawiReference.umarIbnKhattab     // عمر بن الخطاب (8918)
-RawiReference.aliIbnAbiTalib     // علي بن أبي طالب (8637)
-RawiReference.abuBakr            // أبو بكر الصديق (455)
-RawiReference.uthmanIbnAffan     // عثمان بن عفان (8310)
-RawiReference.salmanFarisi       // سلمان الفارسي (5947)
-RawiReference.muadhIbnJabal      // معاذ بن جبل (10349)
-RawiReference.abuDharr           // أبو ذر الغفاري (667)
-RawiReference.bilal              // بلال بن رباح (3808)
-RawiReference.zaydIbnThabit      // زيد بن ثابت (5545)
-RawiReference.ubayyIbnKab        // أبي بن كعب (1695)
-RawiReference.abuAyyub           // أبو أيوب الأنصاري (129)
+// 20 companions
+RawiReference.all                // All (no filter)
+RawiReference.abuHurayrah        // Abu Hurayrah (1416)
+RawiReference.aisha              // Aishah (6617)
+RawiReference.ibnAbbas           // Ibn Abbas (2664)
+RawiReference.ibnUmar            // Abdullah b. Umar (7687)
+RawiReference.anasBinMalik       // Anas b. Malik (2177)
+RawiReference.jabirIbnAbdullah  // Jabir b. Abdullah (3971)
+RawiReference.abuSaidKhudri      // Abu Sa'id al-Khudri (779)
+RawiReference.ibnMasud           // Abdullah b. Mas'ud (7918)
+RawiReference.abuMusaAshari      // Abu Musa al-Ash'ari (1342)
+RawiReference.umarIbnKhattab     // Umar b. al-Khattab (8918)
+RawiReference.aliIbnAbiTalib     // Ali b. Abi Talib (8637)
+RawiReference.abuBakr            // Abu Bakr al-Siddiq (455)
+RawiReference.uthmanIbnAffan     // Uthman b. Affan (8310)
+RawiReference.salmanFarisi       // Salman al-Farisi (5947)
+RawiReference.muadhIbnJabal      // Mu'adh b. Jabal (10349)
+RawiReference.abuDharr           // Abu Dharr al-Ghifari (667)
+RawiReference.bilal              // Bilal b. Rabah (3808)
+RawiReference.zaydIbnThabit      // Zayd b. Thabit (5545)
+RawiReference.ubayyIbnKab        // Ubayy b. Ka'b (1695)
+RawiReference.abuAyyub           // Abu Ayyub al-Ansari (129)
 
-// كل قيمة لها معرف واسم
+// Each value has id and name
 final abuHurayrah = RawiReference.abuHurayrah;
 print(abuHurayrah.id);    // "1416"
 print(abuHurayrah.name);  // "أبو هريرة"
 
-// الاستخدام في الفلترة
+// Use in filters
 final params = HadithSearchParams(
   value: 'الجنة',
   page: 1,
   rawi: [RawiReference.abuHurayrah],
 );
 
-// الحصول على المعرف كرقم للاستخدام في الفلترة
+// Get numeric id if needed
 final abuHurayrahId = int.parse(RawiReference.abuHurayrah.id);
 
-// للبحث عن رواة آخرين، استخدم خدمة البحث
+// To find more narrators, use the search service
 final narrators = await client.rawiRef.searchRawi('عبد الله', limit: 10);
 ```
 
-### يوجد لدي تحذير بعنوان "Unclosed database"؟
+### Seeing "Unclosed database" Warning?
 
-يجب دائمًا استدعاء `client.dispose()`:
+Always call `client.dispose()`:
 
 ```dart
 final client = DorarClient();
 try {
-  // استخدام المكتبة
+  // Use the library
 } finally {
-  await client.dispose(); // إلزامي
+  await client.dispose(); // Mandatory
 }
 ```
 
-## المساهمة
+## Contributing
 
-المساهمة بأي شكل من الأشكال مرحب به.
+All forms of contributions are welcome.  
 ## License
 
 MIT License - see [LICENSE](LICENSE) file.
@@ -1361,4 +1356,4 @@ DorarClient (Facade)
               └── HTML Parsers
 ```
 
-#### سائلًا الله تعالى أن يكتب اجري واجركم
+— May Allah reward us and you.
