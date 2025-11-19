@@ -46,12 +46,6 @@ void verifyBookInfoStructure(BookInfo book) {
 void verifyHadithStructure(Hadith hadith) {
   verifyArabicText(hadith.hadith, name: 'hadith.hadith');
   verifyArabicText(hadith.rawi, name: 'hadith.rawi', allowEmpty: true);
-  verifyArabicText(
-    hadith.takhrij ?? '',
-    name: 'hadith.takhrij',
-    allowEmpty: true,
-  );
-
   expect(hadith.grade, isNotEmpty, reason: 'Hadith.grade should not be empty');
   expect(hadith.book, isNotEmpty, reason: 'Hadith.book should not be empty');
   expect(
@@ -60,12 +54,24 @@ void verifyHadithStructure(Hadith hadith) {
     reason: 'Hadith.numberOrPage should not be empty',
   );
 
-  if (hadith.hadithId != null) {
-    expect(
-      hadith.hadithId,
-      isNotEmpty,
-      reason: 'Hadith.hadithId should not be empty when provided',
-    );
+  String? takhrij;
+  if (hadith is DetailedHadith) {
+    takhrij = hadith.takhrij;
+
+    if (hadith.hadithId != null) {
+      expect(
+        hadith.hadithId,
+        isNotEmpty,
+        reason: 'Hadith.hadithId should not be empty when provided',
+      );
+    }
+  } else if (hadith is ExplainedHadith) {
+    takhrij = hadith.takhrij;
+  }
+
+  final trimmedTakhrij = takhrij?.trim();
+  if (trimmedTakhrij != null && trimmedTakhrij.isNotEmpty) {
+    verifyArabicText(trimmedTakhrij, name: 'hadith.takhrij', allowEmpty: false);
   }
 }
 
@@ -83,18 +89,22 @@ void verifyMohdithInfoStructure(MohdithInfo mohdith) {
 
 /// Verify that a [Sharh] entry contains the core metadata required by clients.
 void verifySharhStructure(Sharh sharh) {
-  verifyArabicText(sharh.hadith, name: 'sharh.hadith');
+  verifyArabicText(sharh.hadith.hadith, name: 'sharh.hadith');
   verifyArabicText(
     sharh.sharhMetadata?.sharh ?? '',
     name: 'sharh.sharh',
     allowEmpty: true,
   );
-  verifyArabicText(sharh.mohdith, name: 'sharh.mohdith');
-  verifyArabicText(sharh.rawi, name: 'sharh.rawi', allowEmpty: true);
+  verifyArabicText(sharh.hadith.mohdith, name: 'sharh.mohdith');
+  verifyArabicText(sharh.hadith.rawi, name: 'sharh.rawi', allowEmpty: true);
 
-  expect(sharh.book, isNotEmpty, reason: 'Sharh.book should not be empty');
   expect(
-    sharh.numberOrPage,
+    sharh.hadith.book,
+    isNotEmpty,
+    reason: 'Sharh.book should not be empty',
+  );
+  expect(
+    sharh.hadith.numberOrPage,
     isNotEmpty,
     reason: 'Sharh.numberOrPage should not be empty',
   );

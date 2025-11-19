@@ -21,7 +21,7 @@ void registerDefaultAssetLoader(AssetLoaderBuilder builder) {
 typedef AssetLoaderBuilder = AssetLoader Function();
 
 /// Base contract for loading asset contents.
-abstract class AssetLoader {
+abstract interface class AssetLoader {
   /// Returns an [AssetLoader] for the current platform.
   factory AssetLoader() => _defaultAssetLoaderBuilder();
 

@@ -6,6 +6,8 @@
 /// ## Features
 ///
 /// - Hadith search with filters
+/// - Unified `DetailedHadith` model that extends the lightweight `Hadith`
+///   listing results
 /// - Sharh (explanations)
 /// - Offline reference data (books, scholars, narrators)
 /// - Built-in caching
@@ -85,7 +87,7 @@ export 'src/services/rawi_reference_service.dart';
 export 'src/services/sharh_service.dart';
 // Utilities
 export 'src/utils/arabic_search.dart';
-export 'src/utils/asset_loader.dart';
+export 'src/utils/asset_loader/asset_loader.dart';
 export 'src/utils/cache_manager.dart';
 export 'src/utils/exceptions.dart';
 export 'src/utils/html_stripper.dart';

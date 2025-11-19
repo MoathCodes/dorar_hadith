@@ -1,7 +1,7 @@
 # بسم الله الرحمن الرحيم
 # Dorar Hadith
 
-# تغيير اللغة: [ 🇸🇦 AR](README.md)
+# تغيير اللغة: [ 🇸🇦 AR](README_AR.md)
 
 ---
 
@@ -12,10 +12,6 @@ Works with any Dart program without requiring Flutter.
 
 [![pub package](https://img.shields.io/pub/v/dorar_hadith.svg)](https://pub.dev/packages/dorar_hadith)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-
-## Terminology
-
-- In this README, the word "scholar" always means a hadith scholar (mohdith). We keep the term "mohdith" in code and types to match the API and models.
 
 ## Library Highlights
 
@@ -55,10 +51,7 @@ flutter pub add dorar_hadith
 import 'package:dorar_hadith/dorar_hadith.dart';
 
 void main() async {
-  // Create the client
-  final client = DorarClient();
-
-  try {
+  await DorarClient.use((client) async {
     // Search for hadiths about prayer
     final results = await client.searchHadith(
       HadithSearchParams(value: 'الصلاة', page: 1),
@@ -68,18 +61,16 @@ void main() async {
 
     // Print first hadith
     if (results.data.isNotEmpty) {
-      final hadith = results.data.first;
-      print('Hadith: ${hadith.hadith}');
-      print('Narrator: ${hadith.rawi}');
-      print('Scholar: ${hadith.mohdith}');
-      print('Grade: ${hadith.grade}');
+      final h = results.data.first;
+      print('Hadith: ${h.hadith}');
+      print('Narrator: ${h.rawi}');
+      print('Scholar: ${h.mohdith}');
+      print('Verdict: ${h.hukm}');
     }
-  } on DorarException catch (e) {
-    print('Error: ${getExceptionMessage(e)}');
-  } finally {
-    // Clean up resources (important: closes database connections)
-    await client.dispose();
-  }
+
+    // You can return the result to use else where
+    return results;
+  });
 }
 ```
 
@@ -97,15 +88,13 @@ Most operations in `DorarClient` and the other services return results inside an
 This makes it easier to request the next page when needed.
 
 ### Quick Hadith Search
-Using `client.searchHadith` is fast, but the hadith info is partial and without identifiers (`hadithId, bookId, etc`).
+Using `client.searchHadith` is fast and returns lightweight `Hadith` objects
+directly from the public API.
 - Results are limited to ~15 hadiths, and filters can be used.
-- Each result includes:
-  - Text: `Hadith.hadith`
-  - Narrator: `Hadith.rawi`
-  - Scholar: `Hadith.mohdith`
-  - Book: `Hadith.book`
-  - Number or page in the book: `Hadith.numberOrPage`
-  - Grade: `Hadith.grade`
+- Only the textual fields (`hadith`, `rawi`, `mohdith`, `book`,
+  `numberOrPage`, `grade`) are included in this response.
+- Call `client.searchHadithDetailed` when you need IDs, sharh metadata, Dorar
+  links, or any of the extended fields provided by `DetailedHadith`.
 
 ```dart
 final results = await client.searchHadith(
@@ -119,7 +108,8 @@ for (var hadith in results.data) {
 ```
 
 ### Detailed Search with Filters
-Note: Due to how Dorar works, in detailed search the verdict appears in `explainGrade`, not `grade`.
+Note: Due to how Dorar works, detailed search populates
+`DetailedHadith.explainGrade` instead of `grade`.
 
 ```dart
 final params = HadithSearchParams(
@@ -135,6 +125,7 @@ final results = await client.searchHadithDetailed(params);
 ```
 
 ### Get Hadith by ID
+Returns a `DetailedHadith` with complete metadata when available.
 
 ```dart
 final hadith = await client.getHadithById('12345');
@@ -144,7 +135,7 @@ print('Grade: ${hadith.grade}');
 ```
 
 ### Similar, Usul (Sources), Alternate Sahih
-Note: The `Hadith` model has flags to check availability:
+Note: The `DetailedHadith` model has flags to check availability:
 - `hasAlternateHadithSahih` for alternate sahih
 - `hasSimilarHadith` for similar hadiths
 - `hasUsulHadith` for sources
@@ -163,7 +154,7 @@ print('Sources: ${usul.count}');
 ```
 
 ### Search for Sharh (Explanation)
-Note: When using `client.searchHadithDetailed`, if a hadith has a sharh, you will find its ID in `sharhMetadata`. Use it as follows:
+Note: When using `client.searchHadithDetailed`, if a hadith has a sharh, you will find its ID in `DetailedHadith.sharhMetadata`. Use it as follows:
 
 ```dart
 // Get sharh by ID
@@ -261,7 +252,7 @@ RawiReference.aisha
 final params = HadithSearchParams(
   value: 'الصلاة',
   page: 1,
-  mohdith: [MohdithReference.Bukhari],
+  mohdith: [MohdithReference.bukhari],
   books: [BookReference.sahihBukhari],
 );
 final results = await client.hadith.searchViaSite(params);
@@ -285,52 +276,54 @@ print('Bio: ${scholar.info}');
 
 This section describes all models and options provided by the library.
 
-### Hadith Model
+### Hadith Models
 
-Represents a hadith with all its related information.
+The package now exposes two layered models:
+
+- `Hadith`: Lightweight record returned by the official Dorar API. Contains the
+  matn, narrator, scholar, source book, page/number, and grade.
+- `DetailedHadith`: Extends `Hadith` with every extra bit of metadata collected
+  from the Dorar website (IDs, sharh metadata, takhrij, related links, etc.).
 
 ```dart
 class Hadith {
-  // Basic hadith info
-  final String hadith;              // Hadith text
-  final String? hadithId;           // Unique hadith ID
-  
-  // Chain and scholars
+  final String hadith;              // Hadith text (matn)
   final String rawi;                // Narrator name
   final String mohdith;             // Scholar name
-  final String? mohdithId;          // Scholar ID
-  
-  // Source info
   final String book;                // Source book name
+  final String numberOrPage;        // Page or hadith number in the source
+  final String grade;               // Verdict shown by the API
+}
+
+class DetailedHadith extends Hadith {
+  final String? hadithId;           // Unique hadith ID
+  final String? mohdithId;          // Scholar ID
   final String? bookId;             // Book ID
-  final String numberOrPage;        // Page number or hadith number in the book
-  
-  // Grading and takhrij
-  final String grade;               // Hadith grade (Sahih, Da'if, etc.)
-  final String? explainGrade;       // Grade explanation
-  final String? takhrij;            // Takhrij information
-  
-  // Relations and links
-  final bool hasSimilarHadith;           // Has similar hadiths?
-  final bool hasAlternateHadithSahih;    // Has alternate sahih?
-  final bool hasUsulHadith;              // Has sources?
-  
-  // Dorar links
-  final String? similarHadithDorar;        // Similar hadiths link
-  final String? alternateHadithSahihDorar; // Alternate sahih link
-  final String? usulHadithDorar;           // Sources link
-  
-  // Sharh info
-  final bool hasSharhMetadata;      // Has sharh available?
-  final SharhMetadata? sharhMetadata; // Sharh metadata (if any)
+  final String? explainGrade;       // Verdict text (detailed search)
+  final String? takhrij;            // Takhrij / additional sources
+  final bool hasSimilarHadith;      // Similar narrations exist?
+  final bool hasAlternateHadithSahih; // Alternate sahih available?
+  final bool hasUsulHadith;         // Usul (sources) available?
+  final String? similarHadithDorar;     // URL for similar narrations
+  final String? alternateHadithSahihDorar; // URL for alternate sahih
+  final String? usulHadithDorar;         // URL for usul sources
+  final bool hasSharhMetadata;      // Sharh metadata included?
+  final SharhMetadata? sharhMetadata; // Sharh metadata payload
 }
 ```
 
-Important:
-- Use `hasSimilarHadith` to check before calling `client.hadith.getSimilar()`
-- Use `hasAlternateHadithSahih` before `client.hadith.getAlternate()`
-- Use `hasUsulHadith` before `client.hadith.getUsul()`
-- Use `hasSharhMetadata`; if true, you’ll find `sharhMetadata.id`
+`client.searchHadith` and the other API-backed endpoints return the lightweight
+`Hadith` model. The site-powered endpoints (detailed search, similar,
+alternate, usul) upgrade those results to `DetailedHadith`, populating IDs,
+sharh metadata, related links, and the helper flags below.
+
+Key helpers:
+- `hasSimilarHadith` ⇒ call `client.hadith.getSimilar()`
+- `hasAlternateHadithSahih` ⇒ call `client.hadith.getAlternate()`
+- `hasUsulHadith` ⇒ call `client.hadith.getUsul()`
+- `hasSharhMetadata` ⇒ inspect `sharhMetadata.id` or `sharhMetadata.sharh`
+- `hukm` getter ⇒ reads `explainGrade` when filled, otherwise falls back to
+  `grade` (ideal for printing a single verdict string)
 
 ### Sharh Model
 
@@ -380,7 +373,7 @@ Represents a hadith with all its sources.
 
 ```dart
 class UsulHadith {
-  final Hadith hadith;              // Base hadith
+  final DetailedHadith hadith;      // Detailed hadith with metadata
   final List<UsulSource> sources;   // All sources
   final int count;                  // Sources count
 }
@@ -1017,7 +1010,7 @@ final specialistSharh = await client.sharh.getByText(
 );
 
 // 2. Get by ID
-// (ID comes from hadith.sharhMetadata.id)
+// (ID comes from DetailedHadith.sharhMetadata.id)
 final hadith = await client.getHadithById('12345');
 if (hadith.hasSharhMetadata && hadith.sharhMetadata != null) {
   final sharhId = hadith.sharhMetadata!.id;
@@ -1092,7 +1085,7 @@ final multipleBooks = await client.bookRef.getBooksByIds([
 ]);
 
 // 4. List all with pagination
-final allBooks = await client.bookRef.getAllBookss(
+final allBooks = await client.bookRef.getAllBooks(
   limit: 50,
   offset: 0,
 );
@@ -1332,6 +1325,15 @@ try {
 } finally {
   await client.dispose(); // Mandatory
 }
+```
+
+Or if you don't want to think about it, use `DorarClient.use` method instead, it will automatically dispose of the client after it finished:
+```dart
+final results = await DorarClient.use((client) async {
+    return await client.searchHadith(
+      HadithSearchParams(value: 'الصلاة', page: 1),
+    );
+  });
 ```
 
 ## Contributing

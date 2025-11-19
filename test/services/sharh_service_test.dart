@@ -72,27 +72,27 @@ void main() {
     test('should fetch and parse sharh correctly', () async {
       final sharh = await service.getById('123');
 
-      expect(sharh.hadith, contains('إنما الأعمال بالنيات'));
-      expect(sharh.rawi, 'عمر بن الخطاب');
-      expect(sharh.mohdith, 'البخاري');
-      expect(sharh.book, 'صحيح البخاري');
-      expect(sharh.numberOrPage, '1/1');
-      expect(sharh.grade, 'صحيح');
-      expect(sharh.takhrij, 'متحقق');
-      expect(sharh.hasSharhMetadata, true);
+      expect(sharh.hadith.hadith, contains('إنما الأعمال بالنيات'));
+      expect(sharh.hadith.rawi, 'عمر بن الخطاب');
+      expect(sharh.hadith.mohdith, 'البخاري');
+      expect(sharh.hadith.book, 'صحيح البخاري');
+      expect(sharh.hadith.numberOrPage, '1/1');
+      expect(sharh.hadith.grade, 'صحيح');
+      expect(sharh.hadith.takhrij, 'متحقق');
+      expect(sharh.hadith.hasSharhMetadata, true);
       expect(sharh.sharhMetadata?.id, '123');
       expect(sharh.sharhMetadata?.isContainSharh, true);
       expect(sharh.sharhMetadata?.sharh, isNotEmpty);
     });
 
     test('should cache sharh data', () async {
-      // First call - should fetch from network
-      final sharh1 = await service.getById('123');
-      expect(sharh1.hadith, contains('إنما الأعمال'));
+    // First call - should fetch from network
+    final sharh1 = await service.getById('123');
+    expect(sharh1.hadith.hadith, contains('إنما الأعمال'));
 
-      // Second call - should retrieve from cache
-      final sharh2 = await service.getById('123');
-      expect(sharh2.hadith, contains('إنما الأعمال'));
+    // Second call - should retrieve from cache
+    final sharh2 = await service.getById('123');
+    expect(sharh2.hadith.hadith, contains('إنما الأعمال'));
 
       // Verify cache hit
       final cacheKey = 'https://www.dorar.net/hadith/sharh/123';
@@ -174,19 +174,19 @@ void main() {
     test('should get sharh by hadith text', () async {
       final sharh = await service.getByText('salah');
 
-      expect(sharh.hadith, isNotEmpty);
-      expect(sharh.hasSharhMetadata, true);
+      expect(sharh.hadith.hadith, isNotEmpty);
+      expect(sharh.hadith.hasSharhMetadata, true);
       expect(sharh.sharhMetadata?.id, '123'); // First sharh ID from search
     });
 
     test('should cache getByText results', () async {
       // First call
       final sharh1 = await service.getByText('salah');
-      expect(sharh1.hadith, isNotEmpty);
+      expect(sharh1.hadith.hadith, isNotEmpty);
 
       // Second call - should be cached
       final sharh2 = await service.getByText('salah');
-      expect(sharh2.hadith, isNotEmpty);
+      expect(sharh2.hadith.hadith, isNotEmpty);
 
       final cacheKey = 'https://www.dorar.net/hadith/search?q=salah';
       expect(cacheManager.has(cacheKey), true);
@@ -217,7 +217,7 @@ void main() {
 
       final sharh = await service.getByText('test', specialist: true);
 
-      expect(sharh.hadith, isNotEmpty);
+      expect(sharh.hadith.hadith, isNotEmpty);
     });
 
     test('should throw DorarValidationException for empty text', () async {
@@ -279,7 +279,7 @@ void main() {
       service = SharhService(client: dorarClient, cache: cacheManager);
 
       final sharh = await service.getById('999999');
-      expect(sharh.hadith, isNotEmpty);
+      expect(sharh.hadith.hadith, isNotEmpty);
     });
 
     test('should preserve original text without sanitization', () async {
@@ -336,14 +336,14 @@ void main() {
     test('should validate all Sharh fields are populated', () async {
       final sharh = await service.getById('123');
 
-      expect(sharh.hadith, isNotEmpty);
-      expect(sharh.rawi, isNotEmpty);
-      expect(sharh.mohdith, isNotEmpty);
-      expect(sharh.book, isNotEmpty);
-      expect(sharh.numberOrPage, isNotEmpty);
-      expect(sharh.grade, isNotEmpty);
-      expect(sharh.takhrij, isNotEmpty);
-      expect(sharh.hasSharhMetadata, true);
+      expect(sharh.hadith.hadith, isNotEmpty);
+      expect(sharh.hadith.rawi, isNotEmpty);
+      expect(sharh.hadith.mohdith, isNotEmpty);
+      expect(sharh.hadith.book, isNotEmpty);
+      expect(sharh.hadith.numberOrPage, isNotEmpty);
+      expect(sharh.hadith.grade, isNotEmpty);
+      expect(sharh.hadith.takhrij, isNotEmpty);
+      expect(sharh.hadith.hasSharhMetadata, true);
       expect(sharh.sharhMetadata, isNotNull);
       expect(sharh.sharhMetadata?.sharh, isNotEmpty);
     });
@@ -356,10 +356,10 @@ void main() {
       final reconstructed = Sharh.fromJson(json);
 
       expect(reconstructed.hadith, sharh.hadith);
-      expect(reconstructed.rawi, sharh.rawi);
-      expect(reconstructed.mohdith, sharh.mohdith);
-      expect(reconstructed.book, sharh.book);
-      expect(reconstructed.hasSharhMetadata, sharh.hasSharhMetadata);
+      expect(
+        reconstructed.hadith.hasSharhMetadata,
+        sharh.hadith.hasSharhMetadata,
+      );
       expect(reconstructed.sharhMetadata?.id, sharh.sharhMetadata?.id);
     });
   });

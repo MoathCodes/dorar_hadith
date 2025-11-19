@@ -1,5 +1,7 @@
+import 'package:equatable/equatable.dart';
+
 /// Metadata about sharh (explanation/commentary) for a hadith.
-class SharhMetadata {
+class SharhMetadata extends Equatable {
   /// Unique identifier for the sharh
   final String id;
 
@@ -25,6 +27,9 @@ class SharhMetadata {
 
   @override
   int get hashCode => id.hashCode ^ isContainSharh.hashCode ^ sharh.hashCode;
+
+  @override
+  List<Object?> get props => [id, isContainSharh, sharh];
 
   @override
   bool operator ==(Object other) =>

@@ -2,7 +2,6 @@ name: dorar_hadith
 description: >-
   A comprehensive Dart library for accessing Dorar.net hadith database.
   Search hadiths, get explanations (sharh), browse scholars, books, and narrators.
-  Includes offline reference data for 688 books, 200 scholars, and 11,436 narrators.
 version: 0.1.1
 homepage: https://github.com/MoathCodes/dorar_hadith
 repository: https://github.com/MoathCodes/dorar_hadith
@@ -30,13 +29,13 @@ false_secrets:
   - test/fixtures/api_snapshots/**
 
 environment:
-  sdk: ^3.9.2
+  sdk: ^3.10.0
 
 # Add regular dependencies here.
 dependencies:
   equatable: ^2.0.7
   html: ^0.15.6
-  http: ^1.5.0
+  http: ^1.6.0
   drift: ^2.29.0
   sqlite3: ^2.9.4
   path: ^1.9.1

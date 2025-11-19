@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import '../models/mohdith_item.dart';
 import '../utils/arabic_search.dart';
-import '../utils/asset_loader.dart';
+import '../utils/asset_loader/asset_loader.dart';
 
 /// Service for browsing and searching Hadith scholars (Muhaddithin).
 ///

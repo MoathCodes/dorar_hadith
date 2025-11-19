@@ -553,7 +553,7 @@ void main() {
 
       final hadith = response.data[0];
       final json = hadith.toJson();
-      final reconstructed = Hadith.fromJson(json);
+      final reconstructed = DetailedHadith.fromJson(json);
 
       expect(reconstructed.hadith, hadith.hadith);
       expect(reconstructed.rawi, hadith.rawi);

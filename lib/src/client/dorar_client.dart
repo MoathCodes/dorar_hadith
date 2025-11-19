@@ -104,7 +104,7 @@ class DorarClient {
   ///
   /// [timeout] - Request timeout (default: 15 seconds)
   /// [enableCache] - Enable caching (default: true)
-  /// [cacheTtl] - Cache TTL (default: 5 seconds)
+  /// [cacheTtl] - Cache TTL (default: 24 hours)
   ///
   /// Example:
   /// ```dart
@@ -176,14 +176,15 @@ class DorarClient {
   ///
   /// [hadithId] - The unique identifier of the hadith.
   ///
-  /// Returns a [Hadith] object with complete metadata.
+  /// Returns a [DetailedHadith] object with complete metadata.
   ///
   /// Example:
   /// ```dart
   /// final hadith = await client.getHadithById('12345');
   /// print(hadith.hadith);
   /// ```
-  Future<Hadith> getHadithById(String hadithId) => hadith.getById(hadithId);
+  Future<DetailedHadith> getHadithById(String hadithId) =>
+      hadith.getById(hadithId);
 
   /// Get a specific sharh by its ID.
   ///
@@ -230,7 +231,10 @@ class DorarClient {
   ///
   /// [params] - Search parameters including query text, page, filters, etc.
   ///
-  /// Returns an [ApiResponse] containing a list of [Hadith] objects.
+  /// Returns an [ApiResponse] containing a list of [Hadith] objects
+  /// populated with the fields exposed by the Dorar API. Metadata that is only
+  /// available via the site scraper (IDs, sharh links, etc.) remains null. Use
+  /// [searchHadithDetailed] when you need those extra fields.
   ///
   /// Example:
   /// ```dart
@@ -248,7 +252,7 @@ class DorarClient {
   ///
   /// [params] - Search parameters including query text, page, specialist mode, filters, etc.
   ///
-  /// Returns an [ApiResponse] containing a list of [Hadith] objects with complete metadata.
+  /// Returns an [ApiResponse] containing a list of [DetailedHadith] objects with complete metadata.
   ///
   /// Example:
   /// ```dart
@@ -264,7 +268,7 @@ class DorarClient {
   ///   print('${hadith.hadith} - ${hadith.grade}');
   /// }
   /// ```
-  Future<ApiResponse<List<Hadith>>> searchHadithDetailed(
+  Future<ApiResponse<List<DetailedHadith>>> searchHadithDetailed(
     HadithSearchParams params,
   ) => hadith.searchViaSite(params);
 
@@ -317,4 +321,35 @@ class DorarClient {
     int limit = 20,
     int offset = 0,
   }) => rawiRef.searchRawi(query, limit: limit, offset: offset);
+
+  /// Use the client safely with automatic disposal.
+  ///
+  /// Creates a temporary [DorarClient], passes it to [fn], and ensures
+  /// [dispose] is called in a finally block. This avoids leaked resources
+  /// in quick scripts and examples.
+  ///
+  /// Example:
+  /// ```dart
+  /// final data = await DorarClient.use((c) async {
+  ///   final res = await c.searchHadith(HadithSearchParams(value: 'الصلاة'));
+  ///   return res.data;
+  /// });
+  /// ```
+  static Future<T> use<T>(
+    Future<T> Function(DorarClient c) fn, {
+    Duration timeout = const Duration(seconds: 15),
+    bool enableCache = true,
+    Duration cacheTtl = const Duration(hours: 24),
+  }) async {
+    final client = DorarClient(
+      timeout: timeout,
+      enableCache: enableCache,
+      cacheTtl: cacheTtl,
+    );
+    try {
+      return await fn(client);
+    } finally {
+      await client.dispose();
+    }
+  }
 }

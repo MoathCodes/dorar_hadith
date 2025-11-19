@@ -1,5 +1,5 @@
 # بسم الله الرحمن الرحيم
-# Change Language:[ 🇺🇸 EN](README_EN.md)
+# Change Language:[ 🇺🇸 EN](README.md)
 
 --- 
 # درر الحديث - Dorar Hadith
@@ -51,10 +51,7 @@ flutter pub add dorar_hadith
 import 'package:dorar_hadith/dorar_hadith.dart';
 
 void main() async {
-  // Create the client
-  final client = DorarClient();
-
-  try {
+  await DorarClient.use((client) async {
     // Search for hadiths about prayer
     final results = await client.searchHadith(
       HadithSearchParams(value: 'الصلاة', page: 1),
@@ -64,18 +61,16 @@ void main() async {
 
     // Print first hadith
     if (results.data.isNotEmpty) {
-      final hadith = results.data.first;
-      print('Hadith: ${hadith.hadith}');
-      print('Narrator: ${hadith.rawi}');
-      print('Scholar: ${hadith.mohdith}');
-      print('Grade: ${hadith.grade}');
+      final h = results.data.first;
+      print('Hadith: ${h.hadith}');
+      print('Narrator: ${h.rawi}');
+      print('Scholar: ${h.mohdith}');
+      print('Verdict: ${h.hukm}');
     }
-  } on DorarException catch (e) {
-    print('Error: ${getExceptionMessage(e)}');
-  } finally {
-    // Clean up resources (important: closes database connections)
-    await client.dispose();
-  }
+
+    // You can return the result to use else where
+    return results;
+  });
 }
 ```
 
@@ -92,15 +87,13 @@ void main() async {
 وذلك لتسهيل عملية طلب بيانات جديدة عند الحاجة كالذهاب للصفحة التالية.
 
 ### بحث سريع في الأحاديث
-البحث عن طريق `client.searchHadith` سريع لكن معلومات الحديث تكون ناقصة وبدون معرفات (`hadithId, bookId, etc`).
+البحث عن طريق `client.searchHadith` سريع ويعيد كائنات `Hadith` الخفيفة
+مباشرة من واجهة Dorar الرسمية.
 - عدد النتائج لا يتجاوز 15 حديث، كما يمكن استخدام الفلاتر بلا إشكال.
-- نتائج البحث تحتوي على المعلومات التالية: 
-- متن(نص) الحديث: `Hadith.hadith`
-- الراوي: `Hadith.rawi`
-- المحدث: `Hadith.mohdith`
-- الكتاب المأخوذ منه الحديث:`Hadith.book`
-- رقم الحديث او الصفحة في الكتاب أعلاه: `Hadith.numberOrPage`
-- درجة صحة الحديث: `Hadith.grade`
+- تضم الاستجابة الحقول النصية فقط (`hadith`, `rawi`, `mohdith`, `book`,
+  `numberOrPage`, `grade`).
+- استخدم `client.searchHadithDetailed` إذا احتجت المعرفات، روابط Dorar،
+  بيانات الشرح، أو أي حقول إضافية يوفرها كائن `DetailedHadith`.
 
 ```dart
 final results = await client.searchHadith(
@@ -114,7 +107,8 @@ for (var hadith in results.data) {
 ```
 
 ### البحث المفصل مع الفلترة
-**ملاحظة:** بسبب طريقة عمل موقع الدرر السنية، حكم الحديث في البحث المفصل يظهر في `explainGrade`، ليس في `grade`.
+**ملاحظة:** البحث المفصل يملأ الحقل `DetailedHadith.explainGrade` بدلاً من
+`grade` بسبب طريقة عرض الحكم في الموقع.
 
 ```dart
 
@@ -131,6 +125,7 @@ final results = await client.searchHadithDetailed(params);
 ```
 
 ### البحث عن حديث بالمعرف (ID)
+تعيد هذه العملية كائن `DetailedHadith` كامل البيانات عند توفرها.
 
 ```dart
 final hadith = await client.getHadithById('12345');
@@ -140,7 +135,7 @@ print('Grade: ${hadith.grade}');
 ```
 
 ### الأحاديث المشابهة، الأصول، البديل الصحيح
-**ملاحظة:** يوجد داخل فئة `Hadith` خصائص للتأكد من توفر هذه الخيارات لهذا الحديث وهي كالتالي:
+**ملاحظة:** يوجد داخل فئة `DetailedHadith` خصائص للتأكد من توفر هذه الخيارات لهذا الحديث وهي كالتالي:
 - للتأكد من وجود صحيح بديل `hasAlternateHadithSahih`
 - للتأكد من وجود أحاديث مشابهة `hasSimilarHadith`
 - للتأكد من وجود الأصول `hasUsulHadith`
@@ -159,7 +154,7 @@ print('Sources: ${usul.count}');
 ```
 
 ### البحث عن الشرح
-**ملاحظة:** عند البحث بإستخدام `client.searchHadithDetailed` وفي حال وجود حديث له شرح ستجد معرف الشرح داخل خصائص الحديث في عضو بإسم `sharhMetadata`، وتوجد خصائص للتأكد من وجود الشرح لهذا الحديث، في حال وجود الشرح ستجد المعرف قم بتمرير المعرف كما في المثال التالي:
+**ملاحظة:** عند البحث بإستخدام `client.searchHadithDetailed` وفي حال وجود حديث له شرح ستجد معرف الشرح داخل `DetailedHadith.sharhMetadata`. استخدمها كما في المثال التالي:
 
 ```dart
 // الحصول على الشرح بالمعرف
@@ -258,7 +253,7 @@ RawiReference.aisha
 final params = HadithSearchParams(
   value: 'الصلاة',
   page: 1,
-  mohdith: [MohdithReference.Bukhari],
+  mohdith: [MohdithReference.bukhari],
   books: [BookReference.sahihBukhari],
 );
 final results = await client.hadith.searchViaSite(params);
@@ -282,52 +277,55 @@ print('Bio: ${scholar.info}');
 
 في هذا القسم سنتعرف على جميع الكائنات (Models) والخيارات المتاحة في المكتبة بشكل تفصيلي.
 
-### كائن الحديث (Hadith Model)
+### كائنات الحديث
 
-الكائن الرئيسي الذي يمثل الحديث مع جميع معلوماته وبياناته المرتبطة به.
+توفر المكتبة مستويين من الكائنات للتعامل مع الأحاديث:
+
+- `Hadith`: الكائن الخفيف الذي تعيده واجهة Dorar الرسمية. يحتوي على المتن،
+  الراوي، المحدث، الكتاب، رقم الصفحة/الحديث، ودرجة الحكم.
+- `DetailedHadith`: يمتد من `Hadith` ويضيف كل البيانات الإضافية المستخرجة من
+  موقع الدرر (المعرفات، التخريج، روابط الشرح، أصول الحديث، إلخ).
 
 ```dart
 class Hadith {
-  // المعلومات الأساسية للحديث
-  final String hadith;              // نص (متن) الحديث
-  final String? hadithId;           // المعرف الفريد للحديث
-  
-  // معلومات الإسناد
-  final String rawi;                // اسم الراوي
-  final String mohdith;             // اسم المحدث (العالم)
-  final String? mohdithId;          // معرف المحدث
-  
-  // معلومات المصدر
-  final String book;                // اسم الكتاب المصدر
-  final String? bookId;             // معرف الكتاب
-  final String numberOrPage;        // رقم الصفحة أو رقم الحديث في الكتاب
-  
-  // معلومات الصحة والتخريج
-  final String grade;               // درجة صحة الحديث (صحيح، ضعيف، إلخ)
-  final String? explainGrade;       // شرح تفصيلي لدرجة الحديث
-  final String? takhrij;            // معلومات التخريج (المصادر الأخرى)
-  
-  // العلاقات والروابط
-  final bool hasSimilarHadith;           // هل يوجد أحاديث مشابهة؟
-  final bool hasAlternateHadithSahih;    // هل يوجد بديل صحيح؟
-  final bool hasUsulHadith;              // هل يوجد أصول للحديث؟
-  
-  // روابط موقع الدرر السنية
-  final String? similarHadithDorar;        // رابط الأحاديث المشابهة
+  final String hadith;        // متن الحديث
+  final String rawi;          // الراوي
+  final String mohdith;       // المحدث
+  final String book;          // الكتاب المصدر
+  final String numberOrPage;  // رقم الصفحة/الحديث
+  final String grade;         // درجة الحديث من API
+}
+
+class DetailedHadith extends Hadith {
+  final String? hadithId;               // المعرف الفريد للحديث
+  final String? mohdithId;              // معرف المحدث
+  final String? bookId;                 // معرف الكتاب
+  final String? explainGrade;           // الحكم التفصيلي (من البحث المفصل)
+  final String? takhrij;                // التخريج والمصادر الأخرى
+  final bool hasSimilarHadith;          // هل يوجد أحاديث مشابهة؟
+  final bool hasAlternateHadithSahih;   // هل يوجد بديل صحيح؟
+  final bool hasUsulHadith;             // هل يوجد أصول للحديث؟
+  final String? similarHadithDorar;     // رابط الأحاديث المشابهة
   final String? alternateHadithSahihDorar; // رابط البديل الصحيح
-  final String? usulHadithDorar;           // رابط أصول الحديث
-  
-  // معلومات الشرح
-  final bool hasSharhMetadata;      // هل يوجد شرح متاح؟
-  final SharhMetadata? sharhMetadata; // بيانات الشرح (إن وجد)
+  final String? usulHadithDorar;        // رابط الأصول
+  final bool hasSharhMetadata;          // هل يوجد بيانات شرح؟
+  final SharhMetadata? sharhMetadata;   // بيانات الشرح
 }
 ```
 
-**ملاحظات مهمة:**
-- استخدم `hasSimilarHadith` للتأكد من وجود أحاديث مشابهة قبل طلبها عبر `client.hadith.getSimilar()`
-- استخدم `hasAlternateHadithSahih` للتأكد من وجود بديل صحيح قبل طلبه عبر `client.hadith.getAlternate()`
-- استخدم `hasUsulHadith` للتأكد من وجود أصول قبل طلبها عبر `client.hadith.getUsul()`
-- استخدم `hasSharhMetadata` للتأكد من وجود شرح، وإذا كان موجودًا ستجد `sharhMetadata.id`
+جميع استدعاءات البحث السريع (`client.searchHadith`) تعيد الكائن الخفيف
+`Hadith`. أما البحث عبر الموقع (`searchHadithDetailed`) وباقي الخدمات
+(المتشابه، البديل، الأصول) فترفع البيانات إلى `DetailedHadith` بحيث تُعبّئ
+المعرفات، روابط Dorar، وبيانات الشرح ويمكن الاعتماد على الرايات (`has*`)
+قبل استدعاء الخدمة المناسبة.
+
+أهم الرايات:
+- `hasSimilarHadith` ⇒ استدعاء `client.hadith.getSimilar()`
+- `hasAlternateHadithSahih` ⇒ استدعاء `client.hadith.getAlternate()`
+- `hasUsulHadith` ⇒ استدعاء `client.hadith.getUsul()`
+- `hasSharhMetadata` ⇒ استخدام `sharhMetadata.id` أو `sharhMetadata.sharh`
+- `hukm` ⇒ يعيد `explainGrade` عند توفره، ويعود إلى `grade` إن كان فارغًا،
+  لذا يكفي طباعة `hadith.hukm` لعرض الحكم بنص واحد
 
 ### كائن الشرح (Sharh Model)
 
@@ -379,7 +377,7 @@ class SharhMetadata {
 
 ```dart
 class UsulHadith {
-  final Hadith hadith;              // الحديث الأساسي
+  final DetailedHadith hadith;      // الحديث التفصيلي مع البيانات الإضافية
   final List<UsulSource> sources;   // قائمة جميع المصادر
   final int count;                  // عدد المصادر
 }
@@ -1022,7 +1020,7 @@ final specialistSharh = await client.sharh.getByText(
 );
 
 // 2. الحصول على شرح بالمعرف
-// (المعرف يأتي من hadith.sharhMetadata.id)
+// (المعرف يأتي من DetailedHadith.sharhMetadata.id)
 final hadith = await client.getHadithById('12345');
 if (hadith.hasSharhMetadata && hadith.sharhMetadata != null) {
   final sharhId = hadith.sharhMetadata!.id;
@@ -1097,7 +1095,7 @@ final multipleBooks = await client.bookRef.getBooksByIds([
 ]);
 
 // 4. عرض جميع الكتب مع الترقيم
-final allBooks = await client.bookRef.getAllBookss(
+final allBooks = await client.bookRef.getAllBooks(
   limit: 50,
   offset: 0,
 );
@@ -1338,7 +1336,14 @@ try {
   await client.dispose(); // إلزامي
 }
 ```
-
+او استخدم `DorarClient.use` عند طلب اي شيء من العميل وعند الإنتهاء من الطلب يقوم بالتخلص من العميل تلقائيًا، مثال:
+```dart
+final results = await DorarClient.use((client) async {
+    return await client.searchHadith(
+      HadithSearchParams(value: 'الصلاة', page: 1),
+    );
+});
+```
 ## المساهمة
 
 المساهمة بأي شكل من الأشكال مرحب به.

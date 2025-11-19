@@ -41,8 +41,8 @@ class HadithService {
   /// [hadithId] - Hadith ID
   /// [removeHtml] - Strip HTML tags (default: true)
   ///
-  /// Returns alternate [Hadith] or null if none exists.
-  Future<Hadith?> getAlternate(
+  /// Returns alternate [DetailedHadith] or null if none exists.
+  Future<DetailedHadith?> getAlternate(
     String hadithId, {
     bool removeHtml = true,
   }) async {
@@ -50,7 +50,7 @@ class HadithService {
 
     final url = DorarEndpoints.alternateHadith(validatedId);
 
-    return _cache.getOrSet<Hadith?>(url, () async {
+    return _cache.getOrSet<DetailedHadith?>(url, () async {
       final html = await _client.getHtml(url);
       final doc = HtmlHelper.parseHtml(html);
 
@@ -80,12 +80,15 @@ class HadithService {
   ///
   /// [hadithId] - Hadith ID
   /// [removeHtml] - Strip HTML tags (default: true)
-  Future<Hadith> getById(String hadithId, {bool removeHtml = true}) async {
+  Future<DetailedHadith> getById(
+    String hadithId, {
+    bool removeHtml = true,
+  }) async {
     final validatedId = Validators.validateHadithId(hadithId);
 
     final url = DorarEndpoints.hadithById(validatedId);
 
-    return _cache.getOrSet<Hadith>(url, () async {
+    return _cache.getOrSet<DetailedHadith>(url, () async {
       final html = await _client.getHtml(url);
       final doc = HtmlHelper.parseHtml(html);
 
@@ -111,7 +114,7 @@ class HadithService {
   ///
   /// [hadithId] - Hadith ID
   /// [removeHtml] - Strip HTML tags (default: true)
-  Future<List<Hadith>> getSimilar(
+  Future<List<DetailedHadith>> getSimilar(
     String hadithId, {
     bool removeHtml = true,
   }) async {
@@ -119,12 +122,12 @@ class HadithService {
 
     final url = DorarEndpoints.similarHadith(validatedId);
 
-    return _cache.getOrSet<List<Hadith>>(url, () async {
+    return _cache.getOrSet<List<DetailedHadith>>(url, () async {
       final html = await _client.getHtml(url);
       final doc = HtmlHelper.parseHtml(html);
 
       final borderElements = doc.querySelectorAll('.border-bottom');
-      final hadiths = <Hadith>[];
+      final hadiths = <DetailedHadith>[];
 
       for (final borderElement in borderElements) {
         try {
@@ -230,6 +233,10 @@ class HadithService {
   /// and can throw other [DorarException] subclasses for network/timeouts.
   ///
   /// [params] - Search parameters (text, page, filters, removeHtml)
+  ///
+  /// Returns [Hadith] entries with only the fields exposed by the
+  /// public API. Use [HadithService.searchViaSite] when you need the full
+  /// metadata payload.
   Future<ApiResponse<List<Hadith>>> searchViaApi(
     HadithSearchParams params,
   ) async {
@@ -364,7 +371,7 @@ class HadithService {
   /// Provides detailed results including hadith IDs, sharh metadata, and related URLs.
   ///
   /// [params] - Search parameters (text, page, specialist, filters, removeHtml)
-  Future<ApiResponse<List<Hadith>>> searchViaSite(
+  Future<ApiResponse<List<DetailedHadith>>> searchViaSite(
     HadithSearchParams params,
   ) async {
     final queryParams = QuerySerializer.serializeHadithParams(
@@ -378,9 +385,9 @@ class HadithService {
 
     // Return cached with isCached=true if available
     if (_cache.has(url)) {
-      final cached = _cache.get<ApiResponse<List<Hadith>>>(url);
+      final cached = _cache.get<ApiResponse<List<DetailedHadith>>>(url);
       if (cached != null) {
-        return ApiResponse<List<Hadith>>(
+        return ApiResponse<List<DetailedHadith>>(
           data: cached.data,
           metadata: cached.metadata.copyWith(isCached: true),
         );
@@ -423,7 +430,7 @@ class HadithService {
         0;
 
     final borderElements = tabElement.querySelectorAll('.border-bottom');
-    final hadiths = <Hadith>[];
+    final hadiths = <DetailedHadith>[];
 
     for (final borderElement in borderElements) {
       try {
@@ -438,7 +445,7 @@ class HadithService {
       }
     }
 
-    final result = ApiResponse<List<Hadith>>(
+    final result = ApiResponse<List<DetailedHadith>>(
       data: hadiths,
       metadata: SearchMetadata(
         length: hadiths.length,
@@ -456,7 +463,7 @@ class HadithService {
   }
 
   /// Internal helper to parse a hadith from a .border-bottom element.
-  Hadith _parseHadithFromBorderElement(
+  DetailedHadith _parseHadithFromBorderElement(
     dom.Element borderElement, {
     required bool removeHtml,
     bool includeUsulFlag = false,
@@ -492,7 +499,7 @@ class HadithService {
     final alternateUrl = HadithParser.getAlternateHadithUrl(borderElement);
     final usulUrl = HadithParser.getUsulHadithUrl(borderElement);
 
-    return Hadith(
+    return DetailedHadith(
       hadith: hadithText,
       rawi: parsedInfo.rawi,
       mohdith: parsedInfo.mohdith,

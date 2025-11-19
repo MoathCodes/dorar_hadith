@@ -1,12 +1,7 @@
-import '../http/endpoints.dart';
-import '../http/http_client.dart';
-import '../models/sharh.dart';
-import '../models/sharh_metadata.dart';
+import 'package:dorar_hadith/dorar_hadith.dart';
+
 import '../parsers/html_helper.dart';
 import '../parsers/sharh_parser.dart';
-import '../utils/cache_manager.dart';
-import '../utils/exceptions.dart';
-import '../utils/validators.dart';
 
 /// Service for fetching sharh (hadith explanations) from Dorar.net.
 class SharhService {
@@ -114,14 +109,16 @@ class SharhService {
         );
 
         return Sharh(
-          hadith: parsedData.hadith,
-          rawi: parsedData.rawi,
-          mohdith: parsedData.mohdith,
-          book: parsedData.book,
-          numberOrPage: parsedData.numberOrPage,
-          grade: parsedData.grade,
-          takhrij: parsedData.takhrij,
-          hasSharhMetadata: true,
+          hadith: ExplainedHadith(
+            hadith: parsedData.hadith,
+            rawi: parsedData.rawi,
+            mohdith: parsedData.mohdith,
+            book: parsedData.book,
+            numberOrPage: parsedData.numberOrPage,
+            grade: parsedData.grade,
+            takhrij: parsedData.takhrij,
+            hasSharhMetadata: true,
+          ),
           sharhMetadata: SharhMetadata(
             id: sharhId,
             isContainSharh: true,

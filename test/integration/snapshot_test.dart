@@ -55,12 +55,12 @@ void main() {
       final sharh = await client.getSharhById('2981');
 
       // Verify structure
-      expect(sharh.hadith, isNotEmpty);
+  expect(sharh.hadith.hadith, isNotEmpty);
       expect(sharh.sharhMetadata, isNotNull);
       expect(sharh.sharhMetadata!.sharh, isNotNull);
 
       // Verify Arabic text
-      expect(sharh.hadith, matches(RegExp(r'[\u0600-\u06FF]')));
+  expect(sharh.hadith.hadith, matches(RegExp(r'[\u0600-\u06FF]')));
 
       await client.dispose();
     });

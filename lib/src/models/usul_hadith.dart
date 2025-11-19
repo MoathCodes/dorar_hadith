@@ -4,7 +4,7 @@ import 'hadith.dart';
 /// and all its sources/chains.
 class UsulHadith {
   /// The main hadith
-  final Hadith hadith;
+  final DetailedHadith hadith;
 
   /// List of all sources for this hadith
   final List<UsulSource> sources;
@@ -20,7 +20,7 @@ class UsulHadith {
 
   factory UsulHadith.fromJson(Map<String, dynamic> json) {
     // The main hadith fields are at the root level
-    final hadith = Hadith.fromJson(json);
+    final hadith = DetailedHadith.fromJson(json);
 
     // The usul hadith specific data
     final usulData = json['usulHadith'] as Map<String, dynamic>?;

@@ -82,13 +82,13 @@ Future<void> advancedSearch(DorarClient client) async {
     value: 'الصدقة',
     page: 1,
     // فقط الأحاديث الصحيحة
-    degrees: [HadithDegree.authenticHadith],
+    degrees: [.authenticHadith],
     // من صحيح مسلم
-    books: [BookReference.sahihMuslim],
+    books: [.sahihMuslim],
     // طريقة البحث: جميع الكلمات
-    searchMethod: SearchMethod.allWords,
+    searchMethod: .allWords,
     // نوع الحديث: أحاديث قدسية
-    zone: SearchZone.qudsi,
+    zone: .qudsi,
   );
 
   final results = await client.hadith.searchViaSite(params);
@@ -355,9 +355,9 @@ Future<void> hadithExplanations(DorarClient client) async {
           print('$preview...');
         }
 
-        print('\nالراوي: ${sharh.rawi}');
-        print('المحدث: ${sharh.mohdith}');
-        print('الكتاب: ${sharh.book}');
+        print('\nالراوي: ${sharh.hadith.rawi}');
+        print('المحدث: ${sharh.hadith.mohdith}');
+        print('الكتاب: ${sharh.hadith.book}');
       } catch (e) {
         print('\n⚠️  لم نتمكن من جلب الشرح');
       }
@@ -525,8 +525,6 @@ Future<void> simpleSearch(DorarClient client) async {
     print('الراوي: ${hadith.rawi}');
     print('المحدث: ${hadith.mohdith}');
     print('الكتاب: ${hadith.book}');
-    if (hadith.explainGrade != null && hadith.explainGrade!.isNotEmpty) {
-      print('الدرجة: ${hadith.explainGrade}');
-    }
+    print('الدرجة: ${hadith.grade}');
   }
 }

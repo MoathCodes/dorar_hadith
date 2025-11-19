@@ -89,31 +89,6 @@ class BookReference {
   /// Bulugh Al-Maram
   static const bulughMaram = BookReference(id: '9927', name: 'بلوغ المرام');
 
-  /// List of most commonly used books
-  static const List<BookReference> popularBooks = [
-    all,
-    sahihBukhari,
-    sahihMuslim,
-    sunanAbuDawud,
-    jamiTirmidhi,
-    sunanNasai,
-    sunanIbnMajah,
-    musnadAhmad,
-    muwattaMalik,
-    arbainNawawi,
-    riyadSalihin,
-    bulughMaram,
-    sahihMusnad,
-    musnadDarimi,
-    sahihIbnKhuzaymah,
-    sahihIbnHibban,
-    mustadrakHakim,
-    sunanBayhaqiKubra,
-    sunanDaraqutni,
-    musannafIbnAbiShaybah,
-    musannafAbdRazzaq,
-  ];
-
   /// Unique identifier for the book
   final String id;
 
@@ -145,13 +120,4 @@ class BookReference {
 
   @override
   String toString() => name;
-
-  /// Find a book by ID from the popular list
-  static BookReference? findPopularById(String id) {
-    try {
-      return popularBooks.firstWhere((b) => b.id == id);
-    } catch (_) {
-      return null;
-    }
-  }
 }
