@@ -102,13 +102,13 @@ final results = await client.searchHadith(
 
 for (var hadith in results.data) {
   print('${hadith.hadith}');
-  print('Grade: ${hadith.grade}');
+  print('Grade: ${hadith.hukm}');
 }
 ```
 
 ### البحث المفصل مع الفلترة
 **ملاحظة:** البحث المفصل يملأ الحقل `DetailedHadith.explainGrade` بدلاً من
-`grade` بسبب طريقة عرض الحكم في الموقع.
+`grade` بسبب طريقة عرض الحكم في الموقع ، **لتجنب هذه المشاكل دائمًا استخدم `DetailedHadith.hukm`.**
 
 ```dart
 
@@ -131,7 +131,7 @@ final results = await client.searchHadithDetailed(params);
 final hadith = await client.getHadithById('12345');
 print('Hadith: ${hadith.hadith}');
 print('Book: ${hadith.book}');
-print('Grade: ${hadith.grade}');
+print('Grade: ${hadith.hukm}');
 ```
 
 ### الأحاديث المشابهة، الأصول، البديل الصحيح

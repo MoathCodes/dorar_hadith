@@ -103,13 +103,13 @@ final results = await client.searchHadith(
 
 for (var hadith in results.data) {
   print('${hadith.hadith}');
-  print('Grade: ${hadith.grade}');
+  print('Grade: ${hadith.hukm}');
 }
 ```
 
 ### Detailed Search with Filters
 Note: Due to how Dorar works, detailed search populates
-`DetailedHadith.explainGrade` instead of `grade`.
+`DetailedHadith.explainGrade` instead of `grade`, **to avoid these issues always use `DetailedHadith.hukm`.**
 
 ```dart
 final params = HadithSearchParams(
@@ -131,7 +131,7 @@ Returns a `DetailedHadith` with complete metadata when available.
 final hadith = await client.getHadithById('12345');
 print('Hadith: ${hadith.hadith}');
 print('Book: ${hadith.book}');
-print('Grade: ${hadith.grade}');
+print('Grade: ${hadith.hukm}');
 ```
 
 ### Similar, Usul (Sources), Alternate Sahih
