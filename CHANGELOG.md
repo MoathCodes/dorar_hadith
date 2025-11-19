@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project adheres to Semantic Versioning.
 
-## Unreleased
+## 0.2.0
 - Added the richer `DetailedHadith`/`ExplainedHadith` layers plus the unified
 	`hukm` getter so consumers no longer juggle `grade` vs `explainGrade` when
 	printing verdicts.
