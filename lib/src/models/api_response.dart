@@ -1,32 +1,24 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
 import 'search_metadata.dart';
+
+part 'api_response.freezed.dart';
+part 'api_response.g.dart';
 
 /// Generic wrapper for API responses.
 /// Provides a consistent structure for all API responses with data and metadata.
-class ApiResponse<T> {
-  /// The actual data returned by the API
-  final T data;
+@Freezed(genericArgumentFactories: true)
+abstract class ApiResponse<T> with _$ApiResponse<T> {
+  const factory ApiResponse({
+    /// The actual data returned by the API
+    required T data,
 
-  /// Metadata about the response (pagination, caching, etc.)
-  final SearchMetadata metadata;
-
-  const ApiResponse({required this.data, required this.metadata});
+    /// Metadata about the response (pagination, caching, etc.)
+    required SearchMetadata metadata,
+  }) = _ApiResponse;
 
   factory ApiResponse.fromJson(
     Map<String, dynamic> json,
-    T Function(dynamic) fromJsonT,
-  ) {
-    return ApiResponse(
-      data: fromJsonT(json['data']),
-      metadata: SearchMetadata.fromJson(json['metadata']),
-    );
-  }
-
-  Map<String, dynamic> toJson(Object Function(T) toJsonT) {
-    return {'data': toJsonT(data), 'metadata': metadata.toJson()};
-  }
-
-  @override
-  String toString() {
-    return 'ApiResponse<$T>(data: $data, metadata: $metadata)';
-  }
+    T Function(Object?) fromJsonT,
+  ) => _$ApiResponseFromJson(json, fromJsonT);
 }

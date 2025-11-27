@@ -1,23 +1,24 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
 import 'hadith.dart';
+
+part 'usul_hadith.freezed.dart';
+part 'usul_hadith.g.dart';
 
 /// Represents the complete Usul Hadith response with the main hadith
 /// and all its sources/chains.
-class UsulHadith {
-  /// The main hadith
-  final DetailedHadith hadith;
+@freezed
+abstract class UsulHadith with _$UsulHadith {
+  const factory UsulHadith({
+    /// The main hadith
+    required DetailedHadith hadith,
 
-  /// List of all sources for this hadith
-  final List<UsulSource> sources;
+    /// List of all sources for this hadith
+    required List<UsulSource> sources,
 
-  /// Total count of sources
-  final int count;
-
-  const UsulHadith({
-    required this.hadith,
-    required this.sources,
-    required this.count,
-  });
-
+    /// Total count of sources
+    required int count,
+  }) = _UsulHadith;
   factory UsulHadith.fromJson(Map<String, dynamic> json) {
     // The main hadith fields are at the root level
     final hadith = DetailedHadith.fromJson(json);
@@ -36,6 +37,8 @@ class UsulHadith {
     return UsulHadith(hadith: hadith, sources: sources, count: count);
   }
 
+  const UsulHadith._();
+
   Map<String, dynamic> toJson() {
     final json = hadith.toJson();
     json['usulHadith'] = {
@@ -44,45 +47,22 @@ class UsulHadith {
     };
     return json;
   }
-
-  @override
-  String toString() {
-    return 'UsulHadith(count: $count, hadith: $hadith, sources: ${sources.length} sources)';
-  }
 }
 
 /// Represents a source/chain for a hadith in Usul Hadith.
-class UsulSource {
-  /// The source book and page reference
-  final String source;
+@freezed
+abstract class UsulSource with _$UsulSource {
+  const factory UsulSource({
+    /// The source book and page reference
+    required String source,
 
-  /// The chain of narration (isnad)
-  final String chain;
+    /// The chain of narration (isnad)
+    required String chain,
 
-  /// The text of the hadith in this source
-  final String hadithText;
+    /// The text of the hadith in this source
+    required String hadithText,
+  }) = _UsulSource;
 
-  const UsulSource({
-    required this.source,
-    required this.chain,
-    required this.hadithText,
-  });
-
-  factory UsulSource.fromJson(Map<String, dynamic> json) {
-    return UsulSource(
-      source: json['source'] as String,
-      chain: json['chain'] as String,
-      hadithText: json['hadithText'] as String,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {'source': source, 'chain': chain, 'hadithText': hadithText};
-  }
-
-  @override
-  String toString() {
-    return 'UsulSource(source: $source, chain: ${chain.length > 50 ? '${chain.substring(0, 50)}...' : chain}, '
-        'hadithText: ${hadithText.length > 50 ? '${hadithText.substring(0, 50)}...' : hadithText})';
-  }
+  factory UsulSource.fromJson(Map<String, dynamic> json) =>
+      _$UsulSourceFromJson(json);
 }

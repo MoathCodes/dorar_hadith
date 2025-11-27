@@ -1,63 +1,34 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'book.freezed.dart';
+part 'book.g.dart';
+
 /// Represents information about a book containing hadiths.
-class BookInfo {
-  /// Name of the book
-  final String name;
+@freezed
+abstract class BookInfo with _$BookInfo {
+  const factory BookInfo({
+    /// Name of the book
+    required String name,
 
-  /// Unique identifier
-  final String bookId;
+    /// Unique identifier
+    required String bookId,
 
-  /// Author of the book
-  final String author;
+    /// Author of the book
+    required String author,
 
-  /// Reviewer/editor of the book
-  final String reviewer;
+    /// Reviewer/editor of the book
+    required String reviewer,
 
-  /// Publisher
-  final String publisher;
+    /// Publisher
+    required String publisher,
 
-  /// Edition number
-  final String edition;
+    /// Edition number
+    required String edition,
 
-  /// Year of the edition
-  final String editionYear;
+    /// Year of the edition
+    required String editionYear,
+  }) = _BookInfo;
 
-  const BookInfo({
-    required this.name,
-    required this.bookId,
-    required this.author,
-    required this.reviewer,
-    required this.publisher,
-    required this.edition,
-    required this.editionYear,
-  });
-
-  factory BookInfo.fromJson(Map<String, dynamic> json) {
-    return BookInfo(
-      name: json['name'] as String,
-      bookId: json['bookId'] as String,
-      author: json['author'] as String,
-      reviewer: json['reviewer'] as String,
-      publisher: json['publisher'] as String,
-      edition: json['edition'] as String,
-      editionYear: json['editionYear'] as String,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'bookId': bookId,
-      'author': author,
-      'reviewer': reviewer,
-      'publisher': publisher,
-      'edition': edition,
-      'editionYear': editionYear,
-    };
-  }
-
-  @override
-  String toString() {
-    return 'BookInfo(bookId: $bookId, name: $name, author: $author, '
-        'reviewer: $reviewer, publisher: $publisher, edition: $edition, editionYear: $editionYear)';
-  }
+  factory BookInfo.fromJson(Map<String, dynamic> json) =>
+      _$BookInfoFromJson(json);
 }

@@ -1,24 +1,23 @@
-import 'package:dorar_hadith/dorar_hadith.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+import 'hadith.dart';
+import 'sharh_metadata.dart';
+
+part 'sharh.freezed.dart';
+part 'sharh.g.dart';
 
 /// Represents a hadith with its sharh (explanation/commentary).
-class Sharh {
-  final ExplainedHadith hadith;
+@freezed
+abstract class Sharh with _$Sharh {
+  const Sharh._();
+  const factory Sharh({
+    required ExplainedHadith hadith,
 
-  /// The sharh metadata (including the explanation text)
-  final SharhMetadata? sharhMetadata;
+    /// The sharh metadata (including the explanation text)
+    SharhMetadata? sharhMetadata,
+  }) = _Sharh;
 
-  const Sharh({required this.hadith, this.sharhMetadata});
-
-  factory Sharh.fromJson(Map<String, dynamic> json) {
-    return Sharh(
-      hadith: ExplainedHadith.fromJson(json),
-      sharhMetadata: json['sharhMetadata'] != null
-          ? SharhMetadata.fromJson(
-              json['sharhMetadata'] as Map<String, dynamic>,
-            )
-          : null,
-    );
-  }
+  factory Sharh.fromJson(Map<String, dynamic> json) => _$SharhFromJson(json);
 
   /// The source book name.
   String get book => hadith.book;
@@ -51,16 +50,4 @@ class Sharh {
 
   /// Unified verdict accessor for Sharh (maps to hadith grade).
   String get verdict => hadith.grade;
-
-  Map<String, dynamic> toJson() {
-    return {
-      ...hadith.toJson(),
-      if (sharhMetadata != null) 'sharhMetadata': sharhMetadata!.toJson(),
-    };
-  }
-
-  @override
-  String toString() {
-    return 'Sharh(${hadith.toString()}, sharhMetadata: ${sharhMetadata.toString()})';
-  }
 }

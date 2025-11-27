@@ -6,6 +6,7 @@ import '../http/endpoints.dart';
 import '../http/http_client.dart';
 import '../http/query_serializer.dart';
 import '../models/api_response.dart';
+import '../models/cache_entry.dart';
 import '../models/hadith.dart';
 import '../models/search_metadata.dart';
 import '../models/search_params.dart';
@@ -14,23 +15,23 @@ import '../models/usul_hadith.dart';
 import '../parsers/hadith_parser.dart';
 import '../parsers/html_helper.dart';
 import '../parsers/usul_hadith_parser.dart';
-import '../utils/cache_manager.dart';
 import '../utils/exceptions.dart';
 import '../utils/html_stripper.dart';
 import '../utils/validators.dart';
+import 'cache_service.dart';
 
 /// Service for searching and retrieving hadiths from Dorar.net.
 class HadithService {
   final DorarHttpClient _client;
-  final CacheManager _cache;
+  final CacheService _cache;
 
-  HadithService({required DorarHttpClient client, CacheManager? cache})
+  HadithService({required DorarHttpClient client, required CacheService cache})
     : _client = client,
-      _cache = cache ?? CacheManager();
+      _cache = cache;
 
   /// Clear all cached hadith data.
-  void clearCache() {
-    _cache.clear();
+  Future<void> clearCache() async {
+    await _cache.clear();
   }
 
   /// Get the alternate sahih version of a hadith.
@@ -50,26 +51,41 @@ class HadithService {
 
     final url = DorarEndpoints.alternateHadith(validatedId);
 
-    return _cache.getOrSet<DetailedHadith?>(url, () async {
-      final html = await _client.getHtml(url);
-      final doc = HtmlHelper.parseHtml(html);
+    final cached = await _cache.get(url);
+    if (cached != null) {
+      return DetailedHadith.fromJson(jsonDecode(cached.body));
+    }
 
-      final borderElements = doc.querySelectorAll('.border-bottom');
+    final html = await _client.getHtml(url);
+    final doc = HtmlHelper.parseHtml(html);
 
-      // The alternate hadith is the second element (index 1)
-      if (borderElements.length < 2) {
-        return null;
-      }
+    final borderElements = doc.querySelectorAll('.border-bottom');
 
-      try {
-        return _parseHadithFromBorderElement(
-          borderElements[1],
-          removeHtml: removeHtml,
-        );
-      } catch (e) {
-        return null;
-      }
-    });
+    // The alternate hadith is the second element (index 1)
+    if (borderElements.length < 2) {
+      return null;
+    }
+
+    try {
+      final hadith = _parseHadithFromBorderElement(
+        borderElements[1],
+        removeHtml: removeHtml,
+      );
+
+      await _cache.set(
+        CacheEntry(
+          key: url,
+          body: jsonEncode(hadith.toJson()),
+          header: '',
+          createdAt: DateTime.now(),
+          expiresAt: DateTime.now().add(const Duration(days: 7)),
+        ),
+      );
+
+      return hadith;
+    } catch (e) {
+      return null;
+    }
   }
 
   /// Get hadith by ID.
@@ -88,23 +104,39 @@ class HadithService {
 
     final url = DorarEndpoints.hadithById(validatedId);
 
-    return _cache.getOrSet<DetailedHadith>(url, () async {
-      final html = await _client.getHtml(url);
-      final doc = HtmlHelper.parseHtml(html);
+    final cached = await _cache.get(url);
+    if (cached != null) {
+      return DetailedHadith.fromJson(jsonDecode(cached.body));
+    }
 
-      final borderElement = doc.querySelector('.border-bottom');
-      if (borderElement == null) {
-        throw const DorarServerException(
-          'Invalid response structure from Dorar',
-          statusCode: 502,
-        );
-      }
+    final html = await _client.getHtml(url);
+    final doc = HtmlHelper.parseHtml(html);
 
-      return _parseHadithFromBorderElement(
-        borderElement,
-        removeHtml: removeHtml,
+    final borderElement = doc.querySelector('.border-bottom');
+    if (borderElement == null) {
+      throw const DorarServerException(
+        'Invalid response structure from Dorar',
+        statusCode: 502,
       );
-    });
+    }
+
+    final hadith = _parseHadithFromBorderElement(
+      borderElement,
+      removeHtml: removeHtml,
+    );
+
+    await _cache.set(
+      CacheEntry(
+        key: url,
+        body: jsonEncode(hadith.toJson()),
+        header: '',
+        createdAt: DateTime.now(),
+
+        expiresAt: DateTime.now().add(const Duration(days: 7)),
+      ),
+    );
+
+    return hadith;
   }
 
   /// Get similar hadiths.
@@ -122,27 +154,42 @@ class HadithService {
 
     final url = DorarEndpoints.similarHadith(validatedId);
 
-    return _cache.getOrSet<List<DetailedHadith>>(url, () async {
-      final html = await _client.getHtml(url);
-      final doc = HtmlHelper.parseHtml(html);
+    final cached = await _cache.get(url);
+    if (cached != null) {
+      final List<dynamic> jsonList = jsonDecode(cached.body);
+      return jsonList.map((e) => DetailedHadith.fromJson(e)).toList();
+    }
 
-      final borderElements = doc.querySelectorAll('.border-bottom');
-      final hadiths = <DetailedHadith>[];
+    final html = await _client.getHtml(url);
+    final doc = HtmlHelper.parseHtml(html);
 
-      for (final borderElement in borderElements) {
-        try {
-          final hadith = _parseHadithFromBorderElement(
-            borderElement,
-            removeHtml: removeHtml,
-          );
-          hadiths.add(hadith);
-        } catch (e) {
-          continue;
-        }
+    final borderElements = doc.querySelectorAll('.border-bottom');
+    final hadiths = <DetailedHadith>[];
+
+    for (final borderElement in borderElements) {
+      try {
+        final hadith = _parseHadithFromBorderElement(
+          borderElement,
+          removeHtml: removeHtml,
+        );
+        hadiths.add(hadith);
+      } catch (e) {
+        continue;
       }
+    }
 
-      return hadiths;
-    });
+    await _cache.set(
+      CacheEntry(
+        key: url,
+        body: jsonEncode(hadiths.map((e) => e.toJson()).toList()),
+        header: '',
+        createdAt: DateTime.now(),
+
+        expiresAt: DateTime.now().add(const Duration(days: 7)),
+      ),
+    );
+
+    return hadiths;
   }
 
   /// Get usul hadith (sources).
@@ -169,11 +216,14 @@ class HadithService {
     final url = DorarEndpoints.usulHadith(validatedId);
 
     // If cached, return with isCached = true
-    final cached = _cache.get<ApiResponse<UsulHadith>>(url);
+    final cached = await _cache.get(url);
     if (cached != null) {
-      return ApiResponse<UsulHadith>(
-        data: cached.data,
-        metadata: cached.metadata.copyWith(isCached: true),
+      final response = ApiResponse<UsulHadith>.fromJson(
+        jsonDecode(cached.body),
+        (json) => UsulHadith.fromJson(json as Map<String, dynamic>),
+      );
+      return response.copyWith(
+        metadata: response.metadata.copyWith(isCached: true),
       );
     }
 
@@ -221,7 +271,16 @@ class HadithService {
       ),
     );
 
-    _cache.set(url, response);
+    await _cache.set(
+      CacheEntry(
+        key: url,
+        body: jsonEncode(response.toJson((data) => data.toJson())),
+        header: '',
+        createdAt: DateTime.now(),
+
+        expiresAt: DateTime.now().add(const Duration(days: 7)),
+      ),
+    );
     return response;
   }
 
@@ -247,14 +306,17 @@ class HadithService {
     final url = DorarEndpoints.hadithSearchApi(queryParams);
 
     // Return cached with isCached=true if available
-    if (_cache.has(url)) {
-      final cached = _cache.get<ApiResponse<List<Hadith>>>(url);
-      if (cached != null) {
-        return ApiResponse<List<Hadith>>(
-          data: cached.data,
-          metadata: cached.metadata.copyWith(isCached: true),
-        );
-      }
+    final cached = await _cache.get(url);
+    if (cached != null) {
+      final response = ApiResponse<List<Hadith>>.fromJson(
+        jsonDecode(cached.body),
+        (json) => (json as List<dynamic>)
+            .map((e) => Hadith.fromJson(e as Map<String, dynamic>))
+            .toList(),
+      );
+      return response.copyWith(
+        metadata: response.metadata.copyWith(isCached: true),
+      );
     }
 
     // Not cached: fetch and parse
@@ -358,7 +420,18 @@ class HadithService {
       ),
     );
 
-    _cache.set(url, result);
+    await _cache.set(
+      CacheEntry(
+        key: url,
+        body: jsonEncode(
+          result.toJson((data) => data.map((e) => e.toJson()).toList()),
+        ),
+        header: '',
+        createdAt: DateTime.now(),
+
+        expiresAt: DateTime.now().add(const Duration(days: 7)),
+      ),
+    );
     return result;
   }
 
@@ -384,14 +457,17 @@ class HadithService {
     );
 
     // Return cached with isCached=true if available
-    if (_cache.has(url)) {
-      final cached = _cache.get<ApiResponse<List<DetailedHadith>>>(url);
-      if (cached != null) {
-        return ApiResponse<List<DetailedHadith>>(
-          data: cached.data,
-          metadata: cached.metadata.copyWith(isCached: true),
-        );
-      }
+    final cached = await _cache.get(url);
+    if (cached != null) {
+      final response = ApiResponse<List<DetailedHadith>>.fromJson(
+        jsonDecode(cached.body),
+        (json) => (json as List<dynamic>)
+            .map((e) => DetailedHadith.fromJson(e as Map<String, dynamic>))
+            .toList(),
+      );
+      return response.copyWith(
+        metadata: response.metadata.copyWith(isCached: true),
+      );
     }
 
     // Not cached: fetch and parse
@@ -458,7 +534,18 @@ class HadithService {
       ),
     );
 
-    _cache.set(url, result);
+    await _cache.set(
+      CacheEntry(
+        key: url,
+        body: jsonEncode(
+          result.toJson((data) => data.map((e) => e.toJson()).toList()),
+        ),
+        header: '',
+        createdAt: DateTime.now(),
+
+        expiresAt: DateTime.now().add(const Duration(days: 7)),
+      ),
+    );
     return result;
   }
 

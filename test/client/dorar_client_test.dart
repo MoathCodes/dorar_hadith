@@ -111,15 +111,6 @@ void main() {
       expect(client, isNotNull);
       expect(client.hadith, isNotNull);
     });
-
-    test('should create client with custom cache settings', () async {
-      final customClient = DorarClient(
-        httpClient: dorarClient,
-        enableCache: false,
-      );
-      expect(customClient, isNotNull);
-      await customClient.dispose();
-    });
   });
 
   group('DorarClient - Service Access', () {
@@ -227,25 +218,6 @@ void main() {
       final results2 = await client.hadith.searchViaApi(params);
 
       expect(results1.data.length, results2.data.length);
-    });
-
-    test('should get cache statistics', () {
-      final stats = client.getCacheStats();
-      expect(stats, isNotNull);
-      expect(stats.totalEntries, greaterThanOrEqualTo(0));
-    });
-
-    test('should clear cache', () async {
-      // Populate cache with hadith calls
-      final params = HadithSearchParams(value: 'test');
-      await client.hadith.searchViaApi(params);
-
-      // Clear cache
-      client.clearCache();
-
-      // Verify cache is cleared
-      final stats = client.getCacheStats();
-      expect(stats.validEntries, equals(0));
     });
 
     test('should clear individual service caches', () async {

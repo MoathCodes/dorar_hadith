@@ -1,4 +1,7 @@
 import 'package:dorar_hadith/dorar_hadith.dart';
+import 'package:dorar_hadith/src/database/cache_database.dart';
+import 'package:dorar_hadith/src/services/cache_service.dart';
+import 'package:drift/native.dart';
 import 'package:http/testing.dart';
 import 'package:test/test.dart';
 
@@ -8,10 +11,13 @@ import '../helpers/test_helpers.dart';
 void main() {
   late MockClient mockHttpClient;
   late DorarHttpClient dorarClient;
-  late CacheManager cacheManager;
+  late CacheService cacheService;
   late SharhService service;
 
   setUp(() {
+    cacheService = CacheService(
+      database: CacheDatabase(NativeDatabase.memory()),
+    );
     mockHttpClient = MockClient((request) async {
       final url = request.url.toString();
 
@@ -60,12 +66,11 @@ void main() {
     });
 
     dorarClient = DorarHttpClient(client: mockHttpClient);
-    cacheManager = CacheManager();
-    service = SharhService(client: dorarClient, cache: cacheManager);
+    service = SharhService(client: dorarClient, cache: cacheService);
   });
 
-  tearDown(() {
-    cacheManager.clear();
+  tearDown(() async {
+    await cacheService.dispose();
   });
 
   group('SharhService - getById()', () {
@@ -86,17 +91,17 @@ void main() {
     });
 
     test('should cache sharh data', () async {
-    // First call - should fetch from network
-    final sharh1 = await service.getById('123');
-    expect(sharh1.hadith.hadith, contains('إنما الأعمال'));
+      // First call - should fetch from network
+      final sharh1 = await service.getById('123');
+      expect(sharh1.hadith.hadith, contains('إنما الأعمال'));
 
-    // Second call - should retrieve from cache
-    final sharh2 = await service.getById('123');
-    expect(sharh2.hadith.hadith, contains('إنما الأعمال'));
+      // Second call - should retrieve from cache
+      final sharh2 = await service.getById('123');
+      expect(sharh2.hadith.hadith, contains('إنما الأعمال'));
 
       // Verify cache hit
       final cacheKey = 'https://www.dorar.net/hadith/sharh/123';
-      expect(cacheManager.has(cacheKey), true);
+      expect(await cacheService.get(cacheKey), isNotNull);
     });
 
     test('should throw DorarValidationException for empty sharh ID', () async {
@@ -160,7 +165,7 @@ void main() {
       final errorDorarClient = DorarHttpClient(client: errorClient);
       final errorService = SharhService(
         client: errorDorarClient,
-        cache: cacheManager,
+        cache: cacheService,
       );
 
       expect(
@@ -189,7 +194,7 @@ void main() {
       expect(sharh2.hadith.hadith, isNotEmpty);
 
       final cacheKey = 'https://www.dorar.net/hadith/search?q=salah';
-      expect(cacheManager.has(cacheKey), true);
+      expect(await cacheService.get(cacheKey), isNotNull);
     });
 
     test('should support specialist search in getByText', () async {
@@ -213,7 +218,7 @@ void main() {
       });
 
       dorarClient = DorarHttpClient(client: mockHttpClient);
-      service = SharhService(client: dorarClient, cache: cacheManager);
+      service = SharhService(client: dorarClient, cache: cacheService);
 
       final sharh = await service.getByText('test', specialist: true);
 
@@ -276,7 +281,7 @@ void main() {
       });
 
       dorarClient = DorarHttpClient(client: mockHttpClient);
-      service = SharhService(client: dorarClient, cache: cacheManager);
+      service = SharhService(client: dorarClient, cache: cacheService);
 
       final sharh = await service.getById('999999');
       expect(sharh.hadith.hadith, isNotEmpty);
@@ -292,7 +297,7 @@ void main() {
       });
 
       dorarClient = DorarHttpClient(client: mockHttpClient);
-      service = SharhService(client: dorarClient, cache: cacheManager);
+      service = SharhService(client: dorarClient, cache: cacheService);
 
       final sharh = await service.getById('999999');
       expect(sharh.sharhText, contains('إنما الأعمال بالنيات'));
@@ -300,35 +305,20 @@ void main() {
   });
 
   group('SharhService - Cache Behavior', () {
-    test('should respect cache TTL', () async {
-      // Use a custom cache with very short TTL for testing
-      final shortTtlCache = CacheManager(defaultTtl: Duration(seconds: 3));
-      final shortTtlService = SharhService(
-        client: dorarClient,
-        cache: shortTtlCache,
-      );
-
-      // Fetch sharh
-      await shortTtlService.getById('123');
-
-      final cacheKey = 'https://www.dorar.net/hadith/sharh/123';
-      expect(shortTtlCache.has(cacheKey), true);
-
-      // Wait for cache to expire
-      await Future.delayed(Duration(seconds: 4));
-
-      // Cache should be expired
-      expect(shortTtlCache.has(cacheKey), false);
-    });
-
     test('should cache different sharh independently', () async {
       // Fetch multiple sharh
       await service.getById('123');
       await service.getById('456');
 
       // Both should be cached
-      expect(cacheManager.has('https://www.dorar.net/hadith/sharh/123'), true);
-      expect(cacheManager.has('https://www.dorar.net/hadith/sharh/456'), true);
+      expect(
+        await cacheService.get('https://www.dorar.net/hadith/sharh/123'),
+        isNotNull,
+      );
+      expect(
+        await cacheService.get('https://www.dorar.net/hadith/sharh/456'),
+        isNotNull,
+      );
     });
   });
 

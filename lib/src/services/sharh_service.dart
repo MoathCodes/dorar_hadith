@@ -1,22 +1,29 @@
-import 'package:dorar_hadith/dorar_hadith.dart';
+import 'dart:convert';
 
+import '../http/endpoints.dart';
+import '../http/http_client.dart';
+import '../models/cache_entry.dart';
+import '../models/hadith.dart';
+import '../models/sharh.dart';
+import '../models/sharh_metadata.dart';
 import '../parsers/html_helper.dart';
 import '../parsers/sharh_parser.dart';
+import '../utils/exceptions.dart';
+import '../utils/validators.dart';
+import 'cache_service.dart';
 
 /// Service for fetching sharh (hadith explanations) from Dorar.net.
 class SharhService {
   final DorarHttpClient _client;
-  final CacheManager _cache;
+  final CacheService _cache;
 
-  SharhService({required DorarHttpClient client, CacheManager? cache})
+  SharhService({required DorarHttpClient client, required CacheService cache})
     : _client = client,
-      _cache = cache ?? CacheManager();
+      _cache = cache;
 
   /// Clear all cached sharh data.
-  ///
-  /// Useful for forcing fresh data retrieval.
-  void clearCache() {
-    _cache.clear();
+  Future<void> clearCache() async {
+    await _cache.clear();
   }
 
   /// Get sharh by ID.
@@ -40,7 +47,6 @@ class SharhService {
   /// ```
   Future<Sharh> getById(String sharhId, {bool removeHtml = true}) async {
     final validatedId = Validators.validateSharhId(sharhId);
-
     return _getSharhById(validatedId, removeHtml: removeHtml);
   }
 
@@ -73,9 +79,9 @@ class SharhService {
     final url =
         '${DorarEndpoints.siteUrl}/hadith/search?q=$validatedText${specialist ? '&all' : ''}';
 
-    // Check cache first
-    if (_cache.has(url)) {
-      return _cache.get<Sharh>(url)!;
+    final cached = await _cache.get(url);
+    if (cached != null) {
+      return Sharh.fromJson(jsonDecode(cached.body));
     }
 
     final html = await _client.getHtml(url);
@@ -91,7 +97,18 @@ class SharhService {
     }
 
     final result = await _getSharhById(sharhId, removeHtml: removeHtml);
-    _cache.set(url, result);
+
+    await _cache.set(
+      CacheEntry(
+        key: url,
+        body: jsonEncode(result.toJson()),
+        header: '',
+        createdAt: DateTime.now(),
+
+        expiresAt: DateTime.now().add(const Duration(days: 7)),
+      ),
+    );
+
     return result;
   }
 
@@ -99,38 +116,54 @@ class SharhService {
   Future<Sharh> _getSharhById(String sharhId, {bool removeHtml = true}) async {
     final url = DorarEndpoints.sharhById(sharhId);
 
-    return _cache.getOrSet<Sharh>(url, () async {
-      try {
-        final html = await _client.getHtml(url);
-        final parsedData = SharhParser.parseSharhPage(
-          html,
-          sharhId,
-          removeHtml: removeHtml,
-        );
+    final cached = await _cache.get(url);
+    if (cached != null) {
+      return Sharh.fromJson(jsonDecode(cached.body));
+    }
 
-        return Sharh(
-          hadith: ExplainedHadith(
-            hadith: parsedData.hadith,
-            rawi: parsedData.rawi,
-            mohdith: parsedData.mohdith,
-            book: parsedData.book,
-            numberOrPage: parsedData.numberOrPage,
-            grade: parsedData.grade,
-            takhrij: parsedData.takhrij,
-            hasSharhMetadata: true,
-          ),
-          sharhMetadata: SharhMetadata(
-            id: sharhId,
-            isContainSharh: true,
-            sharh: parsedData.sharh,
-          ),
-        );
-      } on FormatException catch (e) {
-        throw DorarParseException(
-          'Failed to parse sharh data: ${e.message}',
-          expectedType: Sharh,
-        );
-      }
-    });
+    try {
+      final html = await _client.getHtml(url);
+      final parsedData = SharhParser.parseSharhPage(
+        html,
+        sharhId,
+        removeHtml: removeHtml,
+      );
+
+      final sharh = Sharh(
+        hadith: ExplainedHadith(
+          hadith: parsedData.hadith,
+          rawi: parsedData.rawi,
+          mohdith: parsedData.mohdith,
+          book: parsedData.book,
+          numberOrPage: parsedData.numberOrPage,
+          grade: parsedData.grade,
+          takhrij: parsedData.takhrij,
+          hasSharhMetadata: true,
+        ),
+        sharhMetadata: SharhMetadata(
+          id: sharhId,
+          isContainSharh: true,
+          sharh: parsedData.sharh,
+        ),
+      );
+
+      await _cache.set(
+        CacheEntry(
+          key: url,
+          body: jsonEncode(sharh.toJson()),
+          header: '',
+          createdAt: DateTime.now(),
+
+          expiresAt: DateTime.now().add(const Duration(days: 30)),
+        ),
+      );
+
+      return sharh;
+    } on FormatException catch (e) {
+      throw DorarParseException(
+        'Failed to parse sharh data: ${e.message}',
+        expectedType: Sharh,
+      );
+    }
   }
 }

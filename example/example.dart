@@ -127,14 +127,6 @@ Future<void> cacheManagement(DorarClient client) async {
   print('   النتائج: ${result2.data.length}');
   print('   من الكاش: ${result2.metadata.isCached}');
 
-  // إحصائيات الكاش
-  print('\n📊 إحصائيات الكاش:');
-  final stats = client.getCacheStats();
-  print('   إجمالي العناصر: ${stats.totalEntries}');
-  print('   العناصر الصالحة: ${stats.validEntries}');
-  print('   العناصر المنتهية: ${stats.expiredEntries}');
-  print('   معدل الإصابة: ${(stats.hitRate * 100).toStringAsFixed(1)}%');
-
   // مسح كاش خدمة معينة
   print('\n🧹 مسح كاش خدمة الأحاديث...');
   client.hadith.clearCache();
@@ -417,9 +409,6 @@ Future<void> referenceData(DorarClient client) async {
   print('وجدنا ${scholars.length} محدث:');
   for (var scholar in scholars) {
     print('  • ${scholar.name}');
-    if (scholar.deathYear != null) {
-      print('    توفي سنة: ${scholar.deathYear}هـ');
-    }
   }
 
   // البحث في الرواة

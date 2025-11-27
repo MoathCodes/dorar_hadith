@@ -1,3 +1,4 @@
+import '../database/cache_database.dart';
 import '../http/http_client.dart';
 import '../models/api_response.dart';
 import '../models/book_item.dart';
@@ -8,12 +9,12 @@ import '../models/search_params.dart';
 import '../models/sharh.dart';
 import '../services/book_reference_service.dart';
 import '../services/book_service.dart';
+import '../services/cache_service.dart';
 import '../services/hadith_service.dart';
 import '../services/mohdith_reference_service.dart';
 import '../services/mohdith_service.dart';
 import '../services/rawi_reference_service.dart';
 import '../services/sharh_service.dart';
-import '../utils/cache_manager.dart';
 
 /// Main client for interacting with the Dorar Hadith API.
 ///
@@ -66,8 +67,8 @@ class DorarClient {
   /// The HTTP client instance used for all requests.
   final DorarHttpClient _httpClient;
 
-  /// The cache manager instance shared across all services.
-  final CacheManager _cacheManager;
+  /// The cache service instance shared across all services.
+  final CacheService _cacheService;
 
   /// Service for hadith-related operations.
   late final HadithService hadith;
@@ -103,8 +104,6 @@ class DorarClient {
   /// Creates a new Dorar client.
   ///
   /// [timeout] - Request timeout (default: 15 seconds)
-  /// [enableCache] - Enable caching (default: true)
-  /// [cacheTtl] - Cache TTL (default: 24 hours)
   ///
   /// Example:
   /// ```dart
@@ -113,24 +112,19 @@ class DorarClient {
   /// // Custom configuration
   /// final client = DorarClient(
   ///   timeout: Duration(seconds: 30),
-  ///   cacheTtl: Duration(seconds: 10),
   /// );
   /// ```
   DorarClient({
     Duration timeout = const Duration(seconds: 15),
-    bool enableCache = true,
-    Duration cacheTtl = const Duration(hours: 24),
     DorarHttpClient? httpClient,
-    CacheManager? cacheManager,
+    CacheService? cacheService,
   }) : _httpClient = httpClient ?? DorarHttpClient(timeout: timeout),
-       _cacheManager = enableCache
-           ? (cacheManager ?? CacheManager(defaultTtl: cacheTtl))
-           : CacheManager(defaultTtl: Duration.zero) {
+       _cacheService = cacheService ?? CacheService(database: CacheDatabase()) {
     // Initialize API services
-    hadith = HadithService(client: _httpClient, cache: _cacheManager);
-    sharh = SharhService(client: _httpClient, cache: _cacheManager);
-    mohdith = MohdithService(client: _httpClient, cache: _cacheManager);
-    book = BookService(client: _httpClient, cache: _cacheManager);
+    hadith = HadithService(client: _httpClient, cache: _cacheService);
+    sharh = SharhService(client: _httpClient, cache: _cacheService);
+    mohdith = MohdithService(client: _httpClient, cache: _cacheService);
+    book = BookService(client: _httpClient, cache: _cacheService);
 
     // Initialize reference services (asset-based)
     mohdithRef = MohdithReferenceService();
@@ -141,7 +135,7 @@ class DorarClient {
   /// Clear all cached data.
   ///
   /// Forces fresh data retrieval on next request.
-  void clearCache() => _cacheManager.clear();
+  Future<void> clearCache() => _cacheService.clear();
 
   /// Dispose of resources.
   ///
@@ -153,22 +147,14 @@ class DorarClient {
   /// try {
   ///   // Use client
   /// } finally {
-  ///   client.dispose();
+  ///   await client.dispose();
   /// }
   /// ```
   Future<void> dispose() async {
     _httpClient.dispose();
-    _cacheManager.clear();
+    await _cacheService.dispose();
     await rawiRef.dispose();
   }
-
-  /// Get cache statistics.
-  /// ```dart
-  /// final stats = client.getCacheStats();
-  /// print('Total entries: ${stats.totalEntries}');
-  /// print('Valid entries: ${stats.validEntries}');
-  /// ```
-  CacheStats getCacheStats() => _cacheManager.getStats();
 
   /// Get a specific hadith by its ID.
   ///
@@ -338,14 +324,8 @@ class DorarClient {
   static Future<T> use<T>(
     Future<T> Function(DorarClient c) fn, {
     Duration timeout = const Duration(seconds: 15),
-    bool enableCache = true,
-    Duration cacheTtl = const Duration(hours: 24),
   }) async {
-    final client = DorarClient(
-      timeout: timeout,
-      enableCache: enableCache,
-      cacheTtl: cacheTtl,
-    );
+    final client = DorarClient(timeout: timeout);
     try {
       return await fn(client);
     } finally {

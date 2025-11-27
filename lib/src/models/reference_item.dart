@@ -9,35 +9,11 @@
 /// - BookItem → BookInfo (via BookService.getById)
 abstract class ReferenceItem {
   /// Unique identifier (String for API consistency)
-  final String id;
+  String get id;
 
   /// Arabic name (no separate nameAr - already in Arabic)
-  final String name;
-
-  const ReferenceItem({required this.id, required this.name});
-
-  /// Creates a ReferenceItem from JSON.
-  /// Expected format: {'key': '123', 'value': 'Name'}
-  factory ReferenceItem.fromJson(Map<String, dynamic> json) {
-    throw UnimplementedError('Subclasses must implement fromJson');
-  }
-
-  @override
-  int get hashCode => id.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ReferenceItem &&
-          runtimeType == other.runtimeType &&
-          id == other.id;
+  String get name;
 
   /// Converts this ReferenceItem to JSON.
-  /// Returns: {'key': id, 'value': name}
-  Map<String, dynamic> toJson() {
-    return {'key': id, 'value': name};
-  }
-
-  @override
-  String toString() => '$runtimeType(id: $id, name: $name)';
+  Map<String, dynamic> toJson();
 }

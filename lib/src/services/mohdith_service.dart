@@ -1,10 +1,13 @@
+import 'dart:convert';
+
 import '../http/endpoints.dart';
 import '../http/http_client.dart';
+import '../models/cache_entry.dart';
 import '../models/mohdith.dart';
 import '../parsers/mohdith_parser.dart';
-import '../utils/cache_manager.dart';
 import '../utils/exceptions.dart';
 import '../utils/validators.dart';
+import 'cache_service.dart';
 
 /// Service for fetching mohdith (hadith scholar) information from Dorar.net.
 ///
@@ -13,17 +16,17 @@ import '../utils/validators.dart';
 /// (e.g., timeouts, rate limits, HTTP errors).
 class MohdithService {
   final DorarHttpClient _client;
-  final CacheManager _cache;
+  final CacheService _cache;
 
-  MohdithService({required DorarHttpClient client, CacheManager? cache})
+  MohdithService({required DorarHttpClient client, required CacheService cache})
     : _client = client,
-      _cache = cache ?? CacheManager();
+      _cache = cache;
 
   /// Clear all cached mohdith data.
   ///
   /// Useful for forcing fresh data retrieval.
-  void clearCache() {
-    _cache.clear();
+  Future<void> clearCache() async {
+    await _cache.clear();
   }
 
   /// Get mohdith information by ID.
@@ -54,26 +57,41 @@ class MohdithService {
 
     final url = DorarEndpoints.mohdithById(validatedId);
 
-    return _cache.getOrSet<MohdithInfo>(url, () async {
-      try {
-        final html = await _client.getHtml(url);
-        final parsedData = MohdithParser.parseMohdithPage(
-          html,
-          mohdithId,
-          removeHtml: removeHtml,
-        );
+    final cached = await _cache.get(url);
+    if (cached != null) {
+      return MohdithInfo.fromJson(jsonDecode(cached.body));
+    }
 
-        return MohdithInfo(
-          name: parsedData.name,
-          mohdithId: parsedData.mohdithId,
-          info: parsedData.info,
-        );
-      } on FormatException catch (e) {
-        throw DorarParseException(
-          'Failed to parse mohdith data: ${e.message}',
-          expectedType: MohdithInfo,
-        );
-      }
-    });
+    try {
+      final html = await _client.getHtml(url);
+      final parsedData = MohdithParser.parseMohdithPage(
+        html,
+        mohdithId,
+        removeHtml: removeHtml,
+      );
+
+      final mohdithInfo = MohdithInfo(
+        name: parsedData.name,
+        mohdithId: parsedData.mohdithId,
+        info: parsedData.info,
+      );
+
+      await _cache.set(
+        CacheEntry(
+          key: url,
+          body: jsonEncode(mohdithInfo.toJson()),
+          header: '',
+          createdAt: DateTime.now(),
+          expiresAt: DateTime.now().add(const Duration(days: 30)),
+        ),
+      );
+
+      return mohdithInfo;
+    } on FormatException catch (e) {
+      throw DorarParseException(
+        'Failed to parse mohdith data: ${e.message}',
+        expectedType: MohdithInfo,
+      );
+    }
   }
 }

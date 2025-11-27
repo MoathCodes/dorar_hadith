@@ -98,7 +98,7 @@ void main() {
       });
 
       final dorarClient = DorarHttpClient(client: mockClient);
-      final service = BookService(client: dorarClient);
+      final service = BookService(client: dorarClient,);
 
       final book = await service.getById('6216');
 

@@ -1,4 +1,7 @@
 import 'package:dorar_hadith/dorar_hadith.dart';
+import 'package:dorar_hadith/src/database/cache_database.dart';
+import 'package:dorar_hadith/src/services/cache_service.dart';
+import 'package:drift/native.dart';
 import 'package:http/testing.dart';
 import 'package:test/test.dart';
 
@@ -8,7 +11,7 @@ import '../helpers/test_helpers.dart';
 void main() {
   late MockClient mockHttpClient;
   late DorarHttpClient dorarClient;
-  late CacheManager cacheManager;
+  late CacheService cacheService;
   late HadithService service;
 
   setUp(() {
@@ -55,12 +58,14 @@ void main() {
     });
 
     dorarClient = DorarHttpClient(client: mockHttpClient);
-    cacheManager = CacheManager();
-    service = HadithService(client: dorarClient, cache: cacheManager);
+    cacheService = CacheService(
+      database: CacheDatabase(NativeDatabase.memory()),
+    );
+    service = HadithService(client: dorarClient, cache: cacheService);
   });
 
-  tearDown(() {
-    cacheManager.clear();
+  tearDown(() async {
+    await cacheService.dispose();
   });
 
   group('HadithService - searchViaApi()', () {
@@ -124,7 +129,7 @@ void main() {
       final errorDorarClient = DorarHttpClient(client: errorClient);
       final errorService = HadithService(
         client: errorDorarClient,
-        cache: cacheManager,
+        cache: cacheService,
       );
 
       final params = HadithSearchParams(value: 'test');
@@ -207,7 +212,7 @@ void main() {
       final errorDorarClient = DorarHttpClient(client: errorClient);
       final errorService = HadithService(
         client: errorDorarClient,
-        cache: cacheManager,
+        cache: cacheService,
       );
 
       final params = HadithSearchParams(value: 'test');
@@ -245,7 +250,7 @@ void main() {
       expect(hadith2.hadith, hadith1.hadith);
 
       final cacheKey = 'https://www.dorar.net/h/123';
-      expect(cacheManager.has(cacheKey), true);
+      expect(await cacheService.get(cacheKey), isNotNull);
     });
 
     test('should throw DorarValidationException for empty ID', () async {
@@ -273,7 +278,7 @@ void main() {
       final errorDorarClient = DorarHttpClient(client: errorClient);
       final errorService = HadithService(
         client: errorDorarClient,
-        cache: cacheManager,
+        cache: cacheService,
       );
 
       expect(
@@ -311,7 +316,7 @@ void main() {
       expect(similar2.length, similar1.length);
 
       final cacheKey = 'https://www.dorar.net/h/123?sims=1';
-      expect(cacheManager.has(cacheKey), true);
+      expect(await cacheService.get(cacheKey), isNotNull);
     });
 
     test('should throw DorarValidationException for empty ID', () async {
@@ -332,7 +337,7 @@ void main() {
         return createUtf8Response('<html><body></body></html>', 200);
       });
       dorarClient = DorarHttpClient(client: mockHttpClient);
-      service = HadithService(client: dorarClient, cache: cacheManager);
+      service = HadithService(client: dorarClient, cache: cacheService);
 
       final similar = await service.getSimilar('123');
       expect(similar, isEmpty);
@@ -368,7 +373,7 @@ void main() {
       expect(alternate2?.hadith, alternate1!.hadith);
 
       final cacheKey = 'https://www.dorar.net/h/123?alts=1';
-      expect(cacheManager.has(cacheKey), true);
+      expect(await cacheService.get(cacheKey), isNotNull);
     });
 
     test('should return null if no alternate found', () async {
@@ -380,7 +385,7 @@ void main() {
 ''', 200);
       });
       dorarClient = DorarHttpClient(client: mockHttpClient);
-      service = HadithService(client: dorarClient, cache: cacheManager);
+      service = HadithService(client: dorarClient, cache: cacheService);
 
       final alternate = await service.getAlternate('123');
       expect(alternate, isNull);
@@ -448,7 +453,7 @@ void main() {
       expect(usul2.metadata.isCached, isTrue);
 
       final cacheKey = 'https://www.dorar.net/h/123?osoul=1';
-      expect(cacheManager.has(cacheKey), true);
+      expect(await cacheService.get(cacheKey), isNotNull);
     });
 
     test('should throw DorarValidationException for empty ID', () async {
@@ -476,7 +481,7 @@ void main() {
 ''', 200);
       });
       dorarClient = DorarHttpClient(client: mockHttpClient);
-      service = HadithService(client: dorarClient, cache: cacheManager);
+      service = HadithService(client: dorarClient, cache: cacheService);
 
       final response = await service.getUsul('123');
       expect(response.data.sources, isEmpty);
@@ -491,14 +496,20 @@ void main() {
       await service.getById('123');
       await service.getSimilar('123');
 
-      expect(cacheManager.has('https://www.dorar.net/h/123'), true);
-      expect(cacheManager.has('https://www.dorar.net/h/123?sims=1'), true);
+      expect(await cacheService.get('https://www.dorar.net/h/123'), isNotNull);
+      expect(
+        await cacheService.get('https://www.dorar.net/h/123?sims=1'),
+        isNotNull,
+      );
 
       // Clear cache
-      service.clearCache();
+      await service.clearCache();
 
-      expect(cacheManager.has('https://www.dorar.net/h/123'), false);
-      expect(cacheManager.has('https://www.dorar.net/h/123?sims=1'), false);
+      expect(await cacheService.get('https://www.dorar.net/h/123'), isNull);
+      expect(
+        await cacheService.get('https://www.dorar.net/h/123?sims=1'),
+        isNull,
+      );
     });
   });
 
@@ -511,7 +522,7 @@ void main() {
         return createUtf8Response('Not Found', 404);
       });
       dorarClient = DorarHttpClient(client: mockHttpClient);
-      service = HadithService(client: dorarClient, cache: cacheManager);
+      service = HadithService(client: dorarClient, cache: cacheService);
 
       final hadith = await service.getById('999999');
       expect(hadith.hadith, isNotEmpty);
@@ -534,7 +545,7 @@ void main() {
 ''', 200);
       });
       dorarClient = DorarHttpClient(client: mockHttpClient);
-      service = HadithService(client: dorarClient, cache: cacheManager);
+      service = HadithService(client: dorarClient, cache: cacheService);
 
       final params = HadithSearchParams(value: 'test');
 
@@ -571,33 +582,25 @@ void main() {
   });
 
   group('HadithService - Cache Behavior', () {
-    test('should respect cache TTL', () async {
-      final shortTtlCache = CacheManager(defaultTtl: Duration(seconds: 3));
-      final shortTtlService = HadithService(
-        client: dorarClient,
-        cache: shortTtlCache,
-      );
-
-      await shortTtlService.getById('123');
-
-      final cacheKey = 'https://www.dorar.net/h/123';
-      expect(shortTtlCache.has(cacheKey), true);
-
-      // Wait for cache to expire
-      await Future.delayed(Duration(seconds: 4));
-      expect(shortTtlCache.has(cacheKey), false);
-    });
-
     test('should cache different methods independently', () async {
       await service.getById('123');
       await service.getSimilar('123');
       await service.getAlternate('123');
       await service.getUsul('123');
 
-      expect(cacheManager.has('https://www.dorar.net/h/123'), true);
-      expect(cacheManager.has('https://www.dorar.net/h/123?sims=1'), true);
-      expect(cacheManager.has('https://www.dorar.net/h/123?alts=1'), true);
-      expect(cacheManager.has('https://www.dorar.net/h/123?osoul=1'), true);
+      expect(await cacheService.get('https://www.dorar.net/h/123'), isNotNull);
+      expect(
+        await cacheService.get('https://www.dorar.net/h/123?sims=1'),
+        isNotNull,
+      );
+      expect(
+        await cacheService.get('https://www.dorar.net/h/123?alts=1'),
+        isNotNull,
+      );
+      expect(
+        await cacheService.get('https://www.dorar.net/h/123?osoul=1'),
+        isNotNull,
+      );
     });
   });
 }

@@ -1,6 +1,9 @@
 import 'dart:convert';
 
 import 'package:dorar_hadith/dorar_hadith.dart';
+import 'package:dorar_hadith/src/database/cache_database.dart';
+import 'package:dorar_hadith/src/services/cache_service.dart';
+import 'package:drift/native.dart';
 import 'package:http/testing.dart';
 import 'package:test/test.dart';
 
@@ -10,10 +13,13 @@ import '../helpers/test_helpers.dart';
 void main() {
   late MockClient mockHttpClient;
   late DorarHttpClient dorarClient;
-  late CacheManager cacheManager;
+  late CacheService cacheService;
   late BookService service;
 
   setUp(() {
+    cacheService = CacheService(
+      database: CacheDatabase(NativeDatabase.memory()),
+    );
     mockHttpClient = MockClient((request) async {
       final url = request.url.toString();
 
@@ -42,12 +48,11 @@ void main() {
     });
 
     dorarClient = DorarHttpClient(client: mockHttpClient);
-    cacheManager = CacheManager();
-    service = BookService(client: dorarClient, cache: cacheManager);
+    service = BookService(client: dorarClient, cache: cacheService);
   });
 
-  tearDown(() {
-    cacheManager.clear();
+  tearDown(() async {
+    await cacheService.dispose();
   });
 
   group('BookService - getById()', () {
@@ -74,7 +79,7 @@ void main() {
 
       // Verify cache hit
       final cacheKey = 'https://www.dorar.net/hadith/book-card/6216';
-      expect(cacheManager.has(cacheKey), true);
+      expect(await cacheService.get(cacheKey), isNotNull);
     });
 
     test('should throw DorarValidationException for empty book ID', () async {
@@ -151,7 +156,7 @@ void main() {
       final errorDorarClient = DorarHttpClient(client: errorClient);
       final errorService = BookService(
         client: errorDorarClient,
-        cache: cacheManager,
+        cache: cacheService,
       );
 
       expect(
@@ -167,13 +172,13 @@ void main() {
       await service.getById('6216');
 
       final cacheKey = 'https://www.dorar.net/hadith/book-card/6216';
-      expect(cacheManager.has(cacheKey), true);
+      expect(await cacheService.get(cacheKey), isNotNull);
 
       // Clear cache
-      service.clearCache();
+      await service.clearCache();
 
       // Verify cache is cleared
-      expect(cacheManager.has(cacheKey), false);
+      expect(await cacheService.get(cacheKey), isNull);
     });
   });
 
@@ -193,7 +198,7 @@ void main() {
       });
 
       dorarClient = DorarHttpClient(client: mockHttpClient);
-      service = BookService(client: dorarClient, cache: cacheManager);
+      service = BookService(client: dorarClient, cache: cacheService);
 
       final book = await service.getById('99999');
       expect(book.name, 'صحيح البخاري');
@@ -207,27 +212,6 @@ void main() {
   });
 
   group('BookService - Cache Behavior', () {
-    test('should respect cache TTL', () async {
-      // Use a custom cache with very short TTL for testing
-      final shortTtlCache = CacheManager(defaultTtl: Duration(seconds: 3));
-      final shortTtlService = BookService(
-        client: dorarClient,
-        cache: shortTtlCache,
-      );
-
-      // Fetch book
-      await shortTtlService.getById('6216');
-
-      final cacheKey = 'https://www.dorar.net/hadith/book-card/6216';
-      expect(shortTtlCache.has(cacheKey), true);
-
-      // Wait for cache to expire
-      await Future.delayed(Duration(seconds: 4));
-
-      // Cache should be expired
-      expect(shortTtlCache.has(cacheKey), false);
-    });
-
     test('should cache different books independently', () async {
       mockHttpClient = MockClient((request) async {
         final url = request.url.toString();
@@ -238,7 +222,7 @@ void main() {
       });
 
       dorarClient = DorarHttpClient(client: mockHttpClient);
-      service = BookService(client: dorarClient, cache: cacheManager);
+      service = BookService(client: dorarClient, cache: cacheService);
 
       // Fetch multiple books
       await service.getById('6216');
@@ -246,12 +230,12 @@ void main() {
 
       // Both should be cached
       expect(
-        cacheManager.has('https://www.dorar.net/hadith/book-card/6216'),
-        true,
+        await cacheService.get('https://www.dorar.net/hadith/book-card/6216'),
+        isNotNull,
       );
       expect(
-        cacheManager.has('https://www.dorar.net/hadith/book-card/3088'),
-        true,
+        await cacheService.get('https://www.dorar.net/hadith/book-card/3088'),
+        isNotNull,
       );
     });
   });

@@ -1,35 +1,82 @@
-/// A cache entry with expiry support.
-class CacheEntry<T> {
-  /// The cached value
-  final T value;
+import 'package:dorar_hadith/src/database/cache_database.dart';
+import 'package:dorar_hadith/src/models/cache_entry.dart';
+import 'package:drift/drift.dart';
 
-  /// When this entry was created
-  final DateTime createdAt;
+class CacheService implements CacheStore {
+  final CacheDatabase database;
+  final Duration defaultTtl;
+  final int maxCacheSize;
+  final InMemoryCacheManager _cacheManager;
 
-  /// Time-to-live for this entry
-  final Duration ttl;
-
-  CacheEntry({required this.value, required this.ttl, DateTime? createdAt})
-    : createdAt = createdAt ?? DateTime.now();
-
-  /// Checks if this cache entry has expired
-  bool get isExpired {
-    final now = DateTime.now();
-    final expiryTime = createdAt.add(ttl);
-    return now.isAfter(expiryTime);
-  }
-
-  /// Gets the remaining time until expiry
-  Duration get remainingTime {
-    final now = DateTime.now();
-    final expiryTime = createdAt.add(ttl);
-    final remaining = expiryTime.difference(now);
-    return remaining.isNegative ? Duration.zero : remaining;
+  CacheService({
+    required this.database,
+    this.defaultTtl = const Duration(days: 1),
+    this.maxCacheSize = 100,
+    InMemoryCacheManager? cacheManager,
+  }) : _cacheManager =
+           cacheManager ??
+           InMemoryCacheManager(defaultTtl: defaultTtl, maxSize: maxCacheSize) {
+    database.clearExpiredCache();
   }
 
   @override
-  String toString() =>
-      'CacheEntry(value: $value, expired: $isExpired, remaining: ${remainingTime.inSeconds}s)';
+  Future<void> clear() async {
+    _cacheManager.clear();
+    await database.clear();
+  }
+
+  Future<void> dispose() async {
+    _cacheManager.clear();
+    await database.close();
+  }
+
+  @override
+  Future<CacheEntry?> get(String key) {
+    final memoryEntry = _cacheManager.get(key);
+    if (memoryEntry != null) return Future.value(memoryEntry);
+
+    final dbEntryFuture = database.getCacheEntry(key);
+    return dbEntryFuture.then((dbEntry) {
+      if (dbEntry == null) return null;
+      if (dbEntry.expiredAt.isBefore(DateTime.now())) {
+        database.deleteCacheEntry(key);
+        return null;
+      }
+      return CacheEntry(
+        key: key,
+        body: dbEntry.body,
+        header: dbEntry.header,
+        createdAt: dbEntry.createdAt,
+        expiresAt: dbEntry.expiredAt,
+      );
+    });
+  }
+
+  @override
+  Future<void> remove(String key) {
+    _cacheManager.remove(key);
+    return database.deleteCacheEntry(key);
+  }
+
+  @override
+  Future<void> set(CacheEntry entry) {
+    _cacheManager.set(entry);
+    final dbEntry = CacheTableCompanion(
+      key: Value(entry.key),
+      body: Value(entry.body),
+      header: Value(entry.header),
+      createdAt: Value(entry.createdAt),
+      expiredAt: Value(entry.expiresAt),
+    );
+    return database.insertOrUpdateCacheEntry(dbEntry);
+  }
+}
+
+abstract class CacheStore {
+  Future<void> clear();
+  Future<CacheEntry?> get(String key);
+  Future<void> remove(String key);
+  Future<void> set(CacheEntry entry);
 }
 
 /// In-memory cache manager with time-to-live (TTL) support.
@@ -52,7 +99,7 @@ class CacheEntry<T> {
 /// // Clear all cache
 /// cache.clear();
 /// ```
-class CacheManager {
+class InMemoryCacheManager {
   /// Internal storage for cache entries
   final Map<String, CacheEntry> _cache = {};
 
@@ -62,7 +109,10 @@ class CacheManager {
   /// Maximum number of entries to keep in cache
   final int? maxSize;
 
-  CacheManager({this.defaultTtl = const Duration(days: 1), this.maxSize});
+  InMemoryCacheManager({
+    this.defaultTtl = const Duration(days: 1),
+    this.maxSize,
+  });
 
   /// Gets all cache keys (including expired entries).
   List<String> get keys => _cache.keys.toList();
@@ -95,7 +145,7 @@ class CacheManager {
   /// - The cached entry has expired
   ///
   /// Automatically removes expired entries.
-  T? get<T>(String key) {
+  CacheEntry? get(String key) {
     final entry = _cache[key];
 
     if (entry == null) return null;
@@ -106,12 +156,7 @@ class CacheManager {
       return null;
     }
 
-    // Type-safe return
-    if (entry.value is T) {
-      return entry.value as T;
-    }
-
-    return null;
+    return entry;
   }
 
   /// Gets or sets a value using a factory function.
@@ -127,13 +172,13 @@ class CacheManager {
   ///   ttl: Duration(minutes: 5),
   /// );
   /// ```
-  Future<T> getOrSet<T>(
+  Future<CacheEntry> getOrSet(
     String key,
-    Future<T> Function() factory, {
+    Future Function() factory, {
     Duration? ttl,
   }) async {
     // Try to get from cache
-    final cached = get<T>(key);
+    final cached = get(key);
     if (cached != null) {
       return cached;
     }
@@ -142,15 +187,19 @@ class CacheManager {
     final value = await factory();
 
     // Cache the result
-    set(key, value, ttl: ttl);
+    set(value, ttl: ttl);
 
     return value;
   }
 
   /// Synchronous version of getOrSet for non-async factories.
-  T getOrSetSync<T>(String key, T Function() factory, {Duration? ttl}) {
+  CacheEntry getOrSetSync(
+    String key,
+    CacheEntry Function() factory, {
+    Duration? ttl,
+  }) {
     // Try to get from cache
-    final cached = get<T>(key);
+    final cached = get(key);
     if (cached != null) {
       return cached;
     }
@@ -159,23 +208,9 @@ class CacheManager {
     final value = factory();
 
     // Cache the result
-    set(key, value, ttl: ttl);
+    set(value, ttl: ttl);
 
     return value;
-  }
-
-  /// Gets cache statistics.
-  CacheStats getStats() {
-    final total = _cache.length;
-    final valid = validSize;
-    final expired = total - valid;
-
-    return CacheStats(
-      totalEntries: total,
-      validEntries: valid,
-      expiredEntries: expired,
-      hitRate: 0.0, // Would need hit/miss tracking for this
-    );
   }
 
   /// Checks if a key exists and has not expired.
@@ -219,21 +254,15 @@ class CacheManager {
   /// Sets a cached value with an optional custom TTL.
   ///
   /// If the cache is at max size, removes the oldest entry first.
-  void set<T>(String key, T value, {Duration? ttl}) {
+  void set(CacheEntry value, {Duration? ttl}) {
     // Remove oldest entry if at max size
     if (maxSize != null &&
         _cache.length >= maxSize! &&
-        !_cache.containsKey(key)) {
+        !_cache.containsKey(value.key)) {
       _removeOldest();
     }
 
-    _cache[key] = CacheEntry(value: value, ttl: ttl ?? defaultTtl);
-  }
-
-  @override
-  String toString() {
-    final stats = getStats();
-    return 'CacheManager(total: ${stats.totalEntries}, valid: ${stats.validEntries}, expired: ${stats.expiredEntries})';
+    _cache[value.key] = value;
   }
 
   /// Removes the oldest cache entry.
@@ -254,30 +283,4 @@ class CacheManager {
       _cache.remove(oldestKey);
     }
   }
-}
-
-/// Cache statistics information.
-class CacheStats {
-  /// Total number of cache entries
-  final int totalEntries;
-
-  /// Number of valid (non-expired) entries
-  final int validEntries;
-
-  /// Number of expired entries
-  final int expiredEntries;
-
-  /// Cache hit rate (0.0 to 1.0)
-  final double hitRate;
-
-  const CacheStats({
-    required this.totalEntries,
-    required this.validEntries,
-    required this.expiredEntries,
-    required this.hitRate,
-  });
-
-  @override
-  String toString() =>
-      'CacheStats(total: $totalEntries, valid: $validEntries, expired: $expiredEntries, hitRate: ${(hitRate * 100).toStringAsFixed(1)}%)';
 }

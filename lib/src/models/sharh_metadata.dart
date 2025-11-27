@@ -1,56 +1,22 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'sharh_metadata.freezed.dart';
+part 'sharh_metadata.g.dart';
 
 /// Metadata about sharh (explanation/commentary) for a hadith.
-class SharhMetadata extends Equatable {
-  /// Unique identifier for the sharh
-  final String id;
+@freezed
+abstract class SharhMetadata with _$SharhMetadata {
+  const factory SharhMetadata({
+    /// Unique identifier for the sharh
+    required String id,
 
-  /// Whether this response contains the actual sharh text
-  final bool isContainSharh;
+    /// Whether this response contains the actual sharh text
+    @Default(false) bool isContainSharh,
 
-  /// The actual sharh text (if available)
-  final String? sharh;
+    /// The actual sharh text (if available)
+    String? sharh,
+  }) = _SharhMetadata;
 
-  const SharhMetadata({
-    required this.id,
-    required this.isContainSharh,
-    this.sharh,
-  });
-
-  factory SharhMetadata.fromJson(Map<String, dynamic> json) {
-    return SharhMetadata(
-      id: json['id'] as String,
-      isContainSharh: json['isContainSharh'] as bool? ?? false,
-      sharh: json['sharh'] as String?,
-    );
-  }
-
-  @override
-  int get hashCode => id.hashCode ^ isContainSharh.hashCode ^ sharh.hashCode;
-
-  @override
-  List<Object?> get props => [id, isContainSharh, sharh];
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is SharhMetadata &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          isContainSharh == other.isContainSharh &&
-          sharh == other.sharh;
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'isContainSharh': isContainSharh,
-      if (sharh != null) 'sharh': sharh,
-    };
-  }
-
-  @override
-  String toString() {
-    return 'SharhMetadata(id: $id, isContainSharh: $isContainSharh, '
-        'sharh: ${sharh != null ? '${sharh!.length > 50 ? '${sharh!.substring(0, 50)}...' : sharh}' : 'null'})';
-  }
+  factory SharhMetadata.fromJson(Map<String, dynamic> json) =>
+      _$SharhMetadataFromJson(json);
 }

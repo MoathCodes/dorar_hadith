@@ -56,17 +56,17 @@ void verifyHadithStructure(Hadith hadith) {
 
   String? takhrij;
   if (hadith is DetailedHadith) {
-    takhrij = hadith.takhrij;
+    takhrij = (hadith as DetailedHadith).takhrij;
 
-    if (hadith.hadithId != null) {
+    if ((hadith as DetailedHadith).hadithId != null) {
       expect(
-        hadith.hadithId,
+        (hadith as DetailedHadith).hadithId,
         isNotEmpty,
         reason: 'Hadith.hadithId should not be empty when provided',
       );
     }
   } else if (hadith is ExplainedHadith) {
-    takhrij = hadith.takhrij;
+    takhrij = (hadith as ExplainedHadith).takhrij;
   }
 
   final trimmedTakhrij = takhrij?.trim();

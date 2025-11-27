@@ -3,25 +3,26 @@ import 'dart:convert';
 import '../http/endpoints.dart';
 import '../http/http_client.dart';
 import '../models/book.dart';
+import '../models/cache_entry.dart';
 import '../parsers/book_parser.dart';
-import '../utils/cache_manager.dart';
 import '../utils/exceptions.dart';
 import '../utils/validators.dart';
+import 'cache_service.dart';
 
 /// Service for fetching book information from Dorar.net.
 class BookService {
   final DorarHttpClient _client;
-  final CacheManager _cache;
+  final CacheService _cache;
 
-  BookService({required DorarHttpClient client, CacheManager? cache})
+  BookService({required DorarHttpClient client, required CacheService cache})
     : _client = client,
-      _cache = cache ?? CacheManager();
+      _cache = cache;
 
   /// Clear all cached book data.
   ///
   /// Useful for forcing fresh data retrieval.
-  void clearCache() {
-    _cache.clear();
+  Future<void> clearCache() async {
+    await _cache.clear();
   }
 
   /// Get book information by ID.
@@ -51,39 +52,56 @@ class BookService {
 
     final url = DorarEndpoints.bookById(validatedId);
 
-    return _cache.getOrSet<BookInfo>(url, () async {
-      try {
-        // The book endpoint returns JSON, not direct HTML
-        final response = await _client.get(url);
+    // Check cache first
+    final cached = await _cache.get(url);
+    if (cached != null) {
+      return BookInfo.fromJson(jsonDecode(cached.body));
+    }
 
-        // Decode the JSON response
-        final jsonData = jsonDecode(response);
+    try {
+      // The book endpoint returns JSON, not direct HTML
+      final response = await _client.get(url);
 
-        // The HTML is inside the JSON response
-        final html = jsonData as String;
+      // Decode the JSON response
+      final jsonData = jsonDecode(response);
 
-        // Parse the HTML
-        final parsedData = BookParser.parseBookPage(
-          html,
-          bookId,
-          removeHtml: removeHtml,
-        );
+      // The HTML is inside the JSON response
+      final html = jsonData as String;
 
-        return BookInfo(
-          name: parsedData.name,
-          bookId: parsedData.bookId,
-          author: parsedData.author,
-          reviewer: parsedData.reviewer,
-          publisher: parsedData.publisher,
-          edition: parsedData.edition,
-          editionYear: parsedData.editionYear,
-        );
-      } on FormatException catch (e) {
-        throw DorarParseException(
-          'Failed to parse book data: ${e.message}',
-          expectedType: BookInfo,
-        );
-      }
-    });
+      // Parse the HTML
+      final parsedData = BookParser.parseBookPage(
+        html,
+        validatedId,
+        removeHtml: removeHtml,
+      );
+
+      final result = BookInfo(
+        name: parsedData.name,
+        bookId: parsedData.bookId,
+        author: parsedData.author,
+        reviewer: parsedData.reviewer,
+        publisher: parsedData.publisher,
+        edition: parsedData.edition,
+        editionYear: parsedData.editionYear,
+      );
+
+      // Cache the result
+      await _cache.set(
+        CacheEntry(
+          key: url,
+          body: jsonEncode(result.toJson()),
+          header: '',
+          createdAt: DateTime.now(),
+          expiresAt: DateTime.now().add(const Duration(days: 7)),
+        ),
+      );
+
+      return result;
+    } on FormatException catch (e) {
+      throw DorarParseException(
+        'Failed to parse book data: ${e.message}',
+        expectedType: BookInfo,
+      );
+    }
   }
 }

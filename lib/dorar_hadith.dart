@@ -88,7 +88,6 @@ export 'src/services/sharh_service.dart';
 // Utilities
 export 'src/utils/arabic_search.dart';
 export 'src/utils/asset_loader/asset_loader.dart';
-export 'src/utils/cache_manager.dart';
 export 'src/utils/exceptions.dart';
 export 'src/utils/html_stripper.dart';
 export 'src/utils/validators.dart';

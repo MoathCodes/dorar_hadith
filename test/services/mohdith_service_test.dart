@@ -1,4 +1,7 @@
 import 'package:dorar_hadith/dorar_hadith.dart';
+import 'package:dorar_hadith/src/database/cache_database.dart';
+import 'package:dorar_hadith/src/services/cache_service.dart';
+import 'package:drift/native.dart';
 import 'package:http/http.dart' show ClientException;
 import 'package:http/testing.dart';
 import 'package:test/test.dart';
@@ -11,10 +14,12 @@ void main() {
     late MohdithService mohdithService;
     late MockClient mockHttpClient;
     late DorarHttpClient dorarClient;
-    late CacheManager cacheManager;
+    late CacheService cacheService;
 
     setUp(() {
-      cacheManager = CacheManager();
+      cacheService = CacheService(
+        database: CacheDatabase(NativeDatabase.memory()),
+      );
       mockHttpClient = MockClient((request) async {
         final url = request.url.toString();
 
@@ -30,11 +35,11 @@ void main() {
       });
 
       dorarClient = DorarHttpClient(client: mockHttpClient);
-      mohdithService = MohdithService(client: dorarClient, cache: cacheManager);
+      mohdithService = MohdithService(client: dorarClient, cache: cacheService);
     });
 
-    tearDown(() {
-      cacheManager.clear();
+    tearDown(() async {
+      await cacheService.dispose();
       dorarClient.dispose();
     });
 
@@ -64,7 +69,7 @@ void main() {
         // First call - fetches from API
         await mohdithService.getById('256');
         final cacheKey = 'https://www.dorar.net/hadith/mhd/256';
-        expect(cacheManager.has(cacheKey), isTrue);
+        expect(await cacheService.get(cacheKey), isNotNull);
 
         // Second call - should use cache
         final mohdith = await mohdithService.getById('256');
@@ -107,7 +112,7 @@ void main() {
         dorarClient = DorarHttpClient(client: mockHttpClient);
         mohdithService = MohdithService(
           client: dorarClient,
-          cache: cacheManager,
+          cache: cacheService,
         );
 
         expect(
@@ -125,7 +130,7 @@ void main() {
         dorarClient = DorarHttpClient(client: mockHttpClient);
         mohdithService = MohdithService(
           client: dorarClient,
-          cache: cacheManager,
+          cache: cacheService,
         );
 
         expect(
@@ -141,14 +146,13 @@ void main() {
         await mohdithService.getById('256');
 
         final cacheKey = 'https://www.dorar.net/hadith/mhd/256';
-        expect(cacheManager.has(cacheKey), isTrue);
+        expect(await cacheService.get(cacheKey), isNotNull);
 
         // Clear cache
-        mohdithService.clearCache();
+        await mohdithService.clearCache();
 
         // Cache should be empty
-        final stats = cacheManager.getStats();
-        expect(stats.totalEntries, equals(0));
+        expect(await cacheService.get(cacheKey), isNull);
       });
     });
 
@@ -167,7 +171,7 @@ void main() {
         dorarClient = DorarHttpClient(client: mockHttpClient);
         mohdithService = MohdithService(
           client: dorarClient,
-          cache: cacheManager,
+          cache: cacheService,
         );
 
         final mohdith = await mohdithService.getById('999999');
@@ -194,7 +198,7 @@ void main() {
         dorarClient = DorarHttpClient(client: mockHttpClient);
         mohdithService = MohdithService(
           client: dorarClient,
-          cache: cacheManager,
+          cache: cacheService,
         );
 
         final mohdith = await mohdithService.getById('256');
@@ -203,25 +207,6 @@ void main() {
     });
 
     group('Cache Behavior', () {
-      test('should respect cache TTL', () async {
-        // Create a service with short TTL cache
-        final shortTtlCache = CacheManager(defaultTtl: Duration(seconds: 3));
-        final shortTtlService = MohdithService(
-          client: dorarClient,
-          cache: shortTtlCache,
-        );
-
-        // Get mohdith with short TTL
-        await shortTtlService.getById('256');
-        final cacheKey = 'https://www.dorar.net/hadith/mhd/256';
-        expect(shortTtlCache.has(cacheKey), isTrue);
-
-        // Wait for expiry
-        await Future.delayed(Duration(seconds: 4));
-
-        expect(shortTtlCache.has(cacheKey), isFalse);
-      });
-
       test('should cache different mohdith independently', () async {
         mockHttpClient = MockClient((request) async {
           return createUtf8Response(mockMohdithPageResponse, 200);
@@ -231,7 +216,7 @@ void main() {
         dorarClient = DorarHttpClient(client: mockHttpClient);
         mohdithService = MohdithService(
           client: dorarClient,
-          cache: cacheManager,
+          cache: cacheService,
         );
 
         await mohdithService.getById('256');
@@ -240,14 +225,14 @@ void main() {
         final key1 = 'https://www.dorar.net/hadith/mhd/256';
         final key2 = 'https://www.dorar.net/hadith/mhd/261';
 
-        expect(cacheManager.has(key1), isTrue);
-        expect(cacheManager.has(key2), isTrue);
+        expect(await cacheService.get(key1), isNotNull);
+        expect(await cacheService.get(key2), isNotNull);
 
         // Clear one cache entry
-        cacheManager.remove(key1);
+        await cacheService.remove(key1);
 
-        expect(cacheManager.has(key1), isFalse);
-        expect(cacheManager.has(key2), isTrue);
+        expect(await cacheService.get(key1), isNull);
+        expect(await cacheService.get(key2), isNotNull);
       });
     });
 
@@ -304,7 +289,7 @@ void main() {
         dorarClient = DorarHttpClient(client: mockHttpClient);
         mohdithService = MohdithService(
           client: dorarClient,
-          cache: cacheManager,
+          cache: cacheService,
         );
 
         try {

@@ -8,8 +8,6 @@ void main() {
 
       expect(mohdith.id, '256');
       expect(mohdith.name, 'الإمام البخاري');
-      expect(mohdith.deathYear, isNull);
-      expect(mohdith.era, isNull);
     });
 
     test('fromJson hydrates optional fields', () {
@@ -22,17 +20,10 @@ void main() {
 
       expect(mohdith.id, '400');
       expect(mohdith.name, 'الإمام مسلم');
-      expect(mohdith.deathYear, 261);
-      expect(mohdith.era, 'Classical');
     });
 
     test('toJson outputs expected structure', () {
-      final json = MohdithItem(
-        id: '512',
-        name: 'الإمام النسائي',
-        deathYear: 303,
-        era: 'Late Classical',
-      ).toJson();
+      final json = MohdithItem(id: '512', name: 'الإمام النسائي').toJson();
 
       expect(json['key'], '512');
       expect(json['value'], 'الإمام النسائي');
@@ -41,19 +32,12 @@ void main() {
     });
 
     test('round-trip serialization preserves values', () {
-      final original = MohdithItem(
-        id: '100',
-        name: 'السيوطي',
-        deathYear: 911,
-        era: 'Post-Classical',
-      );
+      final original = MohdithItem(id: '100', name: 'السيوطي');
 
       final restored = MohdithItem.fromJson(original.toJson());
 
       expect(restored.id, original.id);
       expect(restored.name, original.name);
-      expect(restored.deathYear, original.deathYear);
-      expect(restored.era, original.era);
     });
 
     group('equality', () {
