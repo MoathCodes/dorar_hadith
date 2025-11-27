@@ -5,6 +5,17 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:path/path.dart' as p;
 
+/// Opens a connection to the cache.db SQLite database for native platforms.
+DatabaseConnection openCacheConnection() {
+  return DatabaseConnection(
+    LazyDatabase(() async {
+      final dbFolder = Directory.current;
+      final file = File(p.join(dbFolder.path, 'cache.db'));
+      return NativeDatabase(file);
+    }),
+  );
+}
+
 /// Opens a connection to the rawi.db SQLite database for native platforms.
 ///
 /// This function is used by the Dart CLI and desktop applications.

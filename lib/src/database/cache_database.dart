@@ -1,5 +1,8 @@
 import 'package:drift/drift.dart';
-import 'package:drift/native.dart';
+
+import 'connection/connection_native.dart'
+    if (dart.library.js_interop) 'connection/connection_web.dart'
+    as impl;
 
 part 'cache_database.g.dart';
 
@@ -7,7 +10,9 @@ typedef CacheConnectionFactory = DatabaseConnection Function();
 
 @DriftDatabase(tables: [CacheTable])
 class CacheDatabase extends _$CacheDatabase {
-  CacheDatabase([QueryExecutor? e]) : super(e ?? _openConnection());
+  static CacheConnectionFactory _connectionFactory = impl.openCacheConnection;
+
+  CacheDatabase([QueryExecutor? e]) : super(e ?? _connectionFactory());
 
   @override
   int get schemaVersion => 1;
@@ -30,8 +35,14 @@ class CacheDatabase extends _$CacheDatabase {
   Future<void> insertOrUpdateCacheEntry(CacheTableCompanion entry) =>
       managers.cacheTable.create((o) => entry, mode: .insertOrReplace);
 
-  static QueryExecutor _openConnection() {
-    return NativeDatabase.memory();
+  /// Override the connection factory used when instantiating new databases.
+  static void configureConnection(CacheConnectionFactory factory) {
+    _connectionFactory = factory;
+  }
+
+  /// Reset the connection factory back to the platform default.
+  static void resetConnection() {
+    _connectionFactory = impl.openCacheConnection;
   }
 }
 

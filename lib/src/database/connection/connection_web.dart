@@ -2,6 +2,20 @@ import 'package:drift/drift.dart';
 import 'package:drift/wasm.dart';
 import 'package:http/http.dart' as http;
 
+/// Opens a connection to the cache database for web platforms.
+DatabaseConnection openCacheConnection() {
+  return DatabaseConnection.delayed(
+    Future(() async {
+      final result = await WasmDatabase.open(
+        databaseName: 'dorar_hadith_cache_db',
+        sqlite3Uri: Uri.parse('sqlite3.wasm'),
+        driftWorkerUri: Uri.parse('drift_worker.dart.js'),
+      );
+      return result.resolvedExecutor;
+    }),
+  );
+}
+
 /// Opens a connection to the bundled rawi.db for web platforms using Drift's
 /// WebAssembly backend.
 ///
