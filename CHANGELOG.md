@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project adheres to Semantic Versioning.
 
+## 0.3.0
+- **New Feature**: Implemented a persistent caching system using Drift (SQLite).
+    - Replaced the in-memory cache with a robust, persistent database (`cache.db`).
+    - Supports native platforms (Windows, Linux, macOS, Android, iOS) using `sqlite3`.
+    - Supports Web using `sqlite3.wasm` (requires `sqlite3.wasm` and `drift_worker.dart.js` in web root).
+- **Improvement**: Enhanced `CacheService` to handle complex objects and metadata efficiently.
+- **Internal**: Refactored database connection logic to support multiple databases (`rawi.db` and `cache.db`) seamlessly across platforms.
+
 ## 0.2.0
 - Added the richer `DetailedHadith`/`ExplainedHadith` layers plus the unified
 	`hukm` getter so consumers no longer juggle `grade` vs `explainGrade` when

@@ -787,16 +787,22 @@ print(SearchZone.qudsi.toQueryParam()); // "1"
 ```dart
 final client = DorarClient(
   timeout: Duration(seconds: 15),       // مهلة الطلبات (افتراضي: 15 ثواني)
-  enableCache: true,                    // تفعيل الكاش (افتراضي: true)
-  cacheTtl: Duration(hours: 24),       // مدة بقاء الكاش (افتراضي: 24 ساعة)
+  // التخزين المؤقت (Cache) مفعل افتراضيًا باستخدام قاعدة بيانات SQLite دائمة
+  // (cache.db على الأنظمة الأصلية، و WebAssembly على الويب)
 );
 ```
+
+### التخزين المؤقت الدائم (Persistent Caching)
+
+تستخدم المكتبة الآن قاعدة بيانات SQLite دائمة (`cache.db`) لحفظ النتائج.
+- **الأنظمة الأصلية (Native)**: يتم إنشاء قاعدة البيانات في مجلد العمل الحالي (CLI) أو مجلد مستندات التطبيق (Flutter).
+- **الويب (Web)**: تستخدم `sqlite3.wasm` للتخزين الدائم في المتصفح.
 
 ### إدارة الكاش
 
 ```dart
 // الحصول على إحصائيات الكاش
-final stats = client.getCacheStats();
+final stats = await client.getCacheStats();
 print('إجمالي العناصر: ${stats.totalEntries}');
 print('العناصر الصالحة: ${stats.validEntries}');
 print('معدل الإصابة: ${(stats.hitRate * 100).toStringAsFixed(1)}%');

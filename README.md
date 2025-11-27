@@ -781,16 +781,20 @@ print(SearchZone.qudsi.toQueryParam()); // "1"
 ```dart
 final client = DorarClient(
   timeout: Duration(seconds: 15),       // Request timeout (default: 15s)
-  enableCache: true,                    // Enable cache (default: true)
-  cacheTtl: Duration(hours: 24),       // Cache TTL (default: 24h)
+  // Caching is enabled by default using a persistent SQLite database
+  // (cache.db on native, WebAssembly on web)
 );
 ```
 
-### Cache Management
+### Persistent Caching
+
+The library now uses a persistent SQLite database (`cache.db`) to store results.
+- **Native Platforms**: The database is created in the current working directory (CLI) or application documents directory (Flutter).
+- **Web**: Uses `sqlite3.wasm` for persistent storage in the browser.
 
 ```dart
 // Cache stats
-final stats = client.getCacheStats();
+final stats = await client.getCacheStats();
 print('Total entries: ${stats.totalEntries}');
 print('Valid entries: ${stats.validEntries}');
 print('Hit rate: ${(stats.hitRate * 100).toStringAsFixed(1)}%');
