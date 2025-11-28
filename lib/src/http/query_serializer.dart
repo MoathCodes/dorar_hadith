@@ -77,6 +77,8 @@ class QuerySerializer {
     if (params.rawi != null && params.rawi!.isNotEmpty) {
       queryParams['rawi'] = params.rawi!.map((r) => r.id).toList();
     }
+    // Remove HTML flag - same for both
+    queryParams['removeHTML'] = params.removeHtml ? '1' : '0';
 
     return queryParams;
   }
