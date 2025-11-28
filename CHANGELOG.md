@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project adheres to Semantic Versioning.
 
+## 0.3.1
+- Fixed a bug with the cache system where the removeHtml parameter doesn't effect the cache 
+
 ## 0.3.0
 - **New Feature**: Implemented a persistent caching system using Drift (SQLite).
     - Replaced the in-memory cache with a robust, persistent database (`cache.db`).
