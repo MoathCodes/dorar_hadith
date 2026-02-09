@@ -18,7 +18,9 @@
 - البحث عن الأحاديث بسرعة مع إمكانية الفلترة بحسب الراوي، الكتاب، الصحة، الراوي والمزيد.
 - الحصول على بيانات تفصيلة للحديث.
 - إمكانية البحث والحصول على الشرح للأحاديث.
+- البحث عن جميع الشروح المتاحة بنص البحث.
 - البحث عن الأحاديث المشابه او البديل الصحيح.
+- التصنيف الموضوعي للأحاديث في نتائج البحث المفصل.
 - البحث في الكتب، والرواة والمحديثين المتوفرين لفلترة النتائج بدون اتصال بالإنترنت.
 
 ### إمكانيات البحث
@@ -143,14 +145,20 @@ print('Grade: ${hadith.hukm}');
 ```dart
 // الحصول على حديث مشابه
 final similar = await client.hadith.getSimilar('12345');
+// أو استخدام الاختصار
+final sameSimilar = await client.getSimilarHadith('12345');
 
 // الحصول على البديل الصحيح
 final alternate = await client.hadith.getAlternate('12345');
+// أو استخدام الاختصار
+final sameAlternate = await client.getAlternateHadith('12345');
 
 // الحصول على الأصول
 final usul = await client.hadith.getUsul('12345');
 print('Main hadith: ${usul.hadith.hadith}');
 print('Sources: ${usul.count}');
+// أو استخدام الاختصار
+final sameUsul = await client.getUsulHadith('12345');
 ```
 
 ### البحث عن الشرح
@@ -162,6 +170,16 @@ final sharh = await client.sharh.getById('789');
 
 // البحث بنص الشرح
 final sharhByText = await client.sharh.getByText('إنما الأعمال بالنيات');
+// أو استخدام الاختصار
+final sameSharh = await client.getSharhByText('إنما الأعمال بالنيات');
+
+// البحث عن جميع الشروح المتاحة بنص البحث
+final sharhResults = await client.searchSharh(
+  HadithSearchParams(value: 'الصلاة'),
+);
+for (var s in sharhResults.data) {
+  print('الشرح: ${s.sharhText}');
+}
 ```
 
 ### بيانات المرجعية (لا تحتاج إلى اتصال بالشبكة)
@@ -302,6 +320,7 @@ class DetailedHadith extends Hadith {
   final String? bookId;                 // معرف الكتاب
   final String? explainGrade;           // الحكم التفصيلي (من البحث المفصل)
   final String? takhrij;                // التخريج والمصادر الأخرى
+  final List<HadithCategory> categories; // التصنيف الموضوعي للحديث
   final bool hasSimilarHadith;          // هل يوجد أحاديث مشابهة؟
   final bool hasAlternateHadithSahih;   // هل يوجد بديل صحيح؟
   final bool hasUsulHadith;             // هل يوجد أصول للحديث؟
@@ -368,6 +387,33 @@ class SharhMetadata {
   final String id;                  // معرف الشرح
   final bool isContainSharh;        // هل يحتوي على نص الشرح؟
   final String? sharh;              // نص الشرح (إن وجد)
+}
+```
+
+### التصنيف الموضوعي (HadithCategory)
+
+يمثل التصنيف الموضوعي المستخرج من نتائج البحث في موقع الدرر السنية. كل `DetailedHadith` قد يحتوي على تصنيفات موضوعية متعددة أو لا يحتوي على أي منها.
+
+```dart
+class HadithCategory {
+  final String id;                  // معرف التصنيف (مستخرج من الرابط)
+  final String name;                // اسم التصنيف بالعربية
+}
+```
+
+**استخدام:**
+```dart
+final results = await client.searchHadithDetailed(
+  HadithSearchParams(value: 'الصلاة'),
+);
+
+for (var hadith in results.data) {
+  if (hadith.categories.isNotEmpty) {
+    print('التصنيفات:');
+    for (var cat in hadith.categories) {
+      print('  - ${cat.name} (${cat.id})');
+    }
+  }
 }
 ```
 
@@ -551,7 +597,12 @@ print('عدد المصادر: ${usulResponse.data.count}');
 ```dart
 class SearchMetadata {
   final int length;                      // عدد النتائج المُرجعة
+  final int? currentPageCount;           // عدد النتائج في هذه الصفحة
+  final int? total;                      // إجمالي النتائج عبر جميع الصفحات
   final int? page;                       // رقم الصفحة الحالية
+  final int? totalPages;                 // إجمالي عدد الصفحات
+  final bool? hasNextPage;               // هل يوجد صفحة تالية؟
+  final bool? hasPrevPage;               // هل يوجد صفحة سابقة؟
   final bool? removeHtml;                // هل تم إزالة وسوم HTML؟
   final bool? specialist;                // هل تشمل الأحاديث المتخصصة؟
   final int? numberOfNonSpecialist;      // عدد الأحاديث غير المتخصصة
@@ -573,8 +624,13 @@ if (meta.isCached) {
   print('النتيجة من الكاش - سريعة!');
 }
 
-print('الصفحة ${meta.page} من أصل ???');
-print('النتائج: ${meta.length}');
+print('الصفحة ${meta.page} من أصل ${meta.totalPages}');
+print('إجمالي النتائج: ${meta.total}');
+print('نتائج هذه الصفحة: ${meta.currentPageCount}');
+
+if (meta.hasNextPage == true) {
+  print('يوجد نتائج إضافية في الصفحة التالية');
+}
 ```
 
 ### معايير البحث (HadithSearchParams)
@@ -1037,7 +1093,16 @@ if (hadith.hasSharhMetadata && hadith.sharhMetadata != null) {
   }
 }
 
-// 3. مسح الكاش
+// 3. البحث عن جميع الشروح المتاحة بنص البحث
+final sharhResults = await client.searchSharh(
+  HadithSearchParams(value: 'الصلاة'),
+);
+for (var s in sharhResults.data) {
+  print('الحديث: ${s.hadith}');
+  print('الشرح: ${s.sharhText}');
+}
+
+// 4. مسح الكاش
 client.sharh.clearCache();
 ```
 

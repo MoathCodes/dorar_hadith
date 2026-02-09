@@ -19,5 +19,5 @@ Map<String, dynamic> _$ApiResponseToJson<T>(
   Object? Function(T value) toJsonT,
 ) => <String, dynamic>{
   'data': toJsonT(instance.data),
-  'metadata': instance.metadata,
+  'metadata': instance.metadata.toJson(),
 };

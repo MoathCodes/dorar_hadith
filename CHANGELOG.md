@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project adheres to Semantic Versioning.
 
+## 0.4.0
+
+### New Features
+- **Sharh search**: Added `SharhService.search()` and `DorarClient.searchSharh()` to search for all available sharh (explanations) matching a query, matching the Node.js `getAllSharhUsingSiteDorar` endpoint.
+- **Hadith categories**: `DetailedHadith` now includes thematic categories (التصنيف الموضوعي) parsed from Dorar.net search results via a new `HadithCategory` model.
+- **Pagination metadata**: `SearchMetadata` now exposes `currentPageCount`, `total`, `totalPages`, `hasNextPage`, and `hasPrevPage` for both API and site search endpoints.
+- **Convenience methods**: Added `getSimilarHadith()`, `getAlternateHadith()`, `getUsulHadith()`, `getSharhByText()`, and `searchSharh()` directly on `DorarClient` for quicker access.
+
+### Fixes
+- **Query serialization**: `removeHtml` and `specialist` are no longer sent upstream to Dorar.net, matching the Node.js middleware behavior that strips them before forwarding.
+- **Grade fallback**: When `grade` is empty but `explainGrade` has a value, the parser now copies `explainGrade` to `grade`, matching the Node.js fallback behavior.
+- **JSON serialization**: Fixed `toJson()` on nested Freezed objects (`ApiResponse`, `Sharh`, `DetailedHadith`) to properly call `.toJson()` on child models via `explicit_to_json: true`.
+
+### Documentation
+- Updated README (EN/AR) with examples for sharh search, convenience methods, categories, and expanded pagination metadata.
+
 ## 0.3.1
 - Fixed a bug with the cache system where the removeHtml parameter doesn't effect the cache 
 

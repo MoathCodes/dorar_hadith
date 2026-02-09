@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'hadith_category.dart';
 import 'sharh_metadata.dart';
 
 part 'hadith.freezed.dart';
@@ -20,6 +21,8 @@ abstract class DetailedHadith with _$DetailedHadith, HadithBase {
     String? explainGrade,
     String? takhrij,
     String? hadithId,
+    /// Thematic categories (التصنيف الموضوعي) for this hadith.
+    @Default([]) List<HadithCategory> categories,
     @Default(false) bool hasSimilarHadith,
     @Default(false) bool hasAlternateHadithSahih,
     @Default(false) bool hasUsulHadith,

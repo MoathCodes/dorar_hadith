@@ -10,8 +10,23 @@ abstract class SearchMetadata with _$SearchMetadata {
     /// Number of results returned
     @Default(0) int length,
 
+    /// Number of results on this page (same as length for consistency with Node.js API)
+    int? currentPageCount,
+
+    /// Total number of results across all pages (site endpoint only)
+    int? total,
+
     /// Current page number
     int? page,
+
+    /// Total number of pages (site endpoint only)
+    int? totalPages,
+
+    /// Whether there is a next page
+    bool? hasNextPage,
+
+    /// Whether there is a previous page
+    bool? hasPrevPage,
 
     /// Whether HTML tags were removed from results
     @JsonKey(name: 'removeHTML') bool? removeHtml,

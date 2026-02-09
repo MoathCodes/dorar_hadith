@@ -8,3 +8,7 @@ pubspec.lock
 
 
 .obsidian/
+
+cache.db
+# used as a reference https://github.com/AhmedElTabarani/dorar-hadith-api
+dorar-hadith-api-main

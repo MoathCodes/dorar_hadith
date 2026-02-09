@@ -8,6 +8,7 @@ import '../http/query_serializer.dart';
 import '../models/api_response.dart';
 import '../models/cache_entry.dart';
 import '../models/hadith.dart';
+import '../models/hadith_category.dart';
 import '../models/search_metadata.dart';
 import '../models/search_params.dart';
 import '../models/sharh_metadata.dart';
@@ -22,6 +23,12 @@ import 'cache_service.dart';
 
 /// Service for searching and retrieving hadiths from Dorar.net.
 class HadithService {
+  /// Page size returned by the Dorar API endpoint (~15 results per page).
+  static const int apiPageSize = 15;
+
+  /// Page size returned by the Dorar site endpoint (~30 results per page).
+  static const int sitePageSize = 30;
+
   final DorarHttpClient _client;
   final CacheService _cache;
 
@@ -410,11 +417,19 @@ class HadithService {
       );
     }
 
+    // Calculate pagination metadata (limited - API doesn't provide total count)
+    final currentPage = params.page;
+    final hasNextPage = hadiths.length == apiPageSize;
+    final hasPrevPage = currentPage > 1;
+
     final result = ApiResponse<List<Hadith>>(
       data: hadiths,
       metadata: SearchMetadata(
         length: hadiths.length,
-        page: params.page,
+        currentPageCount: hadiths.length,
+        page: currentPage,
+        hasNextPage: hasNextPage,
+        hasPrevPage: hasPrevPage,
         removeHtml: params.removeHtml,
         isCached: false,
       ),
@@ -521,11 +536,25 @@ class HadithService {
       }
     }
 
+    // Calculate pagination metadata
+    final currentPage = params.page;
+    final total =
+        params.specialist ? numberOfSpecialist : numberOfNonSpecialist;
+    final totalPages =
+        total > 0 ? (total / sitePageSize).ceil() : 0;
+    final hasNextPage = currentPage < totalPages;
+    final hasPrevPage = currentPage > 1;
+
     final result = ApiResponse<List<DetailedHadith>>(
       data: hadiths,
       metadata: SearchMetadata(
         length: hadiths.length,
-        page: params.page,
+        currentPageCount: hadiths.length,
+        total: total,
+        page: currentPage,
+        totalPages: totalPages,
+        hasNextPage: hasNextPage,
+        hasPrevPage: hasPrevPage,
         removeHtml: params.removeHtml,
         specialist: params.specialist,
         numberOfNonSpecialist: numberOfNonSpecialist,
@@ -585,6 +614,7 @@ class HadithService {
     final similarUrl = HadithParser.getSimilarHadithUrl(borderElement);
     final alternateUrl = HadithParser.getAlternateHadithUrl(borderElement);
     final usulUrl = HadithParser.getUsulHadithUrl(borderElement);
+    final categories = HadithParser.parseHadithCategories(borderElement);
 
     return DetailedHadith(
       hadith: hadithText,
@@ -598,6 +628,7 @@ class HadithService {
       explainGrade: parsedInfo.explainGrade,
       takhrij: parsedInfo.takhrij,
       hadithId: hadithId,
+      categories: categories,
       hasSimilarHadith: similarUrl != null,
       hasAlternateHadithSahih: alternateUrl != null,
       hasUsulHadith: includeUsulFlag || usulUrl != null,

@@ -14,6 +14,6 @@ _Sharh _$SharhFromJson(Map<String, dynamic> json) => _Sharh(
 );
 
 Map<String, dynamic> _$SharhToJson(_Sharh instance) => <String, dynamic>{
-  'hadith': instance.hadith,
-  'sharhMetadata': instance.sharhMetadata,
+  'hadith': instance.hadith.toJson(),
+  'sharhMetadata': instance.sharhMetadata?.toJson(),
 };

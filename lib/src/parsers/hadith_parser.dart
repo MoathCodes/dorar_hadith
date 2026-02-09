@@ -1,9 +1,11 @@
 import 'package:html/dom.dart' as dom;
 
+import '../models/hadith_category.dart';
+
 /// Utilities for parsing hadith information from HTML DOM elements.
 ///
 /// This replicates the parsing logic from the Node.js version's
-/// `parseHadithInfo.js` file, using the same selectors and logic.
+/// `parseHadithInfo.js` and `parseHadithCategories.js` files.
 class HadithParser {
   HadithParser._();
 
@@ -38,6 +40,31 @@ class HadithParser {
   static String? getUsulHadithUrl(dom.Element element) {
     final anchor = element.querySelector('a[href\$="?osoul=1"]');
     return anchor?.attributes['href'];
+  }
+
+  /// Parse thematic categories (التصنيف الموضوعي) from a hadith block.
+  ///
+  /// Extracts category links matching `/hadith-category/cat/{id}` pattern.
+  /// This matches the Node.js `parseHadithCategories()` function.
+  ///
+  /// Returns a list of [HadithCategory] with id and name.
+  static List<HadithCategory> parseHadithCategories(dom.Element container) {
+    final links =
+        container.querySelectorAll('a[href*="/hadith-category/cat/"]');
+    final categories = <HadithCategory>[];
+
+    for (final link in links) {
+      final href = link.attributes['href'] ?? '';
+      final match =
+          RegExp(r'/hadith-category/cat/([^/?#]+)').firstMatch(href);
+      final id = match?.group(1)?.trim();
+      final name = link.text.trim();
+      if (id != null && id.isNotEmpty && name.isNotEmpty) {
+        categories.add(HadithCategory(id: id, name: name));
+      }
+    }
+
+    return categories;
   }
 
   /// Parse hadith metadata from a DOM element.
@@ -119,6 +146,13 @@ class HadithParser {
       if (sharhId != null && sharhId != '0') {
         result.sharhId = sharhId;
       }
+    }
+
+    // If grade is empty but explainGrade has a value, use explainGrade for grade.
+    // This is because dorar.net only shows "خلاصة حكم المحدث" (explainGrade)
+    // in some search results. Matches the Node.js fallback behavior.
+    if (result.grade.isEmpty && result.explainGrade.isNotEmpty) {
+      result.grade = result.explainGrade;
     }
 
     return result;

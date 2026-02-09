@@ -77,8 +77,11 @@ class QuerySerializer {
     if (params.rawi != null && params.rawi!.isNotEmpty) {
       queryParams['rawi'] = params.rawi!.map((r) => r.id).toList();
     }
-    // Remove HTML flag - same for both
-    queryParams['removeHTML'] = params.removeHtml ? '1' : '0';
+
+    // Note: removeHTML and specialist are NOT sent to Dorar.net upstream.
+    // They are local-only parameters that control how the Dart package
+    // processes the response (matching the Node.js middleware behavior
+    // which strips them from req.query before forwarding).
 
     return queryParams;
   }

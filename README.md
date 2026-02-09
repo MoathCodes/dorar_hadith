@@ -18,7 +18,9 @@ Works with any Dart program without requiring Flutter.
 - Fast hadith search with filters by narrator, book, grade, hadith scholar (mohdith), and more
 - Retrieve detailed hadith information
 - Search and fetch hadith explanations (Sharh)
+- Search for all available sharh by query
 - Find similar hadiths and alternate sahih versions
+- Thematic categories (التصنيف الموضوعي) on detailed hadith results
 - Offline browsing for books, narrators, and hadith scholars (mohdith) used for filtering
 
 ### Search Capabilities
@@ -143,14 +145,20 @@ Note: The `DetailedHadith` model has flags to check availability:
 ```dart
 // Get similar
 final similar = await client.hadith.getSimilar('12345');
+// Or use the convenience method
+final sameSimilar = await client.getSimilarHadith('12345');
 
 // Get alternate sahih
 final alternate = await client.hadith.getAlternate('12345');
+// Or use the convenience method
+final sameAlternate = await client.getAlternateHadith('12345');
 
 // Get sources
 final usul = await client.hadith.getUsul('12345');
 print('Main hadith: ${usul.hadith.hadith}');
 print('Sources: ${usul.count}');
+// Or use the convenience method
+final sameUsul = await client.getUsulHadith('12345');
 ```
 
 ### Search for Sharh (Explanation)
@@ -162,6 +170,16 @@ final sharh = await client.sharh.getById('789');
 
 // Search by sharh text
 final sharhByText = await client.sharh.getByText('إنما الأعمال بالنيات');
+// Or use the convenience method
+final sameSharh = await client.getSharhByText('إنما الأعمال بالنيات');
+
+// Search for all available sharh matching a query
+final sharhResults = await client.searchSharh(
+  HadithSearchParams(value: 'الصلاة'),
+);
+for (var s in sharhResults.data) {
+  print('Sharh: ${s.sharhText}');
+}
 ```
 
 ### Reference Data (Offline)
@@ -301,6 +319,7 @@ class DetailedHadith extends Hadith {
   final String? bookId;             // Book ID
   final String? explainGrade;       // Verdict text (detailed search)
   final String? takhrij;            // Takhrij / additional sources
+  final List<HadithCategory> categories; // Thematic categories (التصنيف الموضوعي)
   final bool hasSimilarHadith;      // Similar narrations exist?
   final bool hasAlternateHadithSahih; // Alternate sahih available?
   final bool hasUsulHadith;         // Usul (sources) available?
@@ -364,6 +383,33 @@ class SharhMetadata {
   final String id;                  // Sharh ID
   final bool isContainSharh;        // Whether sharh text is included
   final String? sharh;              // Sharh text (if any)
+}
+```
+
+### HadithCategory
+
+Represents a thematic category (التصنيف الموضوعي) extracted from Dorar.net search results. Each `DetailedHadith` may have zero or more categories.
+
+```dart
+class HadithCategory {
+  final String id;                  // Category ID (hash from URL)
+  final String name;                // Arabic category name
+}
+```
+
+Usage:
+```dart
+final results = await client.searchHadithDetailed(
+  HadithSearchParams(value: 'الصلاة'),
+);
+
+for (var hadith in results.data) {
+  if (hadith.categories.isNotEmpty) {
+    print('Categories:');
+    for (var cat in hadith.categories) {
+      print('  - ${cat.name} (${cat.id})');
+    }
+  }
 }
 ```
 
@@ -547,7 +593,12 @@ Additional info about a search result.
 ```dart
 class SearchMetadata {
   final int length;                      // Number of returned results
+  final int? currentPageCount;           // Number of results on this page
+  final int? total;                      // Total results across all pages
   final int? page;                       // Current page number
+  final int? totalPages;                 // Total number of pages
+  final bool? hasNextPage;               // Whether there is a next page
+  final bool? hasPrevPage;               // Whether there is a previous page
   final bool? removeHtml;                // Whether HTML tags were removed
   final bool? specialist;                // Include specialist hadiths?
   final int? numberOfNonSpecialist;      // Non-specialist count
@@ -569,8 +620,13 @@ if (meta.isCached) {
   print('Result is from cache - fast!');
 }
 
-print('Page ${meta.page} of ???');
-print('Results: ${meta.length}');
+print('Page ${meta.page} of ${meta.totalPages}');
+print('Total results: ${meta.total}');
+print('Results on this page: ${meta.currentPageCount}');
+
+if (meta.hasNextPage == true) {
+  print('More results available on the next page');
+}
 ```
 
 ### HadithSearchParams
@@ -1025,7 +1081,16 @@ if (hadith.hasSharhMetadata && hadith.sharhMetadata != null) {
   }
 }
 
-// 3. Clear cache
+// 3. Search for all sharh matching a query
+final sharhResults = await client.searchSharh(
+  HadithSearchParams(value: 'الصلاة'),
+);
+for (var s in sharhResults.data) {
+  print('Hadith: ${s.hadith}');
+  print('Sharh: ${s.sharhText}');
+}
+
+// 4. Clear cache
 client.sharh.clearCache();
 ```
 

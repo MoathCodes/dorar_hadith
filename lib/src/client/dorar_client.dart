@@ -7,6 +7,7 @@ import '../models/mohdith_item.dart';
 import '../models/rawi_item.dart';
 import '../models/search_params.dart';
 import '../models/sharh.dart';
+import '../models/usul_hadith.dart';
 import '../services/book_reference_service.dart';
 import '../services/book_service.dart';
 import '../services/cache_service.dart';
@@ -172,6 +173,57 @@ class DorarClient {
   Future<DetailedHadith> getHadithById(String hadithId) =>
       hadith.getById(hadithId);
 
+  /// Get similar hadiths by hadith ID.
+  ///
+  /// This is a convenience method that delegates to [HadithService.getSimilar].
+  ///
+  /// [hadithId] - The hadith ID to find similar hadiths for.
+  ///
+  /// Returns a list of [DetailedHadith] objects.
+  ///
+  /// Example:
+  /// ```dart
+  /// final similar = await client.getSimilarHadith('12345');
+  /// for (var h in similar) {
+  ///   print(h.hadith);
+  /// }
+  /// ```
+  Future<List<DetailedHadith>> getSimilarHadith(String hadithId) =>
+      hadith.getSimilar(hadithId);
+
+  /// Get the alternate sahih version of a hadith.
+  ///
+  /// This is a convenience method that delegates to [HadithService.getAlternate].
+  ///
+  /// [hadithId] - The hadith ID to find an alternate for.
+  ///
+  /// Returns a [DetailedHadith] or null if none exists.
+  ///
+  /// Example:
+  /// ```dart
+  /// final alt = await client.getAlternateHadith('12345');
+  /// if (alt != null) print(alt.hadith);
+  /// ```
+  Future<DetailedHadith?> getAlternateHadith(String hadithId) =>
+      hadith.getAlternate(hadithId);
+
+  /// Get usul (source chains) for a hadith.
+  ///
+  /// This is a convenience method that delegates to [HadithService.getUsul].
+  ///
+  /// [hadithId] - The hadith ID to find sources for.
+  ///
+  /// Returns an [ApiResponse] wrapping [UsulHadith] with the main hadith
+  /// and all its source chains.
+  ///
+  /// Example:
+  /// ```dart
+  /// final result = await client.getUsulHadith('12345');
+  /// print('Sources: ${result.data.count}');
+  /// ```
+  Future<ApiResponse<UsulHadith>> getUsulHadith(String hadithId) =>
+      hadith.getUsul(hadithId);
+
   /// Get a specific sharh by its ID.
   ///
   /// This is a convenience method that delegates to [SharhService.getById].
@@ -186,6 +238,42 @@ class DorarClient {
   /// print(sharh.text);
   /// ```
   Future<Sharh> getSharhById(String sharhId) => sharh.getById(sharhId);
+
+  /// Get a sharh by searching for hadith text.
+  ///
+  /// This is a convenience method that delegates to [SharhService.getByText].
+  ///
+  /// [text] - The hadith text to search for.
+  /// [specialist] - Whether to search in specialist hadiths (default: false).
+  ///
+  /// Returns a [Sharh] object with the first matching sharh.
+  ///
+  /// Example:
+  /// ```dart
+  /// final sharh = await client.getSharhByText('إنما الأعمال بالنيات');
+  /// print(sharh.sharhText);
+  /// ```
+  Future<Sharh> getSharhByText(
+    String text, {
+    bool specialist = false,
+  }) => sharh.getByText(text, specialist: specialist);
+
+  /// Search for all sharh matching a query.
+  ///
+  /// This is a convenience method that delegates to [SharhService.search].
+  ///
+  /// [params] - Search parameters (text, page, specialist, etc.)
+  ///
+  /// Returns an [ApiResponse] containing a list of [Sharh] objects.
+  ///
+  /// Example:
+  /// ```dart
+  /// final results = await client.searchSharh(
+  ///   HadithSearchParams(value: 'الصلاة'),
+  /// );
+  /// ```
+  Future<ApiResponse<List<Sharh>>> searchSharh(HadithSearchParams params) =>
+      sharh.search(params);
 
   /// Search for books by name (lightweight, offline).
   ///

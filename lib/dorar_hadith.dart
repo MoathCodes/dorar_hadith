@@ -67,6 +67,7 @@ export 'src/models/book.dart';
 // Models - Reference Models (lightweight browsing)
 export 'src/models/book_item.dart';
 export 'src/models/hadith.dart';
+export 'src/models/hadith_category.dart';
 export 'src/models/mohdith.dart';
 export 'src/models/mohdith_item.dart';
 export 'src/models/rawi_item.dart';

@@ -2,8 +2,12 @@ import 'dart:convert';
 
 import '../http/endpoints.dart';
 import '../http/http_client.dart';
+import '../http/query_serializer.dart';
+import '../models/api_response.dart';
 import '../models/cache_entry.dart';
 import '../models/hadith.dart';
+import '../models/search_metadata.dart';
+import '../models/search_params.dart';
 import '../models/sharh.dart';
 import '../models/sharh_metadata.dart';
 import '../parsers/html_helper.dart';
@@ -105,6 +109,124 @@ class SharhService {
         header: '',
         createdAt: DateTime.now(),
 
+        expiresAt: DateTime.now().add(const Duration(days: 7)),
+      ),
+    );
+
+    return result;
+  }
+
+  /// Search for all sharh matching a query.
+  ///
+  /// Searches for hadiths, extracts all sharh IDs from the results,
+  /// then fetches each sharh individually. This matches the Node.js
+  /// `getAllSharhUsingSiteDorar` endpoint behavior.
+  ///
+  /// [params] - Search parameters (text, page, specialist, etc.)
+  ///
+  /// Returns an [ApiResponse] containing a list of [Sharh] objects.
+  ///
+  /// Example:
+  /// ```dart
+  /// final results = await sharhService.search(
+  ///   HadithSearchParams(value: 'الصلاة', page: 1),
+  /// );
+  /// for (var sharh in results.data) {
+  ///   print('${sharh.hadithText} - ${sharh.sharhText}');
+  /// }
+  /// ```
+  Future<ApiResponse<List<Sharh>>> search(
+    HadithSearchParams params,
+  ) async {
+    Validators.validateSearchText(params.value);
+    Validators.validatePage(params.page);
+
+    final queryParams = QuerySerializer.serializeHadithParams(
+      params,
+      isApiEndpoint: false,
+    );
+    final url = DorarEndpoints.sharhSearch(
+      queryParams,
+      specialist: params.specialist,
+    );
+
+    // Return cached if available
+    final cached = await _cache.get(url);
+    if (cached != null) {
+      final response = ApiResponse<List<Sharh>>.fromJson(
+        jsonDecode(cached.body),
+        (json) => (json as List<dynamic>)
+            .map((e) => Sharh.fromJson(e as Map<String, dynamic>))
+            .toList(),
+      );
+      return response.copyWith(
+        metadata: response.metadata.copyWith(isCached: true),
+      );
+    }
+
+    final html = await _client.getHtml(url);
+    final doc = HtmlHelper.parseHtml(html);
+
+    final tabName = params.specialist ? 'specialist' : 'home';
+    final tabElement = doc.querySelector('#$tabName');
+    if (tabElement == null) {
+      throw const DorarServerException(
+        'Invalid response structure from Dorar',
+        statusCode: 502,
+      );
+    }
+
+    // Extract all sharh IDs from search results
+    final sharhIds = SharhParser.extractSharhIds(doc, tabName);
+
+    if (sharhIds.isEmpty) {
+      final result = ApiResponse<List<Sharh>>(
+        data: [],
+        metadata: SearchMetadata(
+          length: 0,
+          page: params.page,
+          removeHtml: params.removeHtml,
+          specialist: params.specialist,
+          isCached: false,
+        ),
+      );
+      return result;
+    }
+
+    // Fetch each sharh individually
+    final sharhList = <Sharh>[];
+    for (final sharhId in sharhIds) {
+      try {
+        final sharh = await _getSharhById(
+          sharhId,
+          removeHtml: params.removeHtml,
+        );
+        sharhList.add(sharh);
+      } catch (_) {
+        // Skip sharh that can't be fetched
+        continue;
+      }
+    }
+
+    final result = ApiResponse<List<Sharh>>(
+      data: sharhList,
+      metadata: SearchMetadata(
+        length: sharhList.length,
+        page: params.page,
+        removeHtml: params.removeHtml,
+        specialist: params.specialist,
+        isCached: false,
+      ),
+    );
+
+    await _cache.set(
+      CacheEntry(
+        key: url,
+        body: jsonEncode(
+          result.toJson((data) => data.map((e) => e.toJson()).toList()),
+        ),
+        header: '',
+        createdAt: DateTime.now(),
         expiresAt: DateTime.now().add(const Duration(days: 7)),
       ),
     );

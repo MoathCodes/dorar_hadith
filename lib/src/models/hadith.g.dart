@@ -20,6 +20,11 @@ _DetailedHadith _$DetailedHadithFromJson(
   explainGrade: json['explainGrade'] as String?,
   takhrij: json['takhrij'] as String?,
   hadithId: json['hadithId'] as String?,
+  categories:
+      (json['categories'] as List<dynamic>?)
+          ?.map((e) => HadithCategory.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const [],
   hasSimilarHadith: json['hasSimilarHadith'] as bool? ?? false,
   hasAlternateHadithSahih: json['hasAlternateHadithSahih'] as bool? ?? false,
   hasUsulHadith: json['hasUsulHadith'] as bool? ?? false,
@@ -45,6 +50,7 @@ Map<String, dynamic> _$DetailedHadithToJson(_DetailedHadith instance) =>
       'explainGrade': instance.explainGrade,
       'takhrij': instance.takhrij,
       'hadithId': instance.hadithId,
+      'categories': instance.categories.map((e) => e.toJson()).toList(),
       'hasSimilarHadith': instance.hasSimilarHadith,
       'hasAlternateHadithSahih': instance.hasAlternateHadithSahih,
       'hasUsulHadith': instance.hasUsulHadith,
@@ -52,7 +58,7 @@ Map<String, dynamic> _$DetailedHadithToJson(_DetailedHadith instance) =>
       'alternateHadithSahihDorar': instance.alternateHadithSahihDorar,
       'usulHadithDorar': instance.usulHadithDorar,
       'hasSharhMetadata': instance.hasSharhMetadata,
-      'sharhMetadata': instance.sharhMetadata,
+      'sharhMetadata': instance.sharhMetadata?.toJson(),
     };
 
 _ExplainedHadith _$ExplainedHadithFromJson(Map<String, dynamic> json) =>

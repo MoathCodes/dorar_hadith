@@ -16,8 +16,13 @@ T _$identity<T>(T value) => value;
 mixin _$SearchMetadata {
 
 /// Number of results returned
- int get length;/// Current page number
- int? get page;/// Whether HTML tags were removed from results
+ int get length;/// Number of results on this page (same as length for consistency with Node.js API)
+ int? get currentPageCount;/// Total number of results across all pages (site endpoint only)
+ int? get total;/// Current page number
+ int? get page;/// Total number of pages (site endpoint only)
+ int? get totalPages;/// Whether there is a next page
+ bool? get hasNextPage;/// Whether there is a previous page
+ bool? get hasPrevPage;/// Whether HTML tags were removed from results
 @JsonKey(name: 'removeHTML') bool? get removeHtml;/// Whether specialist/advanced hadiths are included
  bool? get specialist;/// Number of non-specialist hadiths
  int? get numberOfNonSpecialist;/// Number of specialist hadiths
@@ -36,16 +41,16 @@ $SearchMetadataCopyWith<SearchMetadata> get copyWith => _$SearchMetadataCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SearchMetadata&&(identical(other.length, length) || other.length == length)&&(identical(other.page, page) || other.page == page)&&(identical(other.removeHtml, removeHtml) || other.removeHtml == removeHtml)&&(identical(other.specialist, specialist) || other.specialist == specialist)&&(identical(other.numberOfNonSpecialist, numberOfNonSpecialist) || other.numberOfNonSpecialist == numberOfNonSpecialist)&&(identical(other.numberOfSpecialist, numberOfSpecialist) || other.numberOfSpecialist == numberOfSpecialist)&&(identical(other.isCached, isCached) || other.isCached == isCached)&&(identical(other.usulSourcesCount, usulSourcesCount) || other.usulSourcesCount == usulSourcesCount));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SearchMetadata&&(identical(other.length, length) || other.length == length)&&(identical(other.currentPageCount, currentPageCount) || other.currentPageCount == currentPageCount)&&(identical(other.total, total) || other.total == total)&&(identical(other.page, page) || other.page == page)&&(identical(other.totalPages, totalPages) || other.totalPages == totalPages)&&(identical(other.hasNextPage, hasNextPage) || other.hasNextPage == hasNextPage)&&(identical(other.hasPrevPage, hasPrevPage) || other.hasPrevPage == hasPrevPage)&&(identical(other.removeHtml, removeHtml) || other.removeHtml == removeHtml)&&(identical(other.specialist, specialist) || other.specialist == specialist)&&(identical(other.numberOfNonSpecialist, numberOfNonSpecialist) || other.numberOfNonSpecialist == numberOfNonSpecialist)&&(identical(other.numberOfSpecialist, numberOfSpecialist) || other.numberOfSpecialist == numberOfSpecialist)&&(identical(other.isCached, isCached) || other.isCached == isCached)&&(identical(other.usulSourcesCount, usulSourcesCount) || other.usulSourcesCount == usulSourcesCount));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,length,page,removeHtml,specialist,numberOfNonSpecialist,numberOfSpecialist,isCached,usulSourcesCount);
+int get hashCode => Object.hash(runtimeType,length,currentPageCount,total,page,totalPages,hasNextPage,hasPrevPage,removeHtml,specialist,numberOfNonSpecialist,numberOfSpecialist,isCached,usulSourcesCount);
 
 @override
 String toString() {
-  return 'SearchMetadata(length: $length, page: $page, removeHtml: $removeHtml, specialist: $specialist, numberOfNonSpecialist: $numberOfNonSpecialist, numberOfSpecialist: $numberOfSpecialist, isCached: $isCached, usulSourcesCount: $usulSourcesCount)';
+  return 'SearchMetadata(length: $length, currentPageCount: $currentPageCount, total: $total, page: $page, totalPages: $totalPages, hasNextPage: $hasNextPage, hasPrevPage: $hasPrevPage, removeHtml: $removeHtml, specialist: $specialist, numberOfNonSpecialist: $numberOfNonSpecialist, numberOfSpecialist: $numberOfSpecialist, isCached: $isCached, usulSourcesCount: $usulSourcesCount)';
 }
 
 
@@ -56,7 +61,7 @@ abstract mixin class $SearchMetadataCopyWith<$Res>  {
   factory $SearchMetadataCopyWith(SearchMetadata value, $Res Function(SearchMetadata) _then) = _$SearchMetadataCopyWithImpl;
 @useResult
 $Res call({
- int length, int? page,@JsonKey(name: 'removeHTML') bool? removeHtml, bool? specialist, int? numberOfNonSpecialist, int? numberOfSpecialist, bool isCached, int? usulSourcesCount
+ int length, int? currentPageCount, int? total, int? page, int? totalPages, bool? hasNextPage, bool? hasPrevPage,@JsonKey(name: 'removeHTML') bool? removeHtml, bool? specialist, int? numberOfNonSpecialist, int? numberOfSpecialist, bool isCached, int? usulSourcesCount
 });
 
 
@@ -73,11 +78,16 @@ class _$SearchMetadataCopyWithImpl<$Res>
 
 /// Create a copy of SearchMetadata
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? length = null,Object? page = freezed,Object? removeHtml = freezed,Object? specialist = freezed,Object? numberOfNonSpecialist = freezed,Object? numberOfSpecialist = freezed,Object? isCached = null,Object? usulSourcesCount = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? length = null,Object? currentPageCount = freezed,Object? total = freezed,Object? page = freezed,Object? totalPages = freezed,Object? hasNextPage = freezed,Object? hasPrevPage = freezed,Object? removeHtml = freezed,Object? specialist = freezed,Object? numberOfNonSpecialist = freezed,Object? numberOfSpecialist = freezed,Object? isCached = null,Object? usulSourcesCount = freezed,}) {
   return _then(_self.copyWith(
 length: null == length ? _self.length : length // ignore: cast_nullable_to_non_nullable
-as int,page: freezed == page ? _self.page : page // ignore: cast_nullable_to_non_nullable
-as int?,removeHtml: freezed == removeHtml ? _self.removeHtml : removeHtml // ignore: cast_nullable_to_non_nullable
+as int,currentPageCount: freezed == currentPageCount ? _self.currentPageCount : currentPageCount // ignore: cast_nullable_to_non_nullable
+as int?,total: freezed == total ? _self.total : total // ignore: cast_nullable_to_non_nullable
+as int?,page: freezed == page ? _self.page : page // ignore: cast_nullable_to_non_nullable
+as int?,totalPages: freezed == totalPages ? _self.totalPages : totalPages // ignore: cast_nullable_to_non_nullable
+as int?,hasNextPage: freezed == hasNextPage ? _self.hasNextPage : hasNextPage // ignore: cast_nullable_to_non_nullable
+as bool?,hasPrevPage: freezed == hasPrevPage ? _self.hasPrevPage : hasPrevPage // ignore: cast_nullable_to_non_nullable
+as bool?,removeHtml: freezed == removeHtml ? _self.removeHtml : removeHtml // ignore: cast_nullable_to_non_nullable
 as bool?,specialist: freezed == specialist ? _self.specialist : specialist // ignore: cast_nullable_to_non_nullable
 as bool?,numberOfNonSpecialist: freezed == numberOfNonSpecialist ? _self.numberOfNonSpecialist : numberOfNonSpecialist // ignore: cast_nullable_to_non_nullable
 as int?,numberOfSpecialist: freezed == numberOfSpecialist ? _self.numberOfSpecialist : numberOfSpecialist // ignore: cast_nullable_to_non_nullable
@@ -168,10 +178,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int length,  int? page, @JsonKey(name: 'removeHTML')  bool? removeHtml,  bool? specialist,  int? numberOfNonSpecialist,  int? numberOfSpecialist,  bool isCached,  int? usulSourcesCount)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int length,  int? currentPageCount,  int? total,  int? page,  int? totalPages,  bool? hasNextPage,  bool? hasPrevPage, @JsonKey(name: 'removeHTML')  bool? removeHtml,  bool? specialist,  int? numberOfNonSpecialist,  int? numberOfSpecialist,  bool isCached,  int? usulSourcesCount)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SearchMetadata() when $default != null:
-return $default(_that.length,_that.page,_that.removeHtml,_that.specialist,_that.numberOfNonSpecialist,_that.numberOfSpecialist,_that.isCached,_that.usulSourcesCount);case _:
+return $default(_that.length,_that.currentPageCount,_that.total,_that.page,_that.totalPages,_that.hasNextPage,_that.hasPrevPage,_that.removeHtml,_that.specialist,_that.numberOfNonSpecialist,_that.numberOfSpecialist,_that.isCached,_that.usulSourcesCount);case _:
   return orElse();
 
 }
@@ -189,10 +199,10 @@ return $default(_that.length,_that.page,_that.removeHtml,_that.specialist,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int length,  int? page, @JsonKey(name: 'removeHTML')  bool? removeHtml,  bool? specialist,  int? numberOfNonSpecialist,  int? numberOfSpecialist,  bool isCached,  int? usulSourcesCount)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int length,  int? currentPageCount,  int? total,  int? page,  int? totalPages,  bool? hasNextPage,  bool? hasPrevPage, @JsonKey(name: 'removeHTML')  bool? removeHtml,  bool? specialist,  int? numberOfNonSpecialist,  int? numberOfSpecialist,  bool isCached,  int? usulSourcesCount)  $default,) {final _that = this;
 switch (_that) {
 case _SearchMetadata():
-return $default(_that.length,_that.page,_that.removeHtml,_that.specialist,_that.numberOfNonSpecialist,_that.numberOfSpecialist,_that.isCached,_that.usulSourcesCount);case _:
+return $default(_that.length,_that.currentPageCount,_that.total,_that.page,_that.totalPages,_that.hasNextPage,_that.hasPrevPage,_that.removeHtml,_that.specialist,_that.numberOfNonSpecialist,_that.numberOfSpecialist,_that.isCached,_that.usulSourcesCount);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -209,10 +219,10 @@ return $default(_that.length,_that.page,_that.removeHtml,_that.specialist,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int length,  int? page, @JsonKey(name: 'removeHTML')  bool? removeHtml,  bool? specialist,  int? numberOfNonSpecialist,  int? numberOfSpecialist,  bool isCached,  int? usulSourcesCount)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int length,  int? currentPageCount,  int? total,  int? page,  int? totalPages,  bool? hasNextPage,  bool? hasPrevPage, @JsonKey(name: 'removeHTML')  bool? removeHtml,  bool? specialist,  int? numberOfNonSpecialist,  int? numberOfSpecialist,  bool isCached,  int? usulSourcesCount)?  $default,) {final _that = this;
 switch (_that) {
 case _SearchMetadata() when $default != null:
-return $default(_that.length,_that.page,_that.removeHtml,_that.specialist,_that.numberOfNonSpecialist,_that.numberOfSpecialist,_that.isCached,_that.usulSourcesCount);case _:
+return $default(_that.length,_that.currentPageCount,_that.total,_that.page,_that.totalPages,_that.hasNextPage,_that.hasPrevPage,_that.removeHtml,_that.specialist,_that.numberOfNonSpecialist,_that.numberOfSpecialist,_that.isCached,_that.usulSourcesCount);case _:
   return null;
 
 }
@@ -224,13 +234,23 @@ return $default(_that.length,_that.page,_that.removeHtml,_that.specialist,_that.
 @JsonSerializable()
 
 class _SearchMetadata implements SearchMetadata {
-  const _SearchMetadata({this.length = 0, this.page, @JsonKey(name: 'removeHTML') this.removeHtml, this.specialist, this.numberOfNonSpecialist, this.numberOfSpecialist, this.isCached = false, this.usulSourcesCount});
+  const _SearchMetadata({this.length = 0, this.currentPageCount, this.total, this.page, this.totalPages, this.hasNextPage, this.hasPrevPage, @JsonKey(name: 'removeHTML') this.removeHtml, this.specialist, this.numberOfNonSpecialist, this.numberOfSpecialist, this.isCached = false, this.usulSourcesCount});
   factory _SearchMetadata.fromJson(Map<String, dynamic> json) => _$SearchMetadataFromJson(json);
 
 /// Number of results returned
 @override@JsonKey() final  int length;
+/// Number of results on this page (same as length for consistency with Node.js API)
+@override final  int? currentPageCount;
+/// Total number of results across all pages (site endpoint only)
+@override final  int? total;
 /// Current page number
 @override final  int? page;
+/// Total number of pages (site endpoint only)
+@override final  int? totalPages;
+/// Whether there is a next page
+@override final  bool? hasNextPage;
+/// Whether there is a previous page
+@override final  bool? hasPrevPage;
 /// Whether HTML tags were removed from results
 @override@JsonKey(name: 'removeHTML') final  bool? removeHtml;
 /// Whether specialist/advanced hadiths are included
@@ -257,16 +277,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SearchMetadata&&(identical(other.length, length) || other.length == length)&&(identical(other.page, page) || other.page == page)&&(identical(other.removeHtml, removeHtml) || other.removeHtml == removeHtml)&&(identical(other.specialist, specialist) || other.specialist == specialist)&&(identical(other.numberOfNonSpecialist, numberOfNonSpecialist) || other.numberOfNonSpecialist == numberOfNonSpecialist)&&(identical(other.numberOfSpecialist, numberOfSpecialist) || other.numberOfSpecialist == numberOfSpecialist)&&(identical(other.isCached, isCached) || other.isCached == isCached)&&(identical(other.usulSourcesCount, usulSourcesCount) || other.usulSourcesCount == usulSourcesCount));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SearchMetadata&&(identical(other.length, length) || other.length == length)&&(identical(other.currentPageCount, currentPageCount) || other.currentPageCount == currentPageCount)&&(identical(other.total, total) || other.total == total)&&(identical(other.page, page) || other.page == page)&&(identical(other.totalPages, totalPages) || other.totalPages == totalPages)&&(identical(other.hasNextPage, hasNextPage) || other.hasNextPage == hasNextPage)&&(identical(other.hasPrevPage, hasPrevPage) || other.hasPrevPage == hasPrevPage)&&(identical(other.removeHtml, removeHtml) || other.removeHtml == removeHtml)&&(identical(other.specialist, specialist) || other.specialist == specialist)&&(identical(other.numberOfNonSpecialist, numberOfNonSpecialist) || other.numberOfNonSpecialist == numberOfNonSpecialist)&&(identical(other.numberOfSpecialist, numberOfSpecialist) || other.numberOfSpecialist == numberOfSpecialist)&&(identical(other.isCached, isCached) || other.isCached == isCached)&&(identical(other.usulSourcesCount, usulSourcesCount) || other.usulSourcesCount == usulSourcesCount));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,length,page,removeHtml,specialist,numberOfNonSpecialist,numberOfSpecialist,isCached,usulSourcesCount);
+int get hashCode => Object.hash(runtimeType,length,currentPageCount,total,page,totalPages,hasNextPage,hasPrevPage,removeHtml,specialist,numberOfNonSpecialist,numberOfSpecialist,isCached,usulSourcesCount);
 
 @override
 String toString() {
-  return 'SearchMetadata(length: $length, page: $page, removeHtml: $removeHtml, specialist: $specialist, numberOfNonSpecialist: $numberOfNonSpecialist, numberOfSpecialist: $numberOfSpecialist, isCached: $isCached, usulSourcesCount: $usulSourcesCount)';
+  return 'SearchMetadata(length: $length, currentPageCount: $currentPageCount, total: $total, page: $page, totalPages: $totalPages, hasNextPage: $hasNextPage, hasPrevPage: $hasPrevPage, removeHtml: $removeHtml, specialist: $specialist, numberOfNonSpecialist: $numberOfNonSpecialist, numberOfSpecialist: $numberOfSpecialist, isCached: $isCached, usulSourcesCount: $usulSourcesCount)';
 }
 
 
@@ -277,7 +297,7 @@ abstract mixin class _$SearchMetadataCopyWith<$Res> implements $SearchMetadataCo
   factory _$SearchMetadataCopyWith(_SearchMetadata value, $Res Function(_SearchMetadata) _then) = __$SearchMetadataCopyWithImpl;
 @override @useResult
 $Res call({
- int length, int? page,@JsonKey(name: 'removeHTML') bool? removeHtml, bool? specialist, int? numberOfNonSpecialist, int? numberOfSpecialist, bool isCached, int? usulSourcesCount
+ int length, int? currentPageCount, int? total, int? page, int? totalPages, bool? hasNextPage, bool? hasPrevPage,@JsonKey(name: 'removeHTML') bool? removeHtml, bool? specialist, int? numberOfNonSpecialist, int? numberOfSpecialist, bool isCached, int? usulSourcesCount
 });
 
 
@@ -294,11 +314,16 @@ class __$SearchMetadataCopyWithImpl<$Res>
 
 /// Create a copy of SearchMetadata
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? length = null,Object? page = freezed,Object? removeHtml = freezed,Object? specialist = freezed,Object? numberOfNonSpecialist = freezed,Object? numberOfSpecialist = freezed,Object? isCached = null,Object? usulSourcesCount = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? length = null,Object? currentPageCount = freezed,Object? total = freezed,Object? page = freezed,Object? totalPages = freezed,Object? hasNextPage = freezed,Object? hasPrevPage = freezed,Object? removeHtml = freezed,Object? specialist = freezed,Object? numberOfNonSpecialist = freezed,Object? numberOfSpecialist = freezed,Object? isCached = null,Object? usulSourcesCount = freezed,}) {
   return _then(_SearchMetadata(
 length: null == length ? _self.length : length // ignore: cast_nullable_to_non_nullable
-as int,page: freezed == page ? _self.page : page // ignore: cast_nullable_to_non_nullable
-as int?,removeHtml: freezed == removeHtml ? _self.removeHtml : removeHtml // ignore: cast_nullable_to_non_nullable
+as int,currentPageCount: freezed == currentPageCount ? _self.currentPageCount : currentPageCount // ignore: cast_nullable_to_non_nullable
+as int?,total: freezed == total ? _self.total : total // ignore: cast_nullable_to_non_nullable
+as int?,page: freezed == page ? _self.page : page // ignore: cast_nullable_to_non_nullable
+as int?,totalPages: freezed == totalPages ? _self.totalPages : totalPages // ignore: cast_nullable_to_non_nullable
+as int?,hasNextPage: freezed == hasNextPage ? _self.hasNextPage : hasNextPage // ignore: cast_nullable_to_non_nullable
+as bool?,hasPrevPage: freezed == hasPrevPage ? _self.hasPrevPage : hasPrevPage // ignore: cast_nullable_to_non_nullable
+as bool?,removeHtml: freezed == removeHtml ? _self.removeHtml : removeHtml // ignore: cast_nullable_to_non_nullable
 as bool?,specialist: freezed == specialist ? _self.specialist : specialist // ignore: cast_nullable_to_non_nullable
 as bool?,numberOfNonSpecialist: freezed == numberOfNonSpecialist ? _self.numberOfNonSpecialist : numberOfNonSpecialist // ignore: cast_nullable_to_non_nullable
 as int?,numberOfSpecialist: freezed == numberOfSpecialist ? _self.numberOfSpecialist : numberOfSpecialist // ignore: cast_nullable_to_non_nullable
