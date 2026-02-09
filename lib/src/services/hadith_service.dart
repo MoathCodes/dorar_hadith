@@ -8,7 +8,6 @@ import '../http/query_serializer.dart';
 import '../models/api_response.dart';
 import '../models/cache_entry.dart';
 import '../models/hadith.dart';
-import '../models/hadith_category.dart';
 import '../models/search_metadata.dart';
 import '../models/search_params.dart';
 import '../models/sharh_metadata.dart';
