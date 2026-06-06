@@ -1,5 +1,5 @@
 # بسم الله الرحمن الرحيم
-# Change Language:[ 🇺🇸 EN](README.md)
+# Change Language: [ 🇺🇸 EN](README.md)
 
 --- 
 # درر الحديث - Dorar Hadith
@@ -1031,7 +1031,7 @@ DorarRateLimitException { final String message; final int? limit; final DateTime
 | الدالة / الخدمة | `DorarValidationException` | `DorarException` أخرى | تعيد فارغ/null بدل الرمي |
 |---|---|---|---|
 | `searchHadith` / `hadith.searchViaApi` | — (لا تحقق محلي) | شبكة/مهلة/حد معدل؛ `DorarServerException` إذا JSON غير صالح أو صفر أحاديث | — |
-| `searchHadithDetailed` / `hadith.searchViaSite` | — | شبكة/مهلة؛ `DorarServerException` إذا تبويب HTML مفقود | قائمة `data` فارغة |
+| `searchHadithDetailed` / `hadith.searchViaSite` | — | شبكة/مهلة/حد معدل؛ `DorarServerException` إذا تبويب HTML مفقود | قائمة `data` فارغة عند عدم وجود أحاديث في الصفحة |
 | `getHadithById` / `hadith.getById` | `hadithId` غير صالح | شبكة/مهلة/404؛ `DorarServerException` إذا بنية الصفحة غير متوقعة | — |
 | `getSimilarHadith` / `hadith.getSimilar` | `hadithId` غير صالح | شبكة/مهلة/404 | قائمة فارغة |
 | `getAlternateHadith` / `hadith.getAlternate` | `hadithId` غير صالح | شبكة/مهلة/404 | `null` عند غياب كتلة البديل أو فشل تحليلها |

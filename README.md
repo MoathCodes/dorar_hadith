@@ -258,7 +258,7 @@ Reference data is used for filtering (hadith scholar [mohdith], book, narrator) 
 
 Flutter apps must call `DorarHadithFlutter.ensureInitialized()` first. See [Offline Data, Assets & Platform Behavior](#offline-data-assets--platform-behavior) for bundled assets, platform differences, and failure modes.
 
-Note: Reference items contain only `id` and `name` (e.g., Sahih al-Bukhari). For full details, fetch via the API. See: “Get Book/Scholar Details”.
+Note: Reference items contain only `id` and `name` (e.g., Sahih al-Bukhari). For full details, fetch via the API. See: [Get Book or Hadith Scholar (Mohdith) Details](#get-book-or-hadith-scholar-mohdith-details).
 
 #### Search Scholars (Hadith scholars – mohdith)
 
@@ -1059,6 +1059,8 @@ Input validation rules (client-side, before HTTP):
 
 #### Comprehensive Handling with Switch Expression
 
+Pattern matching with a `switch` expression is the recommended approach; the compiler ensures exhaustive coverage:
+
 ```dart
 try {
   final results = await client.searchHadith(
@@ -1099,6 +1101,8 @@ try {
 ```
 
 #### Helper Function for Error Messages
+
+The library provides a helper to turn exceptions into readable messages:
 
 ```dart
 import 'package:dorar_hadith/dorar_hadith.dart';
