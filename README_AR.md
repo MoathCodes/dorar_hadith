@@ -1043,6 +1043,8 @@ DorarRateLimitException { final String message; final int? limit; final DateTime
 | `mohdith.getById` | `mohdithId` غير رقمي | شبكة/مهلة/404؛ `DorarParseException` | — |
 | `searchBooks`، `searchMohdith`، `searchRawi`، `*Ref.*` | — | `bookRef`/`mohdithRef`: `AssetLoaderException` عند أول تحميل إذا الأصول مفقودة (انظر [حالات فشل البيانات غير المتصلة](#حالات-فشل-البيانات-غير-المتصلة))؛ `rawiRef`: `Exception` إذا `rawi.db` مفقود على CLI | قائمة فارغة عند عدم التطابق؛ `get*ById` يعيد `null` |
 
+JSON تالف في جسم HTTP 200 يرمي `FormatException` من `jsonDecode` (ليس `DorarException`). فشل تحليل HTML/المحتوى داخل الخدمات يصبح `DorarParseException`.
+
 قواعد التحقق (قبل HTTP):
 - نص البحث (`sharh.getByText`، `sharh.search` فقط): مطلوب، حد أقصى 500 حرفًا. **`searchHadith` و`searchHadithDetailed` لا يتحققان من `value` أو `page` محليًا** — تُرسل القيم كما هي إلى Dorar.
 - الصفحة (`sharh.search` فقط): 1–1000.

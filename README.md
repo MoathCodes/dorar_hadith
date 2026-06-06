@@ -1038,6 +1038,8 @@ Every online API call goes through `DorarHttpClient` (default timeout: 15 second
 | `mohdith.getById` | Invalid numeric `mohdithId` | Network/timeout/404; `DorarParseException` on parse failure | — |
 | `searchBooks`, `searchMohdith`, `searchRawi`, `*Ref.*` | — | `bookRef`/`mohdithRef`: `AssetLoaderException` on first load if assets missing (see [Offline failure modes](#offline-failure-modes)); `rawiRef`: generic `Exception` if `rawi.db` missing on native CLI | Empty list on no match; `get*ById` returns `null` |
 
+Malformed JSON in an HTTP 200 body throws `FormatException` from `jsonDecode` (not `DorarException`). HTML/body parsing failures inside services become `DorarParseException`.
+
 Input validation rules (client-side, before HTTP):
 - Search text (`sharh.getByText`, `sharh.search` only): required, max 500 characters. **`searchHadith` and `searchHadithDetailed` do not validate `value` or `page` locally** — invalid values are sent to Dorar as-is.
 - Page (`sharh.search` only): 1–1000.
