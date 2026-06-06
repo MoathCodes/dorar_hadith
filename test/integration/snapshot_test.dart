@@ -1,4 +1,7 @@
 import 'package:dorar_hadith/dorar_hadith.dart';
+import 'package:dorar_hadith/src/database/cache_database.dart';
+import 'package:dorar_hadith/src/services/cache_service.dart';
+import 'package:drift/native.dart';
 import 'package:http/testing.dart';
 import 'package:test/test.dart';
 
@@ -74,7 +77,10 @@ void main() {
       });
 
       final dorarClient = DorarHttpClient(client: mockClient);
-      final service = MohdithService(client: dorarClient);
+      final cacheService = CacheService(
+        database: CacheDatabase(NativeDatabase.memory()),
+      );
+      final service = MohdithService(client: dorarClient, cache: cacheService);
 
       final scholar = await service.getById('256');
 
@@ -87,6 +93,7 @@ void main() {
       expect(scholar.info, matches(RegExp(r'[\u0600-\u06FF]')));
 
       dorarClient.dispose();
+      await cacheService.dispose();
     });
 
     test('should parse real book response', () async {
@@ -98,7 +105,10 @@ void main() {
       });
 
       final dorarClient = DorarHttpClient(client: mockClient);
-      final service = BookService(client: dorarClient);
+      final cacheService = CacheService(
+        database: CacheDatabase(NativeDatabase.memory()),
+      );
+      final service = BookService(client: dorarClient, cache: cacheService);
 
       final book = await service.getById('6216');
 
@@ -109,6 +119,7 @@ void main() {
       expect(book.name, matches(RegExp(r'[\u0600-\u06FF]')));
 
       dorarClient.dispose();
+      await cacheService.dispose();
     });
 
     // Note: We previously had a test for 404 responses, but all snapshots now
