@@ -19,7 +19,7 @@ DatabaseConnection openCacheConnection() {
 /// Opens a connection to the rawi.db SQLite database for native platforms.
 ///
 /// This function is used by the Dart CLI and desktop applications.
-/// For Flutter, use connection_flutter.dart instead.
+/// For Flutter, use the [`dorar_hadith_flutter`](https://pub.dev/packages/dorar_hadith_flutter) package.
 DatabaseConnection openConnection() {
   return DatabaseConnection(
     LazyDatabase(() async {

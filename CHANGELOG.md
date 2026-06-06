@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project adheres to Semantic Versioning.
 
+## 0.5.0
+
+### Breaking
+- Removed Flutter setup helpers (`configureFlutterAssetLoader`, `createFlutterConnectionFactory`, `FlutterAssetLoader`) from core exports. Flutter apps must use the new [`dorar_hadith_flutter`](https://pub.dev/packages/dorar_hadith_flutter) package.
+
+### Added
+- New companion package [`dorar_hadith_flutter`](https://pub.dev/packages/dorar_hadith_flutter) for Flutter asset and database wiring.
+- Declared `flutter: assets:` in pubspec so bundled offline data ships correctly to Flutter consumers.
+
+### Changed
+- Default cache TTL increased from 1 day to 7 days (`CacheService`, `InMemoryCacheManager`).
+- `sqlite3` dependency updated to `^3.2.0`.
+- Bumped the minimum Dart SDK to 3.12.0.
+
+### Fixed
+- `AssetLoader.configure()` is no longer overwritten when the platform default loader registers after an explicit Flutter override.
+
 ## 0.4.0
 
 ### New Features

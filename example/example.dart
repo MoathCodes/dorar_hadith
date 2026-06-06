@@ -1,10 +1,23 @@
-/// مثال شامل لاستخدام مكتبة dorar_hadith
+/// Comprehensive CLI example for `dorar_hadith`.
 ///
-/// يوضح هذا المثال جميع الميزات الرئيسية:
-/// - البحث عن الأحاديث (بسيط ومتقدم)
-/// - البيانات المرجعية (كتب، محدثين، رواة)
-/// - الشروح والتفاصيل
-/// - الأحاديث المشابهة
+/// Run from the package root (requires network for API sections):
+///
+/// ```bash
+/// dart run example/example.dart
+/// ```
+///
+/// Offline reference sections (`bookRef`, `mohdithRef`, `rawiRef`) resolve
+/// bundled assets via the package URI on native CLI — no Flutter setup needed.
+///
+/// **Flutter apps:** call `DorarHadithFlutter.ensureInitialized()` from
+/// [`dorar_hadith_flutter`](https://pub.dev/packages/dorar_hadith_flutter)
+/// before offline APIs; this example uses only core `dorar_hadith` APIs.
+///
+/// Covers:
+/// - Simple and advanced hadith search
+/// - Offline reference data (books, scholars, narrators)
+/// - Sharh, details, similar/alternate/usul hadiths
+/// - Cache management and sealed [DorarException] handling
 library;
 
 import 'package:dorar_hadith/dorar_hadith.dart';

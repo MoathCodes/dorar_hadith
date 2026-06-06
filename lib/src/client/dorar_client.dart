@@ -21,6 +21,20 @@ import '../services/sharh_service.dart';
 ///
 /// Primary entry point providing access to all services.
 ///
+/// ## Flutter
+///
+/// Offline reference APIs ([bookRef], [mohdithRef], [rawiRef]) need
+/// [`dorar_hadith_flutter`](https://pub.dev/packages/dorar_hadith_flutter).
+/// Call `DorarHadithFlutter.ensureInitialized()` in `main()` — do not wire
+/// `rootBundle` or [AssetLoader.configure] manually.
+///
+/// ## Errors
+///
+/// Online methods throw [DorarException] subclasses on failure. Offline
+/// reference lookups return empty lists or `null` when nothing matches; they
+/// throw [AssetLoaderException] or a generic [Exception] when bundled assets or
+/// `rawi.db` cannot be opened. See the package README for the full matrix.
+///
 /// ## Services
 ///
 /// ### API Services (from dorar.net)
@@ -104,7 +118,8 @@ class DorarClient {
 
   /// Creates a new Dorar client.
   ///
-  /// [timeout] - Request timeout (default: 15 seconds)
+  /// [timeout] - Request timeout (default: 15 seconds). Throws
+  /// [DorarValidationException] when not positive or longer than 5 minutes.
   ///
   /// Example:
   /// ```dart
@@ -140,7 +155,11 @@ class DorarClient {
 
   /// Dispose of resources.
   ///
-  /// Call when done using the client. Closes database connections.
+  /// Closes the HTTP client, cache database, and narrator database opened by
+  /// [rawiRef]. Call once when finished; do not use the client afterward.
+  ///
+  /// Does not throw under normal use. Prefer [use] in scripts so disposal runs
+  /// even when your callback throws.
   ///
   /// Example:
   /// ```dart
@@ -337,7 +356,6 @@ class DorarClient {
   ///     degrees: [HadithDegree.authenticHadith],
   ///   ),
   /// );
-  /// );
   /// for (var hadith in results.data) {
   ///   print('${hadith.hadith} - ${hadith.grade}');
   /// }
@@ -399,8 +417,8 @@ class DorarClient {
   /// Use the client safely with automatic disposal.
   ///
   /// Creates a temporary [DorarClient], passes it to [fn], and ensures
-  /// [dispose] is called in a finally block. This avoids leaked resources
-  /// in quick scripts and examples.
+  /// [dispose] is called in a finally block. Exceptions from [fn] propagate
+  /// after disposal completes.
   ///
   /// Example:
   /// ```dart

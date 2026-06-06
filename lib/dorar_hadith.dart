@@ -1,16 +1,25 @@
-/// Dorar Hadith - A Dart package for interacting with the Dorar.net Hadith API
+/// Dorar Hadith — a pure Dart library for the Dorar.net Hadith API.
 ///
-/// Provides a type-safe interface for searching and retrieving hadiths
-/// from the Dorar.net API.
+/// Works in CLI scripts, servers, and tests without Flutter. Provides a
+/// type-safe interface for searching and retrieving hadiths from Dorar.net.
 ///
 /// ## Features
 ///
 /// - Hadith search with filters
-/// - Unified `DetailedHadith` model that extends the lightweight `Hadith`
+/// - Unified [DetailedHadith] model that extends the lightweight [Hadith]
 ///   listing results
 /// - Sharh (explanations)
 /// - Offline reference data (books, scholars, narrators)
-/// - Built-in caching
+/// - Built-in persistent caching
+///
+/// ## Flutter apps
+///
+/// Use the companion package
+/// [`dorar_hadith_flutter`](https://pub.dev/packages/dorar_hadith_flutter) —
+/// do **not** wire `rootBundle`, `AssetLoader.configure`, or database copy
+/// logic yourself. Call `DorarHadithFlutter.ensureInitialized()` once in
+/// `main()` before offline reference or narrator APIs. Core Flutter setup
+/// helpers were removed in 0.5.0.
 ///
 /// ## Usage
 ///
@@ -18,31 +27,32 @@
 /// import 'package:dorar_hadith/dorar_hadith.dart';
 ///
 /// void main() async {
-///   final client = DorarClient();
+///   await DorarClient.use((client) async {
+///     // Search hadiths
+///     final results = await client.searchHadith(
+///       HadithSearchParams(value: 'الصلاة', page: 1),
+///     );
 ///
-///   // Search hadiths
-///   final results = await client.searchHadith(
-///     HadithSearchParams(value: 'الصلاة', page: 1),
-///   );
+///     // Search with filters
+///     final filtered = await client.searchHadithDetailed(
+///       HadithSearchParams(
+///         value: 'النية',
+///         specialist: true,
+///         degrees: [HadithDegree.authenticHadith],
+///       ),
+///     );
 ///
-///   // Search with filters
-///   final filtered = await client.searchHadithDetailed(
-///     HadithSearchParams(
-///       value: 'النية',
-///       specialist: true,
-///       degrees: [HadithDegree.authenticHadith],
-///     ),
-///   );
+///     // Browse books (offline on CLI; Flutter needs dorar_hadith_flutter)
+///     final books = await client.searchBooks('صحيح');
 ///
-///   // Browse books (offline)
-///   final books = await client.searchBooks('صحيح');
-///
-///   // Get detailed book info
-///   final bookInfo = await client.book.getById(books.first.id);
-///
-///   await client.dispose();
+///     // Get detailed book info (online)
+///     final bookInfo = await client.book.getById(books.first.id);
+///   });
 /// }
 /// ```
+///
+/// See [README.md](https://github.com/MoathCodes/dorar_hadith) for platform
+/// behavior, offline failure modes, and error handling.
 library;
 
 // Client - Main entry point
@@ -54,7 +64,6 @@ export 'src/constants/mohdith_reference.dart';
 export 'src/constants/rawi_reference.dart';
 export 'src/constants/search_method.dart';
 export 'src/constants/search_zone.dart';
-export 'src/database/connection/connection_flutter.dart';
 // Database (Drift) - Exported for advanced usage
 export 'src/database/rawi_database.dart';
 // HTTP & Networking

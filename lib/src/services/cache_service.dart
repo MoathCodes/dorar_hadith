@@ -10,7 +10,7 @@ class CacheService implements CacheStore {
 
   CacheService({
     required this.database,
-    this.defaultTtl = const Duration(days: 1),
+    this.defaultTtl = const Duration(days: 7),
     this.maxCacheSize = 100,
     InMemoryCacheManager? cacheManager,
   }) : _cacheManager =
@@ -110,7 +110,7 @@ class InMemoryCacheManager {
   final int? maxSize;
 
   InMemoryCacheManager({
-    this.defaultTtl = const Duration(days: 1),
+    this.defaultTtl = const Duration(days: 7),
     this.maxSize,
   });
 

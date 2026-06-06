@@ -44,5 +44,23 @@ void main() {
       final content = await loader.loadString('assets/data/mohdith.json');
       expect(content, contains('الجميع'));
     });
+
+    test(
+      'explicit configure is not overwritten by platform registration',
+      () {
+        AssetLoader.reset();
+
+        AssetLoader.configure(_TestAssetLoader.new);
+        registerDefaultAssetLoader(FileAssetLoader.new);
+
+        final loader = createAssetLoader();
+        expect(loader, isA<_TestAssetLoader>());
+      },
+    );
   });
+}
+
+class _TestAssetLoader implements AssetLoader {
+  @override
+  Future<String> loadString(String path) async => 'custom';
 }

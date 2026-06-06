@@ -44,8 +44,78 @@ dart pub add dorar_hadith
 Or using Flutter:
 
 ```bash
-flutter pub add dorar_hadith
+flutter pub add dorar_hadith_flutter
 ```
+
+Pure Dart/CLI users should use `dart pub add dorar_hadith`. Flutter apps should depend on [`dorar_hadith_flutter`](https://pub.dev/packages/dorar_hadith_flutter), which pulls in `dorar_hadith` transitively.
+
+## Flutter Setup
+
+Call `DorarHadithFlutter.ensureInitialized()` once in `main()` before using offline reference data or the narrator database:
+
+```dart
+import 'package:dorar_hadith_flutter/dorar_hadith_flutter.dart';
+import 'package:flutter/material.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await DorarHadithFlutter.ensureInitialized();
+  runApp(const MyApp());
+}
+```
+
+Pass `databaseDirectory` to override where the copied `rawi.db` is stored (defaults to the application support directory from `path_provider`).
+
+See the [`dorar_hadith_flutter` README](dorar_hadith_flutter/README.md) for asset keys, failure modes, and advanced customization.
+
+## Offline Data, Assets & Platform Behavior
+
+Offline reference browsing uses bundled assets from the `dorar_hadith` package (declared in its `pubspec.yaml`):
+
+| Asset | Path | Used by |
+|---|---|---|
+| Books | `assets/data/book.json` | `BookReferenceService` |
+| Scholars (mohdith) | `assets/data/mohdith.json` | `MohdithReferenceService` |
+| Narrators (rawi) | `assets/database/rawi.db` | `RawiDatabase` / `RawiReferenceService` |
+
+API response caching uses a separate SQLite database (`cache.db` on native CLI, WebAssembly storage on web). It is independent of the offline reference assets above.
+
+### Platform differences
+
+**Dart CLI / pure Dart (native)** — default when you depend on `dorar_hadith` only:
+
+- **JSON assets** — `FileAssetLoader` resolves files via `Isolate.resolvePackageUri('package:dorar_hadith/…')`, then falls back to paths relative to the current working directory.
+- **`rawi.db`** — `connection_native.dart` opens the bundled database from the package URI, then tries several CWD-relative paths (see failure modes below).
+- **`cache.db`** — created in the **current working directory**.
+
+**Flutter (Android, iOS, Linux, macOS, Windows)** — use [`dorar_hadith_flutter`](dorar_hadith_flutter/README.md):
+
+- Call `DorarHadithFlutter.ensureInitialized()` once before offline reference or narrator APIs. The core package registers `FileAssetLoader` on native targets, which does **not** read Flutter asset bundles.
+- After initialization, JSON loads go through `rootBundle` with keys like `packages/dorar_hadith/assets/data/book.json`, and `rawi.db` is copied once into the application support directory (or a custom `databaseDirectory`) before opening.
+- You do **not** need to re-declare `rawi.db` or the JSON files in your app `pubspec.yaml`; transitive package assets from `dorar_hadith` are bundled automatically.
+- `dorar_hadith_flutter` uses `dart:io` and is intended for **native Flutter targets**, not Flutter Web.
+
+**Web (Dart web / Flutter Web with `dorar_hadith` only)**:
+
+- **JSON assets** — `WebAssetLoader` fetches via HTTP relative to `Uri.base` (non-200 responses become `AssetLoaderException`).
+- **`rawi.db` and `cache.db`** — Drift `WasmDatabase` with `sqlite3.wasm` and `drift_worker.dart.js` served from your app root (`/sqlite3.wasm`, `/drift_worker.dart.js`). The initial `rawi.db` bytes are fetched from common Flutter Web asset URLs (see failure modes).
+- Flutter Web apps should configure the core package directly; do not rely on `dorar_hadith_flutter.ensureInitialized()` on web.
+
+### Offline failure modes
+
+| Situation | When | What is thrown |
+|---|---|---|
+| JSON asset not found | `BookReferenceService` / `MohdithReferenceService` `initialize()` | `AssetLoaderException` — CLI: `Asset file not found. Tried package asset and local filesystem for: <path>`; web: `Failed to load asset: HTTP <status>` or `Failed to load asset via HTTP: <uri>` |
+| Asset read error | File exists but cannot be read (CLI) | `AssetLoaderException` with `Failed to read asset file: <path>` and optional `cause` |
+| No asset loader configured | `AssetLoader()` before any platform registration | `UnsupportedError`: `No AssetLoader has been configured for this platform…` |
+| `rawi.db` not found (native CLI) | `RawiDatabase` query before DB is reachable | `Exception`: `Database file not found. Tried package asset and paths:` followed by `package:dorar_hadith/assets/database/rawi.db` and CWD fallbacks |
+| `rawi.db` not fetchable (web) | `RawiDatabase` open on web | `Exception`: `Failed to initialize web database: Could not fetch bundled rawi.db.` with candidate asset URLs |
+| Flutter offline APIs before `ensureInitialized()` | `client.bookRef`, `client.mohdithRef`, or `client.rawiRef` in a Flutter app | JSON: `AssetLoaderException` (filesystem lookup misses bundle assets). Narrators: native `Exception` (`Database file not found…`) because `RawiDatabase` still uses the CLI connection factory |
+| Missing Flutter bundle asset | `ensureInitialized()` or reference `initialize()` after setup, asset stripped from build | `FlutterError` from `rootBundle` (typically `Unable to load asset: packages/dorar_hadith/…`). Not wrapped as `AssetLoaderException` |
+| `ensureInitialized()` called twice | Second and later calls | **No error** — returns immediately (idempotent). The first `databaseDirectory` wins; later overrides are ignored |
+| Invalid JSON after load | Corrupt `book.json` / `mohdith.json` | `FormatException` from `json.decode` (not a `DorarException`) |
+
+Reference lookups by unknown ID return `null` (books, scholars) or empty lists (`get*ByIds` skips missing keys). They do not throw.
 
 ## Quick Start
 
@@ -82,12 +152,13 @@ For a complete example covering all library features, see:
 ## Usage
 
 ### Important Note
-Most operations in `DorarClient` and the other services return results inside an `ApiResponse` object to simplify pagination.
-`ApiResponse` has two members:
+Search and list operations that support pagination return an `ApiResponse<T>` wrapper:
 - The result: `data`
-- Pagination metadata: `SearchMetadata`
+- Pagination metadata: `metadata` (`SearchMetadata`)
 
-This makes it easier to request the next page when needed.
+Methods that return `ApiResponse`: `searchHadith`, `searchHadithDetailed`, `searchSharh`, and `getUsulHadith` / `hadith.getUsul`.
+
+Single-item lookups return the model directly: `getHadithById` → `DetailedHadith`, `getSharhById` → `Sharh`, `book.getById` → `BookInfo`, `mohdith.getById` → `MohdithInfo`, `getSimilarHadith` → `List<DetailedHadith>`, `getAlternateHadith` → `DetailedHadith?`. Offline reference lookups return `List<...>` or nullable items and do not use `ApiResponse`.
 
 ### Quick Hadith Search
 Using `client.searchHadith` is fast and returns lightweight `Hadith` objects
@@ -155,8 +226,8 @@ final sameAlternate = await client.getAlternateHadith('12345');
 
 // Get sources
 final usul = await client.hadith.getUsul('12345');
-print('Main hadith: ${usul.hadith.hadith}');
-print('Sources: ${usul.count}');
+print('Main hadith: ${usul.data.hadith.hadith}');
+print('Sources: ${usul.data.count}');
 // Or use the convenience method
 final sameUsul = await client.getUsulHadith('12345');
 ```
@@ -184,6 +255,8 @@ for (var s in sharhResults.data) {
 
 ### Reference Data (Offline)
 Reference data is used for filtering (hadith scholar [mohdith], book, narrator) and is available offline for speed and usability.
+
+Flutter apps must call `DorarHadithFlutter.ensureInitialized()` first. See [Offline Data, Assets & Platform Behavior](#offline-data-assets--platform-behavior) for bundled assets, platform differences, and failure modes.
 
 Note: Reference items contain only `id` and `name` (e.g., Sahih al-Bukhari). For full details, fetch via the API. See: “Get Book/Scholar Details”.
 
@@ -229,7 +302,7 @@ final results = await client.searchBooks('سنن');
 final narrators = await client.rawiRef.searchRawi('أبو هريرة', limit: 10);
 
 // By ID
-final abuHurayrah = await client.rawiRef.getRawiById(4396);
+final abuHurayrah = await client.rawiRef.getRawiById(1416);
 
 // Paginated listing
 final page1 = await client.rawiRef.getAllRawi(limit: 50, offset: 0);
@@ -254,12 +327,12 @@ If you’d like to add more, please open an issue on GitHub.
 MohdithReference.bukhari  
 MohdithReference.muslim     
 MohdithReference.abuDawud   
-// ... 17 total
+// ... 20 total
 
 // Sample book constants
 BookReference.sahihBukhari  
 BookReference.sahihMuslim     
-// ... 20 total
+// ... 21 total
 
 // Sample narrator constants
 RawiReference.abuHurayrah     
@@ -561,7 +634,7 @@ final searchCount = await client.rawiRef.countRawi(query: 'عبد الله');
 
 ### ApiResponse
 
-All search and retrieval operations return results inside `ApiResponse` to simplify pagination.
+Paginated search operations return results inside `ApiResponse` to simplify pagination. Single-item lookups return the model directly (see [Important Note](#important-note)).
 
 ```dart
 class ApiResponse<T> {
@@ -834,6 +907,8 @@ print(SearchZone.qudsi.toQueryParam()); // "1"
 
 ### Client Options
 
+You can customize `DorarClient` when creating it.
+
 ```dart
 final client = DorarClient(
   timeout: Duration(seconds: 15),       // Request timeout (default: 15s)
@@ -844,24 +919,23 @@ final client = DorarClient(
 
 ### Persistent Caching
 
-The library now uses a persistent SQLite database (`cache.db`) to store results.
-- **Native Platforms**: The database is created in the current working directory (CLI) or application documents directory (Flutter).
-- **Web**: Uses `sqlite3.wasm` for persistent storage in the browser.
+API response caching uses a persistent SQLite database (`cache.db` on native CLI, WebAssembly on web). It is separate from the offline reference assets (`book.json`, `mohdith.json`, `rawi.db`).
+
+API responses are cached in a shared `CacheService` backed by SQLite (`cache.db`) plus an in-memory layer (default: 100 entries, 7-day TTL).
+- **Native Platforms (CLI)**: `cache.db` is created in the current working directory.
+- **Flutter (native)**: When using [`dorar_hadith_flutter`](https://pub.dev/packages/dorar_hadith_flutter), the offline `rawi.db` is copied into the application support directory and persists across restarts. API response caching follows the platform default (`cache.db` in the CWD unless you customize `CacheDatabase.configureConnection`).
+- **Web**: Uses `sqlite3.wasm` and `drift_worker.dart.js` (see [Offline Data, Assets & Platform Behavior](#offline-data-assets--platform-behavior)).
+
+A cache miss is not an error — the client fetches from Dorar.net and stores the result. Cached hits set `SearchMetadata.isCached` to `true` on `ApiResponse` results. Expired entries are deleted and treated as a miss. Corrupt cached JSON throws `FormatException` from `jsonDecode` (not a `DorarException`); call `client.clearCache()` to recover. SQLite or WebAssembly storage failures propagate as platform/Drift errors and are not wrapped.
+
+All services share one cache. `client.clearCache()` and every `*.clearCache()` on API services (`hadith`, `sharh`, `book`, `mohdith`) clear the entire shared cache, not an isolated per-service store.
 
 ```dart
-// Cache stats
-final stats = await client.getCacheStats();
-print('Total entries: ${stats.totalEntries}');
-print('Valid entries: ${stats.validEntries}');
-print('Hit rate: ${(stats.hitRate * 100).toStringAsFixed(1)}%');
+// Clear all cached API responses
+await client.clearCache();
 
-// Clear all cache
-client.clearCache();
-
-// Clear per-service cache
-client.hadith.clearCache();
-client.sharh.clearCache();
-client.book.clearCache();
+// Equivalent — clears the same shared cache
+await client.hadith.clearCache();
 ```
 
 ### Resource Cleanup
@@ -886,63 +960,100 @@ void main() async {
 
 ### Error Handling
 
-The library uses a sealed class hierarchy for exceptions, enabling safer handling with pattern matching.
+The library uses a sealed class hierarchy for exceptions, enabling safer handling with pattern matching. All API/network failures throw a `DorarException` subclass — there is no separate `DorarApiException` type. Offline reference asset/database failures are documented in [Offline failure modes](#offline-failure-modes); reference lookups by unknown ID return empty lists or `null` instead of throwing.
+
+#### Exception naming
+
+| What you catch | Notes |
+|---|---|
+| `DorarException` | Sealed base for all API/network errors listed below |
+| `DorarTimeoutException` | Public timeout type; Dart's internal `TimeoutException` from `.timeout()` is caught inside `DorarHttpClient` and converted — callers never see it |
+| `DorarValidationException` | Client-side input validation (`DorarValidationException`, not a generic `ValidationException`) |
+| `FormatException` | Corrupt cached JSON or offline asset JSON after load — not a `DorarException` |
 
 #### DorarException Types
 
 All errors extend `DorarException` with the following types:
 
 ```dart
-// 1. Network error - connectivity issues
-DorarNetworkException {
+// Base — every subclass has:
+sealed class DorarException {
   final String message;
-  final String? details;
+  final dynamic details;      // optional extra context
+  final int? statusCode;      // set on HTTP-related subclasses
 }
 
-// 2. Timeout - request took too long
-DorarTimeoutException {
-  final String message;
-  final Duration timeout;
-  final String? details;
-}
+// 1. Network error — connectivity or unexpected HTTP status (not 200/404/429/5xx)
+DorarNetworkException { final String message; final dynamic details; }
 
-// 3. Not found - missing resource
-DorarNotFoundException {
-  final String message;
-  final String resource;
-  final String? details;
-}
+// 2. Timeout — request exceeded timeout after retries (default: 3 attempts)
+DorarTimeoutException { final String message; final Duration timeout; final dynamic details; }
 
-// 4. Validation error - invalid input
-DorarValidationException {
-  final String message;
-  final String? field;        // Field name
-  final String? rule;         // Violated rule
-  final String? details;
-}
+// 3. Not found — HTTP 404 or domain-specific missing resource
+DorarNotFoundException { final String message; final String resource; final dynamic details; }
 
-// 5. Server error - Dorar server issue
-DorarServerException {
-  final String message;
-  final int statusCode;       // HTTP status code
-  final String? details;
-}
+// 4. Validation error — invalid client-side input before the request is sent
+DorarValidationException { final String message; final String? field; final String? rule; final dynamic details; }
 
-// 6. Parse error - response parsing issue
-DorarParseException {
-  final String message;
-  final String? expectedType; // Expected type
-  final String? details;
-}
+// 5. Server error — HTTP 5xx or unexpected/empty Dorar response payload
+DorarServerException { final String message; final int statusCode; final dynamic details; }
 
-// 7. Rate limit - too many requests
-DorarRateLimitException {
-  final String message;
-  final int? limit;           // Max requests
-  final DateTime? resetAt;    // Reset time
-  final String? details;
-}
+// 6. Parse error — HTML/JSON parsing failed after a successful HTTP response
+DorarParseException { final String message; final String? rawData; final Type? expectedType; final dynamic details; }
+
+// 7. Rate limit — HTTP 429
+DorarRateLimitException { final String message; final int? limit; final DateTime? resetAt; final dynamic details; }
 ```
+
+#### HTTP layer (`DorarHttpClient`)
+
+Every online API call goes through `DorarHttpClient` (default timeout: 15 seconds, max retries: 3, exponential backoff starting at 1 second).
+
+| Condition | Exception | Retried? |
+|---|---|---|
+| `TimeoutException` on a request | `DorarTimeoutException` (after final attempt) | Yes |
+| `http.ClientException` (connectivity) | `DorarNetworkException` (after final attempt) | Yes |
+| HTTP 404 | `DorarNotFoundException` | No |
+| HTTP 429 | `DorarRateLimitException` | No |
+| HTTP 5xx | `DorarServerException` | No |
+| Other HTTP status | `DorarNetworkException` | No |
+| Unexpected error in HTTP client | `DorarNetworkException` | No |
+
+`DorarException` subclasses raised by the HTTP layer are rethrown immediately without retry.
+
+#### When each public API throws
+
+| Method / service | `DorarValidationException` | Other `DorarException` | Returns empty/null instead |
+|---|---|---|---|
+| `searchHadith` / `hadith.searchViaApi` | — (no local validation) | Network/timeout/rate-limit; `DorarServerException` if response JSON is invalid or zero hadiths parse | — |
+| `searchHadithDetailed` / `hadith.searchViaSite` | — | Network/timeout/rate-limit; `DorarServerException` if expected HTML tab is missing | Empty `data` list when page parses but has no hadiths |
+| `getHadithById` / `hadith.getById` | Invalid `hadithId` | Network/timeout/404; `DorarServerException` if page structure is unexpected | — |
+| `getSimilarHadith` / `hadith.getSimilar` | Invalid `hadithId` | Network/timeout/404 | Empty list |
+| `getAlternateHadith` / `hadith.getAlternate` | Invalid `hadithId` | Network/timeout/404 | `null` when the page has no alternate block or parsing that block fails |
+| `getUsulHadith` / `hadith.getUsul` | Invalid `hadithId` | Network/timeout; `DorarNotFoundException` when usul section is missing | — |
+| `searchSharh` / `sharh.search` | Empty/too-long `value`; `page` not in 1–1000 | Network/timeout; `DorarServerException` if expected HTML tab is missing | Empty `data` when search finds no sharh IDs |
+| `getSharhByText` / `sharh.getByText` | Empty/too-long `text` | Network/timeout; `DorarNotFoundException` when no sharh ID is found in search results | — |
+| `getSharhById` / `sharh.getById` | Invalid numeric `sharhId` | Network/timeout/404; `DorarParseException` on parse failure | — |
+| `book.getById` | Invalid numeric `bookId` | Network/timeout/404; `DorarParseException` on parse failure | — |
+| `mohdith.getById` | Invalid numeric `mohdithId` | Network/timeout/404; `DorarParseException` on parse failure | — |
+| `searchBooks`, `searchMohdith`, `searchRawi`, `*Ref.*` | — | `bookRef`/`mohdithRef`: `AssetLoaderException` on first load if assets missing (see [Offline failure modes](#offline-failure-modes)); `rawiRef`: generic `Exception` if `rawi.db` missing on native CLI | Empty list on no match; `get*ById` returns `null` |
+
+Input validation rules (client-side, before HTTP):
+- Search text (`sharh.getByText`, `sharh.search` only): required, max 500 characters. **`searchHadith` and `searchHadithDetailed` do not validate `value` or `page` locally** — invalid values are sent to Dorar as-is.
+- Page (`sharh.search` only): 1–1000.
+- Hadith ID (`getById`, `getSimilar`, `getAlternate`, `getUsul`): non-empty alphanumeric plus `-` / `_`.
+- Sharh / book / mohdith IDs: non-empty numeric strings.
+- `DorarClient(timeout: ...)` / `DorarClient.use(timeout: ...)`: positive duration, max 5 minutes (validated in `DorarHttpClient` constructor).
+
+#### Cache, disposal, and `DorarClient.use()`
+
+- **Cache miss**: not an error; the client fetches and caches transparently.
+- **Cache hit**: parsed response returned; `SearchMetadata.isCached = true` on `ApiResponse` results.
+- **Expired entry**: deleted and treated as a miss.
+- **Corrupt cached JSON**: `FormatException` from `jsonDecode` — clear with `client.clearCache()`.
+- **Storage failure**: SQLite/Drift or WebAssembly errors propagate unwrapped (not `DorarException`).
+- **`dispose()`**: closes the HTTP client, cache database, and narrator database; does not throw under normal use. Do not reuse a disposed client — create a new `DorarClient` or use `DorarClient.use()`.
+- **`DorarClient.use(fn)`**: creates a client, runs `fn`, and always calls `dispose()` in a `finally` block (even when `fn` throws). Accepts an optional `timeout` (default: 15 seconds).
 
 #### Comprehensive Handling with Switch Expression
 
@@ -1051,8 +1162,8 @@ if (hadith.hasUsulHadith && hadith.hadithId != null) {
   }
 }
 
-// 7. Clear cache
-client.hadith.clearCache();
+// 7. Clear shared cache (all API services)
+await client.hadith.clearCache();
 ```
 
 ### Sharh Service
@@ -1090,8 +1201,8 @@ for (var s in sharhResults.data) {
   print('Sharh: ${s.sharhText}');
 }
 
-// 4. Clear cache
-client.sharh.clearCache();
+// 4. Clear shared cache (all API services)
+await client.sharh.clearCache();
 ```
 
 ### Book Service (Detailed)
@@ -1109,8 +1220,8 @@ print('Publisher: ${book.publisher}');
 print('Edition: ${book.edition}');
 print('Edition Year: ${book.editionYear}');
 
-// Clear cache
-client.book.clearCache();
+// Clear shared cache (all API services)
+await client.book.clearCache();
 ```
 
 ### Mohdith Service (Detailed)
@@ -1124,8 +1235,8 @@ final mohdith = await client.mohdith.getById('256'); // Imam al-Bukhari
 print('Name: ${mohdith.name}');
 print('Bio: ${mohdith.info}');
 
-// Clear cache
-client.mohdith.clearCache();
+// Clear shared cache (all API services)
+await client.mohdith.clearCache();
 ```
 
 ### Book Reference Service (Offline)
@@ -1150,7 +1261,7 @@ print(bukhari.name); // صحيح البخاري
 // 3. Get multiple by IDs
 final multipleBooks = await client.bookRef.getBooksByIds([
   '6216', // Sahih al-Bukhari
-  '3662', // Sahih Muslim
+  '3088', // Sahih Muslim
 ]);
 
 // 4. List all with pagination
@@ -1224,12 +1335,12 @@ for (var narrator in narrators) {
 }
 
 // 2. Get by ID
-final abuHurayrah = await client.rawiRef.getRawiById(4396);
+final abuHurayrah = await client.rawiRef.getRawiById(1416);
 print(abuHurayrah.name); // أبو هريرة عبد الرحمن بن صخر الدوسي
 
 // 3. Get multiple by IDs
 final multipleNarrators = await client.rawiRef.getRawiByIds([
-  4396,   // Abu Hurayrah
+  1416,   // Abu Hurayrah
   5593,   // Aishah
 ]);
 
@@ -1404,6 +1515,16 @@ final results = await DorarClient.use((client) async {
     );
   });
 ```
+
+## Migration (0.5.0)
+
+If you previously called `configureFlutterAssetLoader` or `createFlutterConnectionFactory` from `dorar_hadith`, switch to [`dorar_hadith_flutter`](https://pub.dev/packages/dorar_hadith_flutter):
+
+```dart
+await DorarHadithFlutter.ensureInitialized();
+```
+
+Those helpers were removed from the core package in 0.5.0.
 
 ## Contributing
 

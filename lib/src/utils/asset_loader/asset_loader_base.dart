@@ -4,6 +4,8 @@ AssetLoaderBuilder _defaultAssetLoaderBuilder = _unsupportedAssetLoaderBuilder;
 
 AssetLoaderBuilder? _platformAssetLoaderBuilder;
 
+bool _hasExplicitOverride = false;
+
 AssetLoaderBuilder _unsupportedAssetLoaderBuilder = () {
   throw UnsupportedError(
     'No AssetLoader has been configured for this platform. '
@@ -14,6 +16,7 @@ AssetLoaderBuilder _unsupportedAssetLoaderBuilder = () {
 /// Registers the default [AssetLoader] factory for the current platform.
 void registerDefaultAssetLoader(AssetLoaderBuilder builder) {
   _platformAssetLoaderBuilder = builder;
+  if (_hasExplicitOverride) return;
   _defaultAssetLoaderBuilder = builder;
 }
 
@@ -29,12 +32,22 @@ abstract interface class AssetLoader {
   Future<String> loadString(String path);
 
   /// Overrides the default [AssetLoader] factory globally.
+  ///
+  /// An explicit configure takes precedence: later calls to
+  /// [registerDefaultAssetLoader] do not replace it until [reset] is called.
+  /// Flutter apps normally use `dorar_hadith_flutter` instead of calling this
+  /// directly.
   static void configure(AssetLoaderBuilder builder) {
+    _hasExplicitOverride = true;
     _defaultAssetLoaderBuilder = builder;
   }
 
   /// Restores the platform default [AssetLoader] factory.
+  ///
+  /// Clears an explicit [configure] override so [registerDefaultAssetLoader]
+  /// can take effect again.
   static void reset() {
+    _hasExplicitOverride = false;
     _defaultAssetLoaderBuilder =
         _platformAssetLoaderBuilder ?? _unsupportedAssetLoaderBuilder;
   }
