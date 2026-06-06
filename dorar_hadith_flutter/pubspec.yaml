@@ -17,13 +17,12 @@ topics:
 
 environment:
   sdk: ">=3.12.0 <4.0.0"
-  flutter: ">=3.44.0 <4.0.0"
+  flutter: ">=3.44.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  dorar_hadith:
-    path: ../
+  dorar_hadith: ^0.5.0
   drift: ^2.29.0
   path: ^1.9.1
   path_provider: ^2.1.5
