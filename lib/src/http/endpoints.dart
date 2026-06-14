@@ -90,7 +90,8 @@ class DorarEndpoints {
   /// - `rawi[]`: Rawi IDs
   /// - `m[]`: Mohdith IDs
   /// - `s[]`: Book IDs
-  /// - `all`: Include specialist results (optional)
+  /// - `all`: Use Dorar's specialist tab (`#specialist`; returns hadiths with
+  ///   takhrij metadata; site UI label: "متخصص")
   static String hadithSearchSite(
     Map<String, dynamic> params, {
     bool specialist = false,

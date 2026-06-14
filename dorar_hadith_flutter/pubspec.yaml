@@ -22,7 +22,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  dorar_hadith: ^0.5.0
+  dorar_hadith:
+    path: ..
   drift: ^2.29.0
   path: ^1.9.1
   path_provider: ^2.1.5

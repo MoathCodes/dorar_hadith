@@ -263,7 +263,8 @@ class DorarClient {
   /// This is a convenience method that delegates to [SharhService.getByText].
   ///
   /// [text] - The hadith text to search for.
-  /// [specialist] - Whether to search in specialist hadiths (default: false).
+  /// [specialist] - When `true`, limit results to hadiths that include takhrij
+  /// in their metadata (default: false).
   ///
   /// Returns a [Sharh] object with the first matching sharh.
   ///
@@ -281,7 +282,7 @@ class DorarClient {
   ///
   /// This is a convenience method that delegates to [SharhService.search].
   ///
-  /// [params] - Search parameters (text, page, specialist, etc.)
+  /// [params] - Search parameters (text, page, specialist tab, etc.)
   ///
   /// Returns an [ApiResponse] containing a list of [Sharh] objects.
   ///
@@ -343,7 +344,8 @@ class DorarClient {
   ///
   /// This is a convenience method that delegates to [HadithService.searchViaSite].
   ///
-  /// [params] - Search parameters including query text, page, specialist mode, filters, etc.
+  /// [params] - Search parameters including query text, page, specialist tab,
+  /// filters, etc.
   ///
   /// Returns an [ApiResponse] containing a list of [DetailedHadith] objects with complete metadata.
   ///

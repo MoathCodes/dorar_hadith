@@ -673,9 +673,9 @@ class SearchMetadata {
   final bool? hasNextPage;               // Whether there is a next page
   final bool? hasPrevPage;               // Whether there is a previous page
   final bool? removeHtml;                // Whether HTML tags were removed
-  final bool? specialist;                // Include specialist hadiths?
-  final int? numberOfNonSpecialist;      // Non-specialist count
-  final int? numberOfSpecialist;         // Specialist count
+  final bool? specialist;                // Specialist tab used?
+  final int? numberOfNonSpecialist;      // Count on default tab
+  final int? numberOfSpecialist;         // Count on specialist tab (hadiths with takhrij; Dorar UI: متخصص)
   final bool isCached;                   // Result from cache?
   final int? usulSourcesCount;           // Sources count (for Usul requests)
   
@@ -714,7 +714,7 @@ class HadithSearchParams {
   // Optional - search options
   final int page;                        // Page (default: 1)
   final bool removeHtml;                 // Remove HTML (default: true)
-  final bool specialist;                 // Include specialist hadiths (default: false)
+  final bool specialist;                 // Only hadiths with takhrij (default: false)
   final String? exclude;                 // Words/phrases to exclude
   
   // Optional - filters
@@ -771,6 +771,20 @@ final modified = simple.copyWith(
 );
 
 final results = await client.searchHadithDetailed(advanced);
+```
+
+#### `specialist` (takhrij metadata)
+
+> **Note:** Named `specialist` after Dorar.net's `#specialist` tab and `&all` URL flag. The site labels this tab **متخصص**.
+
+When `specialist: true`, results are limited to hadiths that have takhrij, and the `takhrij` field is populated in each `DetailedHadith`.
+
+```dart
+// Default: all matching hadiths
+final all = HadithSearchParams(value: 'النية');
+
+// With takhrij: only hadiths that include takhrij metadata
+final withTakhrij = HadithSearchParams(value: 'النية', specialist: true);
 ```
 
 ### HadithDegree
@@ -1180,8 +1194,8 @@ Search and retrieve hadith explanations.
 // 1. Search by hadith text
 final sharh = await client.sharh.getByText('إنما الأعمال بالنيات');
 
-// You can also search in specialist hadiths
-final specialistSharh = await client.sharh.getByText(
+// Limit to hadiths with takhrij metadata (Dorar UI label: متخصص)
+final takhrijSharh = await client.sharh.getByText(
   'نص الحديث',
   specialist: true,
 );

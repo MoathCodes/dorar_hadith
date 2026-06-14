@@ -457,7 +457,8 @@ class HadithService {
   ///
   /// Provides detailed results including hadith IDs, sharh metadata, and related URLs.
   ///
-  /// [params] - Search parameters (text, page, specialist, filters, removeHtml)
+  /// [params] - Search parameters (text, page, specialist tab, filters,
+  /// removeHtml)
   Future<ApiResponse<List<DetailedHadith>>> searchViaSite(
     HadithSearchParams params,
   ) async {

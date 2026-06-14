@@ -31,13 +31,14 @@ abstract class SearchMetadata with _$SearchMetadata {
     /// Whether HTML tags were removed from results
     @JsonKey(name: 'removeHTML') bool? removeHtml,
 
-    /// Whether specialist/advanced hadiths are included
+    /// Whether the specialist tab was used (`specialist: true` on Dorar.net).
     bool? specialist,
 
-    /// Number of non-specialist hadiths
+    /// Result count on Dorar's default tab.
     int? numberOfNonSpecialist,
 
-    /// Number of specialist hadiths
+    /// Result count on Dorar's specialist tab (hadiths with takhrij; site UI
+    /// label: "متخصص").
     int? numberOfSpecialist,
 
     /// Whether this result came from cache

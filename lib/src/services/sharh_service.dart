@@ -59,7 +59,8 @@ class SharhService {
   /// Searches for a hadith by text and returns the first sharh found.
   ///
   /// [text] - The hadith text to search for.
-  /// [specialist] - Whether to search in specialist hadiths (default: false).
+  /// [specialist] - When `true`, limit results to hadiths that include takhrij
+  /// in their metadata (default: false).
   /// [removeHtml] - Whether to strip HTML tags from text fields (default: true).
   ///
   /// Returns a [Sharh] object with hadith and explanation.

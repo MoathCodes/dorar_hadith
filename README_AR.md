@@ -678,9 +678,9 @@ class SearchMetadata {
   final bool? hasNextPage;               // هل يوجد صفحة تالية؟
   final bool? hasPrevPage;               // هل يوجد صفحة سابقة؟
   final bool? removeHtml;                // هل تم إزالة وسوم HTML؟
-  final bool? specialist;                // هل تشمل الأحاديث المتخصصة؟
-  final int? numberOfNonSpecialist;      // عدد الأحاديث غير المتخصصة
-  final int? numberOfSpecialist;         // عدد الأحاديث المتخصصة
+  final bool? specialist;                // هل استُخدم تبويب المتخصص؟
+  final int? numberOfNonSpecialist;      // عدد النتائج في التبويب الافتراضي
+  final int? numberOfSpecialist;         // عدد الأحاديث التي لها تخريج (تبويب متخصص)
   final bool isCached;                   // هل النتيجة من الكاش؟
   final int? usulSourcesCount;           // عدد المصادر (لطلبات أصول الحديث)
   
@@ -719,7 +719,7 @@ class HadithSearchParams {
   // اختياري - خيارات البحث
   final int page;                        // رقم الصفحة (افتراضي: 1)
   final bool removeHtml;                 // إزالة وسوم HTML (افتراضي: true)
-  final bool specialist;                 // تضمين الأحاديث المتخصصة (افتراضي: false)
+  final bool specialist;                 // الأحاديث التي لها تخريج فقط (افتراضي: false)
   final String? exclude;                 // كلمات أو عبارات للاستبعاد
   
   // اختياري - الفلاتر
@@ -776,6 +776,20 @@ final modified = simple.copyWith(
 );
 
 final results = await client.searchHadithDetailed(advanced);
+```
+
+#### `specialist` (بيانات التخريج)
+
+> **ملاحظة:** اسم المعامل `specialist` لأن موقع dorar.net يستخدم التبويب `#specialist` وعلامة الاستعلام `&all`. في واجهة الموقع يُسمّى هذا التبويب **متخصص**.
+
+عند `specialist: true` تُقتصر النتائج على الأحاديث التي لها تخريج، ويُملأ حقل `takhrij` في كل `DetailedHadith`.
+
+```dart
+// الافتراضي: جميع الأحاديث المطابقة
+final all = HadithSearchParams(value: 'النية');
+
+// مع التخريج: الأحاديث التي تتضمّن التخريج في بياناتها فقط
+final withTakhrij = HadithSearchParams(value: 'النية', specialist: true);
 ```
 
 ### درجات صحة الحديث (HadithDegree)
@@ -1185,8 +1199,8 @@ await client.hadith.clearCache();
 // 1. البحث في الشروح بنص الحديث
 final sharh = await client.sharh.getByText('إنما الأعمال بالنيات');
 
-// يمكن أيضًا البحث في الأحاديث المتخصصة
-final specialistSharh = await client.sharh.getByText(
+// اقتصار النتائج على الأحاديث التي لها تخريج (تسمية الموقع: متخصص)
+final takhrijSharh = await client.sharh.getByText(
   'نص الحديث',
   specialist: true,
 );

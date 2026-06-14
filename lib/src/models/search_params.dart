@@ -22,7 +22,9 @@ abstract class HadithSearchParams with _$HadithSearchParams {
     /// Whether to remove HTML tags from results (default: true)
     @Default(true) bool removeHtml,
 
-    /// Include specialist/advanced hadiths (default: false)
+    /// When `true`, use Dorar.net's `#specialist` tab (`&all` URL flag): results
+    /// include takhrij metadata and only hadiths that have takhrij are returned.
+    /// Dorar labels this tab "متخصص" in its UI; the parameter name is historical.
     @Default(false) bool specialist,
 
     /// Words or phrases to exclude from search

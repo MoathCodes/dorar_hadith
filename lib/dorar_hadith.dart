@@ -33,11 +33,11 @@
 ///       HadithSearchParams(value: 'الصلاة', page: 1),
 ///     );
 ///
-///     // Search with filters
-///     final filtered = await client.searchHadithDetailed(
-///       HadithSearchParams(
-///         value: 'النية',
-///         specialist: true,
+    ///     // Only hadiths with takhrij metadata (Dorar UI label: متخصص)
+    ///     final filtered = await client.searchHadithDetailed(
+    ///       HadithSearchParams(
+    ///         value: 'النية',
+    ///         specialist: true,
 ///         degrees: [HadithDegree.authenticHadith],
 ///       ),
 ///     );

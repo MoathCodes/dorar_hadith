@@ -78,10 +78,10 @@ class QuerySerializer {
       queryParams['rawi'] = params.rawi!.map((r) => r.id).toList();
     }
 
-    // Note: removeHTML and specialist are NOT sent to Dorar.net upstream.
-    // They are local-only parameters that control how the Dart package
-    // processes the response (matching the Node.js middleware behavior
-    // which strips them from req.query before forwarding).
+    // Note: removeHTML is NOT sent in the serialized query map. The specialist
+    // tab flag is applied separately as `&all` on the site URL by
+    // [DorarEndpoints], not as a query parameter (matching the Node.js
+    // middleware which strips these from req.query before forwarding).
 
     return queryParams;
   }
