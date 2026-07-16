@@ -55,3 +55,23 @@ DatabaseConnection Function() createFlutterConnectionFactory({
 /// This typically wraps `rootBundle.load('packages/dorar_hadith/assets/database/rawi.db')`
 /// and returns the `.buffer.asUint8List()` from the resulting [ByteData].
 typedef FlutterDatabaseAssetLoader = Future<Uint8List> Function();
+
+/// Creates a [DatabaseConnection] factory for the API response cache database.
+///
+/// Opens (or creates) [databaseFileName] inside [targetDirectory]. Unlike
+/// [createFlutterConnectionFactory], no asset copy is required — the cache file
+/// is created on first write.
+DatabaseConnection Function() createFlutterCacheConnectionFactory({
+  required Directory targetDirectory,
+  String databaseFileName = 'cache.db',
+}) {
+  return () {
+    return DatabaseConnection(
+      LazyDatabase(() async {
+        final file = File(p.join(targetDirectory.path, databaseFileName));
+        await file.parent.create(recursive: true);
+        return NativeDatabase(file);
+      }),
+    );
+  };
+}

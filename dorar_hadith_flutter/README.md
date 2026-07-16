@@ -31,6 +31,7 @@ void main() async {
 
 1. **`configureFlutterAssetLoader`** — registers `FlutterAssetLoader` with `rootBundle.loadString` so `BookReferenceService` and `MohdithReferenceService` read bundled JSON.
 2. **`RawiDatabase.configureConnection`** — installs a factory that copies `rawi.db` from the asset bundle into a writable directory, then opens it with Drift `NativeDatabase`.
+3. **`CacheDatabase.configureConnection`** — opens `cache.db` in the same writable directory so API response caching persists in the application support folder instead of the process working directory.
 
 The method is **idempotent**: after the first successful call, `DorarHadithFlutter.isInitialized` is `true` and further calls return immediately without reconfiguring. A different `databaseDirectory` on a later call is **ignored** (the first directory wins).
 
@@ -76,6 +77,7 @@ For manual control without `ensureInitialized()`, the package re-exports:
 
 - **`configureFlutterAssetLoader`** — set `bundleLoader` (typically `rootBundle.loadString`) and optional `keyResolver`.
 - **`createFlutterConnectionFactory`** — copy-on-first-open database wiring with `loadDatabaseBytes`, optional `targetDirectory`, and `databaseFileName`.
+- **`createFlutterCacheConnectionFactory`** — opens `cache.db` in a writable directory (no asset copy).
 
 If `targetDirectory` is omitted in `createFlutterConnectionFactory`, the database is copied into a **system temp** directory (not persistent across restarts). `ensureInitialized()` always prefers the application support directory unless you override `databaseDirectory`.
 

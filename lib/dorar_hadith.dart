@@ -65,6 +65,7 @@ export 'src/constants/rawi_reference.dart';
 export 'src/constants/search_method.dart';
 export 'src/constants/search_zone.dart';
 // Database (Drift) - Exported for advanced usage
+export 'src/database/cache_database.dart';
 export 'src/database/rawi_database.dart';
 // HTTP & Networking
 export 'src/http/endpoints.dart';

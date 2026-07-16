@@ -940,9 +940,9 @@ final client = DorarClient(
 
 تخزين استجابات API يستخدم قاعدة SQLite دائمة (`cache.db` على CLI الأصلي، WebAssembly على الويب)، وهي منفصلة عن أصول المراجع غير المتصلة (`book.json`، `mohdith.json`، `rawi.db`).
 
-تُخزَّن الاستجابات في `CacheService` مشترك (SQLite `cache.db` + طبقة ذاكرة افتراضية: 100 عنصر، TTL سبعة أيام).
+تُخزَّن الاستجابات في `CacheService` مشترك (SQLite `cache.db` + طبقة ذاكرة افتراضية: 100 عنصر، TTL سبعة أيام). صفوف SQLite محدودة بـ 750 عنصرًا (LRU حسب `createdAt`)؛ تُحذف الصفوف المنتهية عند التهيئة وكل 50 كتابة.
 - **الأنظمة الأصلية (CLI)**: يُنشأ `cache.db` في مجلد العمل الحالي.
-- **Flutter (أصلي)**: عند استخدام [`dorar_hadith_flutter`](https://pub.dev/packages/dorar_hadith_flutter)، تُنسخ `rawi.db` إلى مجلد دعم التطبيق وتبقى بعد إعادة التشغيل. تخزين كاش API يتبع الافتراضي (`cache.db` في CWD ما لم تخصص `CacheDatabase.configureConnection`).
+- **Flutter (أصلي)**: عند استخدام [`dorar_hadith_flutter`](https://pub.dev/packages/dorar_hadith_flutter)، تُخزَّن `rawi.db` و`cache.db` في مجلد دعم التطبيق وتبقى بعد إعادة التشغيل.
 - **الويب**: تستخدم `sqlite3.wasm` و`drift_worker.dart.js` (انظر [البيانات غير المتصلة والأصول وسلوك المنصات](#البيانات-غير-المتصلة-والأصول-وسلوك-المنصات)).
 
 فشل الكاش (cache miss) ليس خطأ — يُجلب من Dorar.net وتُخزَّن النتيجة. عند الإصابة من الكاش يُضبط `SearchMetadata.isCached` إلى `true` في نتائج `ApiResponse`. تُحذف العناصر المنتهية وتُعامل كفشل كاش. JSON تالف في الكاش يرمي `FormatException` من `jsonDecode` (ليس `DorarException`)؛ استخدم `client.clearCache()` للاستعادة. أخطاء SQLite أو WebAssembly تنتشر كأخطاء منصة/Drift دون تغليف.

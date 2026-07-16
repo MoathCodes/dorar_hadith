@@ -1,22 +1,29 @@
+import 'dart:async';
+
 import 'package:dorar_hadith/src/database/cache_database.dart';
 import 'package:dorar_hadith/src/models/cache_entry.dart';
 import 'package:drift/drift.dart';
 
 class CacheService implements CacheStore {
+  static const int _maintenanceInterval = 50;
+
   final CacheDatabase database;
   final Duration defaultTtl;
   final int maxCacheSize;
+  final int maxSqliteRows;
   final InMemoryCacheManager _cacheManager;
+  var _writesSinceMaintenance = 0;
 
   CacheService({
     required this.database,
     this.defaultTtl = const Duration(days: 7),
     this.maxCacheSize = 100,
+    this.maxSqliteRows = 750,
     InMemoryCacheManager? cacheManager,
   }) : _cacheManager =
            cacheManager ??
            InMemoryCacheManager(defaultTtl: defaultTtl, maxSize: maxCacheSize) {
-    database.clearExpiredCache();
+    unawaited(database.clearExpiredCache());
   }
 
   @override
@@ -59,7 +66,7 @@ class CacheService implements CacheStore {
   }
 
   @override
-  Future<void> set(CacheEntry entry) {
+  Future<void> set(CacheEntry entry) async {
     _cacheManager.set(entry);
     final dbEntry = CacheTableCompanion(
       key: Value(entry.key),
@@ -68,7 +75,23 @@ class CacheService implements CacheStore {
       createdAt: Value(entry.createdAt),
       expiredAt: Value(entry.expiresAt),
     );
-    return database.insertOrUpdateCacheEntry(dbEntry);
+    await database.insertOrUpdateCacheEntry(dbEntry);
+    await _enforceSqliteRowCap(excludeKey: entry.key);
+    _writesSinceMaintenance++;
+    if (_writesSinceMaintenance >= _maintenanceInterval) {
+      _writesSinceMaintenance = 0;
+      await database.clearExpiredCache();
+    }
+  }
+
+  Future<void> _enforceSqliteRowCap({String? excludeKey}) async {
+    if (maxSqliteRows <= 0) return;
+
+    final count = await database.countCacheEntries();
+    final overflow = count - maxSqliteRows;
+    if (overflow <= 0) return;
+
+    await database.evictOldestEntries(overflow, excludeKey: excludeKey);
   }
 }
 

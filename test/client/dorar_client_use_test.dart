@@ -12,5 +12,19 @@ void main() {
       expect(count, isA<int>());
       expect(count, greaterThan(0));
     });
+
+    test('disposes client when callback throws', () async {
+      DorarClient? captured;
+
+      await expectLater(
+        DorarClient.use((c) async {
+          captured = c;
+          throw StateError('boom');
+        }),
+        throwsA(isA<StateError>()),
+      );
+
+      await expectLater(captured!.clearCache(), throwsA(anything));
+    });
   });
 }

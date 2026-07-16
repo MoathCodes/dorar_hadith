@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project adheres to Semantic Versioning.
 
+## Unreleased
+
+### Added
+- `CacheDatabase.countCacheEntries()` and `evictOldestEntries()` for bounded SQLite cache eviction.
+- `CacheService.maxSqliteRows` (default: 750) caps persistent cache rows with LRU eviction by `createdAt`.
+- Periodic `clearExpiredCache()` every 50 cache writes.
+
+### Changed
+- `CacheService.set()` now enforces the SQLite row cap after each insert.
+
 ## 0.5.0
 
 ### Breaking

@@ -935,9 +935,9 @@ final client = DorarClient(
 
 API response caching uses a persistent SQLite database (`cache.db` on native CLI, WebAssembly on web). It is separate from the offline reference assets (`book.json`, `mohdith.json`, `rawi.db`).
 
-API responses are cached in a shared `CacheService` backed by SQLite (`cache.db`) plus an in-memory layer (default: 100 entries, 7-day TTL).
+API responses are cached in a shared `CacheService` backed by SQLite (`cache.db`) plus an in-memory layer (default: 100 entries, 7-day TTL). SQLite rows are capped at 750 entries (LRU by `createdAt`); expired rows are purged on init and every 50 writes.
 - **Native Platforms (CLI)**: `cache.db` is created in the current working directory.
-- **Flutter (native)**: When using [`dorar_hadith_flutter`](https://pub.dev/packages/dorar_hadith_flutter), the offline `rawi.db` is copied into the application support directory and persists across restarts. API response caching follows the platform default (`cache.db` in the CWD unless you customize `CacheDatabase.configureConnection`).
+- **Flutter (native)**: When using [`dorar_hadith_flutter`](https://pub.dev/packages/dorar_hadith_flutter), both `rawi.db` and `cache.db` are stored in the application support directory and persist across restarts.
 - **Web**: Uses `sqlite3.wasm` and `drift_worker.dart.js` (see [Offline Data, Assets & Platform Behavior](#offline-data-assets--platform-behavior)).
 
 A cache miss is not an error — the client fetches from Dorar.net and stores the result. Cached hits set `SearchMetadata.isCached` to `true` on `ApiResponse` results. Expired entries are deleted and treated as a miss. Corrupt cached JSON throws `FormatException` from `jsonDecode` (not a `DorarException`); call `client.clearCache()` to recover. SQLite or WebAssembly storage failures propagate as platform/Drift errors and are not wrapped.

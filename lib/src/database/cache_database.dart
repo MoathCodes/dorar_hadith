@@ -35,6 +35,30 @@ class CacheDatabase extends _$CacheDatabase {
   Future<void> insertOrUpdateCacheEntry(CacheTableCompanion entry) =>
       managers.cacheTable.create((o) => entry, mode: .insertOrReplace);
 
+  Future<int> countCacheEntries() async {
+    final countExpr = cacheTable.key.count();
+    final query = selectOnly(cacheTable)..addColumns([countExpr]);
+    final row = await query.getSingle();
+    return row.read(countExpr) ?? 0;
+  }
+
+  /// Deletes the oldest cache rows by [createdAt], skipping [excludeKey].
+  Future<void> evictOldestEntries(int count, {String? excludeKey}) async {
+    if (count <= 0) return;
+
+    final oldest = await (select(cacheTable)
+          ..orderBy([(t) => OrderingTerm.asc(t.createdAt)]))
+        .get();
+
+    var removed = 0;
+    for (final entry in oldest) {
+      if (removed >= count) break;
+      if (excludeKey != null && entry.key == excludeKey) continue;
+      await deleteCacheEntry(entry.key);
+      removed++;
+    }
+  }
+
   /// Override the connection factory used when instantiating new databases.
   static void configureConnection(CacheConnectionFactory factory) {
     _connectionFactory = factory;

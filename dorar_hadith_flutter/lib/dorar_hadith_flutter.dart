@@ -16,7 +16,10 @@ import 'src/connection_flutter.dart';
 export 'src/asset_loader_flutter.dart'
     show FlutterAssetLoader, configureFlutterAssetLoader;
 export 'src/connection_flutter.dart'
-    show FlutterDatabaseAssetLoader, createFlutterConnectionFactory;
+    show
+        FlutterDatabaseAssetLoader,
+        createFlutterCacheConnectionFactory,
+        createFlutterConnectionFactory;
 
 /// Entry point for wiring [dorar_hadith] in Flutter applications.
 abstract final class DorarHadithFlutter {
@@ -50,6 +53,10 @@ abstract final class DorarHadithFlutter {
           return data.buffer.asUint8List();
         },
       ),
+    );
+
+    CacheDatabase.configureConnection(
+      createFlutterCacheConnectionFactory(targetDirectory: directory),
     );
 
     _initialized = true;
