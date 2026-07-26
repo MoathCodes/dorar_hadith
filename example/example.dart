@@ -411,9 +411,7 @@ Future<void> referenceData(DorarClient client) async {
   final books = await client.bookRef.searchBook('صحيح', limit: 5);
   print('وجدنا ${books.length} كتاب:');
   for (var book in books) {
-    final author = book.author ?? 'غير محدد';
-    print('  • ${book.name}');
-    print('    المؤلف: $author');
+    print('  • ${book.name} (${book.id})');
   }
 
   // البحث في المحدثين

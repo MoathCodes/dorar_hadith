@@ -1,5 +1,8 @@
 import 'package:dorar_hadith/dorar_hadith.dart';
+import 'package:dorar_hadith/src/database/cache_database.dart';
+import 'package:dorar_hadith/src/services/cache_service.dart';
 import 'package:drift/drift.dart' show driftRuntimeOptions;
+import 'package:drift/native.dart';
 import 'package:http/testing.dart';
 import 'package:test/test.dart';
 
@@ -10,6 +13,7 @@ void main() {
   late MockClient mockHttpClient;
   late DorarHttpClient dorarClient;
   late DorarClient client;
+  late CacheService cacheService;
 
   setUpAll(() {
     // Suppress drift multi-database warnings triggered by repeated in-memory database instantiations in tests.
@@ -89,7 +93,10 @@ void main() {
     });
 
     dorarClient = DorarHttpClient(client: mockHttpClient);
-    client = DorarClient(httpClient: dorarClient);
+    cacheService = CacheService(
+      database: CacheDatabase(NativeDatabase.memory()),
+    );
+    client = DorarClient(httpClient: dorarClient, cacheService: cacheService);
   });
 
   tearDown(() async {
@@ -240,13 +247,19 @@ void main() {
       });
 
       final errorDorarClient = DorarHttpClient(client: errorClient);
-      final errorTestClient = DorarClient(httpClient: errorDorarClient);
+      final errorTestClient = DorarClient(
+        httpClient: errorDorarClient,
+        cacheService: CacheService(
+          database: CacheDatabase(NativeDatabase.memory()),
+        ),
+      );
 
       final params = HadithSearchParams(value: 'test');
       expect(
         () => errorTestClient.hadith.searchViaApi(params),
         throwsA(isA<Exception>()),
       );
+      await errorTestClient.dispose();
     });
 
     test('should handle invalid responses', () async {
@@ -255,13 +268,19 @@ void main() {
       });
 
       final invalidDorarClient = DorarHttpClient(client: invalidClient);
-      final invalidTestClient = DorarClient(httpClient: invalidDorarClient);
+      final invalidTestClient = DorarClient(
+        httpClient: invalidDorarClient,
+        cacheService: CacheService(
+          database: CacheDatabase(NativeDatabase.memory()),
+        ),
+      );
 
       final params = HadithSearchParams(value: 'test');
       expect(
         () => invalidTestClient.hadith.searchViaApi(params),
         throwsA(isA<Exception>()),
       );
+      await invalidTestClient.dispose();
     });
   });
 

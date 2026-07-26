@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$BookItem {
 
-@JsonKey(name: 'key') String get id;@JsonKey(name: 'value') String get name; String? get author; String? get mohdithId; String? get category;
+@JsonKey(name: 'key') String get id;@JsonKey(name: 'value') String get name;
 /// Create a copy of BookItem
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $BookItemCopyWith<BookItem> get copyWith => _$BookItemCopyWithImpl<BookItem>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BookItem&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.author, author) || other.author == author)&&(identical(other.mohdithId, mohdithId) || other.mohdithId == mohdithId)&&(identical(other.category, category) || other.category == category));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BookItem&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,author,mohdithId,category);
+int get hashCode => Object.hash(runtimeType,id,name);
 
 @override
 String toString() {
-  return 'BookItem(id: $id, name: $name, author: $author, mohdithId: $mohdithId, category: $category)';
+  return 'BookItem(id: $id, name: $name)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $BookItemCopyWith<$Res>  {
   factory $BookItemCopyWith(BookItem value, $Res Function(BookItem) _then) = _$BookItemCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'key') String id,@JsonKey(name: 'value') String name, String? author, String? mohdithId, String? category
+@JsonKey(name: 'key') String id,@JsonKey(name: 'value') String name
 });
 
 
@@ -65,14 +65,11 @@ class _$BookItemCopyWithImpl<$Res>
 
 /// Create a copy of BookItem
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? author = freezed,Object? mohdithId = freezed,Object? category = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,author: freezed == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
-as String?,mohdithId: freezed == mohdithId ? _self.mohdithId : mohdithId // ignore: cast_nullable_to_non_nullable
-as String?,category: freezed == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
-as String?,
+as String,
   ));
 }
 
@@ -157,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'key')  String id, @JsonKey(name: 'value')  String name,  String? author,  String? mohdithId,  String? category)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'key')  String id, @JsonKey(name: 'value')  String name)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BookItem() when $default != null:
-return $default(_that.id,_that.name,_that.author,_that.mohdithId,_that.category);case _:
+return $default(_that.id,_that.name);case _:
   return orElse();
 
 }
@@ -178,10 +175,10 @@ return $default(_that.id,_that.name,_that.author,_that.mohdithId,_that.category)
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'key')  String id, @JsonKey(name: 'value')  String name,  String? author,  String? mohdithId,  String? category)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'key')  String id, @JsonKey(name: 'value')  String name)  $default,) {final _that = this;
 switch (_that) {
 case _BookItem():
-return $default(_that.id,_that.name,_that.author,_that.mohdithId,_that.category);case _:
+return $default(_that.id,_that.name);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +195,10 @@ return $default(_that.id,_that.name,_that.author,_that.mohdithId,_that.category)
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'key')  String id, @JsonKey(name: 'value')  String name,  String? author,  String? mohdithId,  String? category)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'key')  String id, @JsonKey(name: 'value')  String name)?  $default,) {final _that = this;
 switch (_that) {
 case _BookItem() when $default != null:
-return $default(_that.id,_that.name,_that.author,_that.mohdithId,_that.category);case _:
+return $default(_that.id,_that.name);case _:
   return null;
 
 }
@@ -213,14 +210,11 @@ return $default(_that.id,_that.name,_that.author,_that.mohdithId,_that.category)
 @JsonSerializable()
 
 class _BookItem implements BookItem {
-  const _BookItem({@JsonKey(name: 'key') required this.id, @JsonKey(name: 'value') required this.name, this.author, this.mohdithId, this.category});
+  const _BookItem({@JsonKey(name: 'key') required this.id, @JsonKey(name: 'value') required this.name});
   factory _BookItem.fromJson(Map<String, dynamic> json) => _$BookItemFromJson(json);
 
 @override@JsonKey(name: 'key') final  String id;
 @override@JsonKey(name: 'value') final  String name;
-@override final  String? author;
-@override final  String? mohdithId;
-@override final  String? category;
 
 /// Create a copy of BookItem
 /// with the given fields replaced by the non-null parameter values.
@@ -235,16 +229,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BookItem&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.author, author) || other.author == author)&&(identical(other.mohdithId, mohdithId) || other.mohdithId == mohdithId)&&(identical(other.category, category) || other.category == category));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BookItem&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,author,mohdithId,category);
+int get hashCode => Object.hash(runtimeType,id,name);
 
 @override
 String toString() {
-  return 'BookItem(id: $id, name: $name, author: $author, mohdithId: $mohdithId, category: $category)';
+  return 'BookItem(id: $id, name: $name)';
 }
 
 
@@ -255,7 +249,7 @@ abstract mixin class _$BookItemCopyWith<$Res> implements $BookItemCopyWith<$Res>
   factory _$BookItemCopyWith(_BookItem value, $Res Function(_BookItem) _then) = __$BookItemCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'key') String id,@JsonKey(name: 'value') String name, String? author, String? mohdithId, String? category
+@JsonKey(name: 'key') String id,@JsonKey(name: 'value') String name
 });
 
 
@@ -272,14 +266,11 @@ class __$BookItemCopyWithImpl<$Res>
 
 /// Create a copy of BookItem
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? author = freezed,Object? mohdithId = freezed,Object? category = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,}) {
   return _then(_BookItem(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,author: freezed == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
-as String?,mohdithId: freezed == mohdithId ? _self.mohdithId : mohdithId // ignore: cast_nullable_to_non_nullable
-as String?,category: freezed == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
-as String?,
+as String,
   ));
 }
 

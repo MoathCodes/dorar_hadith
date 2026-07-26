@@ -124,4 +124,13 @@ class MohdithReferenceService {
 
     return matches;
   }
+
+  /// Clears the in-memory scholar map and closes a [ClosableAssetLoader] if used.
+  void dispose() {
+    _cache = null;
+    final loader = _assetLoader;
+    if (loader is ClosableAssetLoader) {
+      loader.close();
+    }
+  }
 }

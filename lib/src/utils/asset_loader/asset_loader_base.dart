@@ -53,6 +53,12 @@ abstract interface class AssetLoader {
   }
 }
 
+/// Optional lifecycle for [AssetLoader]s that hold resources (e.g. HTTP).
+abstract interface class ClosableAssetLoader implements AssetLoader {
+  /// Releases resources held by this loader.
+  void close();
+}
+
 /// Exception thrown when an asset fails to load.
 class AssetLoaderException implements Exception {
   /// Error message describing what went wrong.

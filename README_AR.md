@@ -422,32 +422,25 @@ class DetailedHadith extends Hadith {
 
 ### كائن الشرح (Sharh Model)
 
-يمثل الحديث مع شرحه التفصيلي.
+يمثل الحديث مع شرحه التفصيلي. حقول الحديث موجودة داخل
+`ExplainedHadith` متداخل؛ والـ getters المساعدة (`hadithText`، `sharhText`،
+`verdict`، …) تمرّر للطبقات المتداخلة.
 
 ```dart
 class Sharh {
-  // معلومات الحديث الأساسية
-  final String hadith;              // نص الحديث
-  final String rawi;                // الراوي
-  final String mohdith;             // المحدث
-  final String book;                // الكتاب المصدر
-  final String numberOrPage;        // رقم الصفحة/الحديث
-  final String grade;               // درجة الحديث
-  final String? takhrij;            // التخريج
-  
-  // معلومات الشرح
-  final bool hasSharhMetadata;      // هل يوجد شرح؟
-  final SharhMetadata? sharhMetadata; // بيانات الشرح
-  
-  // خاصية مساعدة للحصول على نص الشرح مباشرة
+  final ExplainedHadith hadith;     // الحديث + التخريج + hasSharhMetadata
+  final SharhMetadata? sharhMetadata;
+
+  String get hadithText => hadith.hadith;
   String? get sharhText => sharhMetadata?.sharh;
+  String get verdict => hadith.grade;
 }
 ```
 
 **استخدام:**
 ```dart
 final sharh = await client.sharh.getById('789');
-if (sharh.hasSharhMetadata && sharh.sharhText != null) {
+if (sharh.hadith.hasSharhMetadata && sharh.sharhText != null) {
   print('الشرح: ${sharh.sharhText}');
 }
 ```
@@ -574,9 +567,6 @@ print('نبذة: ${mohdith.info}');
 class BookItem extends ReferenceItem {
   final String id;                  // معرف الكتاب
   final String name;                // اسم الكتاب
-  final String? author;             // اسم المؤلف (إن وُجد)
-  final String? mohdithId;          // معرف المحدث المؤلف
-  final String? category;           // التصنيف (إن وُجد)
 }
 ```
 
@@ -585,10 +575,11 @@ class BookItem extends ReferenceItem {
 // البحث في الكتب (بدون إنترنت)
 final books = await client.bookRef.searchBook('صحيح', limit: 10);
 for (var book in books) {
-  print('${book.name} - ${book.author}');
+  print('${book.name} (${book.id})');
   
-  // للحصول على تفاصيل كاملة (يحتاج إنترنت)
+  // للحصول على تفاصيل كاملة (يحتاج إنترنت) — تشمل المؤلف والناشر
   final fullInfo = await client.book.getById(book.id);
+  print(fullInfo.author);
 }
 ```
 
@@ -598,8 +589,6 @@ for (var book in books) {
 class MohdithItem extends ReferenceItem {
   final String id;                  // معرف المحدث
   final String name;                // اسم المحدث
-  final int? deathYear;             // سنة الوفاة بالهجري (إن وُجدت)
-  final String? era;                // الحقبة الزمنية (إن وُجدت)
 }
 ```
 
@@ -608,10 +597,7 @@ class MohdithItem extends ReferenceItem {
 // البحث في المحدثين (بدون إنترنت)
 final scholars = await client.mohdithRef.searchMohdith('البخاري', limit: 5);
 for (var scholar in scholars) {
-  print('${scholar.name}');
-  if (scholar.deathYear != null) {
-    print('توفي سنة: ${scholar.deathYear}هـ');
-  }
+  print('${scholar.name} (${scholar.id})');
 }
 ```
 
@@ -1044,8 +1030,8 @@ DorarRateLimitException { final String message; final int? limit; final DateTime
 
 | الدالة / الخدمة | `DorarValidationException` | `DorarException` أخرى | تعيد فارغ/null بدل الرمي |
 |---|---|---|---|
-| `searchHadith` / `hadith.searchViaApi` | — (لا تحقق محلي) | شبكة/مهلة/حد معدل؛ `DorarServerException` إذا JSON غير صالح أو صفر أحاديث | — |
-| `searchHadithDetailed` / `hadith.searchViaSite` | — | شبكة/مهلة/حد معدل؛ `DorarServerException` إذا تبويب HTML مفقود | قائمة `data` فارغة عند عدم وجود أحاديث في الصفحة |
+| `searchHadith` / `hadith.searchViaApi` | `value` فارغ/طويل؛ `page` ليس 1–1000 | شبكة/مهلة/حد معدل؛ `DorarServerException` إذا JSON غير صالح أو صفر أحاديث | — |
+| `searchHadithDetailed` / `hadith.searchViaSite` | `value` فارغ/طويل؛ `page` ليس 1–1000 | شبكة/مهلة/حد معدل؛ `DorarServerException` إذا تبويب HTML مفقود | قائمة `data` فارغة عند عدم وجود أحاديث في الصفحة |
 | `getHadithById` / `hadith.getById` | `hadithId` غير صالح | شبكة/مهلة/404؛ `DorarServerException` إذا بنية الصفحة غير متوقعة | — |
 | `getSimilarHadith` / `hadith.getSimilar` | `hadithId` غير صالح | شبكة/مهلة/404 | قائمة فارغة |
 | `getAlternateHadith` / `hadith.getAlternate` | `hadithId` غير صالح | شبكة/مهلة/404 | `null` عند غياب كتلة البديل أو فشل تحليلها |
@@ -1060,8 +1046,8 @@ DorarRateLimitException { final String message; final int? limit; final DateTime
 JSON تالف في جسم HTTP 200 يرمي `FormatException` من `jsonDecode` (ليس `DorarException`). فشل تحليل HTML/المحتوى داخل الخدمات يصبح `DorarParseException`.
 
 قواعد التحقق (قبل HTTP):
-- نص البحث (`sharh.getByText`، `sharh.search` فقط): مطلوب، حد أقصى 500 حرفًا. **`searchHadith` و`searchHadithDetailed` لا يتحققان من `value` أو `page` محليًا** — تُرسل القيم كما هي إلى Dorar.
-- الصفحة (`sharh.search` فقط): 1–1000.
+- نص البحث (`searchHadith`، `searchHadithDetailed`، `sharh.getByText`، `sharh.search`): مطلوب، حد أقصى 500 حرفًا.
+- الصفحة (`searchHadith`، `searchHadithDetailed`، `sharh.search`): 1–1000.
 - معرف الحديث (`getById`، `getSimilar`، `getAlternate`، `getUsul`): أحرف وأرقام مع `-` / `_`.
 - معرفات الشرح/الكتاب/المحدث: أرقام غير فارغة.
 - `DorarClient(timeout: ...)` / `DorarClient.use(timeout: ...)`: مدة موجبة، حد أقصى 5 دقائق (يُتحقق في مُنشئ `DorarHttpClient`).
@@ -1276,7 +1262,7 @@ final books = await client.bookRef.searchBook('صحيح', limit: 10);
 final sameBooks = await client.searchBooks('صحيح');
 
 for (var book in books) {
-  print('${book.name} - ${book.author}');
+  print('${book.name} (${book.id})');
 }
 
 // 2. الحصول على كتاب بالمعرف
@@ -1314,10 +1300,7 @@ final scholars = await client.mohdithRef.searchMohdith('البخاري', limit: 
 final sameScholars = await client.searchMohdith('البخاري');
 
 for (var scholar in scholars) {
-  print('${scholar.name}');
-  if (scholar.deathYear != null) {
-    print('سنة الوفاة: ${scholar.deathYear}هـ');
-  }
+  print('${scholar.name} (${scholar.id})');
 }
 
 // 2. الحصول على محدث بالمعرف
@@ -1429,29 +1412,28 @@ final bukhariId = int.parse(MohdithReference.bukhari.id);
 
 #### الكتب الثابتة (BookReference)
 
+المعرّفات تطابق قائمة فلترة Dorar في `book.json`. الكتب غير الموجودة
+في القائمة (مثل مسند أحمد، الموطأ) ليست ثوابت — استخدم
+`client.bookRef.searchBook(...)` لاكتشاف المعرفات المتاحة.
+
 ```dart
-// القيم الثابتة المتاحة (21 كتاب)
+// كتب شائعة بمعرفات Dorar موثّقة
 BookReference.all                 // الجميع (بدون فلتر)
 BookReference.sahihBukhari        // صحيح البخاري (6216)
 BookReference.sahihMuslim         // صحيح مسلم (3088)
 BookReference.arbainNawawi        // الأربعون النووية (13457)
 BookReference.sahihMusnad         // الصحيح المسند (96)
-BookReference.sunanAbuDawud       // سنن أبي داود (4549)
-BookReference.jamiTirmidhi        // سنن الترمذي (3662)
-BookReference.sunanNasai          // سنن النسائي (5766)
-BookReference.sunanIbnMajah       // سنن ابن ماجه (5299)
-BookReference.musnadAhmad         // مسند أحمد (14)
-BookReference.muwattaMalik        // موطأ مالك (6453)
-BookReference.musnadDarimi        // سنن الدارمي (6277)
-BookReference.sahihIbnKhuzaymah   // صحيح ابن خزيمة (3024)
-BookReference.sahihIbnHibban      // صحيح ابن حبان (5876)
-BookReference.mustadrakHakim      // المستدرك على الصحيحين (2800)
-BookReference.sunanBayhaqiKubra   // السنن الكبرى للبيهقي (7989)
-BookReference.sunanDaraqutni      // سنن الدارقطني (3233)
-BookReference.musannafIbnAbiShaybah // مصنف ابن أبي شيبة (6598)
-BookReference.musannafAbdRazzaq   // مصنف عبد الرزاق (7613)
-BookReference.riyadSalihin        // رياض الصالحين (10106)
-BookReference.bulughMaram         // بلوغ المرام (9927)
+BookReference.sunanAbuDawud       // سنن أبي داود (6267)
+BookReference.jamiTirmidhi        // سنن الترمذي (13509)
+BookReference.sunanNasai          // سنن النسائي (13508)
+BookReference.sunanIbnMajah       // سنن ابن ماجة (6264)
+BookReference.sahihIbnKhuzaymah   // صحيح ابن خزيمة (13558)
+BookReference.sahihIbnHibban      // صحيح ابن حبان (16582)
+BookReference.mustadrakHakim      // المستدرك على الصحيحين (16226)
+BookReference.sunanBayhaqiKubra   // السنن الكبرى للبيهقي (13470)
+BookReference.sunanDaraqutni      // سنن الدارقطني (13501)
+BookReference.riyadSalihin        // رياض الصالحين (11155)
+BookReference.bulughMaram         // بلوغ المرام (13553)
 
 // كل قيمة لها معرف واسم
 final bukhari = BookReference.sahihBukhari;

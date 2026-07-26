@@ -28,6 +28,12 @@ class HadithService {
   /// Page size returned by the Dorar site endpoint (~30 results per page).
   static const int sitePageSize = 30;
 
+  /// Dorar site search only serves this many pages (~300 results).
+  ///
+  /// Tab totals can imply far more pages via [sitePageSize], but requests
+  /// beyond this cap return empty HTML.
+  static const int siteMaxPages = 10;
+
   final DorarHttpClient _client;
   final CacheService _cache;
 
@@ -76,6 +82,7 @@ class HadithService {
       final hadith = _parseHadithFromBorderElement(
         borderElements[1],
         removeHtml: removeHtml,
+        textCleanMode: HadithTextCleanMode.detail,
       );
 
       await _cache.set(
@@ -129,6 +136,7 @@ class HadithService {
     final hadith = _parseHadithFromBorderElement(
       borderElement,
       removeHtml: removeHtml,
+      textCleanMode: HadithTextCleanMode.detail,
     );
 
     await _cache.set(
@@ -177,6 +185,7 @@ class HadithService {
         final hadith = _parseHadithFromBorderElement(
           borderElement,
           removeHtml: removeHtml,
+          textCleanMode: HadithTextCleanMode.detail,
         );
         hadiths.add(hadith);
       } catch (e) {
@@ -248,6 +257,7 @@ class HadithService {
     final mainHadith = _parseHadithFromBorderElement(
       mainBorderElement,
       removeHtml: removeHtml,
+      textCleanMode: HadithTextCleanMode.detail,
       includeUsulFlag: true,
     );
 
@@ -299,12 +309,18 @@ class HadithService {
   ///
   /// [params] - Search parameters (text, page, filters, removeHtml)
   ///
+  /// Validates [params.value] and [params.page] and throws
+  /// [DorarValidationException] on invalid input.
+  ///
   /// Returns [Hadith] entries with only the fields exposed by the
   /// public API. Use [HadithService.searchViaSite] when you need the full
   /// metadata payload.
   Future<ApiResponse<List<Hadith>>> searchViaApi(
     HadithSearchParams params,
   ) async {
+    Validators.validateSearchText(params.value);
+    Validators.validatePage(params.page);
+
     final queryParams = QuerySerializer.serializeHadithParams(
       params,
       isApiEndpoint: true,
@@ -349,9 +365,12 @@ class HadithService {
         final hadithElement = info.previousElementSibling;
         if (hadithElement == null) continue;
 
-        final hadithText = params.removeHtml
-            ? hadithElement.text.replaceAll(RegExp(r'\d+\s*-'), '').trim()
-            : hadithElement.innerHtml.replaceAll(RegExp(r'\d+\s*-'), '').trim();
+        final rawText =
+            params.removeHtml ? hadithElement.text : hadithElement.innerHtml;
+        final hadithText = HadithParser.cleanHadithText(
+          rawText,
+          HadithTextCleanMode.search,
+        );
 
         // Extract metadata using the info-subtitle pattern
         // The HTML structure can be:
@@ -462,6 +481,9 @@ class HadithService {
   Future<ApiResponse<List<DetailedHadith>>> searchViaSite(
     HadithSearchParams params,
   ) async {
+    Validators.validateSearchText(params.value);
+    Validators.validatePage(params.page);
+
     final queryParams = QuerySerializer.serializeHadithParams(
       params,
       isApiEndpoint: false,
@@ -528,6 +550,7 @@ class HadithService {
         final hadith = _parseHadithFromBorderElement(
           borderElement,
           removeHtml: params.removeHtml,
+          textCleanMode: HadithTextCleanMode.search,
         );
         hadiths.add(hadith);
       } catch (e) {
@@ -540,8 +563,9 @@ class HadithService {
     final currentPage = params.page;
     final total =
         params.specialist ? numberOfSpecialist : numberOfNonSpecialist;
-    final totalPages =
-        total > 0 ? (total / sitePageSize).ceil() : 0;
+    final rawPages = total > 0 ? (total / sitePageSize).ceil() : 0;
+    // Dorar's site UI only exposes pages 1..siteMaxPages; beyond that is empty.
+    final totalPages = rawPages.clamp(0, siteMaxPages);
     final hasNextPage = currentPage < totalPages;
     final hasPrevPage = currentPage > 1;
 
@@ -582,6 +606,7 @@ class HadithService {
   DetailedHadith _parseHadithFromBorderElement(
     dom.Element borderElement, {
     required bool removeHtml,
+    required HadithTextCleanMode textCleanMode,
     bool includeUsulFlag = false,
   }) {
     // Extract hadith text from first child
@@ -593,12 +618,9 @@ class HadithService {
       throw const FormatException('Hadith element not found');
     }
 
-    var hadithText = removeHtml
-        ? hadithElement.text.replaceAll(RegExp(r'\d+\s*-'), '').trim()
-        : hadithElement.innerHtml.replaceAll(RegExp(r'\d+\s*-'), '').trim();
-
-    // For getById, also clean up "- :" patterns
-    hadithText = hadithText.replaceAll(RegExp(r'-\s*\:?\s*'), '').trim();
+    final rawText =
+        removeHtml ? hadithElement.text : hadithElement.innerHtml;
+    final hadithText = HadithParser.cleanHadithText(rawText, textCleanMode);
 
     // Extract metadata from second child
     final infoElement = borderElement.children.length > 1

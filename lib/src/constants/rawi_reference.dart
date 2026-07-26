@@ -20,7 +20,7 @@ class RawiReference {
   static const ibnUmar = RawiReference(id: '7687', name: 'عبدالله بن عمر');
 
   /// Anas ibn Malik
-  static const anasBinMalik = RawiReference(id: '2177', name: 'أن س بن مالك');
+  static const anasBinMalik = RawiReference(id: '2177', name: 'أنس بن مالك');
 
   /// Jabir ibn Abdullah
   static const jabirIbnAbdullah = RawiReference(

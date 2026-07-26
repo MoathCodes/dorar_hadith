@@ -37,12 +37,19 @@ void main() {
   });
 
   group('RawiItem equality', () {
-    test('items with the same id are equal', () {
+    test('items with the same id and name are equal', () {
       final a = RawiItem(id: '42', name: 'أنس بن مالك');
-      final b = RawiItem(id: '42', name: 'اسم مختلف');
+      final b = RawiItem(id: '42', name: 'أنس بن مالك');
 
       expect(a, equals(b));
       expect(a.hashCode, equals(b.hashCode));
+    });
+
+    test('items with same id but different names are not equal', () {
+      final a = RawiItem(id: '42', name: 'أنس بن مالك');
+      final b = RawiItem(id: '42', name: 'اسم مختلف');
+
+      expect(a, isNot(equals(b)));
     });
 
     test('items with different ids are not equal', () {

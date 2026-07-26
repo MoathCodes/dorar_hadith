@@ -6,6 +6,26 @@ The format is based on Keep a Changelog and this project adheres to Semantic Ver
 
 ## Unreleased
 
+### Breaking
+- Corrected `BookReference` IDs to match Dorar `book.json`; removed constants
+  with no Dorar entry (`musnadAhmad`, `muwattaMalik`, `musnadDarimi`,
+  `musannafIbnAbiShaybah`, `musannafAbdRazzaq`). Use `BookReferenceService.searchBook`
+  to discover available books.
+- Removed unused `BookItem.author` / `mohdithId` / `category` and
+  `BookReferenceService.getBooksByCategory` / `getBooksByMohdith` (assets only
+  provide `key`/`value`). Use `BookService.getById` for author and edition details.
+
+### Fixed
+- Site/detail hadith text cleaning now matches dorar-hadith-api (search keeps
+  mid-text dashes; detail strips `-` / `- :` prefixes only).
+- Persistent cache keys are scoped with `CacheService.formatVersion` so
+  upgrades ignore stale parsed matn instead of serving it until TTL expiry.
+- `DorarHttpClient` sends browser-like default headers to reduce Dorar 403s.
+- `SharhService.getByText` uses percent-encoded URLs via `DorarEndpoints.sharhByText`.
+- `searchViaApi` / `searchViaSite` validate `value` and `page` locally.
+- Fixed `RawiReference.anasBinMalik` Arabic label (`أنس بن مالك`).
+- Docs and tests synced with nested `Sharh` / `MohdithItem` / book constants.
+
 ### Added
 - `CacheDatabase.countCacheEntries()` and `evictOldestEntries()` for bounded SQLite cache eviction.
 - `CacheService.maxSqliteRows` (default: 750) caps persistent cache rows with LRU eviction by `createdAt`.

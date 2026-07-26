@@ -17,9 +17,9 @@ class DorarEndpoints {
     return '$siteUrl/h/$hadithId?alts=1';
   }
 
-  /// Get book information by ID (JSON response with HTML inside)
+  /// Get book information by ID.
   ///
-  /// Returns JSON: `{"html": "<h5>Book Name</h5><span>Author</span>..."}`
+  /// Response body is a JSON-encoded HTML **string** (not `{"html": ...}`).
   static String bookById(String bookId) {
     return '$siteUrl/hadith/book-card/$bookId';
   }
@@ -61,9 +61,9 @@ class DorarEndpoints {
   /// - `skey`: Search text (API endpoint only)
   /// - `q`: Search text (Site endpoint only)
   /// - `page`: Page number
-  /// - `st`: Search method (0=all, 1=any, 2=exact)
+  /// - `st`: Search method (`w`=all words, `a`=any word, `p`=exact)
   /// - `d[]`: Hadith degree filters (array)
-  /// - `t[]`: Hadith type filters (array) - qudsi, athar, marfoo, sharh
+  /// - `t`: Hadith type / zone (`*`, `0`, `1`, `2`, `3`)
   /// - `rawi[]`: Rawi IDs (array)
   /// - `m[]`: Mohdith IDs (array)
   /// - `s[]`: Book IDs (array)
@@ -84,9 +84,9 @@ class DorarEndpoints {
   /// - `q`: Search text (Site endpoint only)
   /// - `skey`: Search text (API endpoint only)
   /// - `page`: Page number
-  /// - `st`: Search method
+  /// - `st`: Search method (`w`/`a`/`p`)
   /// - `d[]`: Hadith degree filters
-  /// - `t[]`: Hadith type filters (qudsi, athar, marfoo, sharh)
+  /// - `t`: Hadith type / zone (`*`/`0`/`1`/`2`/`3`)
   /// - `rawi[]`: Rawi IDs
   /// - `m[]`: Mohdith IDs
   /// - `s[]`: Book IDs

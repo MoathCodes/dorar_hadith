@@ -10,6 +10,24 @@ import '../utils/validators.dart';
 /// Features automatic timeout handling, retry logic with exponential backoff,
 /// and typed error handling.
 class DorarHttpClient {
+  /// Browser-like headers matching dorar-hadith-api `fetchWithTimeout`
+  /// (avoids Dorar 403 responses).
+  static const Map<String, String> defaultHeaders = {
+    'User-Agent':
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+        '(KHTML, like Gecko) Safari/537.36',
+    'Accept': 'application/json, text/plain, */*',
+    'Accept-Language': 'ar,en;q=0.9',
+    'Referer': 'https://dorar.net/',
+    'Origin': 'https://dorar.net',
+    'Connection': 'keep-alive',
+    'Sec-Fetch-Dest': 'empty',
+    'Sec-Fetch-Mode': 'cors',
+    'Sec-Fetch-Site': 'same-origin',
+    'Cache-Control': 'no-cache',
+    'Pragma': 'no-cache',
+  };
+
   /// HTTP client instance
   final http.Client _client;
 
@@ -48,6 +66,11 @@ class DorarHttpClient {
     _client.close();
   }
 
+  /// Merge [defaultHeaders] with optional caller [headers] (caller wins).
+  static Map<String, String> mergeHeaders([Map<String, String>? headers]) {
+    return {...defaultHeaders, ...?headers};
+  }
+
   /// Make a GET request
   ///
   /// Returns the response body as a string.
@@ -60,6 +83,7 @@ class DorarHttpClient {
     Validators.validateUrl(url);
 
     final effectiveTimeout = customTimeout ?? timeout;
+    final effectiveHeaders = mergeHeaders(headers);
     var attempt = 0;
 
     while (attempt < maxRetries) {
@@ -71,7 +95,7 @@ class DorarHttpClient {
         }
 
         final response = await _client
-            .get(Uri.parse(url), headers: headers)
+            .get(Uri.parse(url), headers: effectiveHeaders)
             .timeout(effectiveTimeout);
 
         if (enableLogging) {

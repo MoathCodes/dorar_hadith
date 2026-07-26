@@ -2,12 +2,34 @@ import 'package:html/dom.dart' as dom;
 
 import '../models/hadith_category.dart';
 
+/// How to clean hadith matn text, matching dorar-hadith-api cleaners.
+enum HadithTextCleanMode {
+  /// Site/API search listings: strip leading `N -` numbering only.
+  search,
+
+  /// By-id / similar / alternate / usul: strip `-` / `- :` prefixes.
+  detail,
+}
+
 /// Utilities for parsing hadith information from HTML DOM elements.
 ///
 /// This replicates the parsing logic from the Node.js version's
 /// `parseHadithInfo.js` and `parseHadithCategories.js` files.
 class HadithParser {
   HadithParser._();
+
+  /// Clean hadith text using the Node.js-aligned mode.
+  ///
+  /// - [HadithTextCleanMode.search]: `/\d+\s+-/g`
+  /// - [HadithTextCleanMode.detail]: `/-\s*:?\s*/g`
+  static String cleanHadithText(String text, HadithTextCleanMode mode) {
+    switch (mode) {
+      case HadithTextCleanMode.search:
+        return text.replaceAll(RegExp(r'\d+\s+-'), '').trim();
+      case HadithTextCleanMode.detail:
+        return text.replaceAll(RegExp(r'-\s*:?\s*'), '').trim();
+    }
+  }
 
   /// Extract alternate hadith URL from DOM element.
   ///

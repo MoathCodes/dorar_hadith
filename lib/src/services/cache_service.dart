@@ -5,6 +5,12 @@ import 'package:dorar_hadith/src/models/cache_entry.dart';
 import 'package:drift/drift.dart';
 
 class CacheService implements CacheStore {
+  /// Bump when cached response body semantics change (e.g. hadith text cleaning).
+  ///
+  /// Keys are stored as `v{formatVersion}:…`, so older payloads are ignored
+  /// immediately after upgrade instead of being served until TTL expiry.
+  static const int formatVersion = 2;
+
   static const int _maintenanceInterval = 50;
 
   final CacheDatabase database;
@@ -26,6 +32,16 @@ class CacheService implements CacheStore {
     unawaited(database.clearExpiredCache());
   }
 
+  String _scopedKey(String key) => 'v$formatVersion:$key';
+
+  CacheEntry _withScopedKey(CacheEntry entry) => CacheEntry(
+    key: _scopedKey(entry.key),
+    body: entry.body,
+    header: entry.header,
+    createdAt: entry.createdAt,
+    expiresAt: entry.expiresAt,
+  );
+
   @override
   Future<void> clear() async {
     _cacheManager.clear();
@@ -39,44 +55,59 @@ class CacheService implements CacheStore {
 
   @override
   Future<CacheEntry?> get(String key) {
-    final memoryEntry = _cacheManager.get(key);
-    if (memoryEntry != null) return Future.value(memoryEntry);
+    final scoped = _scopedKey(key);
+    final memoryEntry = _cacheManager.get(scoped);
+    if (memoryEntry != null) {
+      return Future.value(
+        CacheEntry(
+          key: key,
+          body: memoryEntry.body,
+          header: memoryEntry.header,
+          createdAt: memoryEntry.createdAt,
+          expiresAt: memoryEntry.expiresAt,
+        ),
+      );
+    }
 
-    final dbEntryFuture = database.getCacheEntry(key);
+    final dbEntryFuture = database.getCacheEntry(scoped);
     return dbEntryFuture.then((dbEntry) {
       if (dbEntry == null) return null;
       if (dbEntry.expiredAt.isBefore(DateTime.now())) {
-        database.deleteCacheEntry(key);
+        database.deleteCacheEntry(scoped);
         return null;
       }
-      return CacheEntry(
+      final entry = CacheEntry(
         key: key,
         body: dbEntry.body,
         header: dbEntry.header,
         createdAt: dbEntry.createdAt,
         expiresAt: dbEntry.expiredAt,
       );
+      _cacheManager.set(_withScopedKey(entry));
+      return entry;
     });
   }
 
   @override
   Future<void> remove(String key) {
-    _cacheManager.remove(key);
-    return database.deleteCacheEntry(key);
+    final scoped = _scopedKey(key);
+    _cacheManager.remove(scoped);
+    return database.deleteCacheEntry(scoped);
   }
 
   @override
   Future<void> set(CacheEntry entry) async {
-    _cacheManager.set(entry);
+    final scoped = _withScopedKey(entry);
+    _cacheManager.set(scoped);
     final dbEntry = CacheTableCompanion(
-      key: Value(entry.key),
-      body: Value(entry.body),
-      header: Value(entry.header),
-      createdAt: Value(entry.createdAt),
-      expiredAt: Value(entry.expiresAt),
+      key: Value(scoped.key),
+      body: Value(scoped.body),
+      header: Value(scoped.header),
+      createdAt: Value(scoped.createdAt),
+      expiredAt: Value(scoped.expiresAt),
     );
     await database.insertOrUpdateCacheEntry(dbEntry);
-    await _enforceSqliteRowCap(excludeKey: entry.key);
+    await _enforceSqliteRowCap(excludeKey: scoped.key);
     _writesSinceMaintenance++;
     if (_writesSinceMaintenance >= _maintenanceInterval) {
       _writesSinceMaintenance = 0;

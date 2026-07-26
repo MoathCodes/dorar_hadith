@@ -67,5 +67,18 @@ void main() {
       final results = await service.searchBook('', limit: 12);
       expect(results, hasLength(12));
     });
+
+    test('dispose clears the in-memory cache', () async {
+      final disposable = BookReferenceService();
+      await disposable.initialize();
+      expect(await disposable.countBooks(), greaterThan(0));
+
+      disposable.dispose();
+
+      // Re-initialize after dispose should reload the map.
+      await disposable.initialize();
+      expect(await disposable.countBooks(), rawBookData.length);
+      disposable.dispose();
+    });
   });
 }

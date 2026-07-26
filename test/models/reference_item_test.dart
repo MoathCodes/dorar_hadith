@@ -19,12 +19,19 @@ void main() {
   });
 
   group('ReferenceItem equality', () {
-    test('items with same id and type are equal', () {
+    test('items with same id and name are equal', () {
       final a = MohdithItem(id: '256', name: 'البخاري');
-      final b = MohdithItem(id: '256', name: 'اسم مختلف');
+      final b = MohdithItem(id: '256', name: 'البخاري');
 
       expect(a, equals(b));
       expect(a.hashCode, equals(b.hashCode));
+    });
+
+    test('items with same id but different names are not equal', () {
+      final a = MohdithItem(id: '256', name: 'البخاري');
+      final b = MohdithItem(id: '256', name: 'اسم مختلف');
+
+      expect(a, isNot(equals(b)));
     });
 
     test('items with different ids are not equal', () {

@@ -55,21 +55,6 @@ class BookReferenceService {
     return _cache![id];
   }
 
-  /// Get books by category.
-  Future<List<BookItem>> getBooksByCategory(
-    String category, {
-    int limit = 20,
-    int offset = 0,
-  }) async {
-    await initialize();
-
-    return _cache!.values
-        .where((book) => book.category == category)
-        .skip(offset)
-        .take(limit)
-        .toList();
-  }
-
   /// Get books by a list of IDs. Skips invalid IDs.
   Future<List<BookItem>> getBooksByIds(List<String> ids) async {
     await initialize();
@@ -82,21 +67,6 @@ class BookReferenceService {
       }
     }
     return results;
-  }
-
-  /// Get books by a specific scholar (mohdith ID).
-  Future<List<BookItem>> getBooksByMohdith(
-    String mohdithId, {
-    int limit = 20,
-    int offset = 0,
-  }) async {
-    await initialize();
-
-    return _cache!.values
-        .where((book) => book.mohdithId == mohdithId)
-        .skip(offset)
-        .take(limit)
-        .toList();
   }
 
   /// Load book data from JSON and build the in-memory cache.
@@ -140,5 +110,14 @@ class BookReferenceService {
         .toList();
 
     return matches;
+  }
+
+  /// Clears the in-memory book map and closes a [ClosableAssetLoader] if used.
+  void dispose() {
+    _cache = null;
+    final loader = _assetLoader;
+    if (loader is ClosableAssetLoader) {
+      loader.close();
+    }
   }
 }

@@ -23,9 +23,10 @@ mixin _$SearchMetadata {
  int? get totalPages;/// Whether there is a next page
  bool? get hasNextPage;/// Whether there is a previous page
  bool? get hasPrevPage;/// Whether HTML tags were removed from results
-@JsonKey(name: 'removeHTML') bool? get removeHtml;/// Whether specialist/advanced hadiths are included
- bool? get specialist;/// Number of non-specialist hadiths
- int? get numberOfNonSpecialist;/// Number of specialist hadiths
+@JsonKey(name: 'removeHTML') bool? get removeHtml;/// Whether the specialist tab was used (`specialist: true` on Dorar.net).
+ bool? get specialist;/// Result count on Dorar's default tab.
+ int? get numberOfNonSpecialist;/// Result count on Dorar's specialist tab (hadiths with takhrij; site UI
+/// label: "متخصص").
  int? get numberOfSpecialist;/// Whether this result came from cache
  bool get isCached;/// Number of usul (sources) for usul hadith requests
  int? get usulSourcesCount;
@@ -253,11 +254,12 @@ class _SearchMetadata implements SearchMetadata {
 @override final  bool? hasPrevPage;
 /// Whether HTML tags were removed from results
 @override@JsonKey(name: 'removeHTML') final  bool? removeHtml;
-/// Whether specialist/advanced hadiths are included
+/// Whether the specialist tab was used (`specialist: true` on Dorar.net).
 @override final  bool? specialist;
-/// Number of non-specialist hadiths
+/// Result count on Dorar's default tab.
 @override final  int? numberOfNonSpecialist;
-/// Number of specialist hadiths
+/// Result count on Dorar's specialist tab (hadiths with takhrij; site UI
+/// label: "متخصص").
 @override final  int? numberOfSpecialist;
 /// Whether this result came from cache
 @override@JsonKey() final  bool isCached;

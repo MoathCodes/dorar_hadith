@@ -11,12 +11,20 @@ AssetLoaderBuilder createDefaultAssetLoaderBuilder() {
 /// Asset loader implementation for web environments.
 ///
 /// Fetches assets using HTTP relative to [Uri.base].
-class WebAssetLoader implements AssetLoader {
+/// Shares one [http.Client] for the loader lifetime; call [close] when done
+/// (see [DorarClient.dispose]).
+class WebAssetLoader implements ClosableAssetLoader {
   final http.Client _client;
-
+  final bool _ownsClient;
   final Uri _baseUri;
+
+  /// Creates a web asset loader.
+  ///
+  /// When [client] is omitted, this loader owns the [http.Client] and closes
+  /// it in [close]. Injected clients are left open for the caller to manage.
   WebAssetLoader({http.Client? client, Uri? baseUri})
     : _client = client ?? http.Client(),
+      _ownsClient = client == null,
       _baseUri = baseUri ?? Uri.base;
 
   @override
@@ -38,6 +46,13 @@ class WebAssetLoader implements AssetLoader {
         path: path,
         cause: error,
       );
+    }
+  }
+
+  @override
+  void close() {
+    if (_ownsClient) {
+      _client.close();
     }
   }
 

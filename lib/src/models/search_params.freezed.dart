@@ -17,7 +17,9 @@ mixin _$HadithSearchParams {
 /// The search query text
  String get value;/// Page number for pagination (default: 1)
  int get page;/// Whether to remove HTML tags from results (default: true)
- bool get removeHtml;/// Include specialist/advanced hadiths (default: false)
+ bool get removeHtml;/// When `true`, use Dorar.net's `#specialist` tab (`&all` URL flag): results
+/// include takhrij metadata and only hadiths that have takhrij are returned.
+/// Dorar labels this tab "متخصص" in its UI; the parameter name is historical.
  bool get specialist;/// Words or phrases to exclude from search
  String? get exclude;/// Search method (all words, any word, exact match)
  SearchMethod? get searchMethod;/// Hadith type classification (all, marfoo, qudsi, athar, sharh)
@@ -236,7 +238,9 @@ class _HadithSearchParams implements HadithSearchParams {
 @override@JsonKey() final  int page;
 /// Whether to remove HTML tags from results (default: true)
 @override@JsonKey() final  bool removeHtml;
-/// Include specialist/advanced hadiths (default: false)
+/// When `true`, use Dorar.net's `#specialist` tab (`&all` URL flag): results
+/// include takhrij metadata and only hadiths that have takhrij are returned.
+/// Dorar labels this tab "متخصص" in its UI; the parameter name is historical.
 @override@JsonKey() final  bool specialist;
 /// Words or phrases to exclude from search
 @override final  String? exclude;

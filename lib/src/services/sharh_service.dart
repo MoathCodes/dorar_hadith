@@ -81,8 +81,10 @@ class SharhService {
     final validatedText = Validators.validateSearchText(text, field: 'text');
 
     final tabName = specialist ? 'specialist' : 'home';
-    final url =
-        '${DorarEndpoints.siteUrl}/hadith/search?q=$validatedText${specialist ? '&all' : ''}';
+    final url = DorarEndpoints.sharhByText(
+      validatedText,
+      specialist: specialist,
+    );
 
     final cached = await _cache.get(url);
     if (cached != null) {

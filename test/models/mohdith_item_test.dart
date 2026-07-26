@@ -3,14 +3,14 @@ import 'package:test/test.dart';
 
 void main() {
   group('MohdithItem', () {
-    test('constructs with minimal fields', () {
+    test('constructs with id and name', () {
       final mohdith = MohdithItem(id: '256', name: 'الإمام البخاري');
 
       expect(mohdith.id, '256');
       expect(mohdith.name, 'الإمام البخاري');
     });
 
-    test('fromJson hydrates optional fields', () {
+    test('fromJson reads key/value and ignores unknown fields', () {
       final mohdith = MohdithItem.fromJson({
         'key': '400',
         'value': 'الإمام مسلم',
@@ -27,8 +27,8 @@ void main() {
 
       expect(json['key'], '512');
       expect(json['value'], 'الإمام النسائي');
-      expect(json['deathYear'], 303);
-      expect(json['era'], 'Late Classical');
+      expect(json.containsKey('deathYear'), isFalse);
+      expect(json.containsKey('era'), isFalse);
     });
 
     test('round-trip serialization preserves values', () {
@@ -41,9 +41,9 @@ void main() {
     });
 
     group('equality', () {
-      test('items with same id are equal', () {
+      test('items with same id and name are equal', () {
         final a = MohdithItem(id: '1', name: 'البخاري');
-        final b = MohdithItem(id: '1', name: 'اسم مختلف');
+        final b = MohdithItem(id: '1', name: 'البخاري');
 
         expect(a, equals(b));
         expect(a.hashCode, equals(b.hashCode));
@@ -52,6 +52,13 @@ void main() {
       test('items with different ids are not equal', () {
         final a = MohdithItem(id: '1', name: 'البخاري');
         final b = MohdithItem(id: '2', name: 'البخاري');
+
+        expect(a, isNot(equals(b)));
+      });
+
+      test('items with same id but different names are not equal', () {
+        final a = MohdithItem(id: '1', name: 'البخاري');
+        final b = MohdithItem(id: '1', name: 'اسم مختلف');
 
         expect(a, isNot(equals(b)));
       });

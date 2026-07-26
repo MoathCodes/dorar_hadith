@@ -176,6 +176,39 @@ void main() {
   });
 
   group('SharhService - getByText()', () {
+    test('should encode Arabic/spaces in getByText search URL', () async {
+      final requestedUrls = <String>[];
+
+      mockHttpClient = MockClient((request) async {
+        final url = request.url.toString();
+        requestedUrls.add(url);
+        if (url.contains('/hadith/search')) {
+          return createUtf8Response('''
+<html><body>
+  <div id="home">
+    <div class="border-bottom"><a xplain="123">Hadith</a></div>
+  </div>
+</body></html>
+''', 200);
+        }
+        if (url.contains('/hadith/sharh/123')) {
+          return createUtf8Response(mockSharhPageResponse, 200);
+        }
+        return createUtf8Response('Not Found', 404);
+      });
+
+      dorarClient = DorarHttpClient(client: mockHttpClient);
+      service = SharhService(client: dorarClient, cache: cacheService);
+
+      await service.getByText('إنما الأعمال بالنيات');
+
+      final searchUrl = requestedUrls.firstWhere(
+        (u) => u.contains('/hadith/search'),
+      );
+      expect(searchUrl, contains('q=%D8%A5%D9%86%D9%85%D8%A7'));
+      expect(searchUrl, isNot(contains('q=إنما')));
+    });
+
     test('should get sharh by hadith text', () async {
       final sharh = await service.getByText('salah');
 

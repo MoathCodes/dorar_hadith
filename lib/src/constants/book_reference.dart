@@ -1,4 +1,7 @@
 /// Reference class for Islamic books containing hadiths.
+///
+/// IDs and names must match [assets/data/book.json] (Dorar's book filter list).
+/// For books not listed here, use [BookReferenceService.searchBook].
 class BookReference {
   /// All books (no filter)
   static const all = BookReference(id: '0', name: 'الجميع');
@@ -21,73 +24,52 @@ class BookReference {
   static const sahihMusnad = BookReference(id: '96', name: 'الصحيح المسند');
 
   /// Sunan Abu Dawud
-  static const sunanAbuDawud = BookReference(id: '4549', name: 'سنن أبي داود');
+  static const sunanAbuDawud = BookReference(id: '6267', name: 'سنن أبي داود');
 
   /// Jami' Al-Tirmidhi
-  static const jamiTirmidhi = BookReference(id: '3662', name: 'سنن الترمذي');
+  static const jamiTirmidhi = BookReference(id: '13509', name: 'سنن الترمذي');
 
   /// Sunan Al-Nasa'i
-  static const sunanNasai = BookReference(id: '5766', name: 'سنن النسائي');
+  static const sunanNasai = BookReference(id: '13508', name: 'سنن النسائي');
 
-  /// Sunan Ibn Majah
-  static const sunanIbnMajah = BookReference(id: '5299', name: 'سنن ابن ماجه');
-
-  /// Musnad Ahmad
-  static const musnadAhmad = BookReference(id: '14', name: 'مسند أحمد');
-
-  /// Muwatta Malik
-  static const muwattaMalik = BookReference(id: '6453', name: 'موطأ مالك');
-
-  /// Musnad Al-Darimi
-  static const musnadDarimi = BookReference(id: '6277', name: 'سنن الدارمي');
+  /// Sunan Ibn Majah (Dorar title spelling: ابن ماجة)
+  static const sunanIbnMajah = BookReference(id: '6264', name: 'سنن ابن ماجة');
 
   /// Sahih Ibn Khuzaymah
   static const sahihIbnKhuzaymah = BookReference(
-    id: '3024',
+    id: '13558',
     name: 'صحيح ابن خزيمة',
   );
 
   /// Sahih Ibn Hibban
   static const sahihIbnHibban = BookReference(
-    id: '5876',
+    id: '16582',
     name: 'صحيح ابن حبان',
   );
 
   /// Al-Mustadrak ala Al-Sahihayn (Al-Hakim)
   static const mustadrakHakim = BookReference(
-    id: '2800',
+    id: '16226',
     name: 'المستدرك على الصحيحين',
   );
 
   /// Sunan Al-Bayhaqi Al-Kubra
   static const sunanBayhaqiKubra = BookReference(
-    id: '7989',
+    id: '13470',
     name: 'السنن الكبرى للبيهقي',
   );
 
   /// Sunan Al-Daraqutni
   static const sunanDaraqutni = BookReference(
-    id: '3233',
+    id: '13501',
     name: 'سنن الدارقطني',
   );
 
-  /// Musannaf Ibn Abi Shaybah
-  static const musannafIbnAbiShaybah = BookReference(
-    id: '6598',
-    name: 'مصنف ابن أبي شيبة',
-  );
-
-  /// Musannaf Abd al-Razzaq
-  static const musannafAbdRazzaq = BookReference(
-    id: '7613',
-    name: 'مصنف عبد الرزاق',
-  );
-
   /// Riyad Al-Salihin
-  static const riyadSalihin = BookReference(id: '10106', name: 'رياض الصالحين');
+  static const riyadSalihin = BookReference(id: '11155', name: 'رياض الصالحين');
 
   /// Bulugh Al-Maram
-  static const bulughMaram = BookReference(id: '9927', name: 'بلوغ المرام');
+  static const bulughMaram = BookReference(id: '13553', name: 'بلوغ المرام');
 
   /// Unique identifier for the book
   final String id;
@@ -96,6 +78,27 @@ class BookReference {
   final String name;
 
   const BookReference({required this.id, required this.name});
+
+  /// All popular book shortcuts (excluding [all]).
+  ///
+  /// Used by tests to verify IDs against `book.json`.
+  static const List<BookReference> knownBooks = [
+    sahihBukhari,
+    sahihMuslim,
+    arbainNawawi,
+    sahihMusnad,
+    sunanAbuDawud,
+    jamiTirmidhi,
+    sunanNasai,
+    sunanIbnMajah,
+    sahihIbnKhuzaymah,
+    sahihIbnHibban,
+    mustadrakHakim,
+    sunanBayhaqiKubra,
+    sunanDaraqutni,
+    riyadSalihin,
+    bulughMaram,
+  ];
 
   factory BookReference.fromJson(Map<String, dynamic> json) {
     return BookReference(

@@ -155,8 +155,10 @@ class DorarClient {
 
   /// Dispose of resources.
   ///
-  /// Closes the HTTP client, cache database, and narrator database opened by
-  /// [rawiRef]. Call once when finished; do not use the client afterward.
+  /// Closes the HTTP client, cache database, narrator database opened by
+  /// [rawiRef], and clears offline [bookRef]/[mohdithRef] maps (closing any
+  /// [ClosableAssetLoader], e.g. web [http.Client]). Call once when finished;
+  /// do not use the client afterward.
   ///
   /// Does not throw under normal use. Prefer [use] in scripts so disposal runs
   /// even when your callback throws.
@@ -174,6 +176,8 @@ class DorarClient {
     _httpClient.dispose();
     await _cacheService.dispose();
     await rawiRef.dispose();
+    bookRef.dispose();
+    mohdithRef.dispose();
   }
 
   /// Get a specific hadith by its ID.
@@ -405,7 +409,7 @@ class DorarClient {
   ///
   /// Example:
   /// ```dart
-  /// final narrators = await client.searchNarrators('أبو هريرة', limit: 10);
+  /// final narrators = await client.searchRawi('أبو هريرة', limit: 10);
   /// for (var narrator in narrators) {
   ///   print('${narrator.name} (ID: ${narrator.id})');
   /// }

@@ -97,8 +97,8 @@ API response caching uses a separate SQLite database (`cache.db` on native CLI, 
 
 **Web (Dart web / Flutter Web with `dorar_hadith` only)**:
 
-- **JSON assets** — `WebAssetLoader` fetches via HTTP relative to `Uri.base` (non-200 responses become `AssetLoaderException`).
-- **`rawi.db` and `cache.db`** — Drift `WasmDatabase` with `sqlite3.wasm` and `drift_worker.dart.js` served from your app root (`/sqlite3.wasm`, `/drift_worker.dart.js`). The initial `rawi.db` bytes are fetched from common Flutter Web asset URLs (see failure modes).
+- **JSON assets** — `WebAssetLoader` fetches via a shared [`http.Client`](https://pub.dev/packages/http) relative to `Uri.base` (non-200 responses become `AssetLoaderException`). The client is closed when `BookReferenceService.dispose()` / `MohdithReferenceService.dispose()` run (via `ClosableAssetLoader.close()` → `Client.close()`), which `DorarClient.dispose()` invokes.
+- **`rawi.db` and `cache.db`** — Drift `WasmDatabase` with `sqlite3.wasm` and `drift_worker.dart.js` served from your app root (`/sqlite3.wasm`, `/drift_worker.dart.js`). The initial `rawi.db` bytes are fetched from common Flutter Web asset URLs (see failure modes). Call `DorarClient.dispose()` so Drift cache DB connections are closed.
 - Flutter Web apps should configure the core package directly; do not rely on `dorar_hadith_flutter.ensureInitialized()` on web.
 
 ### Offline failure modes
@@ -419,32 +419,25 @@ Key helpers:
 
 ### Sharh Model
 
-Represents a hadith with its explanation.
+Represents a hadith with its explanation. The hadith fields live on a nested
+[`ExplainedHadith`](lib/src/models/hadith.dart); convenience getters
+(`hadithText`, `sharhText`, `verdict`, …) forward to the nested models.
 
 ```dart
 class Sharh {
-  // Base hadith info
-  final String hadith;              // Hadith text
-  final String rawi;                // Narrator
-  final String mohdith;             // Scholar
-  final String book;                // Source book
-  final String numberOrPage;        // Page/hadith number
-  final String grade;               // Grade
-  final String? takhrij;            // Takhrij
-  
-  // Sharh info
-  final bool hasSharhMetadata;      // Has sharh?
-  final SharhMetadata? sharhMetadata; // Sharh metadata
-  
-  // Helper to access sharh text directly
+  final ExplainedHadith hadith;     // Base hadith + takhrij + hasSharhMetadata
+  final SharhMetadata? sharhMetadata;
+
+  String get hadithText => hadith.hadith;
   String? get sharhText => sharhMetadata?.sharh;
+  String get verdict => hadith.grade;
 }
 ```
 
 Usage:
 ```dart
 final sharh = await client.sharh.getById('789');
-if (sharh.hasSharhMetadata && sharh.sharhText != null) {
+if (sharh.hadith.hasSharhMetadata && sharh.sharhText != null) {
   print('Sharh: ${sharh.sharhText}');
 }
 ```
@@ -569,9 +562,6 @@ Lightweight items for offline filtering. All extend `ReferenceItem`.
 class BookItem extends ReferenceItem {
   final String id;                  // Book ID
   final String name;                // Book name
-  final String? author;             // Author (if any)
-  final String? mohdithId;          // Hadith scholar (mohdith) author ID
-  final String? category;           // Category (if any)
 }
 ```
 
@@ -580,10 +570,11 @@ Usage:
 // Offline search in books
 final books = await client.bookRef.searchBook('صحيح', limit: 10);
 for (var book in books) {
-  print('${book.name} - ${book.author}');
+  print('${book.name} (${book.id})');
   
-  // Get full details (online)
+  // Get full details (online) — includes author, publisher, etc.
   final fullInfo = await client.book.getById(book.id);
+  print(fullInfo.author);
 }
 ```
 
@@ -593,8 +584,6 @@ for (var book in books) {
 class MohdithItem extends ReferenceItem {
   final String id;                  // Scholar ID
   final String name;                // Scholar name
-  final int? deathYear;             // Death year (Hijri)
-  final String? era;                // Era (if any)
 }
 ```
 
@@ -603,10 +592,7 @@ Usage:
 // Offline search in scholars
 final scholars = await client.mohdithRef.searchMohdith('البخاري', limit: 5);
 for (var scholar in scholars) {
-  print('${scholar.name}');
-  if (scholar.deathYear != null) {
-    print('Died in: ${scholar.deathYear} AH');
-  }
+  print('${scholar.name} (${scholar.id})');
 }
 ```
 
@@ -1039,8 +1025,8 @@ Every online API call goes through `DorarHttpClient` (default timeout: 15 second
 
 | Method / service | `DorarValidationException` | Other `DorarException` | Returns empty/null instead |
 |---|---|---|---|
-| `searchHadith` / `hadith.searchViaApi` | — (no local validation) | Network/timeout/rate-limit; `DorarServerException` if response JSON is invalid or zero hadiths parse | — |
-| `searchHadithDetailed` / `hadith.searchViaSite` | — | Network/timeout/rate-limit; `DorarServerException` if expected HTML tab is missing | Empty `data` list when page parses but has no hadiths |
+| `searchHadith` / `hadith.searchViaApi` | Empty/too-long `value`; `page` not in 1–1000 | Network/timeout/rate-limit; `DorarServerException` if response JSON is invalid or zero hadiths parse | — |
+| `searchHadithDetailed` / `hadith.searchViaSite` | Empty/too-long `value`; `page` not in 1–1000 | Network/timeout/rate-limit; `DorarServerException` if expected HTML tab is missing | Empty `data` list when page parses but has no hadiths |
 | `getHadithById` / `hadith.getById` | Invalid `hadithId` | Network/timeout/404; `DorarServerException` if page structure is unexpected | — |
 | `getSimilarHadith` / `hadith.getSimilar` | Invalid `hadithId` | Network/timeout/404 | Empty list |
 | `getAlternateHadith` / `hadith.getAlternate` | Invalid `hadithId` | Network/timeout/404 | `null` when the page has no alternate block or parsing that block fails |
@@ -1055,8 +1041,8 @@ Every online API call goes through `DorarHttpClient` (default timeout: 15 second
 Malformed JSON in an HTTP 200 body throws `FormatException` from `jsonDecode` (not `DorarException`). HTML/body parsing failures inside services become `DorarParseException`.
 
 Input validation rules (client-side, before HTTP):
-- Search text (`sharh.getByText`, `sharh.search` only): required, max 500 characters. **`searchHadith` and `searchHadithDetailed` do not validate `value` or `page` locally** — invalid values are sent to Dorar as-is.
-- Page (`sharh.search` only): 1–1000.
+- Search text (`searchHadith`, `searchHadithDetailed`, `sharh.getByText`, `sharh.search`): required, max 500 characters.
+- Page (`searchHadith`, `searchHadithDetailed`, `sharh.search`): 1–1000.
 - Hadith ID (`getById`, `getSimilar`, `getAlternate`, `getUsul`): non-empty alphanumeric plus `-` / `_`.
 - Sharh / book / mohdith IDs: non-empty numeric strings.
 - `DorarClient(timeout: ...)` / `DorarClient.use(timeout: ...)`: positive duration, max 5 minutes (validated in `DorarHttpClient` constructor).
@@ -1068,7 +1054,7 @@ Input validation rules (client-side, before HTTP):
 - **Expired entry**: deleted and treated as a miss.
 - **Corrupt cached JSON**: `FormatException` from `jsonDecode` — clear with `client.clearCache()`.
 - **Storage failure**: SQLite/Drift or WebAssembly errors propagate unwrapped (not `DorarException`).
-- **`dispose()`**: closes the HTTP client, cache database, and narrator database; does not throw under normal use. Do not reuse a disposed client — create a new `DorarClient` or use `DorarClient.use()`.
+- **`dispose()`**: closes the API HTTP client, cache database (Drift), and narrator database; clears `bookRef` / `mohdithRef` in-memory maps and closes any `ClosableAssetLoader` (web `http.Client`); does not throw under normal use. Do not reuse a disposed client — create a new `DorarClient` or use `DorarClient.use()`.
 - **`DorarClient.use(fn)`**: creates a client, runs `fn`, and always calls `dispose()` in a `finally` block (even when `fn` throws). Accepts an optional `timeout` (default: 15 seconds).
 
 #### Comprehensive Handling with Switch Expression
@@ -1271,7 +1257,7 @@ final books = await client.bookRef.searchBook('صحيح', limit: 10);
 final sameBooks = await client.searchBooks('صحيح');
 
 for (var book in books) {
-  print('${book.name} - ${book.author}');
+  print('${book.name} (${book.id})');
 }
 
 // 2. Get by ID
@@ -1309,10 +1295,7 @@ final scholars = await client.mohdithRef.searchMohdith('البخاري', limit: 
 final sameScholars = await client.searchMohdith('البخاري');
 
 for (var scholar in scholars) {
-  print('${scholar.name}');
-  if (scholar.deathYear != null) {
-    print('Death year: ${scholar.deathYear} AH');
-  }
+  print('${scholar.name} (${scholar.id})');
 }
 
 // 2. Get by ID
@@ -1361,7 +1344,7 @@ print(abuHurayrah.name); // أبو هريرة عبد الرحمن بن صخر ا
 // 3. Get multiple by IDs
 final multipleNarrators = await client.rawiRef.getRawiByIds([
   1416,   // Abu Hurayrah
-  5593,   // Aishah
+  6617,   // Aishah
 ]);
 
 // 4. List all with pagination
@@ -1424,29 +1407,28 @@ final bukhariId = int.parse(MohdithReference.bukhari.id);
 
 #### BookReference (Books)
 
+IDs match Dorar’s `book.json` filter list. Books without a Dorar entry
+(e.g. Musnad Ahmad, Muwatta) are not provided as constants — use
+`client.bookRef.searchBook(...)` to discover available IDs.
+
 ```dart
-// 21 books
+// Popular books with verified Dorar IDs
 BookReference.all                 // All (no filter)
 BookReference.sahihBukhari        // Sahih al-Bukhari (6216)
 BookReference.sahihMuslim         // Sahih Muslim (3088)
 BookReference.arbainNawawi        // Al-Arba'in al-Nawawiyyah (13457)
 BookReference.sahihMusnad         // Al-Sahih al-Musnad (96)
-BookReference.sunanAbuDawud       // Sunan Abi Dawud (4549)
-BookReference.jamiTirmidhi        // Jami' al-Tirmidhi (3662)
-BookReference.sunanNasai          // Sunan al-Nasa'i (5766)
-BookReference.sunanIbnMajah       // Sunan Ibn Majah (5299)
-BookReference.musnadAhmad         // Musnad Ahmad (14)
-BookReference.muwattaMalik        // Muwatta' Malik (6453)
-BookReference.musnadDarimi        // Sunan al-Darimi (6277)
-BookReference.sahihIbnKhuzaymah   // Sahih Ibn Khuzaymah (3024)
-BookReference.sahihIbnHibban      // Sahih Ibn Hibban (5876)
-BookReference.mustadrakHakim      // Al-Mustadrak (2800)
-BookReference.sunanBayhaqiKubra   // Al-Sunan al-Kubra (7989)
-BookReference.sunanDaraqutni      // Sunan al-Daraqutni (3233)
-BookReference.musannafIbnAbiShaybah // Musannaf Ibn Abi Shaybah (6598)
-BookReference.musannafAbdRazzaq   // Musannaf 'Abd al-Razzaq (7613)
-BookReference.riyadSalihin        // Riyad al-Salihin (10106)
-BookReference.bulughMaram         // Bulugh al-Maram (9927)
+BookReference.sunanAbuDawud       // Sunan Abi Dawud (6267)
+BookReference.jamiTirmidhi        // Jami' al-Tirmidhi (13509)
+BookReference.sunanNasai          // Sunan al-Nasa'i (13508)
+BookReference.sunanIbnMajah       // Sunan Ibn Majah (6264)
+BookReference.sahihIbnKhuzaymah   // Sahih Ibn Khuzaymah (13558)
+BookReference.sahihIbnHibban      // Sahih Ibn Hibban (16582)
+BookReference.mustadrakHakim      // Al-Mustadrak (16226)
+BookReference.sunanBayhaqiKubra   // Al-Sunan al-Kubra (13470)
+BookReference.sunanDaraqutni      // Sunan al-Daraqutni (13501)
+BookReference.riyadSalihin        // Riyad al-Salihin (11155)
+BookReference.bulughMaram         // Bulugh al-Maram (13553)
 
 // Each value has id and name
 final bukhari = BookReference.sahihBukhari;

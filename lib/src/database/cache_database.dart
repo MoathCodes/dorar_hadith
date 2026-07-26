@@ -42,9 +42,19 @@ class CacheDatabase extends _$CacheDatabase {
     return row.read(countExpr) ?? 0;
   }
 
-  /// Deletes the oldest cache rows by [createdAt], skipping [excludeKey].
-  Future<void> evictOldestEntries(int count, {String? excludeKey}) async {
+  /// Deletes the oldest cache rows by [createdAt], skipping [excludeKey]
+  /// and any keys in [excludeKeys].
+  Future<void> evictOldestEntries(
+    int count, {
+    String? excludeKey,
+    Set<String>? excludeKeys,
+  }) async {
     if (count <= 0) return;
+
+    final protected = <String>{
+      if (excludeKey != null) excludeKey,
+      ...?excludeKeys,
+    };
 
     final oldest = await (select(cacheTable)
           ..orderBy([(t) => OrderingTerm.asc(t.createdAt)]))
@@ -53,7 +63,7 @@ class CacheDatabase extends _$CacheDatabase {
     var removed = 0;
     for (final entry in oldest) {
       if (removed >= count) break;
-      if (excludeKey != null && entry.key == excludeKey) continue;
+      if (protected.contains(entry.key)) continue;
       await deleteCacheEntry(entry.key);
       removed++;
     }

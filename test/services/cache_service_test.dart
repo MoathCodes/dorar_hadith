@@ -1,6 +1,7 @@
 import 'package:dorar_hadith/src/database/cache_database.dart';
 import 'package:dorar_hadith/src/models/cache_entry.dart';
 import 'package:dorar_hadith/src/services/cache_service.dart';
+import 'package:drift/drift.dart' show Value;
 import 'package:drift/native.dart';
 import 'package:test/test.dart';
 
@@ -44,9 +45,18 @@ void main() {
       }
 
       expect(await database.countCacheEntries(), equals(5));
-      expect(await database.getCacheEntry('key0'), isNull);
-      expect(await database.getCacheEntry('key1'), isNull);
-      expect(await database.getCacheEntry('key6'), isNotNull);
+      expect(
+        await database.getCacheEntry('v${CacheService.formatVersion}:key0'),
+        isNull,
+      );
+      expect(
+        await database.getCacheEntry('v${CacheService.formatVersion}:key1'),
+        isNull,
+      );
+      expect(
+        await database.getCacheEntry('v${CacheService.formatVersion}:key6'),
+        isNotNull,
+      );
     });
 
     test('clearExpiredCache removes expired rows on maintenance interval', () async {
@@ -67,7 +77,40 @@ void main() {
         await maintenanceCache.set(_entry('fresh-$i'));
       }
 
-      expect(await maintenanceDatabase.getCacheEntry('expired'), isNull);
+      expect(
+        await maintenanceDatabase.getCacheEntry(
+          'v${CacheService.formatVersion}:expired',
+        ),
+        isNull,
+      );
+    });
+
+    test('ignores payloads stored under a previous formatVersion prefix', () async {
+      final now = DateTime.now();
+      await database.insertOrUpdateCacheEntry(
+        CacheTableCompanion(
+          key: const Value('v1:stale-url'),
+          body: const Value('old-body'),
+          header: const Value(''),
+          createdAt: Value(now),
+          expiredAt: Value(now.add(const Duration(days: 7))),
+        ),
+      );
+
+      expect(await cache.get('stale-url'), isNull);
+
+      await cache.set(_entry('stale-url'));
+      final hit = await cache.get('stale-url');
+      expect(hit?.body, 'body-stale-url');
+      expect(
+        await database.getCacheEntry('v1:stale-url'),
+        isNotNull,
+        reason: 'old-prefix rows remain until eviction/TTL',
+      );
+      expect(
+        await database.getCacheEntry('v${CacheService.formatVersion}:stale-url'),
+        isNotNull,
+      );
     });
   });
 }

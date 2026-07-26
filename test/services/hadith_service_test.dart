@@ -138,6 +138,22 @@ void main() {
         throwsA(isA<DorarNetworkException>()),
       );
     });
+
+    test('should throw DorarValidationException for empty value', () async {
+      final params = HadithSearchParams(value: '');
+      expect(
+        () => service.searchViaApi(params),
+        throwsA(isA<DorarValidationException>()),
+      );
+    });
+
+    test('should throw DorarValidationException for invalid page', () async {
+      final params = HadithSearchParams(value: 'test', page: 0);
+      expect(
+        () => service.searchViaApi(params),
+        throwsA(isA<DorarValidationException>()),
+      );
+    });
   });
 
   group('HadithService - searchViaSite()', () {
@@ -219,6 +235,22 @@ void main() {
       expect(
         () => errorService.searchViaSite(params),
         throwsA(isA<DorarNetworkException>()),
+      );
+    });
+
+    test('should throw DorarValidationException for empty value', () async {
+      final params = HadithSearchParams(value: '');
+      expect(
+        () => service.searchViaSite(params),
+        throwsA(isA<DorarValidationException>()),
+      );
+    });
+
+    test('should throw DorarValidationException for invalid page', () async {
+      final params = HadithSearchParams(value: 'test', page: 1001);
+      expect(
+        () => service.searchViaSite(params),
+        throwsA(isA<DorarValidationException>()),
       );
     });
   });
