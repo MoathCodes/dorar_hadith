@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:dorar_hadith/dorar_hadith.dart';
 import 'package:dorar_hadith_flutter/dorar_hadith_flutter.dart';
-import 'package:drift/drift.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 

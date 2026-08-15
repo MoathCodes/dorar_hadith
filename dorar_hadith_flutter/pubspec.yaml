@@ -1,4 +1,5 @@
 name: dorar_hadith_flutter
+publish_to: none
 description: >-
   Flutter integration for dorar_hadith. Wires asset loading and the offline
   rawi.db database for Flutter apps.
