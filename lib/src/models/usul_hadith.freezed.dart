@@ -220,7 +220,7 @@ return $default(_that.hadith,_that.sources,_that.count);case _:
 
 
 class _UsulHadith extends UsulHadith {
-  const _UsulHadith({required this.hadith, required final  List<UsulSource> sources, required this.count}): _sources = sources,super._();
+  const _UsulHadith({required this.hadith, required List<UsulSource> sources, required this.count}): _sources = sources,super._();
   
 
 /// The main hadith

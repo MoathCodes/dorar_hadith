@@ -1,6 +1,10 @@
 targets:
   $default:
     builders:
+      freezed:
+        options:
+          # Dart 3.13 reserves `final` parameters for primary constructors.
+          make_collections_unmodifiable: false
       json_serializable:
         options:
           explicit_to_json: true

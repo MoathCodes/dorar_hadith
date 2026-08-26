@@ -1,0 +1,262 @@
+# yaml-language-server: $schema=https://www.coderabbit.ai/integrations/schema.v2.json
+
+language: en-US
+tone_instructions: >-
+  Be concise, precise, and constructive. Prioritize correctness, public API
+  compatibility, cross-platform behavior, resource safety, and tests over nits.
+
+reviews:
+  profile: assertive
+  request_changes_workflow: false
+  high_level_summary: true
+  high_level_summary_in_walkthrough: true
+  high_level_summary_instructions: >-
+    Summarize public API and behavior changes, supported-platform impact,
+    network/cache/database/asset implications, compatibility risk, generated
+    code requirements, documentation updates, and test coverage.
+  review_status: true
+  review_details: true
+  review_progress: true
+  collapse_walkthrough: true
+  changed_files_summary: true
+  sequence_diagrams: false
+  estimate_code_review_effort: true
+  assess_linked_issues: true
+  related_issues: true
+  related_prs: true
+  suggested_labels: false
+  suggested_reviewers: false
+  in_progress_fortune: false
+  poem: false
+  enable_prompt_for_ai_agents: true
+
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    auto_pause_after_reviewed_commits: 5
+    drafts: false
+    base_branches:
+      - main
+    ignore_title_keywords:
+      - WIP
+      - DO NOT REVIEW
+
+  path_filters:
+    - "**"
+    - "!**/*.g.dart"
+    - "!**/*.freezed.dart"
+    - "!build/**"
+    - "!dorar_hadith_flutter/build/**"
+    - "!test/fixtures/api_snapshots/**"
+    - "!assets/database/**"
+    - "!**/.dart_tool/**"
+    - "!**/.flutter-plugins-dependencies"
+
+  path_instructions:
+    - path: "lib/**/*.dart"
+      instructions: |
+        This is a reusable pure-Dart package, not application code. Preserve
+        null safety, Dart idioms, testability, and all platforms declared in
+        pubspec.yaml. Do not introduce Flutter dependencies into the core
+        package. Platform-specific imports must remain behind conditional
+        imports and must compile for native and web targets.
+
+        Review async work for cancellation/timeout behavior, double completion,
+        unclosed clients/databases/loaders, use-after-dispose, concurrent
+        initialization, and exception preservation. Findings must be actionable
+        and tied to changed behavior; avoid style comments already enforced by
+        analysis_options.yaml.
+
+        Treat anything exported by lib/dorar_hadith.dart as public API. Flag
+        accidental breaking changes to names, signatures, return types,
+        nullability, JSON shape, equality, defaults, exception contracts, or
+        documented behavior. Breaking changes require deliberate versioning,
+        CHANGELOG, README, and tests.
+
+    - path: "lib/dorar_hadith.dart"
+      instructions: >-
+        Keep this barrel intentional and platform-safe. Verify every new export
+        is meant to become supported public API, has useful dartdoc, does not
+        expose implementation-only types, and is available on every supported
+        core-package platform.
+
+    - path: "lib/src/client/**/*.dart"
+      instructions: |
+        DorarClient owns HTTP, cache, reference services, and their lifecycle.
+        Verify dependency injection remains possible, all owned resources are
+        disposed exactly once, partial failures do not leak resources, and
+        DorarClient.use always cleans up when callbacks succeed or throw.
+
+        Convenience methods should preserve the underlying service's semantics,
+        response shape, validation, errors, caching, and nullability. Avoid
+        duplicating service logic in the client.
+
+    - path: "lib/src/http/**/*.dart"
+      instructions: |
+        Validate URI construction and query encoding, especially Arabic text,
+        repeated/list parameters, omitted optional values, booleans, pagination,
+        and IDs. Never build query strings by unsafe concatenation.
+
+        Review timeouts, non-2xx responses, malformed payloads, decoding failures,
+        user-agent/headers, injected-client ownership, response body handling,
+        and mapping into stable DorarException subclasses. Do not log secrets or
+        full sensitive request/response content.
+
+    - path: "lib/src/services/**/*.dart"
+      instructions: |
+        Services should orchestrate HTTP, parsing, validation, caching, and
+        reference lookup only when they add behavior. Check cache keys include
+        every behavior-affecting input and cannot collide across endpoints.
+        Validate cache hit/miss equivalence, TTL behavior, corrupt entries,
+        concurrent requests, clear/dispose behavior, and that failures are not
+        cached as successful responses.
+
+        Offline reference lookup contracts are intentional: unknown single IDs
+        return null and bulk lookups skip missing IDs. Initialization and disposal
+        must be safe and deterministic. Search behavior must use the package's
+        aligned Arabic normalization on query and candidate data.
+
+    - path: "lib/src/parsers/**/*.dart"
+      instructions: |
+        Dorar HTML is external and can drift. Parsers must tolerate missing,
+        reordered, optional, and malformed elements without silently assigning
+        text to the wrong field. Preserve Arabic content and semantic whitespace;
+        avoid overly broad selectors and brittle positional assumptions.
+
+        Require focused fixture tests for every parser change, including the
+        expected page variant and at least one missing/empty-field case. Parsing
+        failures should use the documented exception contract and retain useful
+        context without exposing an entire response body.
+
+    - path: "lib/src/models/*.dart"
+      instructions: |
+        Check wire-key mappings, defaults, nullability, enum/unknown-value behavior,
+        inheritance, equality, copyWith, and round-trip JSON compatibility. Preserve
+        the distinction between lightweight Hadith and DetailedHadith and the
+        documented hukm fallback behavior.
+
+        Changes to Freezed or JSON-serializable source models require build_runner.
+        Generated *.freezed.dart and *.g.dart files are tracked artifacts but must
+        not be hand-edited. Public model changes need serialization and behavioral
+        tests plus versioning/documentation review.
+
+    - path: "lib/src/database/**/*.dart"
+      instructions: |
+        Review Drift schema compatibility, migrations, indexes, transactions,
+        uniqueness, timestamps/TTL, and connection lifecycle. Existing user cache
+        databases must remain openable after upgrades or be deliberately and safely
+        recreated. Parameterize SQL and avoid loading unbounded result sets.
+
+        Preserve native/web separation: native uses sqlite3/file behavior while web
+        uses WasmDatabase assets. Verify initialization errors are actionable and
+        connections close during disposal. Generated Drift files must not be edited
+        manually.
+
+    - path: "lib/src/database/connection/*.dart"
+      instructions: >-
+        Check all declared platforms. Native package-URI and CWD fallbacks must not
+        accidentally open the wrong database or create a missing read-only reference
+        database. Web must handle asset URL candidates, non-200 responses, worker and
+        sqlite3.wasm availability, and initialization failures without hanging.
+
+    - path: "lib/src/utils/asset_loader/**/*.dart"
+      instructions: |
+        Preserve conditional platform selection and the explicit AssetLoader
+        configuration contract. Review URI/path traversal, package URI resolution,
+        CWD fallbacks, HTTP status handling, decoding, closable loader ownership,
+        idempotent close, and useful AssetLoaderException causes.
+
+        Core loaders must remain Flutter-independent. Flutter rootBundle behavior
+        belongs in the companion dorar_hadith_flutter package.
+
+    - path: "lib/src/utils/arabic_search.dart"
+      instructions: >-
+        Arabic normalization changes are compatibility-sensitive. Apply identical
+        normalization to queries and candidates; explicitly test diacritics,
+        tatweel, alef variants, alef maksura, ta marbuta, whitespace, empty input,
+        and mixed Arabic/non-Arabic text. Keep behavior aligned with bundled
+        pre-normalized reference data or update that data deliberately.
+
+    - path: "dorar_hadith_flutter/**/*.dart"
+      instructions: |
+        This companion package is the only Flutter integration layer. Keep the core
+        package Flutter-free. DorarHadithFlutter.ensureInitialized must remain
+        idempotent, await all required setup, copy the bundled narrator database
+        safely, use correct packages/dorar_hadith asset keys, and document that the
+        first databaseDirectory wins.
+
+        Review native platform behavior, app-support/custom-directory handling,
+        partial or concurrent initialization, overwrite/version policy, filesystem
+        errors, and test cleanup. Do not claim Flutter Web support unless the package
+        architecture and platform declaration are intentionally changed.
+
+    - path: "test/**/*.dart"
+      instructions: |
+        Tests must be deterministic and assert public behavior rather than private
+        implementation details. Unit tests must not depend on live Dorar.net, the
+        current working directory, persistent user files, or test order. Inject HTTP
+        and database dependencies, use isolated temporary storage, and dispose all
+        clients, databases, and loaders.
+
+        Cover success, validation, timeout/network failure, non-2xx, malformed HTML
+        or JSON, cache hit/miss/corruption, unknown offline IDs, and resource cleanup
+        when relevant. Generated fixtures should be minimal and sanitized.
+
+    - path: "test/integration/**/*.dart"
+      instructions: >-
+        Snapshot tests may represent real upstream Dorar responses and can be opt-in,
+        but assertions must remain stable and distinguish upstream drift from package
+        regressions. Do not add secrets or personal data. Network capture updates
+        should be intentional, documented, and reviewed for size and sanitization.
+
+    - path: "tool/**/*.dart"
+      instructions: >-
+        Capture tools may access the live upstream service. Require explicit output
+        targets, safe overwrite behavior, useful rate limiting/timeouts, deterministic
+        formatting, sanitization, and cleanup. They must not run as part of ordinary
+        unit tests or mutate fixtures unexpectedly.
+
+    - path: "{pubspec.yaml,dorar_hadith_flutter/pubspec.yaml}"
+      instructions: |
+        Review SDK/platform constraints, dependency compatibility, package assets,
+        publication contents, and semantic-version impact. The core package must
+        remain usable without Flutter; Flutter-only dependencies belong exclusively
+        to dorar_hadith_flutter. New runtime dependencies need clear justification.
+
+    - path: "{README.md,README_AR.md,dorar_hadith_flutter/README.md,CHANGELOG.md,dorar_hadith_flutter/CHANGELOG.md}"
+      instructions: >-
+        Keep English and Arabic documentation behaviorally aligned where applicable.
+        Examples must compile against the public API. Accurately document platform
+        support, initialization, assets, failure modes, disposal, return shapes, and
+        breaking changes; do not promise behavior unsupported by tests or code.
+
+  tools:
+    github-checks:
+      enabled: true
+      timeout_ms: 900000
+    shellcheck:
+      enabled: true
+    yamllint:
+      enabled: true
+    gitleaks:
+      enabled: true
+    osvScanner:
+      enabled: true
+
+knowledge_base:
+  web_search:
+    enabled: true
+  code_guidelines:
+    enabled: true
+    filePatterns:
+      - files: "README.md, README_AR.md"
+        applyTo: "lib/**/*.dart, test/**/*.dart, pubspec.yaml"
+      - files: "dorar_hadith_flutter/README.md"
+        applyTo: "dorar_hadith_flutter/**"
+  learnings:
+    scope: local
+    approval_delay: 7
+  issues:
+    scope: local
+  pull_requests:
+    scope: local

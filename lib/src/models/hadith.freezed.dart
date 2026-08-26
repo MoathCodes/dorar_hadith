@@ -241,7 +241,7 @@ return $default(_that.hadith,_that.rawi,_that.mohdith,_that.book,_that.numberOrP
 @JsonSerializable()
 
 class _DetailedHadith extends DetailedHadith {
-  const _DetailedHadith({required this.hadith, required this.rawi, required this.mohdith, required this.book, required this.numberOrPage, required this.grade, this.mohdithId, this.bookId, this.explainGrade, this.takhrij, this.hadithId, final  List<HadithCategory> categories = const [], this.hasSimilarHadith = false, this.hasAlternateHadithSahih = false, this.hasUsulHadith = false, this.similarHadithDorar, this.alternateHadithSahihDorar, this.usulHadithDorar, this.hasSharhMetadata = false, this.sharhMetadata}): _categories = categories,super._();
+  const _DetailedHadith({required this.hadith, required this.rawi, required this.mohdith, required this.book, required this.numberOrPage, required this.grade, this.mohdithId, this.bookId, this.explainGrade, this.takhrij, this.hadithId, List<HadithCategory> categories = const [], this.hasSimilarHadith = false, this.hasAlternateHadithSahih = false, this.hasUsulHadith = false, this.similarHadithDorar, this.alternateHadithSahihDorar, this.usulHadithDorar, this.hasSharhMetadata = false, this.sharhMetadata}): _categories = categories,super._();
   factory _DetailedHadith.fromJson(Map<String, dynamic> json) => _$DetailedHadithFromJson(json);
 
 @override final  String hadith;

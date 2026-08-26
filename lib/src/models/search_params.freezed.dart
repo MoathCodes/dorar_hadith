@@ -229,7 +229,7 @@ return $default(_that.value,_that.page,_that.removeHtml,_that.specialist,_that.e
 
 
 class _HadithSearchParams implements HadithSearchParams {
-  const _HadithSearchParams({required this.value, this.page = 1, this.removeHtml = true, this.specialist = false, this.exclude, this.searchMethod, this.zone, final  List<HadithDegree>? degrees, final  List<MohdithReference>? mohdith, final  List<BookReference>? books, final  List<RawiReference>? rawi}): _degrees = degrees,_mohdith = mohdith,_books = books,_rawi = rawi;
+  const _HadithSearchParams({required this.value, this.page = 1, this.removeHtml = true, this.specialist = false, this.exclude, this.searchMethod, this.zone, List<HadithDegree>? degrees, List<MohdithReference>? mohdith, List<BookReference>? books, List<RawiReference>? rawi}): _degrees = degrees,_mohdith = mohdith,_books = books,_rawi = rawi;
   
 
 /// The search query text
