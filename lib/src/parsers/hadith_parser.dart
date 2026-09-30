@@ -71,14 +71,14 @@ class HadithParser {
   ///
   /// Returns a list of [HadithCategory] with id and name.
   static List<HadithCategory> parseHadithCategories(dom.Element container) {
-    final links =
-        container.querySelectorAll('a[href*="/hadith-category/cat/"]');
+    final links = container.querySelectorAll(
+      'a[href*="/hadith-category/cat/"]',
+    );
     final categories = <HadithCategory>[];
 
     for (final link in links) {
       final href = link.attributes['href'] ?? '';
-      final match =
-          RegExp(r'/hadith-category/cat/([^/?#]+)').firstMatch(href);
+      final match = RegExp(r'/hadith-category/cat/([^/?#]+)').firstMatch(href);
       final id = match?.group(1)?.trim();
       final name = link.text.trim();
       if (id != null && id.isNotEmpty && name.isNotEmpty) {

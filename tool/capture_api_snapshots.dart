@@ -12,9 +12,7 @@ import 'package:http/http.dart' as http;
 /// dart run tool/capture_api_snapshots.dart [snapshot_name ...]
 /// ```
 Future<void> main(List<String> args) async {
-  final targets = args.isNotEmpty
-      ? args
-      : ['sharh_by_id', 'mohdith_bukhari'];
+  final targets = args.isNotEmpty ? args : ['sharh_by_id', 'mohdith_bukhari'];
 
   for (final name in targets) {
     final spec = _snapshotSpecs[name];
@@ -54,7 +52,9 @@ Future<void> _capture(String name, String url, String description) async {
 
   final output = File('test/fixtures/api_snapshots/$name.json');
   output.parent.createSync(recursive: true);
-  output.writeAsStringSync(const JsonEncoder.withIndent('  ').convert(snapshot));
+  output.writeAsStringSync(
+    const JsonEncoder.withIndent('  ').convert(snapshot),
+  );
   print('  wrote ${output.path} (${response.body.length} bytes)');
 }
 

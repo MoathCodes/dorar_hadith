@@ -56,9 +56,9 @@ class CacheDatabase extends _$CacheDatabase {
       ...?excludeKeys,
     };
 
-    final oldest = await (select(cacheTable)
-          ..orderBy([(t) => OrderingTerm.asc(t.createdAt)]))
-        .get();
+    final oldest = await (select(
+      cacheTable,
+    )..orderBy([(t) => OrderingTerm.asc(t.createdAt)])).get();
 
     var removed = 0;
     for (final entry in oldest) {

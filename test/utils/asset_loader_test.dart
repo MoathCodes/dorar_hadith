@@ -45,18 +45,15 @@ void main() {
       expect(content, contains('الجميع'));
     });
 
-    test(
-      'explicit configure is not overwritten by platform registration',
-      () {
-        AssetLoader.reset();
+    test('explicit configure is not overwritten by platform registration', () {
+      AssetLoader.reset();
 
-        AssetLoader.configure(_TestAssetLoader.new);
-        registerDefaultAssetLoader(FileAssetLoader.new);
+      AssetLoader.configure(_TestAssetLoader.new);
+      registerDefaultAssetLoader(FileAssetLoader.new);
 
-        final loader = createAssetLoader();
-        expect(loader, isA<_TestAssetLoader>());
-      },
-    );
+      final loader = createAssetLoader();
+      expect(loader, isA<_TestAssetLoader>());
+    });
   });
 }
 

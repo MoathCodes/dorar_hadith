@@ -21,6 +21,7 @@ abstract class DetailedHadith with _$DetailedHadith, HadithBase {
     String? explainGrade,
     String? takhrij,
     String? hadithId,
+
     /// Thematic categories (التصنيف الموضوعي) for this hadith.
     @Default([]) List<HadithCategory> categories,
     @Default(false) bool hasSimilarHadith,

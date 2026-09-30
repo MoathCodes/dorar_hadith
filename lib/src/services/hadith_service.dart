@@ -365,8 +365,9 @@ class HadithService {
         final hadithElement = info.previousElementSibling;
         if (hadithElement == null) continue;
 
-        final rawText =
-            params.removeHtml ? hadithElement.text : hadithElement.innerHtml;
+        final rawText = params.removeHtml
+            ? hadithElement.text
+            : hadithElement.innerHtml;
         final hadithText = HadithParser.cleanHadithText(
           rawText,
           HadithTextCleanMode.search,
@@ -561,8 +562,9 @@ class HadithService {
 
     // Calculate pagination metadata
     final currentPage = params.page;
-    final total =
-        params.specialist ? numberOfSpecialist : numberOfNonSpecialist;
+    final total = params.specialist
+        ? numberOfSpecialist
+        : numberOfNonSpecialist;
     final rawPages = total > 0 ? (total / sitePageSize).ceil() : 0;
     // Dorar's site UI only exposes pages 1..siteMaxPages; beyond that is empty.
     final totalPages = rawPages.clamp(0, siteMaxPages);
@@ -618,8 +620,7 @@ class HadithService {
       throw const FormatException('Hadith element not found');
     }
 
-    final rawText =
-        removeHtml ? hadithElement.text : hadithElement.innerHtml;
+    final rawText = removeHtml ? hadithElement.text : hadithElement.innerHtml;
     final hadithText = HadithParser.cleanHadithText(rawText, textCleanMode);
 
     // Extract metadata from second child

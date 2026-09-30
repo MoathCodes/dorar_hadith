@@ -11,10 +11,7 @@ void main() {
     });
 
     test('fromJson reads key/value', () {
-      final book = BookItem.fromJson({
-        'key': '2582',
-        'value': 'صحيح مسلم',
-      });
+      final book = BookItem.fromJson({'key': '2582', 'value': 'صحيح مسلم'});
 
       expect(book.id, '2582');
       expect(book.name, 'صحيح مسلم');

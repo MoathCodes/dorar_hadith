@@ -277,10 +277,8 @@ class DorarClient {
   /// final sharh = await client.getSharhByText('إنما الأعمال بالنيات');
   /// print(sharh.sharhText);
   /// ```
-  Future<Sharh> getSharhByText(
-    String text, {
-    bool specialist = false,
-  }) => sharh.getByText(text, specialist: specialist);
+  Future<Sharh> getSharhByText(String text, {bool specialist = false}) =>
+      sharh.getByText(text, specialist: specialist);
 
   /// Search for all sharh matching a query.
   ///

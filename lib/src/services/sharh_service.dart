@@ -138,9 +138,7 @@ class SharhService {
   ///   print('${sharh.hadithText} - ${sharh.sharhText}');
   /// }
   /// ```
-  Future<ApiResponse<List<Sharh>>> search(
-    HadithSearchParams params,
-  ) async {
+  Future<ApiResponse<List<Sharh>>> search(HadithSearchParams params) async {
     Validators.validateSearchText(params.value);
     Validators.validatePage(params.page);
 

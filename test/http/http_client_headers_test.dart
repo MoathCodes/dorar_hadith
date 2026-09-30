@@ -18,10 +18,7 @@ void main() {
       client.dispose();
 
       expect(captured, isNotNull);
-      expect(
-        captured!.headers['user-agent'],
-        contains('Mozilla/5.0'),
-      );
+      expect(captured!.headers['user-agent'], contains('Mozilla/5.0'));
       expect(captured!.headers['accept-language'], 'ar,en;q=0.9');
       expect(captured!.headers['referer'], 'https://dorar.net/');
       expect(captured!.headers['origin'], 'https://dorar.net');
@@ -48,9 +45,7 @@ void main() {
     });
 
     test('mergeHeaders puts caller values last', () {
-      final merged = DorarHttpClient.mergeHeaders({
-        'User-Agent': 'override',
-      });
+      final merged = DorarHttpClient.mergeHeaders({'User-Agent': 'override'});
       expect(merged['User-Agent'], 'override');
       expect(merged['Referer'], 'https://dorar.net/');
     });
