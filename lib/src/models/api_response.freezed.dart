@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'api_response.dart';
@@ -9,6 +9,7 @@ part of 'api_response.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -30,16 +31,21 @@ $ApiResponseCopyWith<T, ApiResponse<T>> get copyWith => _$ApiResponseCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ApiResponse<T>&&const DeepCollectionEquality().equals(other.data, data)&&(identical(other.metadata, metadata) || other.metadata == metadata));
+  final _this = this as ApiResponse<T>;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ApiResponse<T>&&const DeepCollectionEquality().equals(other.data, _this.data)&&(identical(other.metadata, _this.metadata) || other.metadata == _this.metadata));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(data),metadata);
+int get hashCode {
+  final _this = this as ApiResponse<T>;
+  return Object.hash(runtimeType,const DeepCollectionEquality().hash(_this.data),_this.metadata);
+}
 
 @override
 String toString() {
-  return 'ApiResponse<$T>(data: $data, metadata: $metadata)';
+  final _this = this as ApiResponse<T>;
+  return 'ApiResponse<$T>(data: ${_this.data}, metadata: ${_this.metadata})';
 }
 
 
@@ -68,7 +74,7 @@ class _$ApiResponseCopyWithImpl<T,$Res>
 /// Create a copy of ApiResponse
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? data = freezed,Object? metadata = null,}) {
-  return _then(_self.copyWith(
+  return _then(ApiResponse(
 data: freezed == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
 as T,metadata: null == metadata ? _self.metadata : metadata // ignore: cast_nullable_to_non_nullable
 as SearchMetadata,
@@ -242,16 +248,18 @@ Map<String, dynamic> toJson(Object? Function(T) toJsonT) {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ApiResponse<T>&&const DeepCollectionEquality().equals(other.data, data)&&(identical(other.metadata, metadata) || other.metadata == metadata));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ApiResponse<T>&&const DeepCollectionEquality().equals(other.data, data)&&(identical(other.metadata, metadata) || other.metadata == metadata));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(data),metadata);
+int get hashCode {
+    return Object.hash(runtimeType,const DeepCollectionEquality().hash(data),metadata);
+}
 
 @override
 String toString() {
-  return 'ApiResponse<$T>(data: $data, metadata: $metadata)';
+    return 'ApiResponse<$T>(data: $data, metadata: $metadata)';
 }
 
 

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'sharh.dart';
@@ -9,6 +9,7 @@ part of 'sharh.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -29,16 +30,21 @@ $SharhCopyWith<Sharh> get copyWith => _$SharhCopyWithImpl<Sharh>(this as Sharh, 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Sharh&&(identical(other.hadith, hadith) || other.hadith == hadith)&&(identical(other.sharhMetadata, sharhMetadata) || other.sharhMetadata == sharhMetadata));
+  final _this = this as Sharh;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Sharh&&(identical(other.hadith, _this.hadith) || other.hadith == _this.hadith)&&(identical(other.sharhMetadata, _this.sharhMetadata) || other.sharhMetadata == _this.sharhMetadata));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,hadith,sharhMetadata);
+int get hashCode {
+  final _this = this as Sharh;
+  return Object.hash(runtimeType,_this.hadith,_this.sharhMetadata);
+}
 
 @override
 String toString() {
-  return 'Sharh(hadith: $hadith, sharhMetadata: $sharhMetadata)';
+  final _this = this as Sharh;
+  return 'Sharh(hadith: ${_this.hadith}, sharhMetadata: ${_this.sharhMetadata})';
 }
 
 
@@ -67,7 +73,7 @@ class _$SharhCopyWithImpl<$Res>
 /// Create a copy of Sharh
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? hadith = null,Object? sharhMetadata = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(Sharh(
 hadith: null == hadith ? _self.hadith : hadith // ignore: cast_nullable_to_non_nullable
 as ExplainedHadith,sharhMetadata: freezed == sharhMetadata ? _self.sharhMetadata : sharhMetadata // ignore: cast_nullable_to_non_nullable
 as SharhMetadata?,
@@ -252,16 +258,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Sharh&&(identical(other.hadith, hadith) || other.hadith == hadith)&&(identical(other.sharhMetadata, sharhMetadata) || other.sharhMetadata == sharhMetadata));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Sharh&&(identical(other.hadith, hadith) || other.hadith == hadith)&&(identical(other.sharhMetadata, sharhMetadata) || other.sharhMetadata == sharhMetadata));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,hadith,sharhMetadata);
+int get hashCode {
+    return Object.hash(runtimeType,hadith,sharhMetadata);
+}
 
 @override
 String toString() {
-  return 'Sharh(hadith: $hadith, sharhMetadata: $sharhMetadata)';
+    return 'Sharh(hadith: $hadith, sharhMetadata: $sharhMetadata)';
 }
 
 

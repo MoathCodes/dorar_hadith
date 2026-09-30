@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'book.dart';
@@ -9,6 +9,7 @@ part of 'book.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -35,16 +36,21 @@ $BookInfoCopyWith<BookInfo> get copyWith => _$BookInfoCopyWithImpl<BookInfo>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BookInfo&&(identical(other.name, name) || other.name == name)&&(identical(other.bookId, bookId) || other.bookId == bookId)&&(identical(other.author, author) || other.author == author)&&(identical(other.reviewer, reviewer) || other.reviewer == reviewer)&&(identical(other.publisher, publisher) || other.publisher == publisher)&&(identical(other.edition, edition) || other.edition == edition)&&(identical(other.editionYear, editionYear) || other.editionYear == editionYear));
+  final _this = this as BookInfo;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BookInfo&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.bookId, _this.bookId) || other.bookId == _this.bookId)&&(identical(other.author, _this.author) || other.author == _this.author)&&(identical(other.reviewer, _this.reviewer) || other.reviewer == _this.reviewer)&&(identical(other.publisher, _this.publisher) || other.publisher == _this.publisher)&&(identical(other.edition, _this.edition) || other.edition == _this.edition)&&(identical(other.editionYear, _this.editionYear) || other.editionYear == _this.editionYear));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,bookId,author,reviewer,publisher,edition,editionYear);
+int get hashCode {
+  final _this = this as BookInfo;
+  return Object.hash(runtimeType,_this.name,_this.bookId,_this.author,_this.reviewer,_this.publisher,_this.edition,_this.editionYear);
+}
 
 @override
 String toString() {
-  return 'BookInfo(name: $name, bookId: $bookId, author: $author, reviewer: $reviewer, publisher: $publisher, edition: $edition, editionYear: $editionYear)';
+  final _this = this as BookInfo;
+  return 'BookInfo(name: ${_this.name}, bookId: ${_this.bookId}, author: ${_this.author}, reviewer: ${_this.reviewer}, publisher: ${_this.publisher}, edition: ${_this.edition}, editionYear: ${_this.editionYear})';
 }
 
 
@@ -73,7 +79,7 @@ class _$BookInfoCopyWithImpl<$Res>
 /// Create a copy of BookInfo
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? bookId = null,Object? author = null,Object? reviewer = null,Object? publisher = null,Object? edition = null,Object? editionYear = null,}) {
-  return _then(_self.copyWith(
+  return _then(BookInfo(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,bookId: null == bookId ? _self.bookId : bookId // ignore: cast_nullable_to_non_nullable
 as String,author: null == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
@@ -253,16 +259,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BookInfo&&(identical(other.name, name) || other.name == name)&&(identical(other.bookId, bookId) || other.bookId == bookId)&&(identical(other.author, author) || other.author == author)&&(identical(other.reviewer, reviewer) || other.reviewer == reviewer)&&(identical(other.publisher, publisher) || other.publisher == publisher)&&(identical(other.edition, edition) || other.edition == edition)&&(identical(other.editionYear, editionYear) || other.editionYear == editionYear));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _BookInfo&&(identical(other.name, name) || other.name == name)&&(identical(other.bookId, bookId) || other.bookId == bookId)&&(identical(other.author, author) || other.author == author)&&(identical(other.reviewer, reviewer) || other.reviewer == reviewer)&&(identical(other.publisher, publisher) || other.publisher == publisher)&&(identical(other.edition, edition) || other.edition == edition)&&(identical(other.editionYear, editionYear) || other.editionYear == editionYear));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,bookId,author,reviewer,publisher,edition,editionYear);
+int get hashCode {
+    return Object.hash(runtimeType,name,bookId,author,reviewer,publisher,edition,editionYear);
+}
 
 @override
 String toString() {
-  return 'BookInfo(name: $name, bookId: $bookId, author: $author, reviewer: $reviewer, publisher: $publisher, edition: $edition, editionYear: $editionYear)';
+    return 'BookInfo(name: $name, bookId: $bookId, author: $author, reviewer: $reviewer, publisher: $publisher, edition: $edition, editionYear: $editionYear)';
 }
 
 

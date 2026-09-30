@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'search_metadata.dart';
@@ -9,6 +9,7 @@ part of 'search_metadata.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -42,16 +43,21 @@ $SearchMetadataCopyWith<SearchMetadata> get copyWith => _$SearchMetadataCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SearchMetadata&&(identical(other.length, length) || other.length == length)&&(identical(other.currentPageCount, currentPageCount) || other.currentPageCount == currentPageCount)&&(identical(other.total, total) || other.total == total)&&(identical(other.page, page) || other.page == page)&&(identical(other.totalPages, totalPages) || other.totalPages == totalPages)&&(identical(other.hasNextPage, hasNextPage) || other.hasNextPage == hasNextPage)&&(identical(other.hasPrevPage, hasPrevPage) || other.hasPrevPage == hasPrevPage)&&(identical(other.removeHtml, removeHtml) || other.removeHtml == removeHtml)&&(identical(other.specialist, specialist) || other.specialist == specialist)&&(identical(other.numberOfNonSpecialist, numberOfNonSpecialist) || other.numberOfNonSpecialist == numberOfNonSpecialist)&&(identical(other.numberOfSpecialist, numberOfSpecialist) || other.numberOfSpecialist == numberOfSpecialist)&&(identical(other.isCached, isCached) || other.isCached == isCached)&&(identical(other.usulSourcesCount, usulSourcesCount) || other.usulSourcesCount == usulSourcesCount));
+  final _this = this as SearchMetadata;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SearchMetadata&&(identical(other.length, _this.length) || other.length == _this.length)&&(identical(other.currentPageCount, _this.currentPageCount) || other.currentPageCount == _this.currentPageCount)&&(identical(other.total, _this.total) || other.total == _this.total)&&(identical(other.page, _this.page) || other.page == _this.page)&&(identical(other.totalPages, _this.totalPages) || other.totalPages == _this.totalPages)&&(identical(other.hasNextPage, _this.hasNextPage) || other.hasNextPage == _this.hasNextPage)&&(identical(other.hasPrevPage, _this.hasPrevPage) || other.hasPrevPage == _this.hasPrevPage)&&(identical(other.removeHtml, _this.removeHtml) || other.removeHtml == _this.removeHtml)&&(identical(other.specialist, _this.specialist) || other.specialist == _this.specialist)&&(identical(other.numberOfNonSpecialist, _this.numberOfNonSpecialist) || other.numberOfNonSpecialist == _this.numberOfNonSpecialist)&&(identical(other.numberOfSpecialist, _this.numberOfSpecialist) || other.numberOfSpecialist == _this.numberOfSpecialist)&&(identical(other.isCached, _this.isCached) || other.isCached == _this.isCached)&&(identical(other.usulSourcesCount, _this.usulSourcesCount) || other.usulSourcesCount == _this.usulSourcesCount));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,length,currentPageCount,total,page,totalPages,hasNextPage,hasPrevPage,removeHtml,specialist,numberOfNonSpecialist,numberOfSpecialist,isCached,usulSourcesCount);
+int get hashCode {
+  final _this = this as SearchMetadata;
+  return Object.hash(runtimeType,_this.length,_this.currentPageCount,_this.total,_this.page,_this.totalPages,_this.hasNextPage,_this.hasPrevPage,_this.removeHtml,_this.specialist,_this.numberOfNonSpecialist,_this.numberOfSpecialist,_this.isCached,_this.usulSourcesCount);
+}
 
 @override
 String toString() {
-  return 'SearchMetadata(length: $length, currentPageCount: $currentPageCount, total: $total, page: $page, totalPages: $totalPages, hasNextPage: $hasNextPage, hasPrevPage: $hasPrevPage, removeHtml: $removeHtml, specialist: $specialist, numberOfNonSpecialist: $numberOfNonSpecialist, numberOfSpecialist: $numberOfSpecialist, isCached: $isCached, usulSourcesCount: $usulSourcesCount)';
+  final _this = this as SearchMetadata;
+  return 'SearchMetadata(length: ${_this.length}, currentPageCount: ${_this.currentPageCount}, total: ${_this.total}, page: ${_this.page}, totalPages: ${_this.totalPages}, hasNextPage: ${_this.hasNextPage}, hasPrevPage: ${_this.hasPrevPage}, removeHtml: ${_this.removeHtml}, specialist: ${_this.specialist}, numberOfNonSpecialist: ${_this.numberOfNonSpecialist}, numberOfSpecialist: ${_this.numberOfSpecialist}, isCached: ${_this.isCached}, usulSourcesCount: ${_this.usulSourcesCount})';
 }
 
 
@@ -80,7 +86,7 @@ class _$SearchMetadataCopyWithImpl<$Res>
 /// Create a copy of SearchMetadata
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? length = null,Object? currentPageCount = freezed,Object? total = freezed,Object? page = freezed,Object? totalPages = freezed,Object? hasNextPage = freezed,Object? hasPrevPage = freezed,Object? removeHtml = freezed,Object? specialist = freezed,Object? numberOfNonSpecialist = freezed,Object? numberOfSpecialist = freezed,Object? isCached = null,Object? usulSourcesCount = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(SearchMetadata(
 length: null == length ? _self.length : length // ignore: cast_nullable_to_non_nullable
 as int,currentPageCount: freezed == currentPageCount ? _self.currentPageCount : currentPageCount // ignore: cast_nullable_to_non_nullable
 as int?,total: freezed == total ? _self.total : total // ignore: cast_nullable_to_non_nullable
@@ -279,16 +285,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SearchMetadata&&(identical(other.length, length) || other.length == length)&&(identical(other.currentPageCount, currentPageCount) || other.currentPageCount == currentPageCount)&&(identical(other.total, total) || other.total == total)&&(identical(other.page, page) || other.page == page)&&(identical(other.totalPages, totalPages) || other.totalPages == totalPages)&&(identical(other.hasNextPage, hasNextPage) || other.hasNextPage == hasNextPage)&&(identical(other.hasPrevPage, hasPrevPage) || other.hasPrevPage == hasPrevPage)&&(identical(other.removeHtml, removeHtml) || other.removeHtml == removeHtml)&&(identical(other.specialist, specialist) || other.specialist == specialist)&&(identical(other.numberOfNonSpecialist, numberOfNonSpecialist) || other.numberOfNonSpecialist == numberOfNonSpecialist)&&(identical(other.numberOfSpecialist, numberOfSpecialist) || other.numberOfSpecialist == numberOfSpecialist)&&(identical(other.isCached, isCached) || other.isCached == isCached)&&(identical(other.usulSourcesCount, usulSourcesCount) || other.usulSourcesCount == usulSourcesCount));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SearchMetadata&&(identical(other.length, length) || other.length == length)&&(identical(other.currentPageCount, currentPageCount) || other.currentPageCount == currentPageCount)&&(identical(other.total, total) || other.total == total)&&(identical(other.page, page) || other.page == page)&&(identical(other.totalPages, totalPages) || other.totalPages == totalPages)&&(identical(other.hasNextPage, hasNextPage) || other.hasNextPage == hasNextPage)&&(identical(other.hasPrevPage, hasPrevPage) || other.hasPrevPage == hasPrevPage)&&(identical(other.removeHtml, removeHtml) || other.removeHtml == removeHtml)&&(identical(other.specialist, specialist) || other.specialist == specialist)&&(identical(other.numberOfNonSpecialist, numberOfNonSpecialist) || other.numberOfNonSpecialist == numberOfNonSpecialist)&&(identical(other.numberOfSpecialist, numberOfSpecialist) || other.numberOfSpecialist == numberOfSpecialist)&&(identical(other.isCached, isCached) || other.isCached == isCached)&&(identical(other.usulSourcesCount, usulSourcesCount) || other.usulSourcesCount == usulSourcesCount));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,length,currentPageCount,total,page,totalPages,hasNextPage,hasPrevPage,removeHtml,specialist,numberOfNonSpecialist,numberOfSpecialist,isCached,usulSourcesCount);
+int get hashCode {
+    return Object.hash(runtimeType,length,currentPageCount,total,page,totalPages,hasNextPage,hasPrevPage,removeHtml,specialist,numberOfNonSpecialist,numberOfSpecialist,isCached,usulSourcesCount);
+}
 
 @override
 String toString() {
-  return 'SearchMetadata(length: $length, currentPageCount: $currentPageCount, total: $total, page: $page, totalPages: $totalPages, hasNextPage: $hasNextPage, hasPrevPage: $hasPrevPage, removeHtml: $removeHtml, specialist: $specialist, numberOfNonSpecialist: $numberOfNonSpecialist, numberOfSpecialist: $numberOfSpecialist, isCached: $isCached, usulSourcesCount: $usulSourcesCount)';
+    return 'SearchMetadata(length: $length, currentPageCount: $currentPageCount, total: $total, page: $page, totalPages: $totalPages, hasNextPage: $hasNextPage, hasPrevPage: $hasPrevPage, removeHtml: $removeHtml, specialist: $specialist, numberOfNonSpecialist: $numberOfNonSpecialist, numberOfSpecialist: $numberOfSpecialist, isCached: $isCached, usulSourcesCount: $usulSourcesCount)';
 }
 
 

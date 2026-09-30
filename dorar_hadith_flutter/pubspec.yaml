@@ -25,11 +25,11 @@ dependencies:
     sdk: flutter
   dorar_hadith:
     path: ..
-  drift: ^2.29.0
+  drift: ^2.35.0
   path: ^1.9.1
-  path_provider: ^2.1.5
+  path_provider: ^2.1.6
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0

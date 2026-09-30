@@ -232,7 +232,16 @@ class $$RawiTableTableManager
                 required String value,
               }) => RawiCompanion.insert(key: key, value: value),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<$RawiTable, RawiItem>(table),
+                  BaseReferences<_$RawiDatabase, $RawiTable, RawiItem>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),

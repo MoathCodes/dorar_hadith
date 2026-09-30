@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'cache_entry.dart';
@@ -9,6 +9,7 @@ part of 'cache_entry.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -30,16 +31,21 @@ $CacheEntryCopyWith<CacheEntry> get copyWith => _$CacheEntryCopyWithImpl<CacheEn
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CacheEntry&&(identical(other.key, key) || other.key == key)&&(identical(other.body, body) || other.body == body)&&(identical(other.header, header) || other.header == header)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.expiresAt, expiresAt) || other.expiresAt == expiresAt));
+  final _this = this as CacheEntry;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CacheEntry&&(identical(other.key, _this.key) || other.key == _this.key)&&(identical(other.body, _this.body) || other.body == _this.body)&&(identical(other.header, _this.header) || other.header == _this.header)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.expiresAt, _this.expiresAt) || other.expiresAt == _this.expiresAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,key,body,header,createdAt,expiresAt);
+int get hashCode {
+  final _this = this as CacheEntry;
+  return Object.hash(runtimeType,_this.key,_this.body,_this.header,_this.createdAt,_this.expiresAt);
+}
 
 @override
 String toString() {
-  return 'CacheEntry(key: $key, body: $body, header: $header, createdAt: $createdAt, expiresAt: $expiresAt)';
+  final _this = this as CacheEntry;
+  return 'CacheEntry(key: ${_this.key}, body: ${_this.body}, header: ${_this.header}, createdAt: ${_this.createdAt}, expiresAt: ${_this.expiresAt})';
 }
 
 
@@ -68,7 +74,7 @@ class _$CacheEntryCopyWithImpl<$Res>
 /// Create a copy of CacheEntry
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? key = null,Object? body = null,Object? header = null,Object? createdAt = null,Object? expiresAt = null,}) {
-  return _then(_self.copyWith(
+  return _then(CacheEntry(
 key: null == key ? _self.key : key // ignore: cast_nullable_to_non_nullable
 as String,body: null == body ? _self.body : body // ignore: cast_nullable_to_non_nullable
 as String,header: null == header ? _self.header : header // ignore: cast_nullable_to_non_nullable
@@ -239,16 +245,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CacheEntry&&(identical(other.key, key) || other.key == key)&&(identical(other.body, body) || other.body == body)&&(identical(other.header, header) || other.header == header)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.expiresAt, expiresAt) || other.expiresAt == expiresAt));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _CacheEntry&&(identical(other.key, key) || other.key == key)&&(identical(other.body, body) || other.body == body)&&(identical(other.header, header) || other.header == header)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.expiresAt, expiresAt) || other.expiresAt == expiresAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,key,body,header,createdAt,expiresAt);
+int get hashCode {
+    return Object.hash(runtimeType,key,body,header,createdAt,expiresAt);
+}
 
 @override
 String toString() {
-  return 'CacheEntry(key: $key, body: $body, header: $header, createdAt: $createdAt, expiresAt: $expiresAt)';
+    return 'CacheEntry(key: $key, body: $body, header: $header, createdAt: $createdAt, expiresAt: $expiresAt)';
 }
 
 

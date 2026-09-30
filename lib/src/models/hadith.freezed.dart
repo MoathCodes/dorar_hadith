@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'hadith.dart';
@@ -9,6 +9,7 @@ part of 'hadith.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -29,16 +30,21 @@ $DetailedHadithCopyWith<DetailedHadith> get copyWith => _$DetailedHadithCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DetailedHadith&&(identical(other.hadith, hadith) || other.hadith == hadith)&&(identical(other.rawi, rawi) || other.rawi == rawi)&&(identical(other.mohdith, mohdith) || other.mohdith == mohdith)&&(identical(other.book, book) || other.book == book)&&(identical(other.numberOrPage, numberOrPage) || other.numberOrPage == numberOrPage)&&(identical(other.grade, grade) || other.grade == grade)&&(identical(other.mohdithId, mohdithId) || other.mohdithId == mohdithId)&&(identical(other.bookId, bookId) || other.bookId == bookId)&&(identical(other.explainGrade, explainGrade) || other.explainGrade == explainGrade)&&(identical(other.takhrij, takhrij) || other.takhrij == takhrij)&&(identical(other.hadithId, hadithId) || other.hadithId == hadithId)&&const DeepCollectionEquality().equals(other.categories, categories)&&(identical(other.hasSimilarHadith, hasSimilarHadith) || other.hasSimilarHadith == hasSimilarHadith)&&(identical(other.hasAlternateHadithSahih, hasAlternateHadithSahih) || other.hasAlternateHadithSahih == hasAlternateHadithSahih)&&(identical(other.hasUsulHadith, hasUsulHadith) || other.hasUsulHadith == hasUsulHadith)&&(identical(other.similarHadithDorar, similarHadithDorar) || other.similarHadithDorar == similarHadithDorar)&&(identical(other.alternateHadithSahihDorar, alternateHadithSahihDorar) || other.alternateHadithSahihDorar == alternateHadithSahihDorar)&&(identical(other.usulHadithDorar, usulHadithDorar) || other.usulHadithDorar == usulHadithDorar)&&(identical(other.hasSharhMetadata, hasSharhMetadata) || other.hasSharhMetadata == hasSharhMetadata)&&(identical(other.sharhMetadata, sharhMetadata) || other.sharhMetadata == sharhMetadata));
+  final _this = this as DetailedHadith;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DetailedHadith&&(identical(other.hadith, _this.hadith) || other.hadith == _this.hadith)&&(identical(other.rawi, _this.rawi) || other.rawi == _this.rawi)&&(identical(other.mohdith, _this.mohdith) || other.mohdith == _this.mohdith)&&(identical(other.book, _this.book) || other.book == _this.book)&&(identical(other.numberOrPage, _this.numberOrPage) || other.numberOrPage == _this.numberOrPage)&&(identical(other.grade, _this.grade) || other.grade == _this.grade)&&(identical(other.mohdithId, _this.mohdithId) || other.mohdithId == _this.mohdithId)&&(identical(other.bookId, _this.bookId) || other.bookId == _this.bookId)&&(identical(other.explainGrade, _this.explainGrade) || other.explainGrade == _this.explainGrade)&&(identical(other.takhrij, _this.takhrij) || other.takhrij == _this.takhrij)&&(identical(other.hadithId, _this.hadithId) || other.hadithId == _this.hadithId)&&const DeepCollectionEquality().equals(other.categories, _this.categories)&&(identical(other.hasSimilarHadith, _this.hasSimilarHadith) || other.hasSimilarHadith == _this.hasSimilarHadith)&&(identical(other.hasAlternateHadithSahih, _this.hasAlternateHadithSahih) || other.hasAlternateHadithSahih == _this.hasAlternateHadithSahih)&&(identical(other.hasUsulHadith, _this.hasUsulHadith) || other.hasUsulHadith == _this.hasUsulHadith)&&(identical(other.similarHadithDorar, _this.similarHadithDorar) || other.similarHadithDorar == _this.similarHadithDorar)&&(identical(other.alternateHadithSahihDorar, _this.alternateHadithSahihDorar) || other.alternateHadithSahihDorar == _this.alternateHadithSahihDorar)&&(identical(other.usulHadithDorar, _this.usulHadithDorar) || other.usulHadithDorar == _this.usulHadithDorar)&&(identical(other.hasSharhMetadata, _this.hasSharhMetadata) || other.hasSharhMetadata == _this.hasSharhMetadata)&&(identical(other.sharhMetadata, _this.sharhMetadata) || other.sharhMetadata == _this.sharhMetadata));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,hadith,rawi,mohdith,book,numberOrPage,grade,mohdithId,bookId,explainGrade,takhrij,hadithId,const DeepCollectionEquality().hash(categories),hasSimilarHadith,hasAlternateHadithSahih,hasUsulHadith,similarHadithDorar,alternateHadithSahihDorar,usulHadithDorar,hasSharhMetadata,sharhMetadata]);
+int get hashCode {
+  final _this = this as DetailedHadith;
+  return Object.hashAll([runtimeType,_this.hadith,_this.rawi,_this.mohdith,_this.book,_this.numberOrPage,_this.grade,_this.mohdithId,_this.bookId,_this.explainGrade,_this.takhrij,_this.hadithId,const DeepCollectionEquality().hash(_this.categories),_this.hasSimilarHadith,_this.hasAlternateHadithSahih,_this.hasUsulHadith,_this.similarHadithDorar,_this.alternateHadithSahihDorar,_this.usulHadithDorar,_this.hasSharhMetadata,_this.sharhMetadata]);
+}
 
 @override
 String toString() {
-  return 'DetailedHadith(hadith: $hadith, rawi: $rawi, mohdith: $mohdith, book: $book, numberOrPage: $numberOrPage, grade: $grade, mohdithId: $mohdithId, bookId: $bookId, explainGrade: $explainGrade, takhrij: $takhrij, hadithId: $hadithId, categories: $categories, hasSimilarHadith: $hasSimilarHadith, hasAlternateHadithSahih: $hasAlternateHadithSahih, hasUsulHadith: $hasUsulHadith, similarHadithDorar: $similarHadithDorar, alternateHadithSahihDorar: $alternateHadithSahihDorar, usulHadithDorar: $usulHadithDorar, hasSharhMetadata: $hasSharhMetadata, sharhMetadata: $sharhMetadata)';
+  final _this = this as DetailedHadith;
+  return 'DetailedHadith(hadith: ${_this.hadith}, rawi: ${_this.rawi}, mohdith: ${_this.mohdith}, book: ${_this.book}, numberOrPage: ${_this.numberOrPage}, grade: ${_this.grade}, mohdithId: ${_this.mohdithId}, bookId: ${_this.bookId}, explainGrade: ${_this.explainGrade}, takhrij: ${_this.takhrij}, hadithId: ${_this.hadithId}, categories: ${_this.categories}, hasSimilarHadith: ${_this.hasSimilarHadith}, hasAlternateHadithSahih: ${_this.hasAlternateHadithSahih}, hasUsulHadith: ${_this.hasUsulHadith}, similarHadithDorar: ${_this.similarHadithDorar}, alternateHadithSahihDorar: ${_this.alternateHadithSahihDorar}, usulHadithDorar: ${_this.usulHadithDorar}, hasSharhMetadata: ${_this.hasSharhMetadata}, sharhMetadata: ${_this.sharhMetadata})';
 }
 
 
@@ -67,7 +73,7 @@ class _$DetailedHadithCopyWithImpl<$Res>
 /// Create a copy of DetailedHadith
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? hadith = null,Object? rawi = null,Object? mohdith = null,Object? book = null,Object? numberOrPage = null,Object? grade = null,Object? mohdithId = freezed,Object? bookId = freezed,Object? explainGrade = freezed,Object? takhrij = freezed,Object? hadithId = freezed,Object? categories = null,Object? hasSimilarHadith = null,Object? hasAlternateHadithSahih = null,Object? hasUsulHadith = null,Object? similarHadithDorar = freezed,Object? alternateHadithSahihDorar = freezed,Object? usulHadithDorar = freezed,Object? hasSharhMetadata = null,Object? sharhMetadata = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(DetailedHadith(
 hadith: null == hadith ? _self.hadith : hadith // ignore: cast_nullable_to_non_nullable
 as String,rawi: null == rawi ? _self.rawi : rawi // ignore: cast_nullable_to_non_nullable
 as String,mohdith: null == mohdith ? _self.mohdith : mohdith // ignore: cast_nullable_to_non_nullable
@@ -241,7 +247,7 @@ return $default(_that.hadith,_that.rawi,_that.mohdith,_that.book,_that.numberOrP
 @JsonSerializable()
 
 class _DetailedHadith extends DetailedHadith {
-  const _DetailedHadith({required this.hadith, required this.rawi, required this.mohdith, required this.book, required this.numberOrPage, required this.grade, this.mohdithId, this.bookId, this.explainGrade, this.takhrij, this.hadithId, List<HadithCategory> categories = const [], this.hasSimilarHadith = false, this.hasAlternateHadithSahih = false, this.hasUsulHadith = false, this.similarHadithDorar, this.alternateHadithSahihDorar, this.usulHadithDorar, this.hasSharhMetadata = false, this.sharhMetadata}): _categories = categories,super._();
+  const _DetailedHadith({required this.hadith, required this.rawi, required this.mohdith, required this.book, required this.numberOrPage, required this.grade, this.mohdithId, this.bookId, this.explainGrade, this.takhrij, this.hadithId, this.categories = const [], this.hasSimilarHadith = false, this.hasAlternateHadithSahih = false, this.hasUsulHadith = false, this.similarHadithDorar, this.alternateHadithSahihDorar, this.usulHadithDorar, this.hasSharhMetadata = false, this.sharhMetadata}): super._();
   factory _DetailedHadith.fromJson(Map<String, dynamic> json) => _$DetailedHadithFromJson(json);
 
 @override final  String hadith;
@@ -256,14 +262,7 @@ class _DetailedHadith extends DetailedHadith {
 @override final  String? takhrij;
 @override final  String? hadithId;
 /// Thematic categories (التصنيف الموضوعي) for this hadith.
- final  List<HadithCategory> _categories;
-/// Thematic categories (التصنيف الموضوعي) for this hadith.
-@override@JsonKey() List<HadithCategory> get categories {
-  if (_categories is EqualUnmodifiableListView) return _categories;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_categories);
-}
-
+@override@JsonKey() final  List<HadithCategory> categories;
 @override@JsonKey() final  bool hasSimilarHadith;
 @override@JsonKey() final  bool hasAlternateHadithSahih;
 @override@JsonKey() final  bool hasUsulHadith;
@@ -286,16 +285,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DetailedHadith&&(identical(other.hadith, hadith) || other.hadith == hadith)&&(identical(other.rawi, rawi) || other.rawi == rawi)&&(identical(other.mohdith, mohdith) || other.mohdith == mohdith)&&(identical(other.book, book) || other.book == book)&&(identical(other.numberOrPage, numberOrPage) || other.numberOrPage == numberOrPage)&&(identical(other.grade, grade) || other.grade == grade)&&(identical(other.mohdithId, mohdithId) || other.mohdithId == mohdithId)&&(identical(other.bookId, bookId) || other.bookId == bookId)&&(identical(other.explainGrade, explainGrade) || other.explainGrade == explainGrade)&&(identical(other.takhrij, takhrij) || other.takhrij == takhrij)&&(identical(other.hadithId, hadithId) || other.hadithId == hadithId)&&const DeepCollectionEquality().equals(other._categories, _categories)&&(identical(other.hasSimilarHadith, hasSimilarHadith) || other.hasSimilarHadith == hasSimilarHadith)&&(identical(other.hasAlternateHadithSahih, hasAlternateHadithSahih) || other.hasAlternateHadithSahih == hasAlternateHadithSahih)&&(identical(other.hasUsulHadith, hasUsulHadith) || other.hasUsulHadith == hasUsulHadith)&&(identical(other.similarHadithDorar, similarHadithDorar) || other.similarHadithDorar == similarHadithDorar)&&(identical(other.alternateHadithSahihDorar, alternateHadithSahihDorar) || other.alternateHadithSahihDorar == alternateHadithSahihDorar)&&(identical(other.usulHadithDorar, usulHadithDorar) || other.usulHadithDorar == usulHadithDorar)&&(identical(other.hasSharhMetadata, hasSharhMetadata) || other.hasSharhMetadata == hasSharhMetadata)&&(identical(other.sharhMetadata, sharhMetadata) || other.sharhMetadata == sharhMetadata));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _DetailedHadith&&(identical(other.hadith, hadith) || other.hadith == hadith)&&(identical(other.rawi, rawi) || other.rawi == rawi)&&(identical(other.mohdith, mohdith) || other.mohdith == mohdith)&&(identical(other.book, book) || other.book == book)&&(identical(other.numberOrPage, numberOrPage) || other.numberOrPage == numberOrPage)&&(identical(other.grade, grade) || other.grade == grade)&&(identical(other.mohdithId, mohdithId) || other.mohdithId == mohdithId)&&(identical(other.bookId, bookId) || other.bookId == bookId)&&(identical(other.explainGrade, explainGrade) || other.explainGrade == explainGrade)&&(identical(other.takhrij, takhrij) || other.takhrij == takhrij)&&(identical(other.hadithId, hadithId) || other.hadithId == hadithId)&&const DeepCollectionEquality().equals(other.categories, categories)&&(identical(other.hasSimilarHadith, hasSimilarHadith) || other.hasSimilarHadith == hasSimilarHadith)&&(identical(other.hasAlternateHadithSahih, hasAlternateHadithSahih) || other.hasAlternateHadithSahih == hasAlternateHadithSahih)&&(identical(other.hasUsulHadith, hasUsulHadith) || other.hasUsulHadith == hasUsulHadith)&&(identical(other.similarHadithDorar, similarHadithDorar) || other.similarHadithDorar == similarHadithDorar)&&(identical(other.alternateHadithSahihDorar, alternateHadithSahihDorar) || other.alternateHadithSahihDorar == alternateHadithSahihDorar)&&(identical(other.usulHadithDorar, usulHadithDorar) || other.usulHadithDorar == usulHadithDorar)&&(identical(other.hasSharhMetadata, hasSharhMetadata) || other.hasSharhMetadata == hasSharhMetadata)&&(identical(other.sharhMetadata, sharhMetadata) || other.sharhMetadata == sharhMetadata));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,hadith,rawi,mohdith,book,numberOrPage,grade,mohdithId,bookId,explainGrade,takhrij,hadithId,const DeepCollectionEquality().hash(_categories),hasSimilarHadith,hasAlternateHadithSahih,hasUsulHadith,similarHadithDorar,alternateHadithSahihDorar,usulHadithDorar,hasSharhMetadata,sharhMetadata]);
+int get hashCode {
+    return Object.hashAll([runtimeType,hadith,rawi,mohdith,book,numberOrPage,grade,mohdithId,bookId,explainGrade,takhrij,hadithId,const DeepCollectionEquality().hash(categories),hasSimilarHadith,hasAlternateHadithSahih,hasUsulHadith,similarHadithDorar,alternateHadithSahihDorar,usulHadithDorar,hasSharhMetadata,sharhMetadata]);
+}
 
 @override
 String toString() {
-  return 'DetailedHadith(hadith: $hadith, rawi: $rawi, mohdith: $mohdith, book: $book, numberOrPage: $numberOrPage, grade: $grade, mohdithId: $mohdithId, bookId: $bookId, explainGrade: $explainGrade, takhrij: $takhrij, hadithId: $hadithId, categories: $categories, hasSimilarHadith: $hasSimilarHadith, hasAlternateHadithSahih: $hasAlternateHadithSahih, hasUsulHadith: $hasUsulHadith, similarHadithDorar: $similarHadithDorar, alternateHadithSahihDorar: $alternateHadithSahihDorar, usulHadithDorar: $usulHadithDorar, hasSharhMetadata: $hasSharhMetadata, sharhMetadata: $sharhMetadata)';
+    return 'DetailedHadith(hadith: $hadith, rawi: $rawi, mohdith: $mohdith, book: $book, numberOrPage: $numberOrPage, grade: $grade, mohdithId: $mohdithId, bookId: $bookId, explainGrade: $explainGrade, takhrij: $takhrij, hadithId: $hadithId, categories: $categories, hasSimilarHadith: $hasSimilarHadith, hasAlternateHadithSahih: $hasAlternateHadithSahih, hasUsulHadith: $hasUsulHadith, similarHadithDorar: $similarHadithDorar, alternateHadithSahihDorar: $alternateHadithSahihDorar, usulHadithDorar: $usulHadithDorar, hasSharhMetadata: $hasSharhMetadata, sharhMetadata: $sharhMetadata)';
 }
 
 
@@ -336,7 +337,7 @@ as String?,bookId: freezed == bookId ? _self.bookId : bookId // ignore: cast_nul
 as String?,explainGrade: freezed == explainGrade ? _self.explainGrade : explainGrade // ignore: cast_nullable_to_non_nullable
 as String?,takhrij: freezed == takhrij ? _self.takhrij : takhrij // ignore: cast_nullable_to_non_nullable
 as String?,hadithId: freezed == hadithId ? _self.hadithId : hadithId // ignore: cast_nullable_to_non_nullable
-as String?,categories: null == categories ? _self._categories : categories // ignore: cast_nullable_to_non_nullable
+as String?,categories: null == categories ? _self.categories : categories // ignore: cast_nullable_to_non_nullable
 as List<HadithCategory>,hasSimilarHadith: null == hasSimilarHadith ? _self.hasSimilarHadith : hasSimilarHadith // ignore: cast_nullable_to_non_nullable
 as bool,hasAlternateHadithSahih: null == hasAlternateHadithSahih ? _self.hasAlternateHadithSahih : hasAlternateHadithSahih // ignore: cast_nullable_to_non_nullable
 as bool,hasUsulHadith: null == hasUsulHadith ? _self.hasUsulHadith : hasUsulHadith // ignore: cast_nullable_to_non_nullable
@@ -381,16 +382,21 @@ $ExplainedHadithCopyWith<ExplainedHadith> get copyWith => _$ExplainedHadithCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ExplainedHadith&&(identical(other.hadith, hadith) || other.hadith == hadith)&&(identical(other.rawi, rawi) || other.rawi == rawi)&&(identical(other.mohdith, mohdith) || other.mohdith == mohdith)&&(identical(other.book, book) || other.book == book)&&(identical(other.numberOrPage, numberOrPage) || other.numberOrPage == numberOrPage)&&(identical(other.grade, grade) || other.grade == grade)&&(identical(other.takhrij, takhrij) || other.takhrij == takhrij)&&(identical(other.hasSharhMetadata, hasSharhMetadata) || other.hasSharhMetadata == hasSharhMetadata));
+  final _this = this as ExplainedHadith;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ExplainedHadith&&(identical(other.hadith, _this.hadith) || other.hadith == _this.hadith)&&(identical(other.rawi, _this.rawi) || other.rawi == _this.rawi)&&(identical(other.mohdith, _this.mohdith) || other.mohdith == _this.mohdith)&&(identical(other.book, _this.book) || other.book == _this.book)&&(identical(other.numberOrPage, _this.numberOrPage) || other.numberOrPage == _this.numberOrPage)&&(identical(other.grade, _this.grade) || other.grade == _this.grade)&&(identical(other.takhrij, _this.takhrij) || other.takhrij == _this.takhrij)&&(identical(other.hasSharhMetadata, _this.hasSharhMetadata) || other.hasSharhMetadata == _this.hasSharhMetadata));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,hadith,rawi,mohdith,book,numberOrPage,grade,takhrij,hasSharhMetadata);
+int get hashCode {
+  final _this = this as ExplainedHadith;
+  return Object.hash(runtimeType,_this.hadith,_this.rawi,_this.mohdith,_this.book,_this.numberOrPage,_this.grade,_this.takhrij,_this.hasSharhMetadata);
+}
 
 @override
 String toString() {
-  return 'ExplainedHadith(hadith: $hadith, rawi: $rawi, mohdith: $mohdith, book: $book, numberOrPage: $numberOrPage, grade: $grade, takhrij: $takhrij, hasSharhMetadata: $hasSharhMetadata)';
+  final _this = this as ExplainedHadith;
+  return 'ExplainedHadith(hadith: ${_this.hadith}, rawi: ${_this.rawi}, mohdith: ${_this.mohdith}, book: ${_this.book}, numberOrPage: ${_this.numberOrPage}, grade: ${_this.grade}, takhrij: ${_this.takhrij}, hasSharhMetadata: ${_this.hasSharhMetadata})';
 }
 
 
@@ -419,7 +425,7 @@ class _$ExplainedHadithCopyWithImpl<$Res>
 /// Create a copy of ExplainedHadith
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? hadith = null,Object? rawi = null,Object? mohdith = null,Object? book = null,Object? numberOrPage = null,Object? grade = null,Object? takhrij = freezed,Object? hasSharhMetadata = null,}) {
-  return _then(_self.copyWith(
+  return _then(ExplainedHadith(
 hadith: null == hadith ? _self.hadith : hadith // ignore: cast_nullable_to_non_nullable
 as String,rawi: null == rawi ? _self.rawi : rawi // ignore: cast_nullable_to_non_nullable
 as String,mohdith: null == mohdith ? _self.mohdith : mohdith // ignore: cast_nullable_to_non_nullable
@@ -594,16 +600,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ExplainedHadith&&(identical(other.hadith, hadith) || other.hadith == hadith)&&(identical(other.rawi, rawi) || other.rawi == rawi)&&(identical(other.mohdith, mohdith) || other.mohdith == mohdith)&&(identical(other.book, book) || other.book == book)&&(identical(other.numberOrPage, numberOrPage) || other.numberOrPage == numberOrPage)&&(identical(other.grade, grade) || other.grade == grade)&&(identical(other.takhrij, takhrij) || other.takhrij == takhrij)&&(identical(other.hasSharhMetadata, hasSharhMetadata) || other.hasSharhMetadata == hasSharhMetadata));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ExplainedHadith&&(identical(other.hadith, hadith) || other.hadith == hadith)&&(identical(other.rawi, rawi) || other.rawi == rawi)&&(identical(other.mohdith, mohdith) || other.mohdith == mohdith)&&(identical(other.book, book) || other.book == book)&&(identical(other.numberOrPage, numberOrPage) || other.numberOrPage == numberOrPage)&&(identical(other.grade, grade) || other.grade == grade)&&(identical(other.takhrij, takhrij) || other.takhrij == takhrij)&&(identical(other.hasSharhMetadata, hasSharhMetadata) || other.hasSharhMetadata == hasSharhMetadata));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,hadith,rawi,mohdith,book,numberOrPage,grade,takhrij,hasSharhMetadata);
+int get hashCode {
+    return Object.hash(runtimeType,hadith,rawi,mohdith,book,numberOrPage,grade,takhrij,hasSharhMetadata);
+}
 
 @override
 String toString() {
-  return 'ExplainedHadith(hadith: $hadith, rawi: $rawi, mohdith: $mohdith, book: $book, numberOrPage: $numberOrPage, grade: $grade, takhrij: $takhrij, hasSharhMetadata: $hasSharhMetadata)';
+    return 'ExplainedHadith(hadith: $hadith, rawi: $rawi, mohdith: $mohdith, book: $book, numberOrPage: $numberOrPage, grade: $grade, takhrij: $takhrij, hasSharhMetadata: $hasSharhMetadata)';
 }
 
 
@@ -665,16 +673,21 @@ $HadithCopyWith<Hadith> get copyWith => _$HadithCopyWithImpl<Hadith>(this as Had
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Hadith&&(identical(other.hadith, hadith) || other.hadith == hadith)&&(identical(other.rawi, rawi) || other.rawi == rawi)&&(identical(other.mohdith, mohdith) || other.mohdith == mohdith)&&(identical(other.book, book) || other.book == book)&&(identical(other.numberOrPage, numberOrPage) || other.numberOrPage == numberOrPage)&&(identical(other.grade, grade) || other.grade == grade));
+  final _this = this as Hadith;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Hadith&&(identical(other.hadith, _this.hadith) || other.hadith == _this.hadith)&&(identical(other.rawi, _this.rawi) || other.rawi == _this.rawi)&&(identical(other.mohdith, _this.mohdith) || other.mohdith == _this.mohdith)&&(identical(other.book, _this.book) || other.book == _this.book)&&(identical(other.numberOrPage, _this.numberOrPage) || other.numberOrPage == _this.numberOrPage)&&(identical(other.grade, _this.grade) || other.grade == _this.grade));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,hadith,rawi,mohdith,book,numberOrPage,grade);
+int get hashCode {
+  final _this = this as Hadith;
+  return Object.hash(runtimeType,_this.hadith,_this.rawi,_this.mohdith,_this.book,_this.numberOrPage,_this.grade);
+}
 
 @override
 String toString() {
-  return 'Hadith(hadith: $hadith, rawi: $rawi, mohdith: $mohdith, book: $book, numberOrPage: $numberOrPage, grade: $grade)';
+  final _this = this as Hadith;
+  return 'Hadith(hadith: ${_this.hadith}, rawi: ${_this.rawi}, mohdith: ${_this.mohdith}, book: ${_this.book}, numberOrPage: ${_this.numberOrPage}, grade: ${_this.grade})';
 }
 
 
@@ -703,7 +716,7 @@ class _$HadithCopyWithImpl<$Res>
 /// Create a copy of Hadith
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? hadith = null,Object? rawi = null,Object? mohdith = null,Object? book = null,Object? numberOrPage = null,Object? grade = null,}) {
-  return _then(_self.copyWith(
+  return _then(Hadith(
 hadith: null == hadith ? _self.hadith : hadith // ignore: cast_nullable_to_non_nullable
 as String,rawi: null == rawi ? _self.rawi : rawi // ignore: cast_nullable_to_non_nullable
 as String,mohdith: null == mohdith ? _self.mohdith : mohdith // ignore: cast_nullable_to_non_nullable
@@ -874,16 +887,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Hadith&&(identical(other.hadith, hadith) || other.hadith == hadith)&&(identical(other.rawi, rawi) || other.rawi == rawi)&&(identical(other.mohdith, mohdith) || other.mohdith == mohdith)&&(identical(other.book, book) || other.book == book)&&(identical(other.numberOrPage, numberOrPage) || other.numberOrPage == numberOrPage)&&(identical(other.grade, grade) || other.grade == grade));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Hadith&&(identical(other.hadith, hadith) || other.hadith == hadith)&&(identical(other.rawi, rawi) || other.rawi == rawi)&&(identical(other.mohdith, mohdith) || other.mohdith == mohdith)&&(identical(other.book, book) || other.book == book)&&(identical(other.numberOrPage, numberOrPage) || other.numberOrPage == numberOrPage)&&(identical(other.grade, grade) || other.grade == grade));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,hadith,rawi,mohdith,book,numberOrPage,grade);
+int get hashCode {
+    return Object.hash(runtimeType,hadith,rawi,mohdith,book,numberOrPage,grade);
+}
 
 @override
 String toString() {
-  return 'Hadith(hadith: $hadith, rawi: $rawi, mohdith: $mohdith, book: $book, numberOrPage: $numberOrPage, grade: $grade)';
+    return 'Hadith(hadith: $hadith, rawi: $rawi, mohdith: $mohdith, book: $book, numberOrPage: $numberOrPage, grade: $grade)';
 }
 
 

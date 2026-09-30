@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'usul_hadith.dart';
@@ -9,6 +9,7 @@ part of 'usul_hadith.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -28,16 +29,21 @@ $UsulHadithCopyWith<UsulHadith> get copyWith => _$UsulHadithCopyWithImpl<UsulHad
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UsulHadith&&(identical(other.hadith, hadith) || other.hadith == hadith)&&const DeepCollectionEquality().equals(other.sources, sources)&&(identical(other.count, count) || other.count == count));
+  final _this = this as UsulHadith;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UsulHadith&&(identical(other.hadith, _this.hadith) || other.hadith == _this.hadith)&&const DeepCollectionEquality().equals(other.sources, _this.sources)&&(identical(other.count, _this.count) || other.count == _this.count));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,hadith,const DeepCollectionEquality().hash(sources),count);
+int get hashCode {
+  final _this = this as UsulHadith;
+  return Object.hash(runtimeType,_this.hadith,const DeepCollectionEquality().hash(_this.sources),_this.count);
+}
 
 @override
 String toString() {
-  return 'UsulHadith(hadith: $hadith, sources: $sources, count: $count)';
+  final _this = this as UsulHadith;
+  return 'UsulHadith(hadith: ${_this.hadith}, sources: ${_this.sources}, count: ${_this.count})';
 }
 
 
@@ -66,7 +72,7 @@ class _$UsulHadithCopyWithImpl<$Res>
 /// Create a copy of UsulHadith
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? hadith = null,Object? sources = null,Object? count = null,}) {
-  return _then(_self.copyWith(
+  return _then(UsulHadith(
 hadith: null == hadith ? _self.hadith : hadith // ignore: cast_nullable_to_non_nullable
 as DetailedHadith,sources: null == sources ? _self.sources : sources // ignore: cast_nullable_to_non_nullable
 as List<UsulSource>,count: null == count ? _self.count : count // ignore: cast_nullable_to_non_nullable
@@ -220,20 +226,13 @@ return $default(_that.hadith,_that.sources,_that.count);case _:
 
 
 class _UsulHadith extends UsulHadith {
-  const _UsulHadith({required this.hadith, required List<UsulSource> sources, required this.count}): _sources = sources,super._();
+  const _UsulHadith({required this.hadith, required this.sources, required this.count}): super._();
   
 
 /// The main hadith
 @override final  DetailedHadith hadith;
 /// List of all sources for this hadith
- final  List<UsulSource> _sources;
-/// List of all sources for this hadith
-@override List<UsulSource> get sources {
-  if (_sources is EqualUnmodifiableListView) return _sources;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_sources);
-}
-
+@override final  List<UsulSource> sources;
 /// Total count of sources
 @override final  int count;
 
@@ -247,16 +246,18 @@ _$UsulHadithCopyWith<_UsulHadith> get copyWith => __$UsulHadithCopyWithImpl<_Usu
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UsulHadith&&(identical(other.hadith, hadith) || other.hadith == hadith)&&const DeepCollectionEquality().equals(other._sources, _sources)&&(identical(other.count, count) || other.count == count));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _UsulHadith&&(identical(other.hadith, hadith) || other.hadith == hadith)&&const DeepCollectionEquality().equals(other.sources, sources)&&(identical(other.count, count) || other.count == count));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,hadith,const DeepCollectionEquality().hash(_sources),count);
+int get hashCode {
+    return Object.hash(runtimeType,hadith,const DeepCollectionEquality().hash(sources),count);
+}
 
 @override
 String toString() {
-  return 'UsulHadith(hadith: $hadith, sources: $sources, count: $count)';
+    return 'UsulHadith(hadith: $hadith, sources: $sources, count: $count)';
 }
 
 
@@ -287,7 +288,7 @@ class __$UsulHadithCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? hadith = null,Object? sources = null,Object? count = null,}) {
   return _then(_UsulHadith(
 hadith: null == hadith ? _self.hadith : hadith // ignore: cast_nullable_to_non_nullable
-as DetailedHadith,sources: null == sources ? _self._sources : sources // ignore: cast_nullable_to_non_nullable
+as DetailedHadith,sources: null == sources ? _self.sources : sources // ignore: cast_nullable_to_non_nullable
 as List<UsulSource>,count: null == count ? _self.count : count // ignore: cast_nullable_to_non_nullable
 as int,
   ));
@@ -325,16 +326,21 @@ $UsulSourceCopyWith<UsulSource> get copyWith => _$UsulSourceCopyWithImpl<UsulSou
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UsulSource&&(identical(other.source, source) || other.source == source)&&(identical(other.chain, chain) || other.chain == chain)&&(identical(other.hadithText, hadithText) || other.hadithText == hadithText));
+  final _this = this as UsulSource;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UsulSource&&(identical(other.source, _this.source) || other.source == _this.source)&&(identical(other.chain, _this.chain) || other.chain == _this.chain)&&(identical(other.hadithText, _this.hadithText) || other.hadithText == _this.hadithText));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,source,chain,hadithText);
+int get hashCode {
+  final _this = this as UsulSource;
+  return Object.hash(runtimeType,_this.source,_this.chain,_this.hadithText);
+}
 
 @override
 String toString() {
-  return 'UsulSource(source: $source, chain: $chain, hadithText: $hadithText)';
+  final _this = this as UsulSource;
+  return 'UsulSource(source: ${_this.source}, chain: ${_this.chain}, hadithText: ${_this.hadithText})';
 }
 
 
@@ -363,7 +369,7 @@ class _$UsulSourceCopyWithImpl<$Res>
 /// Create a copy of UsulSource
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? source = null,Object? chain = null,Object? hadithText = null,}) {
-  return _then(_self.copyWith(
+  return _then(UsulSource(
 source: null == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
 as String,chain: null == chain ? _self.chain : chain // ignore: cast_nullable_to_non_nullable
 as String,hadithText: null == hadithText ? _self.hadithText : hadithText // ignore: cast_nullable_to_non_nullable
@@ -531,16 +537,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UsulSource&&(identical(other.source, source) || other.source == source)&&(identical(other.chain, chain) || other.chain == chain)&&(identical(other.hadithText, hadithText) || other.hadithText == hadithText));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _UsulSource&&(identical(other.source, source) || other.source == source)&&(identical(other.chain, chain) || other.chain == chain)&&(identical(other.hadithText, hadithText) || other.hadithText == hadithText));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,source,chain,hadithText);
+int get hashCode {
+    return Object.hash(runtimeType,source,chain,hadithText);
+}
 
 @override
 String toString() {
-  return 'UsulSource(source: $source, chain: $chain, hadithText: $hadithText)';
+    return 'UsulSource(source: $source, chain: $chain, hadithText: $hadithText)';
 }
 
 

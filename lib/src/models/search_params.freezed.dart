@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'search_params.dart';
@@ -9,6 +9,7 @@ part of 'search_params.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -38,16 +39,21 @@ $HadithSearchParamsCopyWith<HadithSearchParams> get copyWith => _$HadithSearchPa
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HadithSearchParams&&(identical(other.value, value) || other.value == value)&&(identical(other.page, page) || other.page == page)&&(identical(other.removeHtml, removeHtml) || other.removeHtml == removeHtml)&&(identical(other.specialist, specialist) || other.specialist == specialist)&&(identical(other.exclude, exclude) || other.exclude == exclude)&&(identical(other.searchMethod, searchMethod) || other.searchMethod == searchMethod)&&(identical(other.zone, zone) || other.zone == zone)&&const DeepCollectionEquality().equals(other.degrees, degrees)&&const DeepCollectionEquality().equals(other.mohdith, mohdith)&&const DeepCollectionEquality().equals(other.books, books)&&const DeepCollectionEquality().equals(other.rawi, rawi));
+  final _this = this as HadithSearchParams;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HadithSearchParams&&(identical(other.value, _this.value) || other.value == _this.value)&&(identical(other.page, _this.page) || other.page == _this.page)&&(identical(other.removeHtml, _this.removeHtml) || other.removeHtml == _this.removeHtml)&&(identical(other.specialist, _this.specialist) || other.specialist == _this.specialist)&&(identical(other.exclude, _this.exclude) || other.exclude == _this.exclude)&&(identical(other.searchMethod, _this.searchMethod) || other.searchMethod == _this.searchMethod)&&(identical(other.zone, _this.zone) || other.zone == _this.zone)&&const DeepCollectionEquality().equals(other.degrees, _this.degrees)&&const DeepCollectionEquality().equals(other.mohdith, _this.mohdith)&&const DeepCollectionEquality().equals(other.books, _this.books)&&const DeepCollectionEquality().equals(other.rawi, _this.rawi));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,value,page,removeHtml,specialist,exclude,searchMethod,zone,const DeepCollectionEquality().hash(degrees),const DeepCollectionEquality().hash(mohdith),const DeepCollectionEquality().hash(books),const DeepCollectionEquality().hash(rawi));
+int get hashCode {
+  final _this = this as HadithSearchParams;
+  return Object.hash(runtimeType,_this.value,_this.page,_this.removeHtml,_this.specialist,_this.exclude,_this.searchMethod,_this.zone,const DeepCollectionEquality().hash(_this.degrees),const DeepCollectionEquality().hash(_this.mohdith),const DeepCollectionEquality().hash(_this.books),const DeepCollectionEquality().hash(_this.rawi));
+}
 
 @override
 String toString() {
-  return 'HadithSearchParams(value: $value, page: $page, removeHtml: $removeHtml, specialist: $specialist, exclude: $exclude, searchMethod: $searchMethod, zone: $zone, degrees: $degrees, mohdith: $mohdith, books: $books, rawi: $rawi)';
+  final _this = this as HadithSearchParams;
+  return 'HadithSearchParams(value: ${_this.value}, page: ${_this.page}, removeHtml: ${_this.removeHtml}, specialist: ${_this.specialist}, exclude: ${_this.exclude}, searchMethod: ${_this.searchMethod}, zone: ${_this.zone}, degrees: ${_this.degrees}, mohdith: ${_this.mohdith}, books: ${_this.books}, rawi: ${_this.rawi})';
 }
 
 
@@ -76,7 +82,7 @@ class _$HadithSearchParamsCopyWithImpl<$Res>
 /// Create a copy of HadithSearchParams
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? value = null,Object? page = null,Object? removeHtml = null,Object? specialist = null,Object? exclude = freezed,Object? searchMethod = freezed,Object? zone = freezed,Object? degrees = freezed,Object? mohdith = freezed,Object? books = freezed,Object? rawi = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(HadithSearchParams(
 value: null == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
 as String,page: null == page ? _self.page : page // ignore: cast_nullable_to_non_nullable
 as int,removeHtml: null == removeHtml ? _self.removeHtml : removeHtml // ignore: cast_nullable_to_non_nullable
@@ -229,7 +235,7 @@ return $default(_that.value,_that.page,_that.removeHtml,_that.specialist,_that.e
 
 
 class _HadithSearchParams implements HadithSearchParams {
-  const _HadithSearchParams({required this.value, this.page = 1, this.removeHtml = true, this.specialist = false, this.exclude, this.searchMethod, this.zone, List<HadithDegree>? degrees, List<MohdithReference>? mohdith, List<BookReference>? books, List<RawiReference>? rawi}): _degrees = degrees,_mohdith = mohdith,_books = books,_rawi = rawi;
+  const _HadithSearchParams({required this.value, this.page = 1, this.removeHtml = true, this.specialist = false, this.exclude, this.searchMethod, this.zone, this.degrees, this.mohdith, this.books, this.rawi});
   
 
 /// The search query text
@@ -249,49 +255,13 @@ class _HadithSearchParams implements HadithSearchParams {
 /// Hadith type classification (all, marfoo, qudsi, athar, sharh)
 @override final  SearchZone? zone;
 /// Filter by hadith degrees (sahih, daif, etc.)
- final  List<HadithDegree>? _degrees;
-/// Filter by hadith degrees (sahih, daif, etc.)
-@override List<HadithDegree>? get degrees {
-  final value = _degrees;
-  if (value == null) return null;
-  if (_degrees is EqualUnmodifiableListView) return _degrees;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(value);
-}
-
+@override final  List<HadithDegree>? degrees;
 /// Filter by specific scholars (mohdith)
- final  List<MohdithReference>? _mohdith;
-/// Filter by specific scholars (mohdith)
-@override List<MohdithReference>? get mohdith {
-  final value = _mohdith;
-  if (value == null) return null;
-  if (_mohdith is EqualUnmodifiableListView) return _mohdith;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(value);
-}
-
+@override final  List<MohdithReference>? mohdith;
 /// Filter by specific books
- final  List<BookReference>? _books;
-/// Filter by specific books
-@override List<BookReference>? get books {
-  final value = _books;
-  if (value == null) return null;
-  if (_books is EqualUnmodifiableListView) return _books;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(value);
-}
-
+@override final  List<BookReference>? books;
 /// Filter by specific narrators (rawi)
- final  List<RawiReference>? _rawi;
-/// Filter by specific narrators (rawi)
-@override List<RawiReference>? get rawi {
-  final value = _rawi;
-  if (value == null) return null;
-  if (_rawi is EqualUnmodifiableListView) return _rawi;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(value);
-}
-
+@override final  List<RawiReference>? rawi;
 
 /// Create a copy of HadithSearchParams
 /// with the given fields replaced by the non-null parameter values.
@@ -303,16 +273,18 @@ _$HadithSearchParamsCopyWith<_HadithSearchParams> get copyWith => __$HadithSearc
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HadithSearchParams&&(identical(other.value, value) || other.value == value)&&(identical(other.page, page) || other.page == page)&&(identical(other.removeHtml, removeHtml) || other.removeHtml == removeHtml)&&(identical(other.specialist, specialist) || other.specialist == specialist)&&(identical(other.exclude, exclude) || other.exclude == exclude)&&(identical(other.searchMethod, searchMethod) || other.searchMethod == searchMethod)&&(identical(other.zone, zone) || other.zone == zone)&&const DeepCollectionEquality().equals(other._degrees, _degrees)&&const DeepCollectionEquality().equals(other._mohdith, _mohdith)&&const DeepCollectionEquality().equals(other._books, _books)&&const DeepCollectionEquality().equals(other._rawi, _rawi));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _HadithSearchParams&&(identical(other.value, value) || other.value == value)&&(identical(other.page, page) || other.page == page)&&(identical(other.removeHtml, removeHtml) || other.removeHtml == removeHtml)&&(identical(other.specialist, specialist) || other.specialist == specialist)&&(identical(other.exclude, exclude) || other.exclude == exclude)&&(identical(other.searchMethod, searchMethod) || other.searchMethod == searchMethod)&&(identical(other.zone, zone) || other.zone == zone)&&const DeepCollectionEquality().equals(other.degrees, degrees)&&const DeepCollectionEquality().equals(other.mohdith, mohdith)&&const DeepCollectionEquality().equals(other.books, books)&&const DeepCollectionEquality().equals(other.rawi, rawi));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,value,page,removeHtml,specialist,exclude,searchMethod,zone,const DeepCollectionEquality().hash(_degrees),const DeepCollectionEquality().hash(_mohdith),const DeepCollectionEquality().hash(_books),const DeepCollectionEquality().hash(_rawi));
+int get hashCode {
+    return Object.hash(runtimeType,value,page,removeHtml,specialist,exclude,searchMethod,zone,const DeepCollectionEquality().hash(degrees),const DeepCollectionEquality().hash(mohdith),const DeepCollectionEquality().hash(books),const DeepCollectionEquality().hash(rawi));
+}
 
 @override
 String toString() {
-  return 'HadithSearchParams(value: $value, page: $page, removeHtml: $removeHtml, specialist: $specialist, exclude: $exclude, searchMethod: $searchMethod, zone: $zone, degrees: $degrees, mohdith: $mohdith, books: $books, rawi: $rawi)';
+    return 'HadithSearchParams(value: $value, page: $page, removeHtml: $removeHtml, specialist: $specialist, exclude: $exclude, searchMethod: $searchMethod, zone: $zone, degrees: $degrees, mohdith: $mohdith, books: $books, rawi: $rawi)';
 }
 
 
@@ -349,10 +321,10 @@ as bool,specialist: null == specialist ? _self.specialist : specialist // ignore
 as bool,exclude: freezed == exclude ? _self.exclude : exclude // ignore: cast_nullable_to_non_nullable
 as String?,searchMethod: freezed == searchMethod ? _self.searchMethod : searchMethod // ignore: cast_nullable_to_non_nullable
 as SearchMethod?,zone: freezed == zone ? _self.zone : zone // ignore: cast_nullable_to_non_nullable
-as SearchZone?,degrees: freezed == degrees ? _self._degrees : degrees // ignore: cast_nullable_to_non_nullable
-as List<HadithDegree>?,mohdith: freezed == mohdith ? _self._mohdith : mohdith // ignore: cast_nullable_to_non_nullable
-as List<MohdithReference>?,books: freezed == books ? _self._books : books // ignore: cast_nullable_to_non_nullable
-as List<BookReference>?,rawi: freezed == rawi ? _self._rawi : rawi // ignore: cast_nullable_to_non_nullable
+as SearchZone?,degrees: freezed == degrees ? _self.degrees : degrees // ignore: cast_nullable_to_non_nullable
+as List<HadithDegree>?,mohdith: freezed == mohdith ? _self.mohdith : mohdith // ignore: cast_nullable_to_non_nullable
+as List<MohdithReference>?,books: freezed == books ? _self.books : books // ignore: cast_nullable_to_non_nullable
+as List<BookReference>?,rawi: freezed == rawi ? _self.rawi : rawi // ignore: cast_nullable_to_non_nullable
 as List<RawiReference>?,
   ));
 }
