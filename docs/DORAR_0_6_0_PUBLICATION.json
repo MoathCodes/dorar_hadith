@@ -1,0 +1,50 @@
+{
+  "version": "0.6.0",
+  "releaseSourceCommit": "064c7b53cfaf0d1fba7e2ac49828b41b058213a9",
+  "repositoryVerificationCommit": "100ffed14067651b3651dd87011b56a5be9deca8",
+  "packages": {
+    "dorar_hadith": {
+      "version": "0.6.0",
+      "packageUrl": "https://pub.dev/packages/dorar_hadith/versions/0.6.0",
+      "archiveUrl": "https://pub.dev/api/archives/dorar_hadith-0.6.0.tar.gz",
+      "archiveSha256": "8f85f00efcfeb463c374e21e02115fb0af7153587f1dea9737e33e35aea92ae3",
+      "archiveBytes": 363009,
+      "archiveFiles": 117
+    },
+    "dorar_hadith_flutter": {
+      "version": "0.6.0",
+      "packageUrl": "https://pub.dev/packages/dorar_hadith_flutter/versions/0.6.0",
+      "archiveUrl": "https://pub.dev/api/archives/dorar_hadith_flutter-0.6.0.tar.gz",
+      "archiveSha256": "3da0599301dd1c55aaaf1e14460282b58f6d09ed732de7ed98248408fe057760",
+      "archiveBytes": 57613,
+      "archiveFiles": 33,
+      "coreDependency": "^0.6.0"
+    }
+  },
+  "toolchain": {
+    "dart": "3.13.4",
+    "minimumDart": "3.13.0",
+    "flutter": "3.47.5"
+  },
+  "checks": {
+    "coreAnalysis": "passed",
+    "coreOfflineTests": 363,
+    "adapterAnalysis": "passed",
+    "adapterTests": 7,
+    "hostedCoreConsumer": "passed: 774 books, 208 current scholars, 11479 narrator choices, normalized Arabic lookup",
+    "hostedAdapterAgainstCore": "passed: analysis and seven tests without overrides",
+    "archiveHashesAndBoundaries": "passed",
+    "bilingualReadmes": "matching sections, code blocks and API identifiers",
+    "markdownFormatting": "passed",
+    "hostedFlutterConsumer": "passed: both hosted packages, transitive bundle assets, versioned native snapshot, normalized narrator lookup, persistent cache and unrelated-file preservation",
+    "hostedExample": "passed: hosted-only resolution, analyzer and one widget test",
+    "remoteCI": "passed: https://github.com/MoathCodes/dorar_hadith/actions/runs/37504763528 (Linux, macOS, Windows, minimum Dart and browser build)",
+    "publishedReadmeAnchors": "pub.dev strips custom HTML anchors in 0.6.0; main corrected to generated heading IDs and verified against rendered headings"
+  },
+  "limitations": [
+    "Android/iOS device runtime unverified",
+    "Direct Dorar requests blocked by CORS from tested browser origin; online browser consumers need an application-owned server transport",
+    "Narrator reference coverage remains partial",
+    "Some 0.6.0 pub.dev README TOC fragments use stripped custom anchors; corrected on main; registry README requires a later patch to receive the corrected links"
+  ]
+}

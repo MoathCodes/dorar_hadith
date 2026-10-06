@@ -7,13 +7,11 @@ Flutter setup for `dorar_hadith`, with verified bundled references, native snaps
 ## Contents
 
 - [Setup](#setup)
-- [Native storage and initialization](#storage)
-- [Browser setup](#browser)
-- [Custom storage](#custom)
-- [Asset keys](#assets)
-- [Upgrading from 0.5.x](#migration)
-
-<a id="setup"></a>
+- [Native storage and initialization](#native-storage-and-initialization)
+- [Browser setup](#browser-setup)
+- [Custom storage](#custom-storage)
+- [Asset keys](#asset-keys)
+- [Upgrading from 0.5.x](#upgrading-from-05x)
 
 ## Setup
 
@@ -38,8 +36,6 @@ Future<void> main() async {
 
 The core dependency supplies JSON, database and manifest assets automatically. You do not need to declare them in your app. Initialization validates the bundled manifest and hashes offline before making the asset and database factories available.
 
-<a id="storage"></a>
-
 ## Native storage and initialization
 
 Native Flutter installs references atomically under a verified, snapshot-specific filename in application support storage and opens them read-only. The mutable API cache uses a separate `cache.db`. Upgrades preserve old `rawi.db`, old snapshots, cache, custom files and unrelated storage. Application favorites and history remain untouched.
@@ -50,23 +46,17 @@ await DorarHadithFlutter.ensureInitialized(databaseDirectory: myDirectory);
 
 Concurrent calls with the same configuration share one future. Failed initialization can be retried and leaves `isInitialized` false. Changing the directory configuration raises `DorarFlutterAdapterException`. Its failure kinds distinguish missing assets, schema mismatch, integrity failure, installation failure and configuration conflict; `cause` retains the underlying error.
 
-<a id="browser"></a>
-
 ## Browser setup
 
 The browser entry point configures bundled JSON and the core WebAssembly databases. Omit `databaseDirectory` on web. Serve compatible `sqlite3.wasm` and `drift_worker.dart.js` at the application base URL. Reference storage identity includes snapshot version, schema and hash; API cache identity is separate.
 
 The [example guide](example/README.md) explains worker and Wasm setup. Direct Dorar site and quick-API requests were blocked by CORS from the tested browser origin. For online access, inject an application-owned server transport through `DorarHttpClient(client: yourHttpClient)`. Offline asset initialization does not contact Dorar.
 
-<a id="custom"></a>
-
 ## Custom storage
 
 `createFlutterConnectionFactory` preserves ownership of custom filenames. Supply `manifest` for managed, verified installation under a versioned filename. Without a manifest, the caller manages the reference lifecycle. Existing custom files are never overwritten and must use schema 2. Use the core `migrateReferenceDatabase` helper to create and verify a separate schema-2 copy of a schema-1 input.
 
 `createFlutterCacheConnectionFactory` opens a separate writable cache. `configureFlutterAssetLoader` supports custom JSON loading. `installManagedReferenceSnapshot` supports explicit managed native installation. Native file installation helpers are unavailable in browsers.
-
-<a id="assets"></a>
 
 ## Asset keys
 
@@ -78,8 +68,6 @@ The core package supplies these bundle keys:
 - `packages/dorar_hadith/assets/database/rawi.db`
 
 ByteData conversions preserve the returned view's offset and length. Bytes outside that view are excluded from database content.
-
-<a id="migration"></a>
 
 ## Upgrading from 0.5.x
 

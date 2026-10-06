@@ -2,7 +2,7 @@
 
 Date: 2026-10-06. Prepared package versions: **dorar_hadith 0.6.0** and **dorar_hadith_flutter 0.6.0**.
 
-This record describes implemented SDK behavior and verification evidence. The owner selected direct stable 0.6.0 publication after the local checks, replacing the earlier RC sequence. Registry verification will be recorded below after upload; prepared manifests alone do not establish publication.
+This record describes implemented SDK behavior and verification evidence. The owner selected direct stable 0.6.0 publication after the local checks, replacing the earlier RC sequence. Both stable versions are published and verified below.
 
 Tawaq source, UI, favorites, recent history and app-store migrations remain outside this task. The application adoption map is still [the separate follow-up document](TAWAQ_DORAR_0_6_0_FOLLOW_UP_MAP.md).
 
@@ -37,18 +37,18 @@ Tawaq source, UI, favorites, recent history and app-store migrations remain outs
 
 ## Phase status
 
-| Phase                            | State                                  | Delivered evidence or remaining gate                                                                                                                                        |
-| -------------------------------- | -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| P0 Source contracts and baseline | Implemented for confirmed capabilities | Frozen/indexed captures, endpoint matrices, published baseline diff, API inventory below; unverified scopes are rejected or explicitly unknown                              |
-| P1 Models and compatibility      | Implemented                            | Typed IDs, source documents, references, diagnostics/provenance, old saved JSON decoding, primitive identifier JSON                                                         |
-| P2 Source parsers and formatting | Implemented                            | Scoped metadata, separate embedded citations, exact glossary occurrences, explicit citation labels, raw dates, range/hash validation, safe HTML/tokens                      |
-| P3 Raw-response cache            | Implemented                            | Shared client transport, v3 envelope, format/model collision regressions, persistent recovery, no table reset                                                               |
-| P4 Endpoints and discovery       | Implemented                            | Search serializers, prose/AJAX search, ordered relations, asbab/usul, categories and online choices                                                                         |
-| P5 References and normalization  | Implemented                            | Dated source manifest, candidate-only reproducible refresh, history, schema-2 database, symmetric count/search                                                              |
-| P6 Platform upgrades             | Implemented; local runtime verified    | Native read-only/atomic/versioned assets, adapter lifecycle/custom ownership, actual browser WASM/cache/A-B replacement; remote native platforms remain unverified          |
-| P7 Examples and documentation    | Implemented; local gates passed        | Independent Dart/Flutter consumers, migration guide, package examples, Linux and web builds; Android/iOS runtime and remote Windows/macOS checks remain additional coverage |
-| P8 Candidate publication         | Superseded by owner decision           | Direct stable 0.6.0 selected; no RC was published                                                                                                                           |
-| P9 Stable publication            | In progress                            | Stable manifests, core-first publication, hosted consumer checks and registry verification                                                                                  |
+| Phase                            | State                                  | Delivered evidence or remaining gate                                                                                                                                                                   |
+| -------------------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| P0 Source contracts and baseline | Implemented for confirmed capabilities | Frozen/indexed captures, endpoint matrices, published baseline diff, API inventory below; unverified scopes are rejected or explicitly unknown                                                         |
+| P1 Models and compatibility      | Implemented                            | Typed IDs, source documents, references, diagnostics/provenance, old saved JSON decoding, primitive identifier JSON                                                                                    |
+| P2 Source parsers and formatting | Implemented                            | Scoped metadata, separate embedded citations, exact glossary occurrences, explicit citation labels, raw dates, range/hash validation, safe HTML/tokens                                                 |
+| P3 Raw-response cache            | Implemented                            | Shared client transport, v3 envelope, format/model collision regressions, persistent recovery, no table reset                                                                                          |
+| P4 Endpoints and discovery       | Implemented                            | Search serializers, prose/AJAX search, ordered relations, asbab/usul, categories and online choices                                                                                                    |
+| P5 References and normalization  | Implemented                            | Dated source manifest, candidate-only reproducible refresh, history, schema-2 database, symmetric count/search                                                                                         |
+| P6 Platform upgrades             | Implemented; local runtime verified    | Native read-only/atomic/versioned assets, adapter lifecycle/custom ownership, actual browser WASM/cache/A-B replacement; native Windows/macOS CI passed; Android/iOS device runtime remains unverified |
+| P7 Examples and documentation    | Implemented; local gates passed        | Independent Dart/Flutter consumers, migration guide, package examples, Linux and web builds; remote Windows/macOS checks passed; Android/iOS device runtime remains additional coverage                |
+| P8 Candidate publication         | Superseded by owner decision           | Direct stable 0.6.0 selected; no RC was published                                                                                                                                                      |
+| P9 Stable publication            | Published and verified                 | Both 0.6.0 registry archives and hosted consumers verified; remote package/minimum/browser CI passed                                                                                                   |
 
 <a id="section-3"></a>
 
@@ -219,6 +219,17 @@ Stable manifests use `^0.6.0` for the adapter's hosted core dependency. Prepubli
 
 The owner selected stable 0.6.0 for both packages, authorized a push to main and publication, and left Tawaq adoption for a separate request. Final documentation includes matching English/Arabic core and adapter guides, tables of contents, and corrected offline-test instructions. The earlier RC publication sequence is superseded.
 
-Final stable checks: core analyzer passed with 363 offline tests; adapter analyzer passed with seven tests. Both isolated archive dry runs have zero warnings. The prepublication adapter has one temporary path-override hint; its hosted check must remove that override. English/Arabic guides match in section order, code blocks and API identifiers. Markdown formatting and local links passed. Registry URLs, archive hashes, hosted consumer results and pushed commits will be added after publication. Android/iOS device runtime has not been tested. Remote Windows/macOS CI results are reported only when available.
+Final stable checks: core analyzer passed with 363 offline tests; adapter analyzer passed with seven tests. Both isolated archive dry runs have zero warnings. The prepublication adapter has one temporary path-override hint; its hosted check must remove that override. English/Arabic guides match in section order, code blocks and API identifiers. Markdown formatting and local links passed. Both packages were published in dependency order and downloaded again to verify their registry SHA-256 and archive boundaries. Independent Dart and Flutter consumers resolve hosted packages without overrides. They passed reference lookup, transitive asset loading, verified native storage and cache checks. The hosted Flutter example passed analysis and its widget test.
+
+| Package                                                                              | Published version | Archive SHA-256                                                    |
+| ------------------------------------------------------------------------------------ | ----------------- | ------------------------------------------------------------------ |
+| [dorar_hadith](https://pub.dev/packages/dorar_hadith/versions/0.6.0)                 | 0.6.0             | `8f85f00efcfeb463c374e21e02115fb0af7153587f1dea9737e33e35aea92ae3` |
+| [dorar_hadith_flutter](https://pub.dev/packages/dorar_hadith_flutter/versions/0.6.0) | 0.6.0             | `3da0599301dd1c55aaaf1e14460282b58f6d09ed732de7ed98248408fe057760` |
+
+Release source commit `064c7b5` and CI correction commit `100ffed` were pushed to main on GitHub and the origin mirror. [Remote verification](https://github.com/MoathCodes/dorar_hadith/actions/runs/37504763528) passed on Linux, macOS and Windows, with separate minimum-Dart and browser-build jobs. Generated sources were clean. The initial CI failures came from Windows JSON line-ending conversion, a path-splitting test helper and recursive example lock enforcement. `.gitattributes`, platform-aware snapshot paths and separate adapter/example checks fixed those failures without changing published runtime code.
+
+Pub.dev strips custom HTML anchors from README rendering. Some published 0.6.0 table-of-contents links therefore miss their targets. Main uses generated heading IDs instead, verified against actual pub.dev headings; English and Arabic examples and API content still match. The chosen published versions remain 0.6.0. A later patch is needed to update the registry README links.
+
+Android/iOS device runtime remains untested. Browser CORS and partial narrator coverage remain documented limitations. [Machine-readable publication evidence](DORAR_0_6_0_PUBLICATION.json) contains archive URLs, sizes, hashes and check results.
 
 The [release runbook](../doc/RELEASE_0_6_0.md) and [migration guide](../doc/MIGRATION_0_6_0.md) describe package publication and adoption. Tawaq adoption remains separate.

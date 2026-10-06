@@ -9,18 +9,16 @@ Version 0.6.0 requires Dart 3.13.0 or later. The Flutter adapter requires Flutte
 ## Contents
 
 - [Setup](#setup)
-- [Choose a search method](#search)
-- [Identifiers and discovered choices](#identifiers)
-- [Related hadiths and circumstances](#related)
-- [Explanation text and safe formatting](#formatting)
-- [Speaker attribution](#attribution)
-- [Thematic categories](#categories)
-- [Offline references and upgrades](#references)
-- [Browser setup](#browser)
-- [Cache and errors](#cache)
-- [Development and release](#development)
-
-<a id="setup"></a>
+- [Choose a search method](#choose-a-search-method)
+- [Identifiers and discovered choices](#identifiers-and-discovered-choices)
+- [Related hadiths and circumstances](#related-hadiths-and-circumstances)
+- [Explanation text and safe formatting](#explanation-text-and-safe-formatting)
+- [Speaker attribution](#speaker-attribution)
+- [Thematic categories](#thematic-categories)
+- [Offline references and upgrades](#offline-references-and-upgrades)
+- [Browser setup](#browser-setup)
+- [Cache and errors](#cache-and-errors)
+- [Development and release](#development-and-release)
 
 ## Setup
 
@@ -58,8 +56,6 @@ await DorarHadithFlutter.ensureInitialized();
 
 The adapter loads the core package's assets automatically. You do not need to list them in your app's `pubspec.yaml`. It stores verified reference copies in application support storage and keeps the writable API cache in a separate database.
 
-<a id="search"></a>
-
 ## Choose a search method
 
 | Method                                | Returns                                                                            | Pagination                                          |
@@ -91,8 +87,6 @@ final snippets = await client.searchSharhText(
 final explanation = await client.sharh.getById(snippets.data.first.id);
 ```
 
-<a id="identifiers"></a>
-
 ## Identifiers and discovered choices
 
 Hadith, explanation, book, scholar, narrator-choice and category IDs are separate types. `HadithRecordId('2065')` and `SharhId('2065')` are different identifiers. JSON stores their original string values. Existing methods that accept strings still work.
@@ -122,8 +116,6 @@ final choices = await client.referenceDiscovery.searchNarratorChoices('أبو ه
 // Each ID is a filter choice; compound labels and aliases are not person identities.
 ```
 
-<a id="related"></a>
-
 ## Related hadiths and circumstances
 
 ```dart
@@ -140,8 +132,6 @@ Collection results separate the requested hadith from the related records and ke
 Strict parsing is the default. A failed request, unknown layout or malformed record throws a typed exception. Choose `ParsePolicy.bestEffort` to retain valid records and receive candidate, parsed and skipped counts with bounded warnings. Its related-result source can be null when the requested seed cannot be identified; ambiguous records remain in the result.
 
 Capability states (`advertised`, `notAdvertised`, `unknown`) describe what the source page advertises. They are separate from whether a later request succeeds. Fetching sources or circumstances does not add an advertisement. Each context record keeps its own scholar, verdict and locator.
-
-<a id="formatting"></a>
 
 ## Explanation text and safe formatting
 
@@ -163,8 +153,6 @@ Ranges are half-open UTF-16 offsets in `sourceText`: the start is included, the 
 
 Source strings keep wording, punctuation, diacritics and bidi marks. Legacy plain display removes only a verified leading result number and preserves paragraph boundaries. `removeHtml: false` returns retained source markup. Use `renderDocumentHtml` to embed escaped HTML made from allowed elements. Glossary tooltips use escaped plain definitions; original definition HTML is available separately.
 
-<a id="attribution"></a>
-
 ## Speaker attribution
 
 The source's structural markup can support formatting. A narrator name, grading scholar, quotation mark, CSS color or `قال` alone cannot reliably identify a speaker's exact words.
@@ -180,8 +168,6 @@ final tokens = documentRenderTokens(document, reviewedAttributions: [reviewed]);
 
 Validation checks the document hash, source URI, evidence, reviewer and text range. It rejects stale hashes, ranges outside the text or across a surrogate pair, missing review evidence and conflicting confirmed assignments. Heuristic candidates cannot produce confirmed speaker styling. The review process remains responsible for whether the attribution itself is correct.
 
-<a id="categories"></a>
-
 ## Thematic categories
 
 ```dart
@@ -195,8 +181,6 @@ final page = await client.categories.browse(CategoryBrowseParams(
 ```
 
 Root selectors keep their exact source value, including significant trailing spaces. Leaf IDs are opaque strings. These methods expose observed categories; they do not claim a complete reconstructed hierarchy.
-
-<a id="references"></a>
 
 ## Offline references and upgrades
 
@@ -215,8 +199,6 @@ await migrateReferenceDatabase(inputPath: 'custom-v1.db', outputPath: 'custom-v2
 // Configure your connection to the verified copy. The input remains untouched.
 ```
 
-<a id="browser"></a>
-
 ## Browser setup
 
 Serve compatible `sqlite3.wasm` and `drift_worker.dart.js` at your app's base URL. The [Flutter example](https://github.com/MoathCodes/dorar_hadith/blob/main/dorar_hadith_flutter/example/README.md) explains the setup.
@@ -231,8 +213,6 @@ final client = DorarClient(
 
 `yourHttpClient` is your application's transport. The package does not supply a public proxy. Transport failures stay visible as exceptions.
 
-<a id="cache"></a>
-
 ## Cache and errors
 
 Services store validated raw responses in cache format 3, then parse and render each request locally. Plain text, HTML and document requests can reuse a response without mixing result models. Cache keys include endpoint, host, canonical URI and options that change the response. The stored response keeps its hash, status, content type, encoding, fetch time and final URI when the transport supplies it.
@@ -242,8 +222,6 @@ A corrupt entry is removed and fetched again. Unknown challenge pages are reject
 Defaults are 100 memory entries, 750 SQLite rows and a seven-day lifetime. Explanation and scholar detail responses use 30 days.
 
 `DorarSubrequestException` identifies a failed associated explanation and keeps the original `DorarException` in `cause`. Direct network, timeout, rate-limit, validation, not-found and parser errors keep their types. Call `dispose()` when finished, or use `DorarClient.use` to close clients and databases automatically.
-
-<a id="development"></a>
 
 ## Development and release
 
