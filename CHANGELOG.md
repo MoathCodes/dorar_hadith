@@ -2,16 +2,20 @@
 
 ## Contents
 
-- [0.6.0 (2026-10-06)](#section-1)
-- [0.5.0](#section-2)
-- [0.4.0](#section-3)
-- [0.3.1](#section-4)
-- [0.3.0](#section-5)
-- [0.2.0](#section-6)
-- [0.1.1 - 2025-11-11](#section-7)
-- [0.1.0 - 2025-11-10](#section-8)
+- [0.6.1 (2026-10-06)](#061-2026-10-06)
+- [0.6.0 (2026-10-06)](#060-2026-10-06)
+- [0.5.0](#050)
+- [0.4.0](#040)
+- [0.3.1](#031)
+- [0.3.0](#030)
+- [0.2.0](#020)
+- [0.1.1 - 2025-11-11](#011---2025-11-11)
+- [0.1.0 - 2025-11-10](#010---2025-11-10)
 
-<a id="section-1"></a>
+## 0.6.1 (2026-10-06)
+
+- Fix README and changelog contents links for pub.dev rendering by using generated heading IDs.
+- Keep English and Arabic README content aligned.
 
 ## 0.6.0 (2026-10-06)
 
@@ -67,8 +71,6 @@ Publication checks and platform coverage are recorded in the release guide.
 
 - `CacheService.set()` now enforces the SQLite row cap after each insert.
 
-<a id="section-2"></a>
-
 ## 0.5.0
 
 ### Breaking
@@ -90,8 +92,6 @@ Publication checks and platform coverage are recorded in the release guide.
 
 - `AssetLoader.configure()` is no longer overwritten when the platform default loader registers after an explicit Flutter override.
 
-<a id="section-3"></a>
-
 ## 0.4.0
 
 ### New Features
@@ -111,13 +111,9 @@ Publication checks and platform coverage are recorded in the release guide.
 
 - Updated README (EN/AR) with examples for sharh search, convenience methods, categories, and expanded pagination metadata.
 
-<a id="section-4"></a>
-
 ## 0.3.1
 
 - Fixed a bug with the cache system where the removeHtml parameter doesn't effect the cache
-
-<a id="section-5"></a>
 
 ## 0.3.0
 
@@ -127,8 +123,6 @@ Publication checks and platform coverage are recorded in the release guide.
   - Supports Web using `sqlite3.wasm` (requires `sqlite3.wasm` and `drift_worker.dart.js` in web root).
 - **Improvement**: Enhanced `CacheService` to handle complex objects and metadata efficiently.
 - **Internal**: Refactored database connection logic to support multiple databases (`rawi.db` and `cache.db`) seamlessly across platforms.
-
-<a id="section-6"></a>
 
 ## 0.2.0
 
@@ -154,13 +148,9 @@ Publication checks and platform coverage are recorded in the release guide.
 - Refreshed README (EN/AR) and dartdoc content to explain the new models and
   public API changes.
 
-<a id="section-7"></a>
-
 ## 0.1.1 - 2025-11-11
 
 - Small improvements
-
-<a id="section-8"></a>
 
 ## 0.1.0 - 2025-11-10
 

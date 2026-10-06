@@ -16,9 +16,7 @@ Run `flutter pub get`, `flutter test`, and `flutter run -d linux`. Distributable
 
 ## Contents
 
-- [Web assets](#section-1)
-
-<a id="section-1"></a>
+- [Web assets](#web-assets)
 
 ## Web assets
 

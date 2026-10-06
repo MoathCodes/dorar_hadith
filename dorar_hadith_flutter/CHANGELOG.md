@@ -2,10 +2,14 @@
 
 ## Contents
 
-- [0.6.0 (2026-10-06)](#section-1)
-- [0.5.0](#section-2)
+- [0.6.1 (2026-10-06)](#061-2026-10-06)
+- [0.6.0 (2026-10-06)](#060-2026-10-06)
+- [0.5.0](#050)
 
-<a id="section-1"></a>
+## 0.6.1 (2026-10-06)
+
+- Fix README and changelog contents links for pub.dev rendering by using generated heading IDs.
+- Keep English and Arabic README content aligned.
 
 ## 0.6.0 (2026-10-06)
 
@@ -24,8 +28,6 @@ Publication checks and platform coverage are tracked in the core release record.
 
 - `createFlutterCacheConnectionFactory`: opens `cache.db` in a writable app directory.
 - `ensureInitialized()` now wires `CacheDatabase.configureConnection` alongside `rawi.db`, so API response caching uses the application support directory instead of the process working directory.
-
-<a id="section-2"></a>
 
 ## 0.5.0
 

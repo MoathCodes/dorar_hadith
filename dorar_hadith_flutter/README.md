@@ -15,7 +15,7 @@ Flutter setup for `dorar_hadith`, with verified bundled references, native snaps
 
 ## Setup
 
-Install the adapter. Version 0.6.0 requires Dart 3.13.0 and Flutter 3.47.5 or later.
+Install the adapter. Version 0.6.1 requires Dart 3.13.0 and Flutter 3.47.5 or later.
 
 ```sh
 flutter pub add dorar_hadith_flutter

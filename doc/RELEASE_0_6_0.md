@@ -4,11 +4,9 @@ Both package manifests use `0.6.0`. The Flutter adapter depends on hosted `dorar
 
 ## Contents
 
-- [Verify package behavior](#section-1)
-- [Prepare isolated archives](#section-2)
-- [Publish in dependency order](#section-3)
-
-<a id="section-1"></a>
+- [Verify package behavior](#verify-package-behavior)
+- [Prepare isolated archives](#prepare-isolated-archives)
+- [Publish in dependency order](#publish-in-dependency-order)
 
 ## Verify package behavior
 
@@ -25,8 +23,6 @@ fvm dart run tool/refresh_references.dart /tmp/dorar-reference-candidate
 
 Reference refresh produces candidates, validates hashes and snapshot integrity, and reports source ID/name differences. `--fetch` explicitly recaptures five reference sources. Review candidates before replacing committed assets. Narrator coverage remains partial; the historical baseline is not a complete current site list.
 
-<a id="section-2"></a>
-
 ## Prepare isolated archives
 
 ```sh
@@ -38,8 +34,6 @@ The output contains two independent package layouts with sources, generated file
 Run `dart pub publish --dry-run` in each staged package. Inspect its actual file list, archive size and required assets. Verify asset hashes against the manifest. Test a disposable Dart consumer from an unrelated working directory and a separate Flutter consumer. Temporary local overrides support prepublication checks; remove them for hosted validation.
 
 Publish the adapter from its isolated directory. Core ignore rules intentionally exclude it and also hide it during an in-place nested publish. Use `pub get --no-example` during prepublication staging; check hosted example resolution after both packages exist. Old build files tracked in the repository are excluded from deliverables.
-
-<a id="section-3"></a>
 
 ## Publish in dependency order
 

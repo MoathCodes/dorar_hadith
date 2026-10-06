@@ -4,7 +4,7 @@
 
 A Dart package for Dorar.net hadith search, explanations, related narrations, thematic categories and offline reference choices. The core works without Flutter; Flutter apps use `dorar_hadith_flutter`.
 
-Version 0.6.0 requires Dart 3.13.0 or later. The Flutter adapter requires Flutter 3.47.5 or later. Read the migration guide before upgrading from 0.5.x.
+Version 0.6.1 requires Dart 3.13.0 or later. The Flutter adapter requires Flutter 3.47.5 or later. Read the migration guide before upgrading from 0.5.x.
 
 ## Contents
 

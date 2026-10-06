@@ -4,14 +4,12 @@ This guide applies to stable 0.6.0. It covers the two SDK packages; Tawaq applic
 
 ## Contents
 
-- [Public and behavioral changes](#section-1)
-- [Saved JSON and religious text](#section-2)
-- [Cache upgrade](#section-3)
-- [Native Flutter](#section-4)
-- [Browser](#section-5)
-- [Stable dependency configuration](#section-6)
-
-<a id="section-1"></a>
+- [Public and behavioral changes](#public-and-behavioral-changes)
+- [Saved JSON and religious text](#saved-json-and-religious-text)
+- [Cache upgrade](#cache-upgrade)
+- [Native Flutter](#native-flutter)
+- [Browser](#browser)
+- [Stable dependency configuration](#stable-dependency-configuration)
 
 ## Public and behavioral changes
 
@@ -27,21 +25,15 @@ This guide applies to stable 0.6.0. It covers the two SDK packages; Tawaq applic
 - `metadata.pagination` separates displayed totals from reachable limits. Ordinary site search page 11 is rejected; thematic browsing page 11 is valid. Full quick/prose pages provide hints, not authoritative totals.
 - Current-reference browsing excludes historical scholars while ID lookup still finds them. Historical names remain searchable. Narrator choices remain partially covered and must not be interpreted as canonical person IDs.
 
-<a id="section-2"></a>
-
 ## Saved JSON and religious text
 
 Old hadith/explanation JSON remains readable with new fields absent. Do not rewrite saved strings to match new display formatting or live content. Missing rich structure marks legacy content; a current-detail fetch is a separate consumer decision. New typed IDs serialize to strings, and existing primitive ID keys remain unchanged.
 
 A paragraph, quotation, narrator name, scholar name, or tafsir URL does not establish a speaker. Default documents have no confirmed speaker assignments. Review imported attributions against `sourceUri`, `contentHash`, evidence, reviewer and UTF-16 ranges. Do not compute offsets on normalized Arabic.
 
-<a id="section-3"></a>
-
 ## Cache upgrade
 
 Cache format 3 contains validated raw responses. SQLite tables remain intact; old namespaces are ignored and handled by normal expiry/eviction. Cache output is parsed anew for the requested rendering and policy. No application favorites/history store is migrated or erased.
-
-<a id="section-4"></a>
 
 ## Native Flutter
 
@@ -51,13 +43,9 @@ The initializer uses `rawi-<snapshot>-v2-<hash>.db`, verifying hash, SQLite inte
 
 For custom factories/files, the default contract requires schema 2. Run `migrateReferenceDatabase(inputPath: ..., outputPath: ...)` to create a verified managed copy, then point your factory at it. Existing output is refused, and the input is opened read-only. Custom filenames remain caller-owned and are not refreshed automatically.
 
-<a id="section-5"></a>
-
 ## Browser
 
 Serve compatible `sqlite3.wasm` and `drift_worker.dart.js` at the application base. Reference WebAssembly storage identity includes snapshot version, schema and content hash; cache storage remains separate. Native installation helpers are unavailable on web. Direct Dorar requests were blocked by CORS from the tested localhost browser origin; inject an application-owned proxy `http.Client` through `DorarHttpClient` for online browser access; asset/reference initialization works without contacting Dorar.
-
-<a id="section-6"></a>
 
 ## Stable dependency configuration
 
