@@ -1,0 +1,9 @@
+# Keep source-capture and bundled-reference hashes identical on every platform.
+*.json text eol=lf
+*.dart text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.md text eol=lf
+*.lock text eol=lf
+*.db binary
+*.png binary

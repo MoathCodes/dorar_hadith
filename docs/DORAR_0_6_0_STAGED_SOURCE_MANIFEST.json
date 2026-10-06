@@ -630,8 +630,8 @@
         },
         {
           "path": "example/.gitignore",
-          "bytes": 746,
-          "sha256": "441eaa1de5b3db9fae056e7503567e9f8dd94173e1389c60f76956abf729015a"
+          "bytes": 896,
+          "sha256": "b9f4e2075d2b6708797137161493580a21482db17ae0e91210e3e8ada5dec316"
         },
         {
           "path": "example/.idea/libraries/Dart_SDK.xml",

@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:path/path.dart' as p;
+
 /// Get just the response body from snapshot
 ///
 /// This is the most commonly used function - returns the actual
@@ -45,13 +47,13 @@ int getSnapshotStatusCode(String name) {
 
 /// Check if snapshot exists
 bool hasSnapshot(String name) {
-  final file = File('test/fixtures/api_snapshots/$name.json');
+  final file = File(p.join('test', 'fixtures', 'api_snapshots', '$name.json'));
   return file.existsSync();
 }
 
 /// List all available snapshots
 List<String> listSnapshots() {
-  final dir = Directory('test/fixtures/api_snapshots');
+  final dir = Directory(p.join('test', 'fixtures', 'api_snapshots'));
   if (!dir.existsSync()) {
     return [];
   }
@@ -59,11 +61,8 @@ List<String> listSnapshots() {
   return dir
       .listSync()
       .whereType<File>()
-      .where((file) => file.path.endsWith('.json'))
-      .map((file) {
-        final name = file.path.split('/').last;
-        return name.replaceAll('.json', '');
-      })
+      .where((file) => p.extension(file.path) == '.json')
+      .map((file) => p.basenameWithoutExtension(file.path))
       .toList();
 }
 
@@ -85,7 +84,7 @@ List<String> listSnapshots() {
 /// - body: Response body (HTML or JSON string)
 /// - content_length: Body size in bytes
 Map<String, dynamic> loadSnapshot(String name) {
-  final file = File('test/fixtures/api_snapshots/$name.json');
+  final file = File(p.join('test', 'fixtures', 'api_snapshots', '$name.json'));
   if (!file.existsSync()) {
     throw Exception(
       'Snapshot not found: $name.json\n'
