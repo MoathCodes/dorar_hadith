@@ -1,0 +1,815 @@
+{
+  "version": "0.6.1",
+  "packages": {
+    "dorar_hadith": {
+      "version": "0.6.1",
+      "stagedFiles": [
+        {
+          "path": ".pubignore",
+          "bytes": 441,
+          "sha256": "9362a7968e48ae3a7b2ea6e6d0837d2afe3e24603cf2cfc71ec6294e0dc7b61c"
+        },
+        {
+          "path": "CHANGELOG.md",
+          "bytes": 8344,
+          "sha256": "0638ca2374fc7e5286c622d897df6c60914d917cd0e52bcc4714894d80345002"
+        },
+        {
+          "path": "LICENSE",
+          "bytes": 1056,
+          "sha256": "06dcddbb6908a0c6dd4a9e8ec822eea41d5a460a53089fecccc8a68049e99241"
+        },
+        {
+          "path": "README.md",
+          "bytes": 14509,
+          "sha256": "74655dad326e647ee9a88a4565b73d191075839eb8a13a3a061363a94ae332ca"
+        },
+        {
+          "path": "README_AR.md",
+          "bytes": 20976,
+          "sha256": "df170e6d6602a0bff6bb9c480694ccf0893cfb56b9dfd7367426e7d68fe9e719"
+        },
+        {
+          "path": "analysis_options.yaml",
+          "bytes": 228,
+          "sha256": "8b54a9f9da552edb95a72921158608db7e6f988287feb64a61e5f95b0264b55c"
+        },
+        {
+          "path": "assets/data/book.json",
+          "bytes": 103084,
+          "sha256": "74c009423090f34f6a90f664acd2485acbef4c02567d36faff06f1cafa7461b6"
+        },
+        {
+          "path": "assets/data/mohdith.json",
+          "bytes": 26230,
+          "sha256": "c4773aaffaad325b6d94e91f952729597ded448256672ce26d431bb9b456194f"
+        },
+        {
+          "path": "assets/data/reference_manifest.json",
+          "bytes": 2216,
+          "sha256": "78f2187acbc3336c2756e94d3097ddc5130ce3578a2902b1fa6193e27f509f24"
+        },
+        {
+          "path": "assets/database/rawi.db",
+          "bytes": 1056768,
+          "sha256": "1640cf7d0e282e2709e2ef69c39737ee5ac26f357fead5341fbdcf6841faeb69"
+        },
+        {
+          "path": "build.yaml",
+          "bytes": 525,
+          "sha256": "d793784e9df546cf3f93bca2be6e85286365062e4be33013f4257e9ceeee027a"
+        },
+        {
+          "path": "doc/MIGRATION_0_6_0.md",
+          "bytes": 5857,
+          "sha256": "19c4e3af25fcd4836db90e4768c9f67330235efcf462769a0ec3c30de5b5e250"
+        },
+        {
+          "path": "doc/RELEASE_0_6_0.md",
+          "bytes": 4089,
+          "sha256": "c7a7abf15156936b7f36502250817d1f26080e6d4f315764c200d3293c518733"
+        },
+        {
+          "path": "example/example.dart",
+          "bytes": 22931,
+          "sha256": "198b990d57fe993a9cdb844201667779b6ef47ce361cda846170dd68e2619486"
+        },
+        {
+          "path": "lib/dorar_hadith.dart",
+          "bytes": 4452,
+          "sha256": "c130cab38b0184aacc3bd975d64039dd77926f194bd0bf81201fac6dc3e4df4a"
+        },
+        {
+          "path": "lib/src/client/dorar_client.dart",
+          "bytes": 16607,
+          "sha256": "499ba527f2f808e628e83918b245f06f52e53d130ec32eeb784ffaaf609ed3b3"
+        },
+        {
+          "path": "lib/src/constants/book_reference.dart",
+          "bytes": 3482,
+          "sha256": "ddfb19254a0b0ca148371cdafb6b41aaaf4fb25a1848a29557953e12c8d4298f"
+        },
+        {
+          "path": "lib/src/constants/hadith_degree.dart",
+          "bytes": 1363,
+          "sha256": "e7fec876c72ea3825f1d493ed73615e8bae88293400734f2304a02c467b38fe9"
+        },
+        {
+          "path": "lib/src/constants/hadith_type_filter.dart",
+          "bytes": 259,
+          "sha256": "5144a8c155ce2e06f38e30d939fa6a1720d87ed3a724d29ecbca5394c9b0d7ce"
+        },
+        {
+          "path": "lib/src/constants/mohdith_reference.dart",
+          "bytes": 3620,
+          "sha256": "9a7b8c40729bf70874ffa76c30e455bed4cf6b74b579d8eb65814d635bcd5791"
+        },
+        {
+          "path": "lib/src/constants/rawi_reference.dart",
+          "bytes": 3486,
+          "sha256": "66dea1ad2fb7cb678c957231983da0744377cafa0d5ba616191ded6ea1afb12a"
+        },
+        {
+          "path": "lib/src/constants/search_capabilities.dart",
+          "bytes": 1240,
+          "sha256": "a5dcefb0588ad3fb5fc3ca8ee53e12b2c78788f5b4addc8408a77a957ff3dbf4"
+        },
+        {
+          "path": "lib/src/constants/search_method.dart",
+          "bytes": 839,
+          "sha256": "679745804d7432d62a1c64ec19c5983fabb86a8f6d5c52b7d734803a604bd974"
+        },
+        {
+          "path": "lib/src/constants/search_zone.dart",
+          "bytes": 1107,
+          "sha256": "782a2c9eb751aa0f80af6084bcc9f6e4bd026532146240732f1618f7503f2ee6"
+        },
+        {
+          "path": "lib/src/database/cache_database.dart",
+          "bytes": 2688,
+          "sha256": "66dc6af6e19f96318cfabb6933475618f15bf434cbfa3e41628ba13c5cb4fb10"
+        },
+        {
+          "path": "lib/src/database/cache_database.g.dart",
+          "bytes": 18286,
+          "sha256": "bd71528aedcaffae23453269a7fde8fb1ac7d4d8ec4f27dea5c1eb8c9f6fe56b"
+        },
+        {
+          "path": "lib/src/database/connection/connection_native.dart",
+          "bytes": 2725,
+          "sha256": "6545129ae628818875632e0448cd836b54f3284ef7596b80afd9ae42380101d5"
+        },
+        {
+          "path": "lib/src/database/connection/connection_web.dart",
+          "bytes": 3951,
+          "sha256": "8553d15a62bff011617b7559160315f9a595c955bc36c873cdc40997fb8a4c80"
+        },
+        {
+          "path": "lib/src/database/rawi_database.dart",
+          "bytes": 3435,
+          "sha256": "e0a81599b2dde75b67f7bb7c1263666bfd517ed81d44a77c6901f90b78b900b4"
+        },
+        {
+          "path": "lib/src/database/rawi_database.g.dart",
+          "bytes": 10426,
+          "sha256": "11efbd36596ac330ecbe1695698ace131b19c71f49f54933b2993530f87a5e2a"
+        },
+        {
+          "path": "lib/src/database/reference_migration.dart",
+          "bytes": 106,
+          "sha256": "e871eb89b70ec6bd5b36a1ffd98a17ba80f13ae4fe05667622be3f57aa433afd"
+        },
+        {
+          "path": "lib/src/database/reference_migration_native.dart",
+          "bytes": 2051,
+          "sha256": "b796064d91596e03f1ca250087dccd3b5212931bda705c8838e822e9c9e8f9ee"
+        },
+        {
+          "path": "lib/src/database/reference_migration_web.dart",
+          "bytes": 311,
+          "sha256": "16d10f3e0e861c19f4ad942d67d03b52e7e6d2623dda4cffd931e62efd7d23f5"
+        },
+        {
+          "path": "lib/src/http/cached_transport.dart",
+          "bytes": 3684,
+          "sha256": "8bde5011313c0925402d577620c4077e02dacf253fd002baf37163468c8e3efa"
+        },
+        {
+          "path": "lib/src/http/endpoints.dart",
+          "bytes": 5461,
+          "sha256": "beec891b9d64639830c8c0cdec2a13a18758ce6b14c1c4a883e8b90e53e9f1f2"
+        },
+        {
+          "path": "lib/src/http/http_client.dart",
+          "bytes": 7436,
+          "sha256": "95a4cf267ac57acda40e4eba46ed574e931ed78818124a64fefe1857f343ade0"
+        },
+        {
+          "path": "lib/src/http/query_serializer.dart",
+          "bytes": 7634,
+          "sha256": "24a5da084d0b0a01ef224c9279da3adc10a44893156d0bf1b2c05ee4b2b9030d"
+        },
+        {
+          "path": "lib/src/models/api_response.dart",
+          "bytes": 740,
+          "sha256": "71b06e1a2515360dd801b1ed35e8c7b831d8df158ef7878a61c82e4e63d7b743"
+        },
+        {
+          "path": "lib/src/models/api_response.freezed.dart",
+          "bytes": 9557,
+          "sha256": "ebb4251175e350d522cca74afde3df2aed37289c13716fb9160c0b52c8395965"
+        },
+        {
+          "path": "lib/src/models/api_response.g.dart",
+          "bytes": 719,
+          "sha256": "fca805f7dd1bc627de57a8d9af1db4168328608f137f1809f56926d8157b88b3"
+        },
+        {
+          "path": "lib/src/models/book.dart",
+          "bytes": 813,
+          "sha256": "b4f2763841fd47b81a6bfb25a32fad77ed0f5946410d9056a6581242192648fd"
+        },
+        {
+          "path": "lib/src/models/book.freezed.dart",
+          "bytes": 12688,
+          "sha256": "bd2fde6efe9aeb5d88e48283ad8fafdd508923dcf3e64304594662fe492a00d8"
+        },
+        {
+          "path": "lib/src/models/book.g.dart",
+          "bytes": 1079,
+          "sha256": "439d21b1d9272a64dd29bdd343c928bab78b9726b9a18dc527a6394c66b58ef0"
+        },
+        {
+          "path": "lib/src/models/book_item.dart",
+          "bytes": 749,
+          "sha256": "aa566c982961543ba4497edbd55d59ee31cc30441a1598a1d0b191fc0c3d1139"
+        },
+        {
+          "path": "lib/src/models/book_item.freezed.dart",
+          "bytes": 10270,
+          "sha256": "a5f129fdc76a63bdc18b28286b46b1297d702847a894675dd0965ab8655327b5"
+        },
+        {
+          "path": "lib/src/models/book_item.g.dart",
+          "bytes": 830,
+          "sha256": "104f2e6c32dcf390895f2e65f636d17caf95048ccf06e018904b1d61c29e6f86"
+        },
+        {
+          "path": "lib/src/models/cache_entry.dart",
+          "bytes": 642,
+          "sha256": "3cbbfd08124b90024614e3eff7ee0808654b16ae00c0aeaa5c7935b5865d71e7"
+        },
+        {
+          "path": "lib/src/models/cache_entry.freezed.dart",
+          "bytes": 10283,
+          "sha256": "c7dd304130d2d6d611a8e0749bc8a778ba9d32d75cee649d8114347bf50317b7"
+        },
+        {
+          "path": "lib/src/models/cache_entry.g.dart",
+          "bytes": 850,
+          "sha256": "c702fd55cd9bac3178a40b501d3d3d1224e184e91d5960a856c432791cfb92a9"
+        },
+        {
+          "path": "lib/src/models/discovery.dart",
+          "bytes": 1936,
+          "sha256": "55f5a29d11c148ed2824bbe8bf960d7f8dd87d3aa1289b1edc3a020ce7fa5790"
+        },
+        {
+          "path": "lib/src/models/discovery.g.dart",
+          "bytes": 1354,
+          "sha256": "869231a2397385e840b9c63b6183fb0cf32fc4257d09714d1a71359b837fe435"
+        },
+        {
+          "path": "lib/src/models/hadith.dart",
+          "bytes": 3288,
+          "sha256": "c11fb855b4cdf489988dc33df1db9e164206550d03534f328946c5aa6ef9d56b"
+        },
+        {
+          "path": "lib/src/models/hadith.freezed.dart",
+          "bytes": 53359,
+          "sha256": "815dcdfd515a6eb79698ad35ac0cc46a16d182da951839041f99e56b867ecce1"
+        },
+        {
+          "path": "lib/src/models/hadith.g.dart",
+          "bytes": 5490,
+          "sha256": "87b38de8e99db511b6567fb209c3b1a18a89873620d64ff234e2684c96b04ce6"
+        },
+        {
+          "path": "lib/src/models/hadith_category.dart",
+          "bytes": 718,
+          "sha256": "2a1ccdd87f7c6e6a0a838a8e4c28cb42dfac31c83b58469598c6c49e2ff61492"
+        },
+        {
+          "path": "lib/src/models/hadith_category.freezed.dart",
+          "bytes": 8392,
+          "sha256": "48bf662c79d3606379f30c6b1a035caec5df38dd464e0b9a7d1c1a7d1c6cad42"
+        },
+        {
+          "path": "lib/src/models/hadith_category.g.dart",
+          "bytes": 549,
+          "sha256": "19b51d7d63b78ab72c3b73687d66533be2b6980fd679b01c33e8ea0d43e09db3"
+        },
+        {
+          "path": "lib/src/models/identifiers.dart",
+          "bytes": 2796,
+          "sha256": "5349fc26ffc1914283fe7fb0cfcb884be4e2be09e2e5f7e934afa8be326642d1"
+        },
+        {
+          "path": "lib/src/models/mohdith.dart",
+          "bytes": 573,
+          "sha256": "ff0c55e2dbeaf3bd6cc8f7dc18a8adbb90af8bfc486b52174c06bd85963739ad"
+        },
+        {
+          "path": "lib/src/models/mohdith.freezed.dart",
+          "bytes": 9044,
+          "sha256": "abb30ea7ca803acf3c7a84a8391359ef11b8820b539daae2c3a0041475fb3c02"
+        },
+        {
+          "path": "lib/src/models/mohdith.g.dart",
+          "bytes": 637,
+          "sha256": "41ebdf9c6d63a957c4d5864d083ed8a1bd47d7f1bcbf3c351f452eac670e109f"
+        },
+        {
+          "path": "lib/src/models/mohdith_item.dart",
+          "bytes": 777,
+          "sha256": "c77f99c206305c13ca3cb518eff82b53bad1d6de46bc26410af636553a1dfe4e"
+        },
+        {
+          "path": "lib/src/models/mohdith_item.freezed.dart",
+          "bytes": 10462,
+          "sha256": "62b679461836c1f2f0de72ed52ec25999f8d19635b87f21dbac6953a0837aebd"
+        },
+        {
+          "path": "lib/src/models/mohdith_item.g.dart",
+          "bytes": 872,
+          "sha256": "4c7f7fa80a59d74f04b12b971c7d5c2e05770bcc1c1862745a9327763e0d13a0"
+        },
+        {
+          "path": "lib/src/models/rawi_item.dart",
+          "bytes": 1279,
+          "sha256": "27500771efc5bb5bc5829cef91fb5bc017793517b182f7e78f30f35e73e2886e"
+        },
+        {
+          "path": "lib/src/models/rawi_item.freezed.dart",
+          "bytes": 8230,
+          "sha256": "edb8c9328594ed2b23a73ef772f03bf58d7c30fa1457baf0367fa4cd5fa7db2e"
+        },
+        {
+          "path": "lib/src/models/rawi_item.g.dart",
+          "bytes": 520,
+          "sha256": "f5f6cee8bb089467aae928be75f2e19da5f861c7c70ffc8d6b87d929e86895fd"
+        },
+        {
+          "path": "lib/src/models/reference_item.dart",
+          "bytes": 712,
+          "sha256": "1d1e34f148398b7cf9be63a74a42f5e8162e2a976807399f19d027c8d14e5200"
+        },
+        {
+          "path": "lib/src/models/reference_manifest.dart",
+          "bytes": 2169,
+          "sha256": "9577eb6aa4917768c5fd4ac0ca8ba645f2c2d8c225d5e3ec89bd174f63c730d9"
+        },
+        {
+          "path": "lib/src/models/related_content.dart",
+          "bytes": 2543,
+          "sha256": "875f82ea9751e04b3ddacee7982a72b8a8960d06b8d91f46062e57014c11693d"
+        },
+        {
+          "path": "lib/src/models/related_content.g.dart",
+          "bytes": 3134,
+          "sha256": "122c2e2075bac8caf74957746d6569698f9812ddb8cb4b250d8c71e69ad00a41"
+        },
+        {
+          "path": "lib/src/models/render_token.dart",
+          "bytes": 2843,
+          "sha256": "f2657ce5549e9ea8ccd0951ea1d65a634140a0edce10a0f8de3a2ffa4b59375f"
+        },
+        {
+          "path": "lib/src/models/result_details.dart",
+          "bytes": 4045,
+          "sha256": "feb59ed836b854b551444f226b462b2800816f99e8e9f465d4949c790ecff95b"
+        },
+        {
+          "path": "lib/src/models/result_details.g.dart",
+          "bytes": 5731,
+          "sha256": "d9aed5d4eced4d652c9ac1d3a318c43558f9578e0c66f10b7c5113a7aea405a1"
+        },
+        {
+          "path": "lib/src/models/search_metadata.dart",
+          "bytes": 1724,
+          "sha256": "2f18e784c1e1459d4bf25bebef3e52db1a2e8cf5eb5663e0f15078cc8c5e328e"
+        },
+        {
+          "path": "lib/src/models/search_metadata.freezed.dart",
+          "bytes": 24017,
+          "sha256": "ed9b9af9f0168dd817f8d73c819abe5f77e8692d0860984d2c32f5cdfc49378c"
+        },
+        {
+          "path": "lib/src/models/search_metadata.g.dart",
+          "bytes": 2775,
+          "sha256": "a3bedc9ea3c732c2658bb5a5f104be1e8d5fa12cb0545cbcdf2c5b7784de61e0"
+        },
+        {
+          "path": "lib/src/models/search_params.dart",
+          "bytes": 2432,
+          "sha256": "afb600dc1948cb70d0b538511572639e7eb8db1990636516912ad365e91635ec"
+        },
+        {
+          "path": "lib/src/models/search_params.freezed.dart",
+          "bytes": 22779,
+          "sha256": "b5b83e43d4068bd22ee0eb3f1aaafb89cdedc36eb7b7d54495d3c5aed5c18f7c"
+        },
+        {
+          "path": "lib/src/models/sharh.dart",
+          "bytes": 1638,
+          "sha256": "8680e1404a486bb6fc6e371eea74c4d4cc5111add40bd8653bd55d16ca18d4ba"
+        },
+        {
+          "path": "lib/src/models/sharh.freezed.dart",
+          "bytes": 15753,
+          "sha256": "0192218249803ff5f60fcf9f00d3acbc164ac577e7de091a7c119d170a594296"
+        },
+        {
+          "path": "lib/src/models/sharh.g.dart",
+          "bytes": 1611,
+          "sha256": "97246e77b55577eb6012e2d9374f9f76d91959a010136858146f660106d5b6be"
+        },
+        {
+          "path": "lib/src/models/sharh_metadata.dart",
+          "bytes": 644,
+          "sha256": "ccc3f7db84b60e904c63dfdd1522dab77e13d6efbdd0501a9e54ccded1106c0b"
+        },
+        {
+          "path": "lib/src/models/sharh_metadata.freezed.dart",
+          "bytes": 9402,
+          "sha256": "56eb7116d72d4b92c331e8f53bd846d51bf570252998d72d6e4f0d12bf120fab"
+        },
+        {
+          "path": "lib/src/models/sharh_metadata.g.dart",
+          "bytes": 699,
+          "sha256": "ad3e2371f644536314bbdc42449474e0f261a89144f53eefbd930ae9a4511c05"
+        },
+        {
+          "path": "lib/src/models/source_content.dart",
+          "bytes": 14470,
+          "sha256": "e71c46b3daf1ece548b4059b6192df7006e06b23f20311cf5794db209fea898d"
+        },
+        {
+          "path": "lib/src/models/source_content.g.dart",
+          "bytes": 10890,
+          "sha256": "94a46a359d60d406b59c354c5217aa3e710e0519e7169800ce06f67c428fe7aa"
+        },
+        {
+          "path": "lib/src/models/usul_hadith.dart",
+          "bytes": 2028,
+          "sha256": "80938c91737154a435356aadd0ad95ca9b23b8ff9892e5a6b840371aee49f26b"
+        },
+        {
+          "path": "lib/src/models/usul_hadith.freezed.dart",
+          "bytes": 20603,
+          "sha256": "798015618d21acfcd343f3844ef5b0a219d240348e2ccc33ffe63403a5826f08"
+        },
+        {
+          "path": "lib/src/models/usul_hadith.g.dart",
+          "bytes": 1245,
+          "sha256": "df393b2f2f7434779c3d35544e5a846062306617caa27b7ab1bcd6de566fa4a4"
+        },
+        {
+          "path": "lib/src/parsers/book_parser.dart",
+          "bytes": 2846,
+          "sha256": "4672c2df111329b4b13f9cc32b0286f5c1522e6ed32e867174527faa83f82799"
+        },
+        {
+          "path": "lib/src/parsers/collection_parser.dart",
+          "bytes": 1611,
+          "sha256": "9aa90e982c53ad7ee4f555ded0c5ade936e7f4d229810b1719d74c1add51cfdf"
+        },
+        {
+          "path": "lib/src/parsers/document_parser.dart",
+          "bytes": 7749,
+          "sha256": "6f09f63811f7064ef4ab9434ff6100731ec0c78cc05bc35bcff9375f5bf2deaf"
+        },
+        {
+          "path": "lib/src/parsers/hadith_parser.dart",
+          "bytes": 8427,
+          "sha256": "a7568d2a7f8fa6709c9038ad81cc79fc35c30b2fa787a6c5ddd8a7fae119fe11"
+        },
+        {
+          "path": "lib/src/parsers/html_helper.dart",
+          "bytes": 3008,
+          "sha256": "8836f978daf5d617d0b6ca457a42a71de8a2a061a15cb4a0c128fed9b0eb5fc4"
+        },
+        {
+          "path": "lib/src/parsers/mohdith_parser.dart",
+          "bytes": 2085,
+          "sha256": "b8327c741ec7c0bd1fa9420db46364b9a1d08d1d7f47e413b632ba3947a7bc2c"
+        },
+        {
+          "path": "lib/src/parsers/record_parser.dart",
+          "bytes": 5052,
+          "sha256": "3205257b252bbc920c5f29e7c9e8a438179ec916d3c1ff63256ddb2bc03e902c"
+        },
+        {
+          "path": "lib/src/parsers/sharh_parser.dart",
+          "bytes": 7243,
+          "sha256": "ed73d1d91f37866566a3fd88f7fe00084914e47779bcb9eebc1cf57eb05802f4"
+        },
+        {
+          "path": "lib/src/parsers/usul_hadith_parser.dart",
+          "bytes": 2663,
+          "sha256": "c782ea783f9ff737efc4d219517c60e9626cd59ff480a3bbc4b6996308e5e80d"
+        },
+        {
+          "path": "lib/src/services/book_reference_service.dart",
+          "bytes": 3972,
+          "sha256": "2d7299d2e1ff6d8f2878d95ab9d056530c1f98cb33c2016f4528ee060ac22746"
+        },
+        {
+          "path": "lib/src/services/book_service.dart",
+          "bytes": 3297,
+          "sha256": "2dd3d79c662fbbe1f39e7f2e11b991411a7fa1c091a99a3a4a27122616bddaf3"
+        },
+        {
+          "path": "lib/src/services/cache_service.dart",
+          "bytes": 8428,
+          "sha256": "28ee5983d9c97acaa955e54b332d82b5fae360e05358efab4693aac9a44aa49f"
+        },
+        {
+          "path": "lib/src/services/category_service.dart",
+          "bytes": 5105,
+          "sha256": "f75fa7f0b8bfff675d8c4c7fd610cb00ae67bca9354775fa243b23e4c8d8d64d"
+        },
+        {
+          "path": "lib/src/services/hadith_service.dart",
+          "bytes": 17331,
+          "sha256": "e2185bfaff91768b9b8a6cd49c5aec5d37036dd606c8204e8ef9cc39279278c3"
+        },
+        {
+          "path": "lib/src/services/mohdith_reference_service.dart",
+          "bytes": 4351,
+          "sha256": "5a7025ca8c4d96efdc40665a80ef11389efbce5655ee95e5e903abb2a1f8aab5"
+        },
+        {
+          "path": "lib/src/services/mohdith_service.dart",
+          "bytes": 2878,
+          "sha256": "d036b1c754884ddd84d25417ea496da4df3d9ce1601c222f411ffc16cfe9f398"
+        },
+        {
+          "path": "lib/src/services/rawi_reference_service.dart",
+          "bytes": 1904,
+          "sha256": "832fac04653a573abb219a1d0b86f16791d347d86ee82c8021df90e2e85ce012"
+        },
+        {
+          "path": "lib/src/services/reference_discovery_service.dart",
+          "bytes": 3304,
+          "sha256": "bdb2a8d340b073f993f820e9b24a025caa1b3a9fc3756c8cf338b93a95faa3f7"
+        },
+        {
+          "path": "lib/src/services/sharh_service.dart",
+          "bytes": 9321,
+          "sha256": "b46d8f54dd3a460d7423170632c1c1dbd4e8b521c59b5533d87043b6120ea90a"
+        },
+        {
+          "path": "lib/src/utils/arabic_search.dart",
+          "bytes": 3505,
+          "sha256": "fbc993b90779f89a1d5ff6cf244a5221abcf8f39510b8dded8f9221fb07dd8d6"
+        },
+        {
+          "path": "lib/src/utils/asset_loader/asset_loader.dart",
+          "bytes": 843,
+          "sha256": "b2ca1f0d8c713a301df55bfe0495884d8b227ea3d8cca6b9ec1cefc5cec05a9f"
+        },
+        {
+          "path": "lib/src/utils/asset_loader/asset_loader_base.dart",
+          "bytes": 2633,
+          "sha256": "e305b408a1b83cf1b6e227a62db725b64e19542556962ad45f1c93386ed544c8"
+        },
+        {
+          "path": "lib/src/utils/asset_loader/asset_loader_io.dart",
+          "bytes": 2026,
+          "sha256": "bb3b402566cc2af4d0eeea89b4b213ec1c61d8b633efb0af8461563d4f28a672"
+        },
+        {
+          "path": "lib/src/utils/asset_loader/asset_loader_web.dart",
+          "bytes": 1695,
+          "sha256": "4ae6169cb747d7f70df5b5aa38227a7a7e1770b0af3143f11173ff99b171527d"
+        },
+        {
+          "path": "lib/src/utils/exceptions.dart",
+          "bytes": 5332,
+          "sha256": "45acff4ba94cef0191c3549be538733dda40377d081109acd2b4d652fa904a02"
+        },
+        {
+          "path": "lib/src/utils/html_stripper.dart",
+          "bytes": 6928,
+          "sha256": "1ca06d309eb584488af45521c7108f3132b4bed635c340579741247f60226d9b"
+        },
+        {
+          "path": "lib/src/utils/validators.dart",
+          "bytes": 6577,
+          "sha256": "7468f18341c83b442a30b1a5225d2177d91c424e170fcf49f189f57e10a667aa"
+        },
+        {
+          "path": "pubspec.yaml",
+          "bytes": 1318,
+          "sha256": "1b91e1de5549832b976052623cb169c46d96a6d157db727046709c92990146e7"
+        }
+      ]
+    },
+    "dorar_hadith_flutter": {
+      "version": "0.6.1",
+      "stagedFiles": [
+        {
+          "path": ".pubignore",
+          "bytes": 454,
+          "sha256": "782ecdb275d09b2e456ec62fa12f9ed2c0f9d68e4b43c51e74744707f39d0c18"
+        },
+        {
+          "path": "CHANGELOG.md",
+          "bytes": 1750,
+          "sha256": "853585a3e301b91406934afb33b8d382bace6f02e7e717ffda8dce4b67112db9"
+        },
+        {
+          "path": "LICENSE",
+          "bytes": 1056,
+          "sha256": "06dcddbb6908a0c6dd4a9e8ec822eea41d5a460a53089fecccc8a68049e99241"
+        },
+        {
+          "path": "README.md",
+          "bytes": 4208,
+          "sha256": "3ce676cb47f271a495fdec0fa7a5912bda5d9a531129fffe005afd8e5c44f127"
+        },
+        {
+          "path": "README_AR.md",
+          "bytes": 6089,
+          "sha256": "fdc7e3186f0a06bf62f426a869779688444e0be379787c650c06436086b83b7c"
+        },
+        {
+          "path": "analysis_options.yaml",
+          "bytes": 80,
+          "sha256": "88a05fea8acb9db6d976dc273cd08a80275f43044479b561a7c1374c653d96a4"
+        },
+        {
+          "path": "example/.gitignore",
+          "bytes": 896,
+          "sha256": "b9f4e2075d2b6708797137161493580a21482db17ae0e91210e3e8ada5dec316"
+        },
+        {
+          "path": "example/.idea/libraries/Dart_SDK.xml",
+          "bytes": 1139,
+          "sha256": "cbc672e4dff862d6f6c2ecf3c42948c16bbed9874544172f568ad14f7a4f8406"
+        },
+        {
+          "path": "example/.idea/libraries/KotlinJavaRuntime.xml",
+          "bytes": 599,
+          "sha256": "82dff6dd065164518cd13ff2b677527601ef22bd9fd7cc4e607c38a2412e6cf9"
+        },
+        {
+          "path": "example/.idea/modules.xml",
+          "bytes": 408,
+          "sha256": "43ea9b09c6862c3a508e912337959a9fe6728f1ac15bbacad196b39625328b72"
+        },
+        {
+          "path": "example/.idea/runConfigurations/main_dart.xml",
+          "bytes": 271,
+          "sha256": "0b2227c29b468c49f41b8b3138433e0de33d83dbe13b4002c069800e1d9b9322"
+        },
+        {
+          "path": "example/.idea/workspace.xml",
+          "bytes": 1517,
+          "sha256": "1f4bdf93fa0c89b32a2f788bcbd55363a23cd0db9b4c05a905247ac270c7061b"
+        },
+        {
+          "path": "example/README.md",
+          "bytes": 2292,
+          "sha256": "293ce859d7870d05c522e56a525885bcd38586a3098e19a49e116fa82df0e5ae"
+        },
+        {
+          "path": "example/analysis_options.yaml",
+          "bytes": 1485,
+          "sha256": "7dde1fcd6bda804976cfda4d6586548b1d1fedac4e07a398cbf0bce8ce9a92d9"
+        },
+        {
+          "path": "example/dorar_example.iml",
+          "bytes": 842,
+          "sha256": "078556ebd66f23eeb43b60557b1ed3d3e0b1a2a6297ccb71ad3b779316c7880d"
+        },
+        {
+          "path": "example/lib/main.dart",
+          "bytes": 5608,
+          "sha256": "c68f0dae1d90211089f73f5f712513b0371112688e22822aa1105987b3145e61"
+        },
+        {
+          "path": "example/linux/.gitignore",
+          "bytes": 18,
+          "sha256": "5ded4f1a9d10d34bf6ee5beb0711d88ee2ef07b0f07ace9ed77935a246e8eb82"
+        },
+        {
+          "path": "example/linux/CMakeLists.txt",
+          "bytes": 4765,
+          "sha256": "4fc23974e97efa4d7c474b19bb8a4646871756b81aee1cb211bcead40c831dd9"
+        },
+        {
+          "path": "example/linux/flutter/CMakeLists.txt",
+          "bytes": 2815,
+          "sha256": "787189e2623313cfee590a0b553338eb9fc68b3af922ddd77c5d39c75f989aeb"
+        },
+        {
+          "path": "example/linux/flutter/generated_plugin_registrant.cc",
+          "bytes": 161,
+          "sha256": "7861b227b10a10cc1d7643f82a246b7db35b503f2d9ff1d3c906136e6c260dce"
+        },
+        {
+          "path": "example/linux/flutter/generated_plugin_registrant.h",
+          "bytes": 303,
+          "sha256": "00f93bb5b1faefdede8f6065df327522900fb0b8efee86bacf424fd947ed14bb"
+        },
+        {
+          "path": "example/linux/flutter/generated_plugins.cmake",
+          "bytes": 745,
+          "sha256": "e03f251c12778bd5a5d1ae831ce0c8d057bcd94d239a1e4e0f7222075fa0bec7"
+        },
+        {
+          "path": "example/linux/runner/CMakeLists.txt",
+          "bytes": 974,
+          "sha256": "8cdcfd911e770fd7d511c97c7bce6559486a815352a47c953f7ef632e236d2cc"
+        },
+        {
+          "path": "example/linux/runner/main.cc",
+          "bytes": 180,
+          "sha256": "ea23f7cdf74091d63bba29ef60486370b766157b848f0cfe62bd8b1c1695a0c1"
+        },
+        {
+          "path": "example/linux/runner/my_application.cc",
+          "bytes": 5465,
+          "sha256": "6f5864ddd0ae011b82bfb6db70013d058528d1973a340e723a092bfad026d300"
+        },
+        {
+          "path": "example/linux/runner/my_application.h",
+          "bytes": 451,
+          "sha256": "a4218d7ac0db8a9a6716daf216b2d4fc6bdc7ac647e3183078b2c962ebdfcf70"
+        },
+        {
+          "path": "example/pubspec.yaml",
+          "bytes": 371,
+          "sha256": "9f5f6f48c6aba7a5c8ff3e48d83b4a5e7d69b8a2eef131143f99d8387731bace"
+        },
+        {
+          "path": "example/test/widget_test.dart",
+          "bytes": 416,
+          "sha256": "98da8e12d2db23febe165478fa2bcd6f4bbbb24af607dd944854425679a1c603"
+        },
+        {
+          "path": "example/web/favicon.png",
+          "bytes": 917,
+          "sha256": "7ab2525f4b86b65d3e4c70358a17e5a1aaf6f437f99cbcc046dad73d59bb9015"
+        },
+        {
+          "path": "example/web/icons/Icon-192.png",
+          "bytes": 5292,
+          "sha256": "3dce99077602f70421c1c6b2a240bc9b83d64d86681d45f2154143310c980be3"
+        },
+        {
+          "path": "example/web/icons/Icon-512.png",
+          "bytes": 8252,
+          "sha256": "baccb205ae45f0b421be1657259b4943ac40c95094ab877f3bcbe12cd544dcbe"
+        },
+        {
+          "path": "example/web/icons/Icon-maskable-192.png",
+          "bytes": 5594,
+          "sha256": "d2c842e22a9f4ec9d996b23373a905c88d9a203b220c5c151885ad621f974b5c"
+        },
+        {
+          "path": "example/web/icons/Icon-maskable-512.png",
+          "bytes": 20998,
+          "sha256": "6aee06cdcab6b2aef74b1734c4778f4421d2da100b0ff9e52b21b55240202929"
+        },
+        {
+          "path": "example/web/index.html",
+          "bytes": 1531,
+          "sha256": "8a12b1a9bd71aef9b9baf2416d59467afbe9a780d544504d058ad61fb9ebe7fa"
+        },
+        {
+          "path": "example/web/manifest.json",
+          "bytes": 922,
+          "sha256": "ea5da9d68f654165def922a0a9e108c16205820c18ee39e73d6f554ac5ba9c56"
+        },
+        {
+          "path": "lib/dorar_hadith_flutter.dart",
+          "bytes": 4711,
+          "sha256": "35695a73e70bb034b1087466f7f9f364aded76d07b28d2f7c9d66f6c748521ac"
+        },
+        {
+          "path": "lib/src/adapter_exception.dart",
+          "bytes": 450,
+          "sha256": "63c1c02acde600bf60348691b178d24b5fc95f576683af56ab45084c75c95dd6"
+        },
+        {
+          "path": "lib/src/asset_loader_flutter.dart",
+          "bytes": 1341,
+          "sha256": "b4cae9c539d2d7c9ceeaf983a364769826f1070d5db892733938db756478600d"
+        },
+        {
+          "path": "lib/src/connection_flutter.dart",
+          "bytes": 104,
+          "sha256": "069bb495300578d37d4f3dc276e3922db2d98203b296be48506d0f160a35678a"
+        },
+        {
+          "path": "lib/src/connection_flutter_native.dart",
+          "bytes": 5811,
+          "sha256": "081cb518428645a61ee60aa0448d3879a09934592dca426215a8b756387e9de5"
+        },
+        {
+          "path": "lib/src/connection_flutter_web.dart",
+          "bytes": 1074,
+          "sha256": "dfae5054805e80f382277320546f8e0974d28d1785a2c868f03e4d9814bd5b4e"
+        },
+        {
+          "path": "pubspec.yaml",
+          "bytes": 778,
+          "sha256": "3370e6853b4d56fc971b9df97cf98f861498161d9577de8531fcc2733b2b2d3c"
+        }
+      ]
+    }
+  }
+}

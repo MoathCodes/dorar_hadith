@@ -1,0 +1,41 @@
+{
+  "version": "0.6.1",
+  "releaseSourceCommit": "892a6cf622965747320808627b6ca9e377e03adc",
+  "previousVersion": "0.6.0",
+  "change": "Documentation-only patch: use generated heading IDs for pub.dev-compatible README, changelog and guide contents links. Align bilingual version descriptions and hosted dependency metadata.",
+  "packages": {
+    "dorar_hadith": {
+      "version": "0.6.1",
+      "packageUrl": "https://pub.dev/packages/dorar_hadith/versions/0.6.1",
+      "archiveUrl": "https://pub.dev/api/archives/dorar_hadith-0.6.1.tar.gz",
+      "archiveSha256": "ecd54bd0aa048886fcb204149eb99fa8f2301769fbd1ddc7177302c4ee3601c7",
+      "archiveBytes": 365947,
+      "archiveFiles": 117
+    },
+    "dorar_hadith_flutter": {
+      "version": "0.6.1",
+      "packageUrl": "https://pub.dev/packages/dorar_hadith_flutter/versions/0.6.1",
+      "archiveUrl": "https://pub.dev/api/archives/dorar_hadith_flutter-0.6.1.tar.gz",
+      "archiveSha256": "2b2e8221187273066f1ce58c383357e87305f7b2aaf2501c9271fe10d0f677a6",
+      "archiveBytes": 57702,
+      "archiveFiles": 33,
+      "coreDependency": "^0.6.1"
+    }
+  },
+  "checks": {
+    "runtimeSourceAndAssets": "byte-identical to the verified published 0.6.0 packages",
+    "bilingualReadmes": "matching code blocks and API identifiers; translated section content aligned",
+    "archiveDryRuns": "zero warnings for both packages; adapter resolves hosted core ^0.6.1 without overrides",
+    "archiveIntegrity": "registry SHA-256 and every archive file match prepared sources; no tests, builds or development overrides",
+    "publishedContentsLinks": {
+      "coreReadme": 11,
+      "coreChangelog": 9,
+      "adapterReadme": 6,
+      "adapterChangelog": 3
+    },
+    "hostedDartConsumer": "passed: hosted 0.6.1, 774 books, 208 current scholars, 11479 narrator choices and normalized Arabic lookup",
+    "hostedFlutterConsumer": "passed: both hosted 0.6.1 packages without overrides, transitive assets, versioned native reference installation, normalized narrator lookup, persistent API cache and unrelated-file preservation",
+    "remoteCI": "passed: https://github.com/MoathCodes/dorar_hadith/actions/runs/37506064866 (Linux, macOS, Windows, minimum Dart, generated sources and browser build)"
+  },
+  "releaseTag": "v0.6.1"
+}

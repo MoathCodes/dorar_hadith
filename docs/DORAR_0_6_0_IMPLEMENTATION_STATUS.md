@@ -1,6 +1,6 @@
 # Dorar 0.6.0 implementation status and verification record
 
-Date: 2026-10-06. Prepared package versions: **dorar_hadith 0.6.0** and **dorar_hadith_flutter 0.6.0**.
+Date: 2026-10-06. Implementation release versions: **dorar_hadith 0.6.0** and **dorar_hadith_flutter 0.6.0**.
 
 This record describes implemented SDK behavior and verification evidence. The owner selected direct stable 0.6.0 publication after the local checks, replacing the earlier RC sequence. Both stable versions are published and verified below.
 
@@ -228,7 +228,7 @@ Final stable checks: core analyzer passed with 363 offline tests; adapter analyz
 
 Release source commit `064c7b5` and CI correction commit `100ffed` were pushed to main on GitHub and the origin mirror. [Remote verification](https://github.com/MoathCodes/dorar_hadith/actions/runs/37504763528) passed on Linux, macOS and Windows, with separate minimum-Dart and browser-build jobs. Generated sources were clean. The initial CI failures came from Windows JSON line-ending conversion, a path-splitting test helper and recursive example lock enforcement. `.gitattributes`, platform-aware snapshot paths and separate adapter/example checks fixed those failures without changing published runtime code.
 
-Pub.dev strips custom HTML anchors from README rendering. Some published 0.6.0 table-of-contents links therefore miss their targets. Main uses generated heading IDs instead, verified against actual pub.dev headings; English and Arabic examples and API content still match. The chosen published versions remain 0.6.0. A later patch is needed to update the registry README links.
+Pub.dev strips custom HTML anchors from README rendering. Some published 0.6.0 table-of-contents links therefore miss their targets. Main uses generated heading IDs instead, verified against actual pub.dev headings; English and Arabic examples and API content still match. The owner authorized documentation-only 0.6.1 patches for both packages. Both patches are now published, and every contents link in the rendered READMEs and changelogs has a matching target. Runtime sources and assets are byte-identical to 0.6.0. See the [0.6.1 publication record](DORAR_0_6_1_PUBLICATION.json) for archive hashes and hosted checks.
 
 Android/iOS device runtime remains untested. Browser CORS and partial narrator coverage remain documented limitations. [Machine-readable publication evidence](DORAR_0_6_0_PUBLICATION.json) contains archive URLs, sizes, hashes and check results.
 

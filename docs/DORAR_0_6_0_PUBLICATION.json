@@ -45,6 +45,11 @@
     "Android/iOS device runtime unverified",
     "Direct Dorar requests blocked by CORS from tested browser origin; online browser consumers need an application-owned server transport",
     "Narrator reference coverage remains partial",
-    "Some 0.6.0 pub.dev README TOC fragments use stripped custom anchors; corrected on main; registry README requires a later patch to receive the corrected links"
-  ]
+    "Some 0.6.0 pub.dev README TOC fragments use stripped custom anchors; fixed in the published 0.6.1 documentation patch"
+  ],
+  "documentationPatch": {
+    "version": "0.6.1",
+    "record": "DORAR_0_6_1_PUBLICATION.json",
+    "reason": "Correct pub.dev README and changelog contents links"
+  }
 }
