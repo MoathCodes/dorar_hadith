@@ -26,10 +26,10 @@ class FileAssetLoader implements AssetLoader {
   Future<String> loadString(String path) async {
     // 1) Try resolve inside the installed package (pub cache)
     final pkgUri = await Isolate.resolvePackageUri(
-      Uri.parse('package:dorar_hadith/$path'),
+      Uri.parse('package:dorar_hadith/dorar_hadith.dart'),
     );
     if (pkgUri != null) {
-      final pkgFile = File.fromUri(pkgUri);
+      final pkgFile = File.fromUri(pkgUri.resolveUri(Uri(path: '../$path')));
       if (await pkgFile.exists()) {
         try {
           return await pkgFile.readAsString();

@@ -259,6 +259,7 @@ Future<void> errorHandlingExamples(DorarClient client) async {
       DorarValidationException() => '✋ خطأ في المدخلات: ${e.message}',
       DorarServerException() => '🖥️  خطأ في السيرفر (${e.statusCode})',
       DorarParseException() => '📄 خطأ في معالجة البيانات: ${e.message}',
+      DorarSubrequestException() => getExceptionMessage(e.cause),
       DorarRateLimitException() => '🚫 تجاوزت الحد المسموح من الطلبات',
     };
 
@@ -396,6 +397,7 @@ String handleDorarException(DorarException exception) {
       '📄 خطأ في معالجة البيانات: ${exception.message}\n'
           '${exception.expectedType != null ? "النوع المتوقع: ${exception.expectedType}\n" : ""}'
           '💡 قد يكون هناك تحديث في API',
+    DorarSubrequestException() => getExceptionMessage(exception.cause),
     DorarRateLimitException() =>
       '🚫 تجاوزت الحد المسموح من الطلبات\n'
           '${exception.resetAt != null ? "⏰ حاول مرة أخرى بعد: ${exception.resetAt}\n" : ""}'

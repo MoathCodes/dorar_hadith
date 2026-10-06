@@ -1,0 +1,71 @@
+{
+  "date": "2026-10-06",
+  "origin": "http://localhost:8765",
+  "a": {
+    "toolIcon": {
+      "_tag": "website",
+      "pageUrl": "http://localhost:8765/?verification=current"
+    },
+    "value": {
+      "databases": [
+        {
+          "name": "dorar_hadith_cache_db",
+          "version": 1
+        },
+        {
+          "name": "dorar_hadith_rawi_2026-10-06.1_2_1640cf7d0e282e2709e2ef69c39737ee5ac26f357fead5341fbdcf6841faeb69",
+          "version": 1
+        }
+      ],
+      "text": "Dorar package example\nبحث الرواة في المرجع المحلي\nبحث محلي\nأبو أمامة وأبو سعيد الخدري وأبو هريرة 88\nأبو أمامة وأبو هريرة وعبدالله بن عمرو بن العاص وابن عباس وعائشة وأبو موسى وأنس بن مالك وسمرة بن جندب وعبدالله بن زيد 90\nأبو أمامة وأبو هريرة وعبدالله بن يزيد وأنس بن مالك وأبو موسى وابن عباس وعبدالله بن عمر وعائشة 91\nأبو الدرداء وأبو هريرة 271\nأبو الدرداء ومعاذ بن جبل وأنس بن مالك وأبو هريرة وعثمان بن أبي العاص 289\nأبو بكر الصديق وأبو هريرة وأنس بن مالك 456\nأبو بكرة وأبو سلمة وأبو هريرة 511\nأبو بكرة وأبو هريرة 514\nأبو بكرة والنعمان بن بشير وابن مسعود وأبو هريرة وعلي بن أبي طالب والحسن البصري 515\nأبو حميد وأبو هريرة وجابر وابن عباس 635\nأبو خلاد وأبو هريرة 656\nأبو ذر الغفاري وأبو هريرة 670\nأبو ذر وأبو هريرة 682\nأبو رافع وأبو ثعلبة وأبو هريرة 696\nأبو سعيد الخدري أو أبو هريرة 780\nأبو سعيد الخدري وأبو أمامة وأبو هريرة وعبدالله بن عمر وثوبان 783\nأبو سعيد الخدري وأبو هريرة 791\nأبو سعيد الخدري وأبو هريرة وابن عباس 792"
+    }
+  },
+  "b": {
+    "toolIcon": {
+      "_tag": "website",
+      "pageUrl": "http://localhost:8765/browser_smoke.html?phase=b"
+    },
+    "value": {
+      "count": 11479,
+      "firstChoiceId": "88",
+      "firstChoiceName": "أبو هريرة اختبار الإصدار ب",
+      "previousCacheBody": null,
+      "writtenCacheBody": "browser cache survives reference snapshot changes"
+    }
+  },
+  "restored": {
+    "toolIcon": {
+      "_tag": "website",
+      "pageUrl": "http://localhost:8765/browser_smoke.html?phase=restored-a"
+    },
+    "value": {
+      "databases": [
+        {
+          "name": "dorar_hadith_cache_db",
+          "version": 1
+        },
+        {
+          "name": "dorar_hadith_rawi_2026-10-06.1_2_1640cf7d0e282e2709e2ef69c39737ee5ac26f357fead5341fbdcf6841faeb69",
+          "version": 1
+        },
+        {
+          "name": "dorar_hadith_rawi_verification-b_2_4ea30be2b8ee99c999a7f0c35dcee7f2e564f7c562b23cfc507e9cabb0166d24",
+          "version": 1
+        }
+      ],
+      "report": {
+        "count": 11479,
+        "firstChoiceId": "88",
+        "firstChoiceName": "أبو أمامة وأبو سعيد الخدري وأبو هريرة",
+        "previousCacheBody": "browser cache survives reference snapshot changes",
+        "writtenCacheBody": "browser cache survives reference snapshot changes"
+      }
+    }
+  },
+  "cors": {
+    "site": "Default SDK request rejected: CORS preflight redirect on www.dorar.net",
+    "canonicalSite": "fetch https://dorar.net/hadith/sharh/137940 rejected with TypeError: Failed to fetch",
+    "quick": "fetch https://dorar.net/dorar_api.json?skey=الصلاة rejected with TypeError: Failed to fetch",
+    "opaqueFetch": "no-cors site fetch yields opaque response status 0 and cannot supply response text"
+  }
+}

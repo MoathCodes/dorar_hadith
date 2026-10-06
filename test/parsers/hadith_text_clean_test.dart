@@ -18,7 +18,7 @@ void main() {
         input,
         HadithTextCleanMode.detail,
       );
-      expect(cleaned, 'إنما الأعمال بالنيات رواه البخاري');
+      expect(cleaned, 'إنما الأعمال بالنيات - رواه البخاري');
     });
 
     test('search mode requires whitespace before dash after digits', () {

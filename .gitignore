@@ -13,3 +13,10 @@ cache.db
 # used as a reference https://github.com/AhmedElTabarani/dorar-hadith-api
 dorar-hadith-api-main
 dorar-hadith-api
+
+# Local development wiring and build output
+pubspec_overrides.yaml
+build/
+*.db-shm
+*.db-wal
+*.db-journal

@@ -1,6 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'hadith_category.dart';
+import 'source_content.dart';
+import 'result_details.dart';
 import 'sharh_metadata.dart';
 
 part 'hadith.freezed.dart';
@@ -21,6 +23,13 @@ abstract class DetailedHadith with _$DetailedHadith, HadithBase {
     String? explainGrade,
     String? takhrij,
     String? hadithId,
+    SourcedDocument? content,
+    @Default([]) List<SourceMetadataField> rawMetadata,
+    ExplanationReference? explanationReference,
+    @Default(Availability.unknown) Availability usulAvailability,
+    @Default(Availability.unknown) Availability asbabAvailability,
+    String? asbabDorar,
+    ResultProvenance? provenance,
 
     /// Thematic categories (التصنيف الموضوعي) for this hadith.
     @Default([]) List<HadithCategory> categories,
@@ -60,6 +69,17 @@ abstract class ExplainedHadith with _$ExplainedHadith, HadithBase {
   factory ExplainedHadith.fromJson(Map<String, dynamic> json) =>
       _$ExplainedHadithFromJson(json);
 
+  /// Convert historical content without fetching or inventing new fields.
+  DetailedHadith toDetailedHadith() => DetailedHadith(
+    hadith: hadith,
+    rawi: rawi,
+    mohdith: mohdith,
+    book: book,
+    numberOrPage: numberOrPage,
+    grade: grade,
+    takhrij: takhrij,
+    hasSharhMetadata: hasSharhMetadata,
+  );
   const ExplainedHadith._();
 }
 

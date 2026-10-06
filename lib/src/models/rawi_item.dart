@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+
 import 'reference_item.dart';
 
 part 'rawi_item.freezed.dart';
@@ -26,7 +27,11 @@ abstract class RawiItem with _$RawiItem implements ReferenceItem {
   /// Parameters:
   /// - [key]: Database column 'key' (int) - unique narrator ID
   /// - [value]: Database column 'value' (text) - Arabic name (already normalized)
-  factory RawiItem.fromDatabase({required int key, required String value}) {
+  factory RawiItem.fromDatabase({
+    required int key,
+    required String value,
+    String? normalizedValue,
+  }) {
     return RawiItem(
       id: key.toString(), // Convert int → String for API consistency
       name: value, // Already normalized Arabic (no diacritics)

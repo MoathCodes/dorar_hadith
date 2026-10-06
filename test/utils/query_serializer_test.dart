@@ -83,29 +83,26 @@ void main() {
         },
       );
 
-      test(
-        'should use "t" for zone parameter for BOTH endpoints (not "grp")',
-        () {
-          final params = HadithSearchParams(
-            value: 'test',
-            zone: SearchZone.qudsi,
-          );
+      test('encodes legacy type as a site array and quick scalar', () {
+        final params = HadithSearchParams(
+          value: 'test',
+          zone: SearchZone.qudsi,
+        );
 
-          final site = QuerySerializer.serializeHadithParams(
-            params,
-            isApiEndpoint: false,
-          );
-          final api = QuerySerializer.serializeHadithParams(
-            params,
-            isApiEndpoint: true,
-          );
+        final site = QuerySerializer.serializeHadithParams(
+          params,
+          isApiEndpoint: false,
+        );
+        final api = QuerySerializer.serializeHadithParams(
+          params,
+          isApiEndpoint: true,
+        );
 
-          // Both should use 't', not 'grp'
-          expect(site['t'], equals(SearchZone.qudsi.id));
-          expect(api['t'], equals(SearchZone.qudsi.id));
-          expect(api['grp'], isNull, reason: 'API should NOT use "grp" key');
-        },
-      );
+        // Both should use 't', not 'grp'
+        expect(site['t'], equals([SearchZone.qudsi.id]));
+        expect(api['t'], equals(SearchZone.qudsi.id));
+        expect(api['grp'], isNull, reason: 'API should NOT use "grp" key');
+      });
 
       test(
         'should use "d" for degrees parameter for BOTH endpoints (not "rad")',
@@ -179,27 +176,24 @@ void main() {
         },
       );
 
-      test(
-        'should serialize rawi parameter with same key for both endpoints',
-        () {
-          final params = HadithSearchParams(
-            value: 'test',
-            rawi: [RawiReference.abuHurayrah],
-          );
+      test('serializes narrator choices on the site', () {
+        final params = HadithSearchParams(
+          value: 'test',
+          rawi: [RawiReference.abuHurayrah],
+        );
 
-          final site = QuerySerializer.serializeHadithParams(
-            params,
-            isApiEndpoint: false,
-          );
-          final api = QuerySerializer.serializeHadithParams(
-            params,
-            isApiEndpoint: true,
-          );
+        final site = QuerySerializer.serializeHadithParams(
+          params,
+          isApiEndpoint: false,
+        );
+        final api = QuerySerializer.serializeHadithParams(
+          params,
+          isApiEndpoint: false,
+        );
 
-          expect(site['rawi'], equals([RawiReference.abuHurayrah.id]));
-          expect(api['rawi'], equals([RawiReference.abuHurayrah.id]));
-        },
-      );
+        expect(site['rawi'], equals([RawiReference.abuHurayrah.id]));
+        expect(api['rawi'], equals([RawiReference.abuHurayrah.id]));
+      });
 
       test('should handle multiple degrees correctly', () {
         final params = HadithSearchParams(
@@ -234,7 +228,7 @@ void main() {
 
         expect(
           serialized['s'],
-          equals([BookReference.sahihBukhari.id, BookReference.sahihMuslim.id]),
+          equals([BookReference.sahihMuslim.id, BookReference.sahihBukhari.id]),
         );
       });
 
@@ -251,7 +245,7 @@ void main() {
         expect(serialized['rawi'], isNull);
       });
 
-      test('should handle complex multi-filter query for API endpoint', () {
+      test('handles complex multi-filter query for site endpoint', () {
         final params = HadithSearchParams(
           value: 'الصلاة',
           page: 2,
@@ -266,11 +260,11 @@ void main() {
 
         final serialized = QuerySerializer.serializeHadithParams(
           params,
-          isApiEndpoint: true,
+          isApiEndpoint: false,
         );
 
         // Verify all parameters use correct keys
-        expect(serialized['skey'], equals('الصلاة'), reason: 'Search text');
+        expect(serialized['q'], equals('الصلاة'), reason: 'Search text');
         expect(serialized['page'], equals(2), reason: 'Page number');
         expect(serialized['xclude'], equals('السنة'), reason: 'Exclude');
         expect(
@@ -278,7 +272,7 @@ void main() {
           equals(SearchMethod.allWords.id),
           reason: 'Search method',
         );
-        expect(serialized['t'], equals(SearchZone.qudsi.id), reason: 'Zone');
+        expect(serialized['t'], equals([SearchZone.qudsi.id]), reason: 'Zone');
         expect(
           serialized['d'],
           equals([HadithDegree.authenticHadith.id]),
@@ -301,7 +295,7 @@ void main() {
         );
 
         // Verify wrong keys are NOT present
-        expect(serialized['q'], isNull, reason: 'Should use skey, not q');
+        expect(serialized['skey'], isNull, reason: 'Site search uses q');
         expect(serialized['grp'], isNull, reason: 'Should use t, not grp');
         expect(serialized['rad'], isNull, reason: 'Should use d, not rad');
         expect(serialized['tr'], isNull, reason: 'Should use m, not tr');

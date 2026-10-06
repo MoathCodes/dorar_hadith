@@ -14,6 +14,9 @@ _BookInfo _$BookInfoFromJson(Map<String, dynamic> json) => _BookInfo(
   publisher: json['publisher'] as String,
   edition: json['edition'] as String,
   editionYear: json['editionYear'] as String,
+  editionDate: json['editionDate'] == null
+      ? null
+      : EditionDate.fromJson(json['editionDate'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$BookInfoToJson(_BookInfo instance) => <String, dynamic>{
@@ -24,4 +27,5 @@ Map<String, dynamic> _$BookInfoToJson(_BookInfo instance) => <String, dynamic>{
   'publisher': instance.publisher,
   'edition': instance.edition,
   'editionYear': instance.editionYear,
+  'editionDate': instance.editionDate?.toJson(),
 };

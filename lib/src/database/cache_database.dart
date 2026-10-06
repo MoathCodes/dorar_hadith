@@ -51,10 +51,7 @@ class CacheDatabase extends _$CacheDatabase {
   }) async {
     if (count <= 0) return;
 
-    final protected = <String>{
-      if (excludeKey != null) excludeKey,
-      ...?excludeKeys,
-    };
+    final protected = <String>{?excludeKey, ...?excludeKeys};
 
     final oldest = await (select(
       cacheTable,

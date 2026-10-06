@@ -19,7 +19,10 @@ void main() {
   group('MohdithReferenceService', () {
     test('countMohdith matches raw data entries', () async {
       final total = await service.countMohdith();
-      expect(total, rawMohdithData.length);
+      expect(
+        total,
+        rawMohdithData.where((row) => row['currentSelectable'] != false).length,
+      );
     });
 
     test('countMohdith with query filters results', () async {

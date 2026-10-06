@@ -1,4 +1,8 @@
 import '../models/search_params.dart';
+import '../constants/search_zone.dart';
+import '../constants/hadith_type_filter.dart';
+import '../utils/exceptions.dart';
+import '../utils/validators.dart';
 
 /// Utilities for serializing search parameters to API query format
 class QuerySerializer {
@@ -28,14 +32,82 @@ class QuerySerializer {
   /// For site endpoint (`/hadith/search`):
   /// - Uses `q` for search text
   ///
-  /// All other parameters use the SAME keys for both endpoints.
+  /// Type scopes are repeated arrays on the site and scalar on the quick API.
   static Map<String, dynamic> serializeHadithParams(
     HadithSearchParams params, {
     bool isApiEndpoint = false,
   }) {
+    Validators.validatePage(params.page);
+    if ((params.mohdith?.isNotEmpty ?? false) && params.scholarIds.isNotEmpty ||
+        (params.books?.isNotEmpty ?? false) && params.bookIds.isNotEmpty ||
+        (params.rawi?.isNotEmpty ?? false) &&
+            params.narratorChoiceIds.isNotEmpty) {
+      throw const DorarValidationException(
+        'Provide either typed IDs or legacy references for each filter',
+        field: 'filters',
+      );
+    }
+    if (params.optionalPhrases.length > 4) {
+      throw const DorarValidationException(
+        'At most four optional phrase slots are supported',
+        field: 'optionalPhrases',
+      );
+    }
+    if (params.value.trim().isEmpty &&
+        (isApiEndpoint ||
+            !params.optionalPhrases.any((p) => p.trim().isNotEmpty))) {
+      Validators.validateSearchText(params.value);
+    } else if (params.value.trim().isNotEmpty) {
+      Validators.validateSearchText(params.value);
+    }
+    for (final phrase in params.optionalPhrases.where(
+      (p) => p.trim().isNotEmpty,
+    )) {
+      Validators.validateSearchText(phrase, field: 'optionalPhrases');
+    }
+    if (params.zone != null && params.types.isNotEmpty) {
+      throw const DorarValidationException(
+        'Provide types or legacy zone, not both',
+        field: 'types',
+      );
+    }
+    if (params.zone == SearchZone.sharh) {
+      throw const DorarValidationException(
+        'Use searchSharhText to search explanation prose',
+        field: 'zone',
+      );
+    }
+    final types = params.types.isNotEmpty
+        ? params.types
+        : switch (params.zone) {
+            SearchZone.marfoo => {HadithTypeFilter.marfoo},
+            SearchZone.qudsi => {HadithTypeFilter.qudsi},
+            SearchZone.sahabaAthar => {HadithTypeFilter.companionAthar},
+            _ => <HadithTypeFilter>{},
+          };
+    if (isApiEndpoint &&
+        (params.specialist ||
+            params.sort != null ||
+            params.optionalPhrases.isNotEmpty ||
+            types.length > 1 ||
+            types.contains(HadithTypeFilter.withExplanation))) {
+      throw const DorarValidationException(
+        'These filters require the detailed site endpoint',
+        field: 'filters',
+      );
+    }
+    if (isApiEndpoint &&
+        (types.contains(HadithTypeFilter.marfoo) ||
+            (params.rawi?.isNotEmpty ?? false) ||
+            params.narratorChoiceIds.isNotEmpty)) {
+      throw const DorarValidationException(
+        'Marfoo scope and narrator-choice IDs are not verified on the quick API; use detailed site search',
+        field: 'filters',
+      );
+    }
     final queryParams = <String, dynamic>{};
 
-    // Search text - ONLY difference between API and Site
+    // Endpoint-specific search text
     if (params.value.isNotEmpty) {
       queryParams[isApiEndpoint ? 'skey' : 'q'] = params.value;
     }
@@ -53,29 +125,55 @@ class QuerySerializer {
       queryParams['st'] = params.searchMethod!.id;
     }
 
-    // Search zone - same for both (NOT 'grp'!)
-    if (params.zone != null) {
-      queryParams['t'] = params.zone!.id;
+    if (types.isNotEmpty) {
+      final ids = types.map((t) => t.id).toList()..sort();
+      queryParams['t'] = isApiEndpoint ? ids.single : ids;
+    }
+    if (!isApiEndpoint) {
+      if (params.sort != null) queryParams['sort'] = params.sort!.name;
+      for (var i = 0; i < params.optionalPhrases.length; i++) {
+        if (params.optionalPhrases[i].trim().isNotEmpty) {
+          queryParams['optional_phrase${i + 1}'] = params.optionalPhrases[i];
+        }
+      }
     }
 
     // Hadith degrees - same for both (NOT 'rad'!)
     if (params.degrees != null && params.degrees!.isNotEmpty) {
-      queryParams['d'] = params.degrees!.map((d) => d.id).toList();
+      queryParams['d'] = (params.degrees!.map((d) => d.id).toSet().toList()
+        ..sort());
     }
 
     // Mohdith IDs - same for both (NOT 'tr'!)
     if (params.mohdith != null && params.mohdith!.isNotEmpty) {
-      queryParams['m'] = params.mohdith!.map((m) => m.id).toList();
+      queryParams['m'] = (params.mohdith!.map((m) => m.id).toSet().toList()
+        ..sort());
     }
 
     // Book IDs - same for both (NOT 'mhd'!)
     if (params.books != null && params.books!.isNotEmpty) {
-      queryParams['s'] = params.books!.map((b) => b.id).toList();
+      queryParams['s'] = (params.books!.map((b) => b.id).toSet().toList()
+        ..sort());
     }
 
     // Rawi IDs - same for both
     if (params.rawi != null && params.rawi!.isNotEmpty) {
-      queryParams['rawi'] = params.rawi!.map((r) => r.id).toList();
+      queryParams['rawi'] = (params.rawi!.map((r) => r.id).toSet().toList()
+        ..sort());
+    }
+
+    if (params.scholarIds.isNotEmpty) {
+      queryParams['m'] =
+          params.scholarIds.map((id) => id.value).toSet().toList()..sort();
+    }
+    if (params.bookIds.isNotEmpty) {
+      queryParams['s'] = params.bookIds.map((id) => id.value).toSet().toList()
+        ..sort();
+    }
+    if (params.narratorChoiceIds.isNotEmpty) {
+      queryParams['rawi'] =
+          params.narratorChoiceIds.map((id) => id.value).toSet().toList()
+            ..sort();
     }
 
     // Note: removeHTML is NOT sent in the serialized query map. The specialist
@@ -98,7 +196,7 @@ class QuerySerializer {
     var isFirst = true;
 
     params.forEach((key, value) {
-      if (value == null) return;
+      if (value == null || (value is List && value.isEmpty)) return;
 
       if (!isFirst) buffer.write('&');
       isFirst = false;

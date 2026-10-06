@@ -14,6 +14,8 @@ abstract class MohdithItem with _$MohdithItem implements ReferenceItem {
   const factory MohdithItem({
     @JsonKey(name: 'key') required String id,
     @JsonKey(name: 'value') required String name,
+    @Default(true) bool currentSelectable,
+    @Default([]) List<String> historicalNames,
   }) = _MohdithItem;
 
   factory MohdithItem.fromJson(Map<String, dynamic> json) =>

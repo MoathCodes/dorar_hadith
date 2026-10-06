@@ -1,5 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'source_content.dart';
+
 part 'book.freezed.dart';
 part 'book.g.dart';
 
@@ -27,6 +29,7 @@ abstract class BookInfo with _$BookInfo {
 
     /// Year of the edition
     required String editionYear,
+    EditionDate? editionDate,
   }) = _BookInfo;
 
   factory BookInfo.fromJson(Map<String, dynamic> json) =>

@@ -1,0 +1,86 @@
+# Dorar Hadith Flutter
+
+[English](README.md)
+
+تهيئة Flutter لحزمة `dorar_hadith` مع مراجع مضمّنة يُتحقق منها وترقيات للقطات على المنصات الأصلية وذاكرة API دائمة وتهيئة أصول المتصفح.
+
+## المحتويات
+
+- [الإعداد](#setup)
+- [التخزين والتهيئة على المنصات الأصلية](#storage)
+- [إعداد المتصفح](#browser)
+- [التخزين المخصص](#custom)
+- [مفاتيح الأصول](#assets)
+- [الترقية من 0.5.x](#migration)
+
+<a id="setup"></a>
+
+## الإعداد
+
+ثبّت الحزمة المساعدة. يتطلب الإصدار 0.6.0 لغة Dart بإصدار 3.13.0 وFlutter بإصدار 3.47.5 أو أحدث.
+
+```sh
+flutter pub add dorar_hadith_flutter
+```
+
+هيّئها قبل إنشاء عميل Dorar:
+
+```dart
+import 'package:dorar_hadith_flutter/dorar_hadith_flutter.dart';
+import 'package:flutter/material.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await DorarHadithFlutter.ensureInitialized();
+  runApp(const MyApp());
+}
+```
+
+توفّر الحزمة الأساسية ملفات JSON وقاعدة البيانات وبيان المراجع تلقائيًا، ولا تحتاج إلى إعلانها في تطبيقك. تتحقق التهيئة من البيان وبصمات الملفات دون اتصال، ثم تتيح مصانع تحميل الأصول والاتصال بقواعد البيانات.
+
+<a id="storage"></a>
+
+## التخزين والتهيئة على المنصات الأصلية
+
+يُثبّت Flutter على المنصات الأصلية المراجع بصورة ذرية في مجلد دعم التطبيق، باسم خاص باللقطة بعد التحقق منها، ويفتحها للقراءة فقط. تستخدم ذاكرة استجابات API القابلة للكتابة ملف `cache.db` مستقلًا. تحافظ الترقية على ملف `rawi.db` القديم واللقطات السابقة والذاكرة المؤقتة والملفات المخصصة والتخزين غير المرتبط. وتبقى المفضلة وسجل التطبيق كما هما.
+
+```dart
+await DorarHadithFlutter.ensureInitialized(databaseDirectory: myDirectory);
+```
+
+تشترك الاستدعاءات المتزامنة بالإعداد نفسه في نتيجة مستقبلية واحدة. يمكن إعادة المحاولة بعد فشل التهيئة، وتبقى `isInitialized` بقيمة false. يرفع تغيير إعداد المجلد خطأ `DorarFlutterAdapterException`. تميّز أنواع الخطأ بين غياب الأصول واختلاف المخطط وفشل سلامة البيانات وفشل التثبيت وتعارض الإعداد، ويحتفظ `cause` بالخطأ الأصلي.
+
+<a id="browser"></a>
+
+## إعداد المتصفح
+
+يضبط مدخل المتصفح ملفات JSON المضمّنة وقواعد WebAssembly في الحزمة الأساسية. احذف `databaseDirectory` عند العمل على الويب. قدّم نسختين متوافقتين من `sqlite3.wasm` و`drift_worker.dart.js` عند عنوان التطبيق الأساسي. تشمل هوية تخزين المراجع إصدار اللقطة والمخطط والبصمة، وتبقى هوية ذاكرة API مستقلة.
+
+يوضح [دليل المثال](example/README.md) إعداد العامل وWasm. حجبت سياسة CORS الطلبات المباشرة إلى موقع الدرر وواجهة API السريعة من مصدر المتصفح الذي اختُبر. للوصول عبر الشبكة، مرّر ناقلًا يستخدم خادم تطبيقك من خلال `DorarHttpClient(client: yourHttpClient)`. لا تتصل تهيئة الأصول دون شبكة بموقع الدرر.
+
+<a id="custom"></a>
+
+## التخزين المخصص
+
+يحافظ `createFlutterConnectionFactory` على ملكية أسماء الملفات المخصصة. مرّر `manifest` لتثبيت مُدار بعد التحقق، باسم يتضمن الإصدار. دون بيان، يدير المستدعي دورة حياة المراجع. لا تُستبدل الملفات المخصصة الموجودة، ويجب أن تستخدم المخطط 2. استخدم أداة `migrateReferenceDatabase` من الحزمة الأساسية لإنشاء نسخة مستقلة بالمخطط 2 والتحقق منها انطلاقًا من ملف بالمخطط 1.
+
+يفتح `createFlutterCacheConnectionFactory` ذاكرة مؤقتة مستقلة قابلة للكتابة. يدعم `configureFlutterAssetLoader` تحميل JSON مخصصًا. ويتيح `installManagedReferenceSnapshot` تثبيتًا مُدارًا صريحًا على المنصات الأصلية. أدوات تثبيت الملفات الأصلية غير متاحة في المتصفح.
+
+<a id="assets"></a>
+
+## مفاتيح الأصول
+
+توفّر الحزمة الأساسية مفاتيح الأصول التالية:
+
+- `packages/dorar_hadith/assets/data/book.json`
+- `packages/dorar_hadith/assets/data/mohdith.json`
+- `packages/dorar_hadith/assets/data/reference_manifest.json`
+- `packages/dorar_hadith/assets/database/rawi.db`
+
+يحافظ تحويل ByteData على الإزاحة والطول للجزء المُعاد، ولا تدخل البايتات الواقعة خارجه في محتوى قاعدة البيانات.
+
+<a id="migration"></a>
+
+## الترقية من 0.5.x
+
+اقرأ [دليل انتقال الحزمة الأساسية](https://github.com/MoathCodes/dorar_hadith/blob/main/doc/MIGRATION_0_6_0.md) لمعرفة عرض الشروح المنظّم ونسبة الكلام إلى المتحدث بعد المراجعة والمرشحات وترقيم الصفحات وصيغة الذاكرة المؤقتة 3 وتوافق JSON المحفوظ. يسجّل [دليل النشر](https://github.com/MoathCodes/dorar_hadith/blob/main/doc/RELEASE_0_6_0.md) فحوص النشر. ويبقى تحديث تطبيق Tawaq مهمة مستقلة.

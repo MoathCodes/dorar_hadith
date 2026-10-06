@@ -21,23 +21,30 @@ class MohdithReferenceService {
   /// Create a new service instance.
   ///
   /// [assetLoader] defaults to the platform-specific loader if not provided.
-  /// [assetPath] defaults to 'assets/data/mohdith.json'.
+  /// [_assetPath] defaults to 'assets/data/mohdith.json'.
   MohdithReferenceService({
     AssetLoader? assetLoader,
-    String assetPath = 'assets/data/mohdith.json',
-  }) : _assetLoader = assetLoader ?? createAssetLoader(),
-       _assetPath = assetPath;
+    this._assetPath = 'assets/data/mohdith.json',
+  }) : _assetLoader = assetLoader ?? createAssetLoader();
 
   /// Count scholars. If [query] provided, counts only matching scholars.
   Future<int> countMohdith({String? query}) async {
     await initialize();
 
     if (query == null || query.isEmpty) {
-      return _cache!.length;
+      return _cache!.values
+          .where((item) => item.currentSelectable)
+          .where((item) => item.currentSelectable)
+          .length;
     }
 
     return _cache!.values
-        .where((mohdith) => fuzzyMatch(mohdith.name, query))
+        .where((item) => item.currentSelectable)
+        .where(
+          (mohdith) =>
+              (fuzzyMatch(mohdith.name, query) ||
+              mohdith.historicalNames.any((name) => fuzzyMatch(name, query))),
+        )
         .length;
   }
 
@@ -51,7 +58,11 @@ class MohdithReferenceService {
   }) async {
     await initialize();
 
-    return _cache!.values.skip(offset).take(limit).toList();
+    return _cache!.values
+        .where((item) => item.currentSelectable)
+        .skip(offset)
+        .take(limit)
+        .toList();
   }
 
   /// Get a scholar by ID. Returns null if not found.
@@ -90,7 +101,7 @@ class MohdithReferenceService {
 
     // Load JSON content
     final jsonString = await _assetLoader.loadString(_assetPath);
-    final List<dynamic> jsonList = json.decode(jsonString);
+    final List<dynamic> jsonList = json.decode(jsonString) as List<dynamic>;
 
     // Parse and build cache
     _cache = {};
@@ -117,7 +128,12 @@ class MohdithReferenceService {
 
     // Filter using fuzzy matching
     final matches = _cache!.values
-        .where((mohdith) => fuzzyMatch(mohdith.name, query))
+        .where((item) => item.currentSelectable)
+        .where(
+          (mohdith) =>
+              (fuzzyMatch(mohdith.name, query) ||
+              mohdith.historicalNames.any((name) => fuzzyMatch(name, query))),
+        )
         .skip(offset)
         .take(limit)
         .toList();

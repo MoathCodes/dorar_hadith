@@ -374,24 +374,22 @@ abstract class _$CacheDatabase extends GeneratedDatabase {
   List<DatabaseSchemaEntity> get allSchemaEntities => [cacheTable];
 }
 
-typedef $$CacheTableTableCreateCompanionBuilder =
-    CacheTableCompanion Function({
-      required String body,
-      Value<DateTime> createdAt,
-      required DateTime expiredAt,
-      required String header,
-      required String key,
-      Value<int> rowid,
-    });
-typedef $$CacheTableTableUpdateCompanionBuilder =
-    CacheTableCompanion Function({
-      Value<String> body,
-      Value<DateTime> createdAt,
-      Value<DateTime> expiredAt,
-      Value<String> header,
-      Value<String> key,
-      Value<int> rowid,
-    });
+typedef $$CacheTableTableCreateCompanionBuilder = CacheTableCompanion Function({
+  required String body,
+  Value<DateTime> createdAt,
+  required DateTime expiredAt,
+  required String header,
+  required String key,
+  Value<int> rowid,
+});
+typedef $$CacheTableTableUpdateCompanionBuilder = CacheTableCompanion Function({
+  Value<String> body,
+  Value<DateTime> createdAt,
+  Value<DateTime> expiredAt,
+  Value<String> header,
+  Value<String> key,
+  Value<int> rowid,
+});
 
 class $$CacheTableTableFilterComposer
     extends Composer<_$CacheDatabase, $CacheTableTable> {

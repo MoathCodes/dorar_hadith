@@ -1,5 +1,4 @@
 import 'package:dorar_hadith/dorar_hadith.dart';
-import 'package:dorar_hadith/src/database/cache_database.dart';
 import 'package:dorar_hadith/src/services/cache_service.dart';
 import 'package:drift/native.dart';
 import 'package:http/http.dart' show ClientException;
@@ -68,7 +67,7 @@ void main() {
       test('should cache mohdith data', () async {
         // First call - fetches from API
         await mohdithService.getById('256');
-        final cacheKey = 'https://www.dorar.net/hadith/mhd/256';
+        final cacheKey = 'raw:scholar:https://www.dorar.net/hadith/mhd/256';
         expect(await cacheService.get(cacheKey), isNotNull);
 
         // Second call - should use cache
@@ -145,7 +144,7 @@ void main() {
         // Populate cache
         await mohdithService.getById('256');
 
-        final cacheKey = 'https://www.dorar.net/hadith/mhd/256';
+        final cacheKey = 'raw:scholar:https://www.dorar.net/hadith/mhd/256';
         expect(await cacheService.get(cacheKey), isNotNull);
 
         // Clear cache
@@ -222,8 +221,8 @@ void main() {
         await mohdithService.getById('256');
         await mohdithService.getById('261');
 
-        final key1 = 'https://www.dorar.net/hadith/mhd/256';
-        final key2 = 'https://www.dorar.net/hadith/mhd/261';
+        final key1 = 'raw:scholar:https://www.dorar.net/hadith/mhd/256';
+        final key2 = 'raw:scholar:https://www.dorar.net/hadith/mhd/261';
 
         expect(await cacheService.get(key1), isNotNull);
         expect(await cacheService.get(key2), isNotNull);

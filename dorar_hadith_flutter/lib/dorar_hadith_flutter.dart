@@ -8,57 +8,136 @@ import 'dart:io';
 
 import 'package:dorar_hadith/dorar_hadith.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/foundation.dart';
+
+import 'src/adapter_exception.dart';
+
 import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
 
 import 'src/asset_loader_flutter.dart';
 import 'src/connection_flutter.dart';
 
+export 'src/adapter_exception.dart';
 export 'src/asset_loader_flutter.dart'
     show FlutterAssetLoader, configureFlutterAssetLoader;
 export 'src/connection_flutter.dart'
     show
         FlutterDatabaseAssetLoader,
         createFlutterCacheConnectionFactory,
-        createFlutterConnectionFactory;
+        createFlutterConnectionFactory,
+        installManagedReferenceSnapshot;
 
 /// Entry point for wiring [dorar_hadith] in Flutter applications.
 abstract final class DorarHadithFlutter {
   static bool _initialized = false;
+  static Future<void>? _inFlight;
+  static String? _configuration;
 
-  /// Returns `true` after [ensureInitialized] has completed successfully.
   static bool get isInitialized => _initialized;
 
-  /// Wires asset loading and the offline `rawi.db` database for Flutter.
-  ///
-  /// This method is idempotent — subsequent calls return immediately.
-  ///
-  /// By default, [databaseDirectory] resolves to the application support
-  /// directory from `path_provider`, so the copied `rawi.db` persists across
-  /// restarts. Pass a custom [databaseDirectory] to override the location.
-  static Future<void> ensureInitialized({Directory? databaseDirectory}) async {
-    if (_initialized) return;
+  /// Concurrent calls share initialization. Failures may be retried.
+  /// Changing the database directory requires a new process.
+  static Future<void> ensureInitialized({Directory? databaseDirectory}) {
+    final configuration = databaseDirectory == null
+        ? '<application-support>'
+        : p.normalize(databaseDirectory.absolute.path);
+    if (_inFlight != null) {
+      if (_configuration != configuration) {
+        return Future.error(
+          const DorarFlutterAdapterException(
+            FlutterAdapterFailure.configurationConflict,
+            'Initialization already uses a different database directory',
+          ),
+        );
+      }
+      return _inFlight!;
+    }
+    _configuration = configuration;
+    final attempt = _initialize(databaseDirectory);
+    _inFlight = attempt.then(
+      (_) {
+        _initialized = true;
+      },
+      onError: (Object error, StackTrace stack) {
+        _inFlight = null;
+        _configuration = null;
+        _initialized = false;
+        Error.throwWithStackTrace(error, stack);
+      },
+    );
+    return _inFlight!;
+  }
 
-    configureFlutterAssetLoader(bundleLoader: rootBundle.loadString);
-
+  static Future<void> _initialize(Directory? databaseDirectory) async {
+    late ReferenceManifest manifest;
+    late Uint8List bytes;
+    try {
+      manifest = ReferenceManifest.decode(
+        await rootBundle.loadString(
+          'packages/dorar_hadith/assets/data/reference_manifest.json',
+          cache: false,
+        ),
+      );
+      for (final name in ['book', 'mohdith']) {
+        final asset = await rootBundle.load(
+          'packages/dorar_hadith/assets/data/$name.json',
+        );
+        manifest.validateBytes(
+          name,
+          asset.buffer.asUint8List(asset.offsetInBytes, asset.lengthInBytes),
+        );
+      }
+      final asset = await rootBundle.load(
+        'packages/dorar_hadith/assets/database/rawi.db',
+      );
+      bytes = asset.buffer.asUint8List(
+        asset.offsetInBytes,
+        asset.lengthInBytes,
+      );
+      manifest.validateBytes('rawi', bytes);
+    } on FormatException catch (e) {
+      throw DorarFlutterAdapterException(
+        FlutterAdapterFailure.integrity,
+        'Reference manifest or asset verification failed',
+        cause: e,
+      );
+    } on Object catch (e) {
+      throw DorarFlutterAdapterException(
+        FlutterAdapterFailure.missingAsset,
+        'Required transitive Dorar reference asset could not be loaded',
+        cause: e,
+      );
+    }
+    if (kIsWeb) {
+      if (databaseDirectory != null) {
+        throw const DorarFlutterAdapterException(
+          FlutterAdapterFailure.configurationConflict,
+          'Browser initialization does not accept a native directory',
+        );
+      }
+      configureFlutterAssetLoader(bundleLoader: rootBundle.loadString);
+      RawiDatabase.resetConnection();
+      CacheDatabase.resetConnection();
+      return;
+    }
     final directory =
         databaseDirectory ?? await getApplicationSupportDirectory();
-
-    RawiDatabase.configureConnection(
-      createFlutterConnectionFactory(
-        targetDirectory: directory,
-        loadDatabaseBytes: () async {
-          final data = await rootBundle.load(
-            'packages/dorar_hadith/assets/database/rawi.db',
-          );
-          return data.buffer.asUint8List();
-        },
-      ),
+    await installManagedReferenceSnapshot(
+      directory: directory,
+      manifest: manifest,
+      bytes: bytes,
     );
-
-    CacheDatabase.configureConnection(
-      createFlutterCacheConnectionFactory(targetDirectory: directory),
+    final referenceFactory = createFlutterConnectionFactory(
+      targetDirectory: directory,
+      loadDatabaseBytes: () async => bytes,
+      manifest: manifest,
     );
-
-    _initialized = true;
+    final cacheFactory = createFlutterCacheConnectionFactory(
+      targetDirectory: directory,
+    );
+    configureFlutterAssetLoader(bundleLoader: rootBundle.loadString);
+    RawiDatabase.configureConnection(referenceFactory);
+    CacheDatabase.configureConnection(cacheFactory);
   }
 }

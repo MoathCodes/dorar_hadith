@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 void main() {
   group('Sharh pass-throughs', () {
     test('exposes sharh text and hadith fields', () {
-      const explained = ExplainedHadith(
+      const explained = DetailedHadith(
         hadith: 'إنما الأعمال بالنيات',
         rawi: 'عمر بن الخطاب',
         mohdith: 'البخاري',

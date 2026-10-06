@@ -1,0 +1,8 @@
+{
+  "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&rawi%5B%5D=1633",
+  "capturedAt": "2026-10-06T12:40:50.020539Z",
+  "statusCode": 200,
+  "contentType": "application/json",
+  "sha256": "504778917d7a28e6d9cc4cd600b4834a316b74ac0492b31c086458448b16e836",
+  "body": "{\"ahadith\":{\"result\":\"<head>\\n    <link rel=\\\"canonical\\\" href=\\\"https:\\/\\/dorar.net\\/dorar_api.json\\\">\\n<\\/head>\\n<br\\/><br\\/>\\n<a href=\\\"https:\\/\\/dorar.net\\/hadith\\/search?q=الصلاة\\\">المزيد<\\/a>\\n\"}}"
+}

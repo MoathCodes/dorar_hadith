@@ -3,7 +3,8 @@ import 'dart:convert';
 import '../http/endpoints.dart';
 import '../http/http_client.dart';
 import '../models/book.dart';
-import '../models/cache_entry.dart';
+import '../http/cached_transport.dart';
+import '../models/source_content.dart';
 import '../parsers/book_parser.dart';
 import '../utils/exceptions.dart';
 import '../utils/validators.dart';
@@ -11,12 +12,16 @@ import 'cache_service.dart';
 
 /// Service for fetching book information from Dorar.net.
 class BookService {
-  final DorarHttpClient _client;
+  final CachedDorarTransport _transport;
   final CacheService _cache;
 
-  BookService({required DorarHttpClient client, required CacheService cache})
-    : _client = client,
-      _cache = cache;
+  BookService({
+    required DorarHttpClient client,
+    required CacheService cache,
+    CachedDorarTransport? transport,
+  }) : _transport =
+           transport ?? CachedDorarTransport(client: client, cache: cache),
+       _cache = cache;
 
   /// Clear all cached book data.
   ///
@@ -52,15 +57,22 @@ class BookService {
 
     final url = DorarEndpoints.bookById(validatedId);
 
-    // Check cache first
-    final cached = await _cache.get(url);
-    if (cached != null) {
-      return BookInfo.fromJson(jsonDecode(cached.body));
-    }
-
     try {
       // The book endpoint returns JSON, not direct HTML
-      final response = await _client.get(url);
+      final source = await _transport.get(
+        url,
+        endpoint: 'book',
+        expectedType: BookInfo,
+        accepts: (body) {
+          try {
+            final value = jsonDecode(body);
+            return value is String && value.contains('<h5');
+          } on FormatException {
+            return false;
+          }
+        },
+      );
+      final response = source.body;
 
       // Decode the JSON response
       final jsonData = jsonDecode(response);
@@ -83,17 +95,7 @@ class BookService {
         publisher: parsedData.publisher,
         edition: parsedData.edition,
         editionYear: parsedData.editionYear,
-      );
-
-      // Cache the result
-      await _cache.set(
-        CacheEntry(
-          key: url,
-          body: jsonEncode(result.toJson()),
-          header: '',
-          createdAt: DateTime.now(),
-          expiresAt: DateTime.now().add(const Duration(days: 7)),
-        ),
+        editionDate: EditionDate.parse(parsedData.editionYear),
       );
 
       return result;

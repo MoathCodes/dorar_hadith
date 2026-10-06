@@ -1,0 +1,53 @@
+{
+  "snapshotVersion": "2026-10-06.1",
+  "schemaVersion": 2,
+  "normalizationVersion": 1,
+  "generatedAt": "2026-10-06T12:15:43.297014Z",
+  "sources": [
+    {
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9",
+      "capturedAt": "2026-10-06T12:14:47.669925Z",
+      "sha256": "c6f1539d257f63b45c7f3b3a863d749c4557b38c74fc2ed7653b95bbe5c3934f"
+    },
+    {
+      "url": "https://dorar.net/hadith/rawi?rawi=%D8%A3%D8%A8%D9%88+%D9%87%D8%B1%D9%8A%D8%B1%D8%A9",
+      "capturedAt": "2026-10-06T12:15:42.164416Z",
+      "sha256": "de60b8177a78265f47ba4aca024d97f60a26ce92229bb939b6348a3dccdb3119"
+    },
+    {
+      "url": "https://dorar.net/hadith/rawi?rawi=%D8%B9%D8%A7%D8%A6%D8%B4%D8%A9",
+      "capturedAt": "2026-10-06T12:15:42.486182Z",
+      "sha256": "cee99672d6380874f45c5d9a72719268ba940519cad3325d75568ab2e9887c16"
+    },
+    {
+      "url": "https://dorar.net/hadith/rawi?rawi=%D8%B9%D8%A8%D8%AF%D8%A7%D9%84%D9%84%D9%87+%D8%A8%D9%86+%D8%B9%D9%85%D8%B1",
+      "capturedAt": "2026-10-06T12:15:42.979647Z",
+      "sha256": "2e54dd2ef541d026cbd9d09cf524f4b248a7343fb948029a4e904318082eafc1"
+    },
+    {
+      "url": "https://dorar.net/hadith/rawi?rawi=%D8%A3%D9%86%D8%B3+%D8%A8%D9%86+%D9%85%D8%A7%D9%84%D9%83",
+      "capturedAt": "2026-10-06T12:15:43.297014Z",
+      "sha256": "8cbaccf92880a466d5f71af3b3950392d139a006b00b0f4e5808791b8c6b8630"
+    }
+  ],
+  "collections": {
+    "book": {
+      "sha256": "74c009423090f34f6a90f664acd2485acbef4c02567d36faff06f1cafa7461b6",
+      "count": 774,
+      "coverage": "currentSelectionWithHistoricalEntries",
+      "method": "direct complete search-page select plus retained historical IDs"
+    },
+    "mohdith": {
+      "sha256": "c4773aaffaad325b6d94e91f952729597ded448256672ce26d431bb9b456194f",
+      "count": 211,
+      "coverage": "currentSelectionWithHistoricalEntries",
+      "method": "direct complete search-page select plus retained historical IDs"
+    },
+    "rawi": {
+      "sha256": "1640cf7d0e282e2709e2ef69c39737ee5ac26f357fead5341fbdcf6841faeb69",
+      "count": 11479,
+      "coverage": "partial",
+      "method": "historical snapshot plus four direct autocomplete captures; no complete-coverage claim"
+    }
+  }
+}

@@ -7,7 +7,7 @@ class HtmlUtils {
   static final _htmlCommentRegex = RegExp(r'<!--.*?-->');
 
   /// Regular expression to match multiple whitespace
-  static final _multipleWhitespaceRegex = RegExp(r'\s+');
+  static final _multipleWhitespaceRegex = RegExp(r'[^\S\r\n]+');
 
   /// Map of common HTML entities to their character equivalents
   static const _htmlEntities = {

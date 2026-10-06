@@ -1,8 +1,6 @@
-import 'dart:convert';
-
 import '../http/endpoints.dart';
 import '../http/http_client.dart';
-import '../models/cache_entry.dart';
+import '../http/cached_transport.dart';
 import '../models/mohdith.dart';
 import '../parsers/mohdith_parser.dart';
 import '../utils/exceptions.dart';
@@ -15,12 +13,16 @@ import 'cache_service.dart';
 /// Network and server issues are surfaced as [DorarException] subclasses
 /// (e.g., timeouts, rate limits, HTTP errors).
 class MohdithService {
-  final DorarHttpClient _client;
+  final CachedDorarTransport _transport;
   final CacheService _cache;
 
-  MohdithService({required DorarHttpClient client, required CacheService cache})
-    : _client = client,
-      _cache = cache;
+  MohdithService({
+    required DorarHttpClient client,
+    required CacheService cache,
+    CachedDorarTransport? transport,
+  }) : _transport =
+           transport ?? CachedDorarTransport(client: client, cache: cache),
+       _cache = cache;
 
   /// Clear all cached mohdith data.
   ///
@@ -57,13 +59,15 @@ class MohdithService {
 
     final url = DorarEndpoints.mohdithById(validatedId);
 
-    final cached = await _cache.get(url);
-    if (cached != null) {
-      return MohdithInfo.fromJson(jsonDecode(cached.body));
-    }
-
     try {
-      final html = await _client.getHtml(url);
+      final source = await _transport.get(
+        url,
+        endpoint: 'scholar',
+        expectedType: MohdithInfo,
+        ttl: const Duration(days: 30),
+        accepts: (body) => body.contains('<h4'),
+      );
+      final html = source.body;
       final parsedData = MohdithParser.parseMohdithPage(
         html,
         mohdithId,
@@ -74,16 +78,6 @@ class MohdithService {
         name: parsedData.name,
         mohdithId: parsedData.mohdithId,
         info: parsedData.info,
-      );
-
-      await _cache.set(
-        CacheEntry(
-          key: url,
-          body: jsonEncode(mohdithInfo.toJson()),
-          header: '',
-          createdAt: DateTime.now(),
-          expiresAt: DateTime.now().add(const Duration(days: 30)),
-        ),
       );
 
       return mohdithInfo;

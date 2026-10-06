@@ -2,7 +2,7 @@ import 'package:html/dom.dart' as dom;
 
 import '../models/hadith_category.dart';
 
-/// How to clean hadith matn text, matching dorar-hadith-api cleaners.
+/// Display prefix cleanup. Source text and HTML must remain untouched.
 enum HadithTextCleanMode {
   /// Site/API search listings: strip leading `N -` numbering only.
   search,
@@ -18,16 +18,16 @@ enum HadithTextCleanMode {
 class HadithParser {
   HadithParser._();
 
-  /// Clean hadith text using the Node.js-aligned mode.
+  /// Remove only a verified leading display prefix.
   ///
-  /// - [HadithTextCleanMode.search]: `/\d+\s+-/g`
-  /// - [HadithTextCleanMode.detail]: `/-\s*:?\s*/g`
+  /// - [HadithTextCleanMode.search]: leading result numbering.
+  /// - [HadithTextCleanMode.detail]: leading dash/colon separator.
   static String cleanHadithText(String text, HadithTextCleanMode mode) {
     switch (mode) {
       case HadithTextCleanMode.search:
-        return text.replaceAll(RegExp(r'\d+\s+-'), '').trim();
+        return text.replaceAll(RegExp(r'^\s*\d+\s+-\s*'), '').trim();
       case HadithTextCleanMode.detail:
-        return text.replaceAll(RegExp(r'-\s*:?\s*'), '').trim();
+        return text.replaceAll(RegExp(r'^\s*-\s*:?\s*'), '').trim();
     }
   }
 
@@ -45,7 +45,10 @@ class HadithParser {
   /// This is used to construct URLs for similar/alternate/usul hadiths.
   static String? getHadithId(dom.Element element) {
     final anchor = element.querySelector('a[tag]');
-    return anchor?.attributes['tag'];
+    return anchor?.attributes['tag'] ??
+        element
+            .querySelector('[data-name="hadith"][data-pk]')
+            ?.attributes['data-pk'];
   }
 
   /// Extract similar hadith URL from DOM element.
@@ -94,7 +97,7 @@ class HadithParser {
   /// Extracts all hadith information (rawi, mohdith, book, etc.) from
   /// the DOM structure used by Dorar.net's HTML responses.
   ///
-  /// This matches the Node.js `parseHadithInfo()` function exactly.
+  /// Fields are scoped by observed source labels, including optional legacy layouts.
   static ParsedHadithInfo parseHadithInfo(dom.Element infoElement) {
     final result = ParsedHadithInfo();
 
@@ -109,35 +112,38 @@ class HadithParser {
       'takhrij': 'التخريج',
     };
 
-    // Get all <strong> elements that contain labels
-    final strongElements = infoElement.querySelectorAll('strong');
-
-    for (final strong in strongElements) {
+    // Match labels in their own scoped nodes, never by color or position.
+    final labels = labelsMap.entries.toList()
+      ..sort((a, b) => b.value.length.compareTo(a.value.length));
+    for (final strong in infoElement.querySelectorAll('strong')) {
       final label = _normalizeText(strong.text);
-
-      // Check each label to see if it matches
-      // We iterate in a specific order to handle overlapping labels correctly
-      // (e.g., "المحدث" is contained in "خلاصة حكم المحدث", so we check the longer one first)
-      final labelsToCheck = [
-        MapEntry('explainGrade', labelsMap['explainGrade']!),
-        MapEntry('rawi', labelsMap['rawi']!),
-        MapEntry('mohdith', labelsMap['mohdith']!),
-        MapEntry('book', labelsMap['book']!),
-        MapEntry('numberOrPage', labelsMap['numberOrPage']!),
-        MapEntry('grade', labelsMap['grade']!),
-        MapEntry('takhrij', labelsMap['takhrij']!),
-      ];
-
-      for (final entry in labelsToCheck) {
+      for (final entry in labels) {
         if (label.contains(entry.value)) {
-          // Extract value from <span> inside <strong>
           final span = strong.querySelector('span');
-          if (span != null) {
-            final value = span.text.trim();
-            result._setField(entry.key, value);
-            break; // Stop after first match to avoid overlapping labels
-          }
+          final anchor = strong.querySelector('a');
+          final value =
+              span?.text ??
+              anchor?.text ??
+              strong.text.substring(strong.text.indexOf(':') + 1);
+          result._setField(entry.key, value.trim());
+          break;
         }
+      }
+    }
+    // Quick API and embedded narration headers use label text plus siblings.
+    for (final entry in labels) {
+      if (result._field(entry.key).isNotEmpty) continue;
+      final plain = infoElement.text;
+      final pattern = RegExp(
+        '${RegExp.escape(entry.value)}\\s*:\\s*([\\s\\S]*?)(?=\\s*(?:${labels.map((e) => RegExp.escape(e.value)).join('|')})\\s*:'
+        r'|$)',
+      );
+      final match = pattern.firstMatch(plain);
+      if (match != null) {
+        result._setField(
+          entry.key,
+          match[1]!.replaceFirst(RegExp(r'[|\s]+$'), '').trim(),
+        );
       }
     }
 
@@ -210,6 +216,17 @@ class ParsedHadithInfo {
         'grade: $grade'
         ')';
   }
+
+  String _field(String name) => switch (name) {
+    'rawi' => rawi,
+    'mohdith' => mohdith,
+    'book' => book,
+    'numberOrPage' => numberOrPage,
+    'grade' => grade,
+    'explainGrade' => explainGrade,
+    'takhrij' => takhrij,
+    _ => '',
+  };
 
   /// Internal helper to set field values by name
   void _setField(String fieldName, String value) {

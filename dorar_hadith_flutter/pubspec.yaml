@@ -1,9 +1,8 @@
 name: dorar_hadith_flutter
-publish_to: none
 description: >-
   Flutter integration for dorar_hadith. Wires asset loading and the offline
   rawi.db database for Flutter apps.
-version: 0.5.0
+version: 0.6.0
 homepage: https://github.com/MoathCodes/dorar_hadith
 repository: https://github.com/MoathCodes/dorar_hadith
 issue_tracker: https://github.com/MoathCodes/dorar_hadith/issues
@@ -17,14 +16,14 @@ topics:
   - religion
 
 environment:
-  sdk: ">=3.12.0 <4.0.0"
-  flutter: ">=3.44.0"
+  sdk: ">=3.13.0 <4.0.0"
+  flutter: ">=3.47.5"
 
 dependencies:
   flutter:
     sdk: flutter
-  dorar_hadith:
-    path: ..
+  dorar_hadith: ^0.6.0
+  sqlite3: ^3.6.0
   drift: ^2.35.0
   path: ^1.9.1
   path_provider: ^2.1.6
@@ -33,3 +32,4 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+  crypto: ^3.0.7

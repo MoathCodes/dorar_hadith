@@ -49,9 +49,7 @@ class BookParser {
     final editionYearText = (removeHtml ? spans[4].text : spans[4].innerHtml)
         .trim();
 
-    // Extract year from text (e.g., "2020م" -> "2020")
-    final yearMatch = RegExp(r'^\d+').firstMatch(editionYearText);
-    final editionYear = yearMatch?.group(0) ?? '';
+    final editionYear = editionYearText;
 
     return ParsedBookData(
       name: name,

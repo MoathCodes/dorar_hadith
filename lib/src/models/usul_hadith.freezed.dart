@@ -313,7 +313,7 @@ mixin _$UsulSource {
 /// The source book and page reference
  String get source;/// The chain of narration (isnad)
  String get chain;/// The text of the hadith in this source
- String get hadithText;
+ String get hadithText; Citation? get citation; SourcedDocument? get chainContent; SourcedDocument? get narrationContent;
 /// Create a copy of UsulSource
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -327,20 +327,20 @@ $UsulSourceCopyWith<UsulSource> get copyWith => _$UsulSourceCopyWithImpl<UsulSou
 @override
 bool operator ==(Object other) {
   final _this = this as UsulSource;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UsulSource&&(identical(other.source, _this.source) || other.source == _this.source)&&(identical(other.chain, _this.chain) || other.chain == _this.chain)&&(identical(other.hadithText, _this.hadithText) || other.hadithText == _this.hadithText));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UsulSource&&(identical(other.source, _this.source) || other.source == _this.source)&&(identical(other.chain, _this.chain) || other.chain == _this.chain)&&(identical(other.hadithText, _this.hadithText) || other.hadithText == _this.hadithText)&&(identical(other.citation, _this.citation) || other.citation == _this.citation)&&(identical(other.chainContent, _this.chainContent) || other.chainContent == _this.chainContent)&&(identical(other.narrationContent, _this.narrationContent) || other.narrationContent == _this.narrationContent));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as UsulSource;
-  return Object.hash(runtimeType,_this.source,_this.chain,_this.hadithText);
+  return Object.hash(runtimeType,_this.source,_this.chain,_this.hadithText,_this.citation,_this.chainContent,_this.narrationContent);
 }
 
 @override
 String toString() {
   final _this = this as UsulSource;
-  return 'UsulSource(source: ${_this.source}, chain: ${_this.chain}, hadithText: ${_this.hadithText})';
+  return 'UsulSource(source: ${_this.source}, chain: ${_this.chain}, hadithText: ${_this.hadithText}, citation: ${_this.citation}, chainContent: ${_this.chainContent}, narrationContent: ${_this.narrationContent})';
 }
 
 
@@ -351,7 +351,7 @@ abstract mixin class $UsulSourceCopyWith<$Res>  {
   factory $UsulSourceCopyWith(UsulSource value, $Res Function(UsulSource) _then) = _$UsulSourceCopyWithImpl;
 @useResult
 $Res call({
- String source, String chain, String hadithText
+ String source, String chain, String hadithText, Citation? citation, SourcedDocument? chainContent, SourcedDocument? narrationContent
 });
 
 
@@ -368,12 +368,15 @@ class _$UsulSourceCopyWithImpl<$Res>
 
 /// Create a copy of UsulSource
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? source = null,Object? chain = null,Object? hadithText = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? source = null,Object? chain = null,Object? hadithText = null,Object? citation = freezed,Object? chainContent = freezed,Object? narrationContent = freezed,}) {
   return _then(UsulSource(
 source: null == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
 as String,chain: null == chain ? _self.chain : chain // ignore: cast_nullable_to_non_nullable
 as String,hadithText: null == hadithText ? _self.hadithText : hadithText // ignore: cast_nullable_to_non_nullable
-as String,
+as String,citation: freezed == citation ? _self.citation : citation // ignore: cast_nullable_to_non_nullable
+as Citation?,chainContent: freezed == chainContent ? _self.chainContent : chainContent // ignore: cast_nullable_to_non_nullable
+as SourcedDocument?,narrationContent: freezed == narrationContent ? _self.narrationContent : narrationContent // ignore: cast_nullable_to_non_nullable
+as SourcedDocument?,
   ));
 }
 
@@ -458,10 +461,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String source,  String chain,  String hadithText)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String source,  String chain,  String hadithText,  Citation? citation,  SourcedDocument? chainContent,  SourcedDocument? narrationContent)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UsulSource() when $default != null:
-return $default(_that.source,_that.chain,_that.hadithText);case _:
+return $default(_that.source,_that.chain,_that.hadithText,_that.citation,_that.chainContent,_that.narrationContent);case _:
   return orElse();
 
 }
@@ -479,10 +482,10 @@ return $default(_that.source,_that.chain,_that.hadithText);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String source,  String chain,  String hadithText)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String source,  String chain,  String hadithText,  Citation? citation,  SourcedDocument? chainContent,  SourcedDocument? narrationContent)  $default,) {final _that = this;
 switch (_that) {
 case _UsulSource():
-return $default(_that.source,_that.chain,_that.hadithText);case _:
+return $default(_that.source,_that.chain,_that.hadithText,_that.citation,_that.chainContent,_that.narrationContent);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -499,10 +502,10 @@ return $default(_that.source,_that.chain,_that.hadithText);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String source,  String chain,  String hadithText)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String source,  String chain,  String hadithText,  Citation? citation,  SourcedDocument? chainContent,  SourcedDocument? narrationContent)?  $default,) {final _that = this;
 switch (_that) {
 case _UsulSource() when $default != null:
-return $default(_that.source,_that.chain,_that.hadithText);case _:
+return $default(_that.source,_that.chain,_that.hadithText,_that.citation,_that.chainContent,_that.narrationContent);case _:
   return null;
 
 }
@@ -514,7 +517,7 @@ return $default(_that.source,_that.chain,_that.hadithText);case _:
 @JsonSerializable()
 
 class _UsulSource implements UsulSource {
-  const _UsulSource({required this.source, required this.chain, required this.hadithText});
+  const _UsulSource({required this.source, required this.chain, required this.hadithText, this.citation, this.chainContent, this.narrationContent});
   factory _UsulSource.fromJson(Map<String, dynamic> json) => _$UsulSourceFromJson(json);
 
 /// The source book and page reference
@@ -523,6 +526,9 @@ class _UsulSource implements UsulSource {
 @override final  String chain;
 /// The text of the hadith in this source
 @override final  String hadithText;
+@override final  Citation? citation;
+@override final  SourcedDocument? chainContent;
+@override final  SourcedDocument? narrationContent;
 
 /// Create a copy of UsulSource
 /// with the given fields replaced by the non-null parameter values.
@@ -537,18 +543,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _UsulSource&&(identical(other.source, source) || other.source == source)&&(identical(other.chain, chain) || other.chain == chain)&&(identical(other.hadithText, hadithText) || other.hadithText == hadithText));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _UsulSource&&(identical(other.source, source) || other.source == source)&&(identical(other.chain, chain) || other.chain == chain)&&(identical(other.hadithText, hadithText) || other.hadithText == hadithText)&&(identical(other.citation, citation) || other.citation == citation)&&(identical(other.chainContent, chainContent) || other.chainContent == chainContent)&&(identical(other.narrationContent, narrationContent) || other.narrationContent == narrationContent));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,source,chain,hadithText);
+    return Object.hash(runtimeType,source,chain,hadithText,citation,chainContent,narrationContent);
 }
 
 @override
 String toString() {
-    return 'UsulSource(source: $source, chain: $chain, hadithText: $hadithText)';
+    return 'UsulSource(source: $source, chain: $chain, hadithText: $hadithText, citation: $citation, chainContent: $chainContent, narrationContent: $narrationContent)';
 }
 
 
@@ -559,7 +565,7 @@ abstract mixin class _$UsulSourceCopyWith<$Res> implements $UsulSourceCopyWith<$
   factory _$UsulSourceCopyWith(_UsulSource value, $Res Function(_UsulSource) _then) = __$UsulSourceCopyWithImpl;
 @override @useResult
 $Res call({
- String source, String chain, String hadithText
+ String source, String chain, String hadithText, Citation? citation, SourcedDocument? chainContent, SourcedDocument? narrationContent
 });
 
 
@@ -576,12 +582,15 @@ class __$UsulSourceCopyWithImpl<$Res>
 
 /// Create a copy of UsulSource
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? source = null,Object? chain = null,Object? hadithText = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? source = null,Object? chain = null,Object? hadithText = null,Object? citation = freezed,Object? chainContent = freezed,Object? narrationContent = freezed,}) {
   return _then(_UsulSource(
 source: null == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
 as String,chain: null == chain ? _self.chain : chain // ignore: cast_nullable_to_non_nullable
 as String,hadithText: null == hadithText ? _self.hadithText : hadithText // ignore: cast_nullable_to_non_nullable
-as String,
+as String,citation: freezed == citation ? _self.citation : citation // ignore: cast_nullable_to_non_nullable
+as Citation?,chainContent: freezed == chainContent ? _self.chainContent : chainContent // ignore: cast_nullable_to_non_nullable
+as SourcedDocument?,narrationContent: freezed == narrationContent ? _self.narrationContent : narrationContent // ignore: cast_nullable_to_non_nullable
+as SourcedDocument?,
   ));
 }
 

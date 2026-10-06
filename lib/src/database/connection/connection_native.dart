@@ -3,6 +3,7 @@ import 'dart:isolate';
 
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
+import 'package:sqlite3/sqlite3.dart' as sqlite;
 import 'package:path/path.dart' as p;
 
 /// Opens a connection to the cache.db SQLite database for native platforms.
@@ -26,13 +27,21 @@ DatabaseConnection openConnection() {
       // First try resolving the database inside the installed package
       // (works when this library is used as a dependency)
       final packageDbUri = await Isolate.resolvePackageUri(
-        Uri.parse('package:dorar_hadith/assets/database/rawi.db'),
+        Uri.parse('package:dorar_hadith/dorar_hadith.dart'),
       );
 
       if (packageDbUri != null) {
-        final packageDbFile = File.fromUri(packageDbUri);
+        final packageDbFile = File.fromUri(
+          packageDbUri.resolve('../assets/database/rawi.db'),
+        );
         if (await packageDbFile.exists()) {
-          return NativeDatabase(packageDbFile);
+          return NativeDatabase.opened(
+            sqlite.sqlite3.open(
+              packageDbFile.path,
+              mode: sqlite.OpenMode.readOnly,
+            ),
+            enableMigrations: false,
+          );
         }
       }
 
@@ -50,7 +59,10 @@ DatabaseConnection openConnection() {
       for (final path in possiblePaths) {
         final file = File(path);
         if (await file.exists()) {
-          return NativeDatabase(file);
+          return NativeDatabase.opened(
+            sqlite.sqlite3.open(file.path, mode: sqlite.OpenMode.readOnly),
+            enableMigrations: false,
+          );
         }
       }
 

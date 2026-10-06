@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
@@ -57,6 +58,9 @@ class DorarHttpClient {
     this.retryDelay = const Duration(seconds: 1),
     this.enableLogging = false,
   }) : _client = client ?? http.Client() {
+    if (maxRetries < 1) {
+      throw ArgumentError.value(maxRetries, 'maxRetries', 'Must be positive');
+    }
     // Validate timeout
     Validators.validateTimeout(timeout);
   }
@@ -75,7 +79,7 @@ class DorarHttpClient {
   ///
   /// Returns the response body as a string.
   /// Throws [DorarException] on error.
-  Future<String> get(
+  Future<DorarHttpResponse> getResponse(
     String url, {
     Map<String, String>? headers,
     Duration? customTimeout,
@@ -104,7 +108,20 @@ class DorarHttpClient {
 
         // Handle response based on status code
         if (response.statusCode == 200) {
-          return response.body;
+          final contentType = response.headers['content-type'];
+          final encoding =
+              contentType?.toLowerCase().contains('charset=iso-8859-1') == true
+              ? latin1
+              : utf8;
+          final body = encoding.decode(response.bodyBytes);
+          return DorarHttpResponse(
+            body: body,
+            statusCode: response.statusCode,
+            contentType: contentType,
+            encoding: encoding.name,
+            finalUri: response.request?.url,
+            fetchedAt: DateTime.now().toUtc(),
+          );
         } else if (response.statusCode == 404) {
           throw DorarNotFoundException('Resource not found', resource: url);
         } else if (response.statusCode == 429) {
@@ -168,6 +185,16 @@ class DorarHttpClient {
     throw DorarNetworkException('Max retries exceeded');
   }
 
+  Future<String> get(
+    String url, {
+    Map<String, String>? headers,
+    Duration? customTimeout,
+  }) async => (await getResponse(
+    url,
+    headers: headers,
+    customTimeout: customTimeout,
+  )).body;
+
   /// Make a GET request expecting HTML response
   ///
   /// This is an alias for [get] but makes intent clearer.
@@ -185,6 +212,23 @@ class DorarHttpClient {
     if (enableLogging) {
       print('[DorarHttpClient] Waiting ${delay.inSeconds}s before retry...');
     }
-    await Future.delayed(delay);
+    await Future<void>.delayed(delay);
   }
+}
+
+class DorarHttpResponse {
+  const DorarHttpResponse({
+    required this.body,
+    required this.statusCode,
+    required this.encoding,
+    required this.fetchedAt,
+    this.contentType,
+    this.finalUri,
+  });
+  final String body;
+  final int statusCode;
+  final String encoding;
+  final DateTime fetchedAt;
+  final String? contentType;
+  final Uri? finalUri;
 }

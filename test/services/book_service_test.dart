@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:dorar_hadith/dorar_hadith.dart';
-import 'package:dorar_hadith/src/database/cache_database.dart';
 import 'package:dorar_hadith/src/services/cache_service.dart';
 import 'package:drift/native.dart';
 import 'package:http/testing.dart';
@@ -78,7 +77,7 @@ void main() {
       expect(book2.name, 'صحيح البخاري');
 
       // Verify cache hit
-      final cacheKey = 'https://www.dorar.net/hadith/book-card/6216';
+      final cacheKey = 'raw:book:https://www.dorar.net/hadith/book-card/6216';
       expect(await cacheService.get(cacheKey), isNotNull);
     });
 
@@ -143,7 +142,7 @@ void main() {
           isA<DorarParseException>().having(
             (e) => e.message,
             'message',
-            contains('parse book data'),
+            contains('parse book'),
           ),
         ),
       );
@@ -171,7 +170,7 @@ void main() {
       // Fetch book to populate cache
       await service.getById('6216');
 
-      final cacheKey = 'https://www.dorar.net/hadith/book-card/6216';
+      final cacheKey = 'raw:book:https://www.dorar.net/hadith/book-card/6216';
       expect(await cacheService.get(cacheKey), isNotNull);
 
       // Clear cache
@@ -230,11 +229,15 @@ void main() {
 
       // Both should be cached
       expect(
-        await cacheService.get('https://www.dorar.net/hadith/book-card/6216'),
+        await cacheService.get(
+          'raw:book:https://www.dorar.net/hadith/book-card/6216',
+        ),
         isNotNull,
       );
       expect(
-        await cacheService.get('https://www.dorar.net/hadith/book-card/3088'),
+        await cacheService.get(
+          'raw:book:https://www.dorar.net/hadith/book-card/3088',
+        ),
         isNotNull,
       );
     });

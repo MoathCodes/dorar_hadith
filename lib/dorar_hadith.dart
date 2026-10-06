@@ -6,8 +6,8 @@
 /// ## Features
 ///
 /// - Hadith search with filters
-/// - Unified [DetailedHadith] model that extends the lightweight [Hadith]
-///   listing results
+/// - [DetailedHadith] site records alongside lightweight quick-API [Hadith]
+///   results
 /// - Sharh (explanations)
 /// - Offline reference data (books, scholars, narrators)
 /// - Built-in persistent caching
@@ -102,3 +102,19 @@ export 'src/utils/asset_loader/asset_loader.dart';
 export 'src/utils/exceptions.dart';
 export 'src/utils/html_stripper.dart';
 export 'src/utils/validators.dart';
+
+export 'src/models/identifiers.dart';
+export 'src/models/source_content.dart';
+export 'src/models/result_details.dart';
+export 'src/parsers/document_parser.dart'
+    show DocumentParser, renderDocumentHtml;
+export 'src/constants/hadith_type_filter.dart';
+export 'src/models/related_content.dart';
+export 'src/models/discovery.dart';
+export 'src/services/category_service.dart';
+export 'src/services/reference_discovery_service.dart';
+
+export 'src/database/reference_migration.dart';
+export 'src/models/reference_manifest.dart';
+export 'src/models/render_token.dart';
+export 'src/constants/search_capabilities.dart';

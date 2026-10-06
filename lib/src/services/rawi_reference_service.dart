@@ -3,7 +3,7 @@ import '../models/rawi_item.dart';
 
 /// Service for browsing and searching narrators (Ruwat).
 ///
-/// Uses SQLite database (via Drift) with 11,436 narrators.
+/// Uses the dated SQLite snapshot (via Drift) of observed narrator choices.
 class RawiReferenceService {
   /// The underlying Drift database instance.
   final RawiDatabase _database;

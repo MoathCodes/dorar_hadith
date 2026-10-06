@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'hadith.dart';
+import 'source_content.dart';
 
 part 'usul_hadith.freezed.dart';
 part 'usul_hadith.g.dart';
@@ -61,6 +62,9 @@ abstract class UsulSource with _$UsulSource {
 
     /// The text of the hadith in this source
     required String hadithText,
+    Citation? citation,
+    SourcedDocument? chainContent,
+    SourcedDocument? narrationContent,
   }) = _UsulSource;
 
   factory UsulSource.fromJson(Map<String, dynamic> json) =>

@@ -21,22 +21,31 @@ class BookReferenceService {
   /// Create a new service instance.
   ///
   /// [assetLoader] defaults to the platform-specific loader if not provided.
-  /// [assetPath] defaults to 'assets/data/book.json'.
+  /// [_assetPath] defaults to 'assets/data/book.json'.
   BookReferenceService({
     AssetLoader? assetLoader,
-    String assetPath = 'assets/data/book.json',
-  }) : _assetLoader = assetLoader ?? createAssetLoader(),
-       _assetPath = assetPath;
+    this._assetPath = 'assets/data/book.json',
+  }) : _assetLoader = assetLoader ?? createAssetLoader();
 
   /// Count books. If [query] provided, counts only matching books.
   Future<int> countBooks({String? query}) async {
     await initialize();
 
     if (query == null || query.isEmpty) {
-      return _cache!.length;
+      return _cache!.values
+          .where((item) => item.currentSelectable)
+          .where((item) => item.currentSelectable)
+          .length;
     }
 
-    return _cache!.values.where((book) => fuzzyMatch(book.name, query)).length;
+    return _cache!.values
+        .where((item) => item.currentSelectable)
+        .where(
+          (book) =>
+              (fuzzyMatch(book.name, query) ||
+              book.historicalNames.any((name) => fuzzyMatch(name, query))),
+        )
+        .length;
   }
 
   /// Get all books with pagination support.
@@ -46,7 +55,11 @@ class BookReferenceService {
   Future<List<BookItem>> getAllBooks({int limit = 20, int offset = 0}) async {
     await initialize();
 
-    return _cache!.values.skip(offset).take(limit).toList();
+    return _cache!.values
+        .where((item) => item.currentSelectable)
+        .skip(offset)
+        .take(limit)
+        .toList();
   }
 
   /// Get a book by ID. Returns null if not found.
@@ -77,7 +90,7 @@ class BookReferenceService {
 
     // Load JSON content
     final jsonString = await _assetLoader.loadString(_assetPath);
-    final List<dynamic> jsonList = json.decode(jsonString);
+    final List<dynamic> jsonList = json.decode(jsonString) as List<dynamic>;
 
     // Parse and build cache
     _cache = {};
@@ -104,7 +117,12 @@ class BookReferenceService {
 
     // Filter using fuzzy matching
     final matches = _cache!.values
-        .where((book) => fuzzyMatch(book.name, query))
+        .where((item) => item.currentSelectable)
+        .where(
+          (book) =>
+              (fuzzyMatch(book.name, query) ||
+              book.historicalNames.any((name) => fuzzyMatch(name, query))),
+        )
         .skip(offset)
         .take(limit)
         .toList();

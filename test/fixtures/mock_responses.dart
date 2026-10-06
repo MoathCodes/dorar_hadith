@@ -6,8 +6,8 @@ const mockAlternateHadithResponse = '''
 <html>
 <body>
   <div class="border-bottom">
-    <div>حديث أصلي</div>
-    <div></div>
+    <div><a tag="123">حديث أصلي</a></div>
+    <div><strong>الراوي: <span>عمر بن الخطاب</span></strong><strong>المحدث: <span>البخاري</span></strong><strong>المصدر: <span>صحيح البخاري</span></strong></div>
   </div>
   <div class="border-bottom">
     <div>حديث بديل صحيح</div>
@@ -145,53 +145,22 @@ const mockServerErrorResponse = '''
 
 /// Mock sharh page response (with Arabic content)
 const mockSharhPageResponse = '''
-<html>
-<body>
-  <article>
-    <h4>شرح الحديث</h4>
-    <p>هذا شرح الحديث الشريف</p>
-    <span>إنما الأعمال بالنيات</span>
-  </article>
-  <div class="primary-text-color">عمر بن الخطاب</div>
-  <div class="primary-text-color">البخاري</div>
-  <div class="primary-text-color">صحيح البخاري</div>
-  <div class="primary-text-color">1/1</div>
-  <div class="primary-text-color">صحيح</div>
-  <div class="primary-text-color">متحقق</div>
-  <div class="text-justify">نص الحديث:</div>
-  <div>هذا شرح تفصيلي للحديث عن النيات، إنما الأعمال بالنيات، وأهميتها في الإسلام.</div>
-</body>
-</html>
+<html><body><div class="border-bottom">
+<article><h5>إنما الأعمال بالنيات</h5></article>
+<div class="d-block"><strong>الراوي: <span>عمر بن الخطاب</span></strong><strong>المحدث: <span>البخاري</span></strong><strong>المصدر: <span>صحيح البخاري</span></strong><strong>الصفحة أو الرقم: <span>1/1</span></strong><strong>خلاصة حكم المحدث: <span>صحيح</span></strong><strong>التخريج: <span>متحقق</span></strong></div>
+</div><div id="sharh-text-content"><p>هذا شرح تفصيلي للحديث عن النيات، إنما الأعمال بالنيات، وأهميتها في الإسلام.</p></div></body></html>
 ''';
 
 /// Mock sharh search results with IDs (with Arabic content)
-const mockSharhSearchResponse = '''
-<html>
-<body>
-  <div id="home">
-    <div class="result border-bottom">
-      <a xplain="123">حديث 1</a>
-      <span>إنما الأعمال بالنيات</span>
-    </div>
-    <div class="result border-bottom">
-      <a xplain="456">حديث 2</a>
-      <span>المؤمن مرآة أخيه</span>
-    </div>
-    <div class="result border-bottom">
-      <a xplain="0">حديث بدون شرح</a>
-      <span>نص حديث ما</span>
-    </div>
-  </div>
-</body>
-</html>
-''';
+const mockSharhSearchResponse =
+    '''<html><body><div id="home"><div class="result border-bottom"><article><h5><a tag="123">إنما الأعمال بالنيات</a></h5></article><div class="d-block"><strong>الراوي: <span>عمر بن الخطاب</span></strong><strong>المحدث: <span>البخاري</span></strong><strong>المصدر: <span>صحيح البخاري</span></strong><a xplain="123">شرح الحديث</a></div></div><div class="result border-bottom"><article><h5><a tag="456">المؤمن مرآة أخيه</a></h5></article><div class="d-block"><strong>الراوي: <span>عمر بن الخطاب</span></strong><strong>المحدث: <span>البخاري</span></strong><strong>المصدر: <span>صحيح البخاري</span></strong><a xplain="456">شرح الحديث</a></div></div><div class="result border-bottom"><article><h5><a tag="0">نص حديث ما</a></h5></article><div class="d-block"><strong>الراوي: <span>عمر بن الخطاب</span></strong><strong>المحدث: <span>البخاري</span></strong><strong>المصدر: <span>صحيح البخاري</span></strong><a xplain="0">شرح الحديث</a></div></div></div></body></html>''';
 
 /// Mock similar hadiths response (with Arabic content)
 const mockSimilarHadithsResponse = '''
 <html>
 <body>
   <div class="border-bottom">
-    <div>حديث مشابه 1</div>
+    <div><a tag="123">حديث مشابه 1</a></div>
     <div>
   <strong>الراوي: <span>أبو هريرة</span></strong>
   <strong>المحدث: <span><a view-card="mhd" card-link="261">مسلم</a></span></strong>

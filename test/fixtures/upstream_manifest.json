@@ -1,0 +1,1501 @@
+{
+  "schemaVersion": 1,
+  "method": "Explicit direct Dorar capture; body hashes are UTF-8 decoded response hashes",
+  "captureCount": 166,
+  "captures": [
+    {
+      "name": "alternates_6y6pYWK6",
+      "url": "https://dorar.net/h/6y6pYWK6?alts=1",
+      "capturedAt": "2026-10-06T12:15:06.174065Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "348836174f5773702004d31e88853fc5750959361c8f747534268e188bdaefa7",
+      "captureFileSha256": "44d3a85bb7a980f53d252da8522eccb8c798f9365614dfbd9e13dad12355e9a6"
+    },
+    {
+      "name": "alternates_BRpyQaPP",
+      "url": "https://dorar.net/h/BRpyQaPP?alts=1",
+      "capturedAt": "2026-10-06T12:15:01.873598Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "df8e0b7b275829c7b04bdbc523dfc0cf91e359355c9b2c657cd4f2f7de7837dc",
+      "captureFileSha256": "3db763a13944bbde6c50fa8d09b562203ed76bdfd7b94a6171f4083bac2fb209"
+    },
+    {
+      "name": "alternates_DMyQ3Zkn",
+      "url": "https://dorar.net/h/DMyQ3Zkn?alts=1",
+      "capturedAt": "2026-10-06T12:15:11.429669Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "f01561feaeb03b951992762094821d59e15ec7e28a3609bb6758c0f2dcde4852",
+      "captureFileSha256": "573da7015c401d51830bc3f930a80497bbfdb1980aca533daef69ad4b2be8062"
+    },
+    {
+      "name": "alternates_Kw3L9vhK",
+      "url": "https://dorar.net/h/Kw3L9vhK?alts=1",
+      "capturedAt": "2026-10-06T12:15:10.764359Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "112763ac4651644dcad360d9c3e899516bda91953d51c267160443121c9671d8",
+      "captureFileSha256": "878c16acefae1808d5a275a6e8b2d4289894af62858d2582a4b9a21129367a78"
+    },
+    {
+      "name": "alternates_O7sx39P0",
+      "url": "https://dorar.net/h/O7sx39P0?alts=1",
+      "capturedAt": "2026-10-06T12:15:09.304375Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "75a213355ce44efa0dd3b2ae8842111a217697f735a6c3da45fe6cf87592572a",
+      "captureFileSha256": "9bb7e8031c09404b3dac56b4b9af114dd23b95c410b564eb8d0ff5489c6f12eb"
+    },
+    {
+      "name": "alternates_Q0jZhzCM",
+      "url": "https://dorar.net/h/Q0jZhzCM?alts=1",
+      "capturedAt": "2026-10-06T12:15:02.464114Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "ffcf362f70e3442ffcc355bc987fb8dffa635888a9f9d94a3d16286f3b3957a3",
+      "captureFileSha256": "631eb362eda623681c36fc0d40ca83b5143e714a1dc33a773926f9010c5efbaf"
+    },
+    {
+      "name": "alternates_Q3GV55o5",
+      "url": "https://dorar.net/h/Q3GV55o5?alts=1",
+      "capturedAt": "2026-10-06T12:15:06.991407Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "22797744d9253cdaec89d5187ade85e6d2c629eb699dd14f15674d3dc93a04b3",
+      "captureFileSha256": "735e951b980233ab0f6128164790b452b3f1cf71bb80388230393405fe879054"
+    },
+    {
+      "name": "alternates_QPQEXsVj",
+      "url": "https://dorar.net/h/QPQEXsVj?alts=1",
+      "capturedAt": "2026-10-06T12:15:07.821617Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "169614f515b078e645eb14a49612fa9cc94ec25a4d6adab369d9e926f1755bad",
+      "captureFileSha256": "7d9bd75be706c01b3b6b54abdb8c73462be3bbb438a9c3a860ce7fb3e4af1494"
+    },
+    {
+      "name": "alternates_QXETlI6C",
+      "url": "https://dorar.net/h/QXETlI6C?alts=1",
+      "capturedAt": "2026-10-06T12:15:04.259245Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "5a34cbc73bd9a2e0c89190052ccb1321a8864e1cb034e8474345d5aa936cd291",
+      "captureFileSha256": "a6f12afa2b7c5ab9879bb8235fe558311fe1e9c253a76c3c7aaefaa9e32b0d43"
+    },
+    {
+      "name": "alternates_RKi1asJG",
+      "url": "https://dorar.net/h/RKi1asJG?alts=1",
+      "capturedAt": "2026-10-06T12:15:08.630515Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "6955afd12b0ef3976aeba08bdd2f5daff77d36f77b4a7f120547c649b9a87fd1",
+      "captureFileSha256": "025e3c4c877df672a04468d37231a86be61a83580ede33f9635ae6b0a97a55e8"
+    },
+    {
+      "name": "alternates_VGfHSGLl",
+      "url": "https://dorar.net/h/VGfHSGLl?alts=1",
+      "capturedAt": "2026-10-06T12:15:12.110894Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "3f4a7d4b211437163794e99d16db619a25b09a3aaee1a53262e3983ab6e8d261",
+      "captureFileSha256": "dcb7267b5dfd347dc05fdbec2080a123b90a2b4330bee309c599aea069902d2c"
+    },
+    {
+      "name": "alternates_WYtt5aj3",
+      "url": "https://dorar.net/h/WYtt5aj3?alts=1",
+      "capturedAt": "2026-10-06T12:15:03.561675Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "85dd294503a61bec969ee9313b9e58930ef9c118324f6efcd8ae8f8f28f660ef",
+      "captureFileSha256": "c3bc5b561b35ef03a82f65598532fce111ca67c2b97af373b0cd40c84f8b538d"
+    },
+    {
+      "name": "alternates_i9N1PTUu",
+      "url": "https://dorar.net/h/i9N1PTUu?alts=1",
+      "capturedAt": "2026-10-06T12:15:01.464998Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "f14b6959a482d489d1f181c1d3353e87295b6d0cb76d6365cab2fdb7efbd2420",
+      "captureFileSha256": "a94d63bda1e10fbe78eea9b1c2d475dd7214f53c39b614dcb8be5d55ffc075e6"
+    },
+    {
+      "name": "alternates_is6eZe9m",
+      "url": "https://dorar.net/h/is6eZe9m?alts=1",
+      "capturedAt": "2026-10-06T12:15:03.002028Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "9744054c24f3fefbbf7a782fda4525e0a43d866517ebdbd24128326e1c11b0a1",
+      "captureFileSha256": "b93ba9031c31546169f68b3aa71adf10efcc31130dbbd6185391b636067f49c3"
+    },
+    {
+      "name": "alternates_kHeZ3ULL",
+      "url": "https://dorar.net/h/kHeZ3ULL?alts=1",
+      "capturedAt": "2026-10-06T12:15:10.090956Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "e6908841bd996a67175d8d6a69660101bbfc2a884493b031fc2e73c03f5b5dae",
+      "captureFileSha256": "4311e2b89ea23315d9ec69926be7f54ee6596b183d7254afaffe9be489e27202"
+    },
+    {
+      "name": "alternates_vG9L36PK",
+      "url": "https://dorar.net/h/vG9L36PK?alts=1",
+      "capturedAt": "2026-10-06T12:15:05.334637Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "e5de48f7ba75fe1f43221b318101149989353173ca0ec1af75051274bd8831f3",
+      "captureFileSha256": "4b63e2a1f1f6be294ff258e32ba551d06eca30d7e22249b8ea2667bc4fcf9cae"
+    },
+    {
+      "name": "asbab_3Ti4cYfm",
+      "url": "https://dorar.net/h/3Ti4cYfm?asbab=1",
+      "capturedAt": "2026-10-06T12:40:47.703787Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "07bf09721647bf5e6ced683c525c905ce05af44b9848e7036d1127b9b96a2016",
+      "captureFileSha256": "c110ef15f052c7956c2258b81a40695cc3859af485fb3f9bc0fc0793ac28d913"
+    },
+    {
+      "name": "asbab_ROZIcbYR",
+      "url": "https://dorar.net/h/ROZIcbYR?asbab=1",
+      "capturedAt": "2026-10-06T12:15:15.440859Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "2647c89894eef210c671faa51d1a488d45acd16e7904605356a5771ca0e5b017",
+      "captureFileSha256": "9d745d4f0e59abde1ac0074d7d6d1bcdf244d249001c474549b2dc59baf47f0e"
+    },
+    {
+      "name": "asbab_SYZx1Nyk",
+      "url": "https://dorar.net/h/SYZx1Nyk?asbab=1",
+      "capturedAt": "2026-10-06T12:40:47.327412Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "f1c9773dd0536cbac0604c5e7631f5bad89a2a806bf31a659937dcc6f67fa52e",
+      "captureFileSha256": "e286f441a5283ccafb14b62871148997f1421cd5dbcf8542b3cf926f8b0d33fa"
+    },
+    {
+      "name": "asbab_ZjENE1Ik",
+      "url": "https://dorar.net/h/ZjENE1Ik?asbab=1",
+      "capturedAt": "2026-10-06T12:40:46.949985Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "0cc5a26c9ec80ed332d48ff88cbfad70eee302ae7dd087de534aaf3d64a96057",
+      "captureFileSha256": "14b1a510739cd2a4d5630b7f47c0a7e8b07ba8d5799ff548936a126aecd579c5"
+    },
+    {
+      "name": "asbab_uZlt2txC",
+      "url": "https://dorar.net/h/uZlt2txC?asbab=1",
+      "capturedAt": "2026-10-06T12:15:16.400198Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "73e90816c91232d771b2717d22032a2c7da740ff81b0d7260953b3d60faea6b1",
+      "captureFileSha256": "3bc3c7d8325da6a4bd3ef58fee10f1fd229589bf57cd5ca0b3c4d23bae19a82e"
+    },
+    {
+      "name": "asbab_wcyAMgeR",
+      "url": "https://dorar.net/h/wcyAMgeR?asbab=1",
+      "capturedAt": "2026-10-06T12:15:17.344917Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "a88e2a71025a2fb03e6bba6f705c96aa729fd4f078c835512ce7cae13a15fde0",
+      "captureFileSha256": "8e3109ab6ccc655d0ec55dac3e0fc1c98a8d3d2cf5914dce519b896e847c0dca"
+    },
+    {
+      "name": "book_14529",
+      "url": "https://dorar.net/hadith/book-card/14529",
+      "capturedAt": "2026-10-06T12:15:19.257054Z",
+      "statusCode": 200,
+      "contentType": "application/json;charset=UTF-8",
+      "sha256": "b95bcff8bb3b62aa5ac50e4848f8eab9128a288ab151ff4ee3254f235dfcf6de",
+      "captureFileSha256": "1b375eb35ccbff893f59340bcb8168c492f2f067f1d827832fe3b58c62c99634"
+    },
+    {
+      "name": "book_17629",
+      "url": "https://dorar.net/hadith/book-card/17629",
+      "capturedAt": "2026-10-06T12:15:17.663367Z",
+      "statusCode": 200,
+      "contentType": "application/json;charset=UTF-8",
+      "sha256": "f1ec70eace3943b985787a6299714425313a46f24e8de10296c9af8c2dc709b5",
+      "captureFileSha256": "9833e4df856bce110c506f4894b5064d3cfcf7a45c23c4bce9c18131aaa6d7e6"
+    },
+    {
+      "name": "book_17630",
+      "url": "https://dorar.net/hadith/book-card/17630",
+      "capturedAt": "2026-10-06T12:15:19.905123Z",
+      "statusCode": 200,
+      "contentType": "application/json;charset=UTF-8",
+      "sha256": "016926ab89e6849bd6553f80847b4cfbe539b96be28dce818a1ba441039b1864",
+      "captureFileSha256": "ad218c238b3af66b640eae6270fabb8a42dd5cf29fbb409bb7e76259a3c52cc2"
+    },
+    {
+      "name": "book_17632",
+      "url": "https://dorar.net/hadith/book-card/17632",
+      "capturedAt": "2026-10-06T12:15:17.982985Z",
+      "statusCode": 200,
+      "contentType": "application/json;charset=UTF-8",
+      "sha256": "405cb5fa9de03b7084a46a85c1816c9b1ced52937ef2d7415f37394870dc55df",
+      "captureFileSha256": "dbee0935951ee37e6bfd166dc86d631320f642f94b10e5fba3c4b913fd5562ca"
+    },
+    {
+      "name": "book_3088",
+      "url": "https://dorar.net/hadith/book-card/3088",
+      "capturedAt": "2026-10-06T12:15:18.613404Z",
+      "statusCode": 200,
+      "contentType": "application/json;charset=UTF-8",
+      "sha256": "880701a45ec320b87286f2da3f13ccc1ef32d6fcc7a22656af2ac293c3939300",
+      "captureFileSha256": "a9dffec65441ee9532db930effda8ddc2ba5c823fa1afecf1dd342a26cf8be86"
+    },
+    {
+      "name": "book_6216",
+      "url": "https://dorar.net/hadith/book-card/6216",
+      "capturedAt": "2026-10-06T12:15:18.302572Z",
+      "statusCode": 200,
+      "contentType": "application/json;charset=UTF-8",
+      "sha256": "25ac5a13b2b3463af5d273b4222d4641fa0f33a776e72db8af0aa1387e283e38",
+      "captureFileSha256": "cf43a99bc1937218d8c78ae54be49f5c0630155c5ec27a20be120a5a3532ef4b"
+    },
+    {
+      "name": "book_88",
+      "url": "https://dorar.net/hadith/book-card/88",
+      "capturedAt": "2026-10-06T12:15:18.937046Z",
+      "statusCode": 200,
+      "contentType": "application/json;charset=UTF-8",
+      "sha256": "c1b4563a8f05b3af15ff31a604c7d1ba44c583fee4f700bd2c4bd7de75fecb5b",
+      "captureFileSha256": "85cc6bb4537c348a31f82c6616c88defba94dfa332f11aebd51977feb858729e"
+    },
+    {
+      "name": "book_9016",
+      "url": "https://dorar.net/hadith/book-card/9016",
+      "capturedAt": "2026-10-06T12:15:19.589691Z",
+      "statusCode": 200,
+      "contentType": "application/json;charset=UTF-8",
+      "sha256": "124623de48596aa847b906e860f34b8971f7288ce5d990566634d25e578f5b11",
+      "captureFileSha256": "1b954aa3035ae8157d6632accd71860255861fa9b0426a45d9f2c7c8284499b5"
+    },
+    {
+      "name": "category_501a2ed19fdb5c247307c56d389cc8b7_1",
+      "url": "https://dorar.net/hadith-category/cat/501a2ed19fdb5c247307c56d389cc8b7?page=1",
+      "capturedAt": "2026-10-06T12:15:49.903540Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "4ed4234d7534f59c7c8059c9a0a7a90e66d44661c4dd37103cd8dd050595cf6d",
+      "captureFileSha256": "3cff1120bfc6b7cf06bf1320072283ac1d1637b1126e66db0e938aa408cbb86a"
+    },
+    {
+      "name": "category_501a2ed19fdb5c247307c56d389cc8b7_11",
+      "url": "https://dorar.net/hadith-category/cat/501a2ed19fdb5c247307c56d389cc8b7?page=11",
+      "capturedAt": "2026-10-06T12:15:51.263279Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "5cfee1cf9bc6f84c7885bba9ac6b6188e9756430578bec191b76209ce78563a5",
+      "captureFileSha256": "fc8983b457a78efa68140bf720b58223446330e996ce297f477b2b25b645648a"
+    },
+    {
+      "name": "category_f274e082cc20c93e2d217355f9ee05d4_1",
+      "url": "https://dorar.net/hadith-category/cat/f274e082cc20c93e2d217355f9ee05d4?page=1",
+      "capturedAt": "2026-10-06T12:15:46.989374Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "7f3158185839c1d8e7d703d035f88d766a92d206d0cdca22b7e6b186ca4b4c55",
+      "captureFileSha256": "e47e95465bf2b417dcb22a44959488fca410999b7d8db584cffe1377df5fdeb9"
+    },
+    {
+      "name": "category_f274e082cc20c93e2d217355f9ee05d4_11",
+      "url": "https://dorar.net/hadith-category/cat/f274e082cc20c93e2d217355f9ee05d4?page=11",
+      "capturedAt": "2026-10-06T12:15:48.562754Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "9c29814298325c0b4f7b5b7df0c904427b777d227ac30e34391015bb02a8dd62",
+      "captureFileSha256": "a16523e3c787ad6aca9016c542a261391ba8f2029c2c014f2011b9083e9a55ea"
+    },
+    {
+      "name": "category_roots",
+      "url": "https://dorar.net/hadith-category",
+      "capturedAt": "2026-10-06T12:15:45.334942Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "c1e98fcc10a86f6bd2d79a508a98221bfdfbcaf90f6b453d8b3ff8c41d2542ef",
+      "captureFileSha256": "7be4417cbf8992a00d4cc83df2307008bed59f167dcf97ac7a2540d0bcff563e"
+    },
+    {
+      "name": "category_search",
+      "url": "https://dorar.net/hadith-category/newcats?cat=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9",
+      "capturedAt": "2026-10-06T12:40:58.769951Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "fb78ea5699c6ace3a2645736896aaa4e44079a325f796d211904a3a4c6b6497e",
+      "captureFileSha256": "0510f4b65bae9b267bbe698168a87b9bc2674dcb6bc8b1be5d81ce6fe542f55a"
+    },
+    {
+      "name": "children_prayer",
+      "url": "https://dorar.net/hadith-category/subcategories?category=%D8%B5%D9%84%D8%A7%D8%A9+",
+      "capturedAt": "2026-10-06T12:41:50.460103Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "f6bc6a75939dc93df57a5efe0e90272e3d162169cfe6f514bb5af3ab799f9b9e",
+      "captureFileSha256": "c3088a94e3dd4fb10ab482843336baf9d0c6fdb128dc68a9ee61cfc0599c29c8"
+    },
+    {
+      "name": "empty_alternates_0",
+      "url": "https://dorar.net/h/j0j8uiR3?alts=1",
+      "capturedAt": "2026-10-06T13:11:00.895847Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "92594a45afe7e8b4320d12e8dde06aa2b975f7a56972cbff134e03f936e71c6d",
+      "captureFileSha256": "0f691e96b68ee4b46e3feed73d032765d4ddeec253b704900750752f785b9ab6"
+    },
+    {
+      "name": "empty_alternates_1",
+      "url": "https://dorar.net/h/iRvuW9Cl?alts=1",
+      "capturedAt": "2026-10-06T13:11:01.589866Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "4faf732ffd4cedf000bf09cdf541c3c89748d78492c4cd4fb66d7803ab8a8092",
+      "captureFileSha256": "91363ac44976b1c8fe0161089bfe31d178df927a5bf0f27d1154cd64f16334d9"
+    },
+    {
+      "name": "empty_wqzxvnrplm",
+      "url": "https://dorar.net/dorar_api.json?skey=wqzxvnrplm&st=p",
+      "capturedAt": "2026-10-06T12:15:41.843764Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "234c619710f24ea468a8ba8313ce621006a8f6088df0c2f54bfb520721bb0fe0",
+      "captureFileSha256": "c49ab16cbe17743a729f79aa70ebaa84e8b3a642fb81404eee80f3475ab2a808"
+    },
+    {
+      "name": "empty_zxqvnrplm",
+      "url": "https://dorar.net/dorar_api.json?skey=zxqvnrplm&st=p",
+      "capturedAt": "2026-10-06T12:15:41.385009Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "21b94f916a681acac93e7a72ba0ce0eff1470e38645d67695a11f033617436cd",
+      "captureFileSha256": "e94492dc6807cf3f4f4313c6b2ca0e3ccc58f78a4d2a5db44fc71f5ebf21f337"
+    },
+    {
+      "name": "phrase_matrix_0_all",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&optional_phrase1=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&st=w",
+      "capturedAt": "2026-10-06T12:48:55.767975Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "a15aa458e371c1054c7f6a6c671a3154cc98c0d96c7cfbcc484b518648844e64",
+      "captureFileSha256": "f154af975908392a27e0596c7b03d3b3d214818abd1bd3d9a7b297126bde3f62"
+    },
+    {
+      "name": "phrase_matrix_0_any",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&optional_phrase1=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&st=a",
+      "capturedAt": "2026-10-06T12:48:56.560493Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "169320b736ac69aad6315c84f633406baafe84b410c815778fc81ec3885e8cae",
+      "captureFileSha256": "1cd1e0954e298f6454edd9512307926106ab5c5b47f74126f9e8e6d962d68bc2"
+    },
+    {
+      "name": "phrase_matrix_0_blank",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&optional_phrase2=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85",
+      "capturedAt": "2026-10-06T12:48:54.718389Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "f39f8d27a18bf3e63d17cc0c868272c709e498e51762d9d6fb39382cd2eaac3e",
+      "captureFileSha256": "3a0da72cb51a83002a2b722bbacd76edf06041f94c466fda0cd9267132fa1d92"
+    },
+    {
+      "name": "phrase_matrix_0_exact",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&optional_phrase1=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&st=p",
+      "capturedAt": "2026-10-06T12:48:57.582209Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "9503c663abe3174a17b4f017cd8721ca18b8eb37468fe6bea4baa20d0327b767",
+      "captureFileSha256": "a1c1ba479990273d2448f1db1ae9fde8dfd82b67f476d539cc474ed475226cfd"
+    },
+    {
+      "name": "phrase_matrix_0_exclude",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&optional_phrase1=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&xclude=%D8%A7%D9%84%D9%84%D9%87",
+      "capturedAt": "2026-10-06T12:48:58.373227Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "99471105dfc5d049300f00e1727b1b7a5b791d756be43c9991bb36bcc4489318",
+      "captureFileSha256": "0260fd11e7651b6d979699921bbe183df54460f41268f807c0758144285ff940"
+    },
+    {
+      "name": "phrase_matrix_0_four",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&optional_phrase1=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&optional_phrase2=%D8%A7%D9%84%D9%86%D9%8A%D8%A9&optional_phrase3=%D8%A7%D9%84%D9%85%D8%B3%D8%AC%D8%AF&optional_phrase4=%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84",
+      "capturedAt": "2026-10-06T12:48:53.915474Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "cd8b00b4e1ec342056ce164d78ca3e1ac797d931075787aea886c150f638954b",
+      "captureFileSha256": "debcdfa73b4c743b3f7f7aa9cb481fdf1f12f9b64fd7834751d0ff08e8884370"
+    },
+    {
+      "name": "phrase_matrix_0_mismatch",
+      "url": "https://dorar.net/hadith/search?q=zxqvnrplm&optional_phrase1=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9",
+      "capturedAt": "2026-10-06T12:48:51.501673Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "0264881bc3c4fc54834845e5bb0baa4552c977c3549006193dfe5ff2cf4958ee",
+      "captureFileSha256": "fb483a4b51e629c5246bc9b7046128bc25346450c34ba20ce31bf3de5928cd6c"
+    },
+    {
+      "name": "phrase_matrix_0_optional",
+      "url": "https://dorar.net/hadith/search?q=&optional_phrase1=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9",
+      "capturedAt": "2026-10-06T12:48:50.997141Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "759ddd7246c11ce551c502623b6b65e68791c7d524c06f65e13443da6b5eae71",
+      "captureFileSha256": "4b3c168ef2b520561a7c7c365e86b9e2404666ae532e913f098cf1b3475d2f6c"
+    },
+    {
+      "name": "phrase_matrix_0_primary",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9",
+      "capturedAt": "2026-10-06T12:48:50.167978Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "06e638d77a29e90c7634ca565e2a2eaa7373b4589cf54d2f1f12207290166246",
+      "captureFileSha256": "2d76746db8ebe4e551a6f0a9b29935ff14ebfc617e3bdf5f71ccf5672e6c2339"
+    },
+    {
+      "name": "phrase_matrix_0_specialist",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&optional_phrase1=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&all=",
+      "capturedAt": "2026-10-06T12:48:59.213361Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "37e302cee11a5d2c7a907a80495dc4ff1dd239ef53212b28fe0025af7e0e1007",
+      "captureFileSha256": "5f8910cb929efca082144e44ea5b3565c24f244f50a929fe56472d4fd5831879"
+    },
+    {
+      "name": "phrase_matrix_0_three",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&optional_phrase1=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&optional_phrase2=%D8%A7%D9%84%D9%86%D9%8A%D8%A9&optional_phrase3=%D8%A7%D9%84%D9%85%D8%B3%D8%AC%D8%AF",
+      "capturedAt": "2026-10-06T12:48:53.109095Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "159a8727995cf862cb037d1163217b30e7cc036d35780b9407107ee1dbd0682a",
+      "captureFileSha256": "0cedabba914695379c0a5f46d75326a089d486e714193d8dd980819255a9511e"
+    },
+    {
+      "name": "phrase_matrix_0_two",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&optional_phrase1=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&optional_phrase2=%D8%A7%D9%84%D9%86%D9%8A%D8%A9",
+      "capturedAt": "2026-10-06T12:48:52.287119Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "beec2004dfd86d962a1b51835c77bb2d4f6c5f93847b8246c0a808103d6c049a",
+      "captureFileSha256": "69ce6071b6be43c8dad80765f5787225cbb88c8aea851df1e025898ba9a255cb"
+    },
+    {
+      "name": "phrase_matrix_1_all",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&optional_phrase1=%D8%A7%D9%84%D8%B2%D9%83%D8%A7%D8%A9&st=w",
+      "capturedAt": "2026-10-06T12:49:04.560330Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "4e054a190d0633a302bded61060f041929630e57ac56d7a42ddc9509d305bf61",
+      "captureFileSha256": "f43115191a5305bd20c08fa7f8eeabffa9a85393548b097550c8d6b32836f429"
+    },
+    {
+      "name": "phrase_matrix_1_any",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&optional_phrase1=%D8%A7%D9%84%D8%B2%D9%83%D8%A7%D8%A9&st=a",
+      "capturedAt": "2026-10-06T12:49:05.205039Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "738139325e1c8faf5c8e0e6c73791e6be01f084ab811d325d2db63ef103c9a5c",
+      "captureFileSha256": "bc2e6b37d40b152c1320f67f5fe288b31f588612ecf53980dfcfc7de27a80ff1"
+    },
+    {
+      "name": "phrase_matrix_1_blank",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&optional_phrase2=%D8%A7%D9%84%D8%B2%D9%83%D8%A7%D8%A9",
+      "capturedAt": "2026-10-06T12:49:03.884230Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "a450dbdc52826366cd0e75f83ff28968b0585ae2f7ecd366941df64c3831bc23",
+      "captureFileSha256": "e2ffaa045c27b7fd64703ddb99c4e9f6f4059e83d36944ff356439c381ac01aa"
+    },
+    {
+      "name": "phrase_matrix_1_exact",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&optional_phrase1=%D8%A7%D9%84%D8%B2%D9%83%D8%A7%D8%A9&st=p",
+      "capturedAt": "2026-10-06T12:49:06.040779Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "688771f79b9af7ca7f9709f83e9d3fa726766e41aa1da59d3ceaead387c49685",
+      "captureFileSha256": "ba56d313318e7821bb063c40c19630b17dc89703f6bc6dbf802388e64c40962b"
+    },
+    {
+      "name": "phrase_matrix_1_exclude",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&optional_phrase1=%D8%A7%D9%84%D8%B2%D9%83%D8%A7%D8%A9&xclude=%D8%A7%D9%84%D9%84%D9%87",
+      "capturedAt": "2026-10-06T12:49:06.610574Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "15ee87ebcd00670cb03f03f5e706e198abfafd498af5085a342965abd8521adf",
+      "captureFileSha256": "91e2f0199ac6f846929b978e9271f92783cfcb474d6390dc564dfe75b17016d1"
+    },
+    {
+      "name": "phrase_matrix_1_four",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&optional_phrase1=%D8%A7%D9%84%D8%B2%D9%83%D8%A7%D8%A9&optional_phrase2=%D8%A7%D9%84%D9%86%D9%8A%D8%A9&optional_phrase3=%D8%A7%D9%84%D9%85%D8%B3%D8%AC%D8%AF&optional_phrase4=%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84",
+      "capturedAt": "2026-10-06T12:49:03.247078Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "3c4427020146bcd933c8c7c322fb6b9b4ece786ad50de0e83a06207bc55bd9f1",
+      "captureFileSha256": "cd74c599777d40fa7e6d74d556f4429d7d130c050d3c1039ee5c1e8b7daccb78"
+    },
+    {
+      "name": "phrase_matrix_1_mismatch",
+      "url": "https://dorar.net/hadith/search?q=zxqvnrplm&optional_phrase1=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85",
+      "capturedAt": "2026-10-06T12:49:01.304173Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "27c02f01f428a8602eb36e4490be97e4f82dcaff32e0eb4404d3d0e5455e4652",
+      "captureFileSha256": "d1449ee44f0de129852b4686b255458b121665f819f6a94b735b7382eafe10a0"
+    },
+    {
+      "name": "phrase_matrix_1_optional",
+      "url": "https://dorar.net/hadith/search?q=&optional_phrase1=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85",
+      "capturedAt": "2026-10-06T12:49:00.782485Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "00ba8cb79f43dcfe5277c8a518d96b7043d8c35ff8899c47286b00cc94140b9b",
+      "captureFileSha256": "ae9db39b7bcb561a8881a5d1a355d6989f37117b757d6de19cea69f00f8eedfd"
+    },
+    {
+      "name": "phrase_matrix_1_primary",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85",
+      "capturedAt": "2026-10-06T12:48:59.992488Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "36fb684272ecdf96619ef8a73d0dc5d1594bb58d44059127a8c8b5cf52af279c",
+      "captureFileSha256": "167f019347f14095300482c72447ff15b7a48999de3ac2655dc8fee602b7cee1"
+    },
+    {
+      "name": "phrase_matrix_1_specialist",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&optional_phrase1=%D8%A7%D9%84%D8%B2%D9%83%D8%A7%D8%A9&all=",
+      "capturedAt": "2026-10-06T12:49:07.234722Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "11ec15ab5574801e9b4606129179263f313648b0baaff4e892f98c6646d459a5",
+      "captureFileSha256": "cdcecb7561c41f87e2a6b82800decd3ea5ae918e5e3d03e28c1a3805b2a552f3"
+    },
+    {
+      "name": "phrase_matrix_1_three",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&optional_phrase1=%D8%A7%D9%84%D8%B2%D9%83%D8%A7%D8%A9&optional_phrase2=%D8%A7%D9%84%D9%86%D9%8A%D8%A9&optional_phrase3=%D8%A7%D9%84%D9%85%D8%B3%D8%AC%D8%AF",
+      "capturedAt": "2026-10-06T12:49:02.587084Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "525bb26aed798d62332e01cfa372b275818c5ff26eed1f3e2f2cfd584fe3b625",
+      "captureFileSha256": "256cb608862c0ffaba0ed90be1b53f26b636f7ac11807d0e27cf961ff7c4fd1a"
+    },
+    {
+      "name": "phrase_matrix_1_two",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&optional_phrase1=%D8%A7%D9%84%D8%B2%D9%83%D8%A7%D8%A9&optional_phrase2=%D8%A7%D9%84%D9%86%D9%8A%D8%A9",
+      "capturedAt": "2026-10-06T12:49:01.930613Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "edce159f9a00d10a4469baf3573bdd232aadbf718c962ee7d7902a6474e8d0c1",
+      "captureFileSha256": "dfb8206f57497d35bb9850b184b0a60bf9bf2e431e390cb0aa66bb7636501753"
+    },
+    {
+      "name": "phrases_0",
+      "url": "https://dorar.net/hadith/search?q=&optional_phrase1=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85",
+      "capturedAt": "2026-10-06T12:15:52.366623Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "3ab28983097aa976b2aaa608ba1b1d31c1b0ecd391bb43d548d9d5a3da613cab",
+      "captureFileSha256": "deb35abed0b44f9a58f133043bb599dbe0a7cbcdac9171b0fec56bcc6699b136"
+    },
+    {
+      "name": "phrases_1",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&optional_phrase1=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85",
+      "capturedAt": "2026-10-06T12:15:53.552635Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "86860acae2eee710bd741a7674058b7747d1d7af037fbfc65e05bc5077793139",
+      "captureFileSha256": "547571c881e519918aa2a0c4d4a2479dc4082774fa3ed7dcad473b020015fe49"
+    },
+    {
+      "name": "phrases_2",
+      "url": "https://dorar.net/hadith/search?q=zxqvnrplm&optional_phrase1=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9",
+      "capturedAt": "2026-10-06T12:15:54.414309Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "8b00628feef9147c710e6a68ebf6a3db654d514c1c05cab8f49a023c2e6f3469",
+      "captureFileSha256": "88c5b31ce2c4d488fd00425371053ac5f506c4ae56de48f05c05bfdb511e22e0"
+    },
+    {
+      "name": "phrases_3",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&optional_phrase1=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&optional_phrase2=%D8%A7%D9%84%D8%B2%D9%83%D8%A7%D8%A9",
+      "capturedAt": "2026-10-06T12:15:56.073892Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "5f3172118450a7a6c005c68b9679814339138f70966e21c0673f63eea50686b4",
+      "captureFileSha256": "330f48791a8e6ef9132cda2c6890d5b03674a1860d9c988e7898014ed1bb0d48"
+    },
+    {
+      "name": "phrases_4",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&optional_phrase2=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85",
+      "capturedAt": "2026-10-06T12:15:57.624360Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "64581c6bd112e1341f2844e7a9721628ac16a95418d57baf4f4fda6b246069a1",
+      "captureFileSha256": "7bdc8e86bf80d901ae55aabd1677693edb82a0def2046372575218e3a69ab221"
+    },
+    {
+      "name": "prose_0",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&t=3",
+      "capturedAt": "2026-10-06T12:15:20.577748Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "cc2e39f86e7a642783cf694431a30bfe81877bd16e25a42fae3e1a9ee895b07d",
+      "captureFileSha256": "05b916c53ae1482054b03e9dca7ef36bc5d9661bb7e3f50d068334a63abad63d"
+    },
+    {
+      "name": "prose_0_page2",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&t=3&page=2",
+      "capturedAt": "2026-10-06T12:40:51.570650Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "ed207aa4768de0c77d191314ec3336cfecbfe3b2072fc695ac38a534d4483a08",
+      "captureFileSha256": "86218067c96ea7f628c5347abb8ef8315a91826da1a8a8a8546628e0f53bf999"
+    },
+    {
+      "name": "prose_0_page2_ajax",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&t=3&page=2",
+      "capturedAt": "2026-10-06T12:41:24.059984Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "b3227535e6119511df9a780ab367c696c612379089e0956b448a2dce2067c189",
+      "captureFileSha256": "1a3044b33405fca1d0d9493764846777fabea1a01642aecd2f8aa8adedbdc8a1"
+    },
+    {
+      "name": "prose_0_page9999_ajax",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&t=3&page=9999",
+      "capturedAt": "2026-10-06T12:42:20.679046Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "captureFileSha256": "f9e3c7f1a874cf2db667c6f97032a42d3e4bbd8e0c59083f6fa4e91c6c3f3adb"
+    },
+    {
+      "name": "prose_1",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&t=3",
+      "capturedAt": "2026-10-06T12:15:21.449190Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "033e1249346b30ce673a0dae15db978fe41def626101af7c74356598b882e905",
+      "captureFileSha256": "be8145b2f2768cf7bdf016eb1ba11ab43b4a043c2ca3b8d2f2c0c102002c8fce"
+    },
+    {
+      "name": "prose_1_page2",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&t=3&page=2",
+      "capturedAt": "2026-10-06T12:40:56.759768Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "4c7dc12619609880ca342c1bf914b8d6665094c9a850ffba4a103fc849b8e082",
+      "captureFileSha256": "426df3a2692399bab8b0773709c6a78890a76122073701a3501b76a4b6718715"
+    },
+    {
+      "name": "prose_1_page2_ajax",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&t=3&page=2",
+      "capturedAt": "2026-10-06T12:41:24.400939Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "7ac9f6125b36e92f07d6746c571f1614273f21aea4dcc9a622d5e549937d2614",
+      "captureFileSha256": "656787c8e4ec41fd787b5dfd472b94c90d93883b928a22291af39aad78b612e7"
+    },
+    {
+      "name": "prose_2",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B2%D9%83%D8%A7%D8%A9&t=3",
+      "capturedAt": "2026-10-06T12:15:22.264398Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "4c8b46506044c17e9e15589ad978742ff40600f8961bdfa0584935ae5d082e41",
+      "captureFileSha256": "ad3de15d1869b9b73860db7aafc1d6ea0fab8552fea47557599d841659ef670c"
+    },
+    {
+      "name": "prose_empty",
+      "url": "https://dorar.net/hadith/search?q=zxqvnrplm&t=3",
+      "capturedAt": "2026-10-06T12:40:58.179149Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "a9d8c5244c4080225e61e1c3b1b82cdb17bd6f9e7766501af88d5b05573b6233",
+      "captureFileSha256": "a5aa54bbfa1b7ae06759a2d2eb5fffbe43bd2654d4a335ac1cfbe956dedb3cf7"
+    },
+    {
+      "name": "quick_0_0",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&t=0",
+      "capturedAt": "2026-10-06T12:15:28.197014Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "2efe5e92982d8ceb65202d0780d8d5a3751df35d4b6bc538f987db3c9633cc94",
+      "captureFileSha256": "188a0f324bc00c486b7049e409e71d4c1f9483d1e40beb878d1c2e9ea10c9344"
+    },
+    {
+      "name": "quick_0_1",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&t=1",
+      "capturedAt": "2026-10-06T12:15:28.821383Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "b9a7f4a94e5ec5e62d1948429341a725bfa76958cda5f54cd3704fa2515b1bc0",
+      "captureFileSha256": "4e4d1e87d2f91dbe039de724c95530e134711a229f03a0435e5ff662dd21a1cd"
+    },
+    {
+      "name": "quick_0_2",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&t=2",
+      "capturedAt": "2026-10-06T12:15:29.296415Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "29588f9408c87571db87fb1ffb72bf429250d852eaf8d65f9b91c947a931835b",
+      "captureFileSha256": "9da20ad8b692cdf3db6025ab6e37a9dad18423a1db664775a637ddd6fb0aefb2"
+    },
+    {
+      "name": "quick_0_3",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&t=3",
+      "capturedAt": "2026-10-06T12:15:29.811889Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "2efe5e92982d8ceb65202d0780d8d5a3751df35d4b6bc538f987db3c9633cc94",
+      "captureFileSha256": "41411f76eb513b6c17f17ab127ec4b0bbaf7f13514c0774b97c65b6920165b60"
+    },
+    {
+      "name": "quick_0_4",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&t=4",
+      "capturedAt": "2026-10-06T12:15:30.296971Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "2efe5e92982d8ceb65202d0780d8d5a3751df35d4b6bc538f987db3c9633cc94",
+      "captureFileSha256": "61c7493ecff7cd69d42479a98a2ae950f707855ffc20e50657ed4c92408a61b7"
+    },
+    {
+      "name": "quick_1_0",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&t=0",
+      "capturedAt": "2026-10-06T12:15:36.556716Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "c637910014e52663fd1de00976374bd35dfc5cae3a82a4433189cdfeec5afe17",
+      "captureFileSha256": "275ca0e14bbb2b688db626ce8fae43fa2b903b49af1a3405ef1f71227e478025"
+    },
+    {
+      "name": "quick_1_1",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&t=1",
+      "capturedAt": "2026-10-06T12:15:37.798977Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "54a9c4ea8128eeb64c3d7e375add125a20413416c53216e0219f4b232159647d",
+      "captureFileSha256": "c805616e75b27f8299ac836e670382386244ceac226e36c49b304bdffd55b68a"
+    },
+    {
+      "name": "quick_1_2",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&t=2",
+      "capturedAt": "2026-10-06T12:15:38.285320Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "ea3087c25859f3c4ebed68879425406895bd60ac1e63ca9b2e9289fdba42966f",
+      "captureFileSha256": "f763123e112293324c0163707235e1eacf2cfd3ea04b4a5e00be767101e9cde4"
+    },
+    {
+      "name": "quick_1_3",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&t=3",
+      "capturedAt": "2026-10-06T12:15:38.918614Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "d10470a428ac65ddd51591ab746d4a386a038588f03dacd49e9f862a6b0e126c",
+      "captureFileSha256": "c6a40aa6f85fe31d402b0698e337f8903d964a3bca856a50e72a1a8f44023252"
+    },
+    {
+      "name": "quick_1_4",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&t=4",
+      "capturedAt": "2026-10-06T12:15:39.543356Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "d10470a428ac65ddd51591ab746d4a386a038588f03dacd49e9f862a6b0e126c",
+      "captureFileSha256": "a74ad938cacbdd5cb02866c8883a0e19a2534794a7da82952c49e4dfae7e7e2b"
+    },
+    {
+      "name": "quick_matrix_0_book",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&s%5B%5D=6216",
+      "capturedAt": "2026-10-06T12:40:49.589833Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "624bf20ecb5f53872645ecdf9195db7307b2a2502fe876b655ce80632d0561b6",
+      "captureFileSha256": "fd6843eb20b85a9905192f1a59c2c594336b552fabf95688cc78fc9f37631827"
+    },
+    {
+      "name": "quick_matrix_0_default",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9",
+      "capturedAt": "2026-10-06T12:40:48.219982Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "2efe5e92982d8ceb65202d0780d8d5a3751df35d4b6bc538f987db3c9633cc94",
+      "captureFileSha256": "f821690818209f20ae04cfe55f86cbd301e9760533d256a9acc74635532c9a8a"
+    },
+    {
+      "name": "quick_matrix_0_degree",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&d%5B%5D=1",
+      "capturedAt": "2026-10-06T12:40:48.677967Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "c04d89a1038ae2bffbbfafc1f7b089aa60711c144b46b9d604e91cad78538ac9",
+      "captureFileSha256": "812a2537c8cf3f971abeab6696f1bbc4c5b041236ddcfeb36fedad74821dc58f"
+    },
+    {
+      "name": "quick_matrix_0_degree_scalar",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&d=1",
+      "capturedAt": "2026-10-06T12:42:16.643007Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "2efe5e92982d8ceb65202d0780d8d5a3751df35d4b6bc538f987db3c9633cc94",
+      "captureFileSha256": "bee1309a5e2db84bdf6027219c21aeb1bf6591221cfd844992182008575a535c"
+    },
+    {
+      "name": "quick_matrix_0_exclude",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&xclude=%D8%A7%D9%84%D9%85%D8%B3%D8%AC%D8%AF",
+      "capturedAt": "2026-10-06T12:40:50.495944Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "2efe5e92982d8ceb65202d0780d8d5a3751df35d4b6bc538f987db3c9633cc94",
+      "captureFileSha256": "4ebcd63ce0cb5b8fb494839b2da75a0ca822c0b3b7fae7ecd9c034702267b417"
+    },
+    {
+      "name": "quick_matrix_0_exclude_specific",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&xclude=%D8%A7%D9%84%D9%84%D9%87",
+      "capturedAt": "2026-10-06T12:42:17.130573Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "185338289f415e347f41e5583a3519f4dc95d9a082882be00283405f27fb3a75",
+      "captureFileSha256": "a4b561e84e66009eea4bca15e23116e9eea47bf005efd619824344e7fce5dfdf"
+    },
+    {
+      "name": "quick_matrix_0_method",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&st=p",
+      "capturedAt": "2026-10-06T12:40:50.945041Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "2efe5e92982d8ceb65202d0780d8d5a3751df35d4b6bc538f987db3c9633cc94",
+      "captureFileSha256": "2222bcf3b95b278f5a97b39f467c5c2642fe541a31af5cf7d7f22af4ec1906f6"
+    },
+    {
+      "name": "quick_matrix_0_method_specific",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85+%D8%AC%D9%86%D8%A9&st=p",
+      "capturedAt": "2026-10-06T12:42:17.822082Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "5d3b95fd9e87e0940644ea957a55ccb8ab2bad59cc02eea6029b23cba660df4f",
+      "captureFileSha256": "b2767c40c3d5b81dab4953e9b8e6ff6ce667f3cd88829f9e9a1eaf12dd350a73"
+    },
+    {
+      "name": "quick_matrix_0_narrator",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&rawi%5B%5D=1633",
+      "capturedAt": "2026-10-06T12:40:50.020539Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "504778917d7a28e6d9cc4cd600b4834a316b74ac0492b31c086458448b16e836",
+      "captureFileSha256": "f127659b340d84dc83bda2aa1745e72e4568d6f092df65e361c1085aad7a9231"
+    },
+    {
+      "name": "quick_matrix_0_narrator_scalar",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&rawi=1633",
+      "capturedAt": "2026-10-06T12:42:16.037593Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "2efe5e92982d8ceb65202d0780d8d5a3751df35d4b6bc538f987db3c9633cc94",
+      "captureFileSha256": "777c08547769f8f349899e5433d45c95c38bca0ff340a459638c0b63e328139d"
+    },
+    {
+      "name": "quick_matrix_0_scholar",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&m%5B%5D=256",
+      "capturedAt": "2026-10-06T12:40:49.141154Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "624bf20ecb5f53872645ecdf9195db7307b2a2502fe876b655ce80632d0561b6",
+      "captureFileSha256": "e684814049019362036c5eedbf6d27c97aafee271744d85ede89d55b16ea0c91"
+    },
+    {
+      "name": "quick_matrix_1_book",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&s%5B%5D=6216",
+      "capturedAt": "2026-10-06T12:40:54.558688Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "16149a64f3d93772883a0361844d677d48d87667fe0dc3a30afc88fc3a8b8b05",
+      "captureFileSha256": "601dc861d439438cdb90878bbf83bc2b53071b6fee9a898f5d7c63cd214e8ec9"
+    },
+    {
+      "name": "quick_matrix_1_default",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85",
+      "capturedAt": "2026-10-06T12:40:52.674921Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "d10470a428ac65ddd51591ab746d4a386a038588f03dacd49e9f862a6b0e126c",
+      "captureFileSha256": "4dc8e463ef8c08d0b8998d5471ddfd8ff05808a9f1d6369e4675e92913bee6ef"
+    },
+    {
+      "name": "quick_matrix_1_degree",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&d%5B%5D=1",
+      "capturedAt": "2026-10-06T12:40:53.393613Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "033710400c411eff837ada4fff0c373428d0ab7343c78193a257bb4ec9f2559d",
+      "captureFileSha256": "cea40907d800f8f941a6608ebfa5564f904b3d2fba649f9969aafd1e8cfb7466"
+    },
+    {
+      "name": "quick_matrix_1_degree_scalar",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&d=1",
+      "capturedAt": "2026-10-06T12:42:19.204349Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "d10470a428ac65ddd51591ab746d4a386a038588f03dacd49e9f862a6b0e126c",
+      "captureFileSha256": "f52a927dc0cfd833b365b704668a96eec2350562b3dbf7199671e3120bdd38d1"
+    },
+    {
+      "name": "quick_matrix_1_exclude",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&xclude=%D8%A7%D9%84%D9%85%D8%B3%D8%AC%D8%AF",
+      "capturedAt": "2026-10-06T12:40:55.561736Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "d10470a428ac65ddd51591ab746d4a386a038588f03dacd49e9f862a6b0e126c",
+      "captureFileSha256": "7a2d13fd9a9b387ff15e620ff672d9d2d90a768e5ec03d1121892e13f928b31f"
+    },
+    {
+      "name": "quick_matrix_1_exclude_specific",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&xclude=%D8%A7%D9%84%D9%84%D9%87",
+      "capturedAt": "2026-10-06T12:42:19.869621Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "c637910014e52663fd1de00976374bd35dfc5cae3a82a4433189cdfeec5afe17",
+      "captureFileSha256": "1960a383a1b556ce41e6fbe726e87f5d648e3763f76a859fe3bb0e0fd633bc82"
+    },
+    {
+      "name": "quick_matrix_1_method",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&st=p",
+      "capturedAt": "2026-10-06T12:40:56.129391Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "923a2e61898f989f370b8abf9b9a029392a0ab749d904caef9afe309146bb8e3",
+      "captureFileSha256": "035334e0d686397ed838e0f4dad4176cdd17290ffb6a8d7468de540530bd054d"
+    },
+    {
+      "name": "quick_matrix_1_method_specific",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85+%D8%AC%D9%86%D8%A9&st=p",
+      "capturedAt": "2026-10-06T12:42:20.346610Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "5d3b95fd9e87e0940644ea957a55ccb8ab2bad59cc02eea6029b23cba660df4f",
+      "captureFileSha256": "f8d9466d2fc4ec840a93bf6be6728402d7afa7c55fc4bf1e63480785d2e05371"
+    },
+    {
+      "name": "quick_matrix_1_narrator",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&rawi%5B%5D=1633",
+      "capturedAt": "2026-10-06T12:40:54.980920Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "b7561e62aafdc82a6730dcacfb4e52fb6cf772720a0e344168f27b2dede1c847",
+      "captureFileSha256": "9b31ea2594467edcd0b35649aee721cff03d7948672fde4e9f5578c14d57a182"
+    },
+    {
+      "name": "quick_matrix_1_narrator_scalar",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&rawi=1633",
+      "capturedAt": "2026-10-06T12:42:18.424220Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "d10470a428ac65ddd51591ab746d4a386a038588f03dacd49e9f862a6b0e126c",
+      "captureFileSha256": "a074f868504f382337acd92b6b99c81e2becc7795765738b6c87e2a66ff531e3"
+    },
+    {
+      "name": "quick_matrix_1_scholar",
+      "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&m%5B%5D=256",
+      "capturedAt": "2026-10-06T12:40:53.975738Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "ff84a632e02cf66a6ec64234a144288e4aa72bcad524ab54739e795314bbdf3a",
+      "captureFileSha256": "e1f0031cfbf7226764f0ba0c360a72072b5bdcfbfc5de840f26caa3c24b7aeae"
+    },
+    {
+      "name": "rawi_0",
+      "url": "https://dorar.net/hadith/rawi?rawi=%D8%A3%D8%A8%D9%88+%D9%87%D8%B1%D9%8A%D8%B1%D8%A9",
+      "capturedAt": "2026-10-06T12:15:42.164416Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "de60b8177a78265f47ba4aca024d97f60a26ce92229bb939b6348a3dccdb3119",
+      "captureFileSha256": "156dda5ab48e6ea48a5745ece8b1f760dcb696837b14bd9fb3ad73d67e5f09f6"
+    },
+    {
+      "name": "rawi_1",
+      "url": "https://dorar.net/hadith/rawi?rawi=%D8%B9%D8%A7%D8%A6%D8%B4%D8%A9",
+      "capturedAt": "2026-10-06T12:15:42.486182Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "cee99672d6380874f45c5d9a72719268ba940519cad3325d75568ab2e9887c16",
+      "captureFileSha256": "948085ee637de0f6d0d9e251050dd94c4a320210ffff72119c2088754a68241f"
+    },
+    {
+      "name": "rawi_2",
+      "url": "https://dorar.net/hadith/rawi?rawi=%D8%B9%D8%A8%D8%AF%D8%A7%D9%84%D9%84%D9%87+%D8%A8%D9%86+%D8%B9%D9%85%D8%B1",
+      "capturedAt": "2026-10-06T12:15:42.979647Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "2e54dd2ef541d026cbd9d09cf524f4b248a7343fb948029a4e904318082eafc1",
+      "captureFileSha256": "a9810bdbee0c91019ecdef3005bceac03ed62b94ebd2fb12f40bb33964967632"
+    },
+    {
+      "name": "rawi_3",
+      "url": "https://dorar.net/hadith/rawi?rawi=%D8%A3%D9%86%D8%B3+%D8%A8%D9%86+%D9%85%D8%A7%D9%84%D9%83",
+      "capturedAt": "2026-10-06T12:15:43.297014Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "8cbaccf92880a466d5f71af3b3950392d139a006b00b0f4e5808791b8c6b8630",
+      "captureFileSha256": "0580120d049b1250af060c2b8f8482ceaba84b2d3650d91a52953ca456a7a930"
+    },
+    {
+      "name": "scholar_1420",
+      "url": "https://dorar.net/hadith/sources-by-mohadith?m[]=1420",
+      "capturedAt": "2026-10-06T12:15:43.921813Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "d80315456a4ab1949ae5de3d640d855c46a806e82ccf856c3c69ffafa0bb18fa",
+      "captureFileSha256": "6b9ac30898bfa9e4ec7163965f4d47ef8cfdf8ba2eb69d124caef969cdf2b890"
+    },
+    {
+      "name": "scholar_256",
+      "url": "https://dorar.net/hadith/sources-by-mohadith?m[]=256",
+      "capturedAt": "2026-10-06T12:15:43.609182Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "9d545c0af7b005b923e795534c68395e97772ef822be31fb684e3c02d759c2df",
+      "captureFileSha256": "70645e08431dd4ff1ede1e1c0aafe56fb31d0f8ffb36cb4366067d675b219235"
+    },
+    {
+      "name": "scholars_both",
+      "url": "https://dorar.net/hadith/sources-by-mohadith?m[]=256&m[]=1420",
+      "capturedAt": "2026-10-06T12:15:44.249427Z",
+      "statusCode": 200,
+      "contentType": "application/json",
+      "sha256": "bab9ea03e6ae63b7d0b513edb226655347363f6b98b52916f0541cdfbd31e2c4",
+      "captureFileSha256": "74e0fe06bd7c9571c3ce5f64c7428136e61667e7feb30cba0c85edb7a5a90d98"
+    },
+    {
+      "name": "search_0",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9",
+      "capturedAt": "2026-10-06T12:14:47.669925Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "c6f1539d257f63b45c7f3b3a863d749c4557b38c74fc2ed7653b95bbe5c3934f",
+      "captureFileSha256": "193adfc2df6798820f09b2658ee645bba9ee047b4111c9a6cb065a935179e299"
+    },
+    {
+      "name": "search_1",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85",
+      "capturedAt": "2026-10-06T12:14:48.644945Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "c404e44677781895d9c6041a6393aaeb1c8495c8966379457b61952d8089f1e1",
+      "captureFileSha256": "7aea4a2b2d7779b49783096409edfafe1904a71c95f67dc0a849526af427e935"
+    },
+    {
+      "name": "search_2",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B2%D9%83%D8%A7%D8%A9",
+      "capturedAt": "2026-10-06T12:14:49.448723Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "8c0456f4c481bc84562291c2951177e65d1457e118b12a5d2cf60b9be676ac1e",
+      "captureFileSha256": "b2f1128b8e63349be149d1fb8f8663cc873495a5a1b4f18335ca26c1f9141d1b"
+    },
+    {
+      "name": "search_3",
+      "url": "https://dorar.net/hadith/search?q=%D8%A5%D9%86%D9%85%D8%A7+%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84+%D8%A8%D8%A7%D9%84%D9%86%D9%8A%D8%A7%D8%AA",
+      "capturedAt": "2026-10-06T12:14:50.110144Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "bddfc4e46688194ed1f6005f550dea55ab20a480ad42a89ef9fa9fbb53897865",
+      "captureFileSha256": "cdfc0b16da796825a5ee05199c9b78020716dcfd8dc161a5c47b08bdfaf00d76"
+    },
+    {
+      "name": "search_4",
+      "url": "https://dorar.net/hadith/search?q=%D8%A8%D8%B1+%D8%A7%D9%84%D9%88%D8%A7%D9%84%D8%AF%D9%8A%D9%86",
+      "capturedAt": "2026-10-06T12:14:50.761856Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "83f5a8102537ae3f58f39eaae80c3c56b8f4a3eb212d1fd7fa1e5d30fbdf22bb",
+      "captureFileSha256": "22c625c936dad1fac7f248e19b17b52e1af570692d6a0d247dc188873c30fccf"
+    },
+    {
+      "name": "search_5",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D9%88%D8%B6%D9%88%D8%A1",
+      "capturedAt": "2026-10-06T12:14:51.413578Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "03adb6ef08298497b7cd091c50c5b7d08c17c4f57f0586acc6e70d4043f367dd",
+      "captureFileSha256": "c66d7bc9343ec28ccd7f6aa8b943089a5a3f7a29bd8179cff49cbcbead496afd"
+    },
+    {
+      "name": "sharh_111245",
+      "url": "https://dorar.net/hadith/sharh/111245",
+      "capturedAt": "2026-10-06T12:14:52.598649Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "ad8500aca6a407c8f57d404c34f78b8999e3ebdbeab07d19bb6bc11fa51337a2",
+      "captureFileSha256": "ed2ab501a38e3c42a626705b2a9a2b2d0fed239ff9cd5eeb6a1d1206607c93a6"
+    },
+    {
+      "name": "sharh_111383",
+      "url": "https://dorar.net/hadith/sharh/111383",
+      "capturedAt": "2026-10-06T12:40:42.367195Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "3dd88879f7270789377a3be8f3106a72a7636a258bb6beade86ba2479fbdbca8",
+      "captureFileSha256": "d935c86cb0df4029dc98a60700b05e85f14d31b2ee3f5d5dc55aee4d1ccfadb2"
+    },
+    {
+      "name": "sharh_114935",
+      "url": "https://dorar.net/hadith/sharh/114935",
+      "capturedAt": "2026-10-06T12:14:57.866383Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "6ba0fdf6d57dae634d41ad16c36a9f62d549076198a7c4139710cbd22da739d1",
+      "captureFileSha256": "1a14b6854557ff218aa466f9a5f50ddddc7809e4c278ed5ebbf7c8ddaa6d410d"
+    },
+    {
+      "name": "sharh_122219",
+      "url": "https://dorar.net/hadith/sharh/122219",
+      "capturedAt": "2026-10-06T12:14:51.819912Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "fdd40f0dde89c9ea7778c07b85fe1e15c6a5cf27e89616b157ffb0060d2667da",
+      "captureFileSha256": "f5eb88bb71a33ac8a1dd44b04258fd498a1777e61de7df179be6aa51561f4bcf"
+    },
+    {
+      "name": "sharh_126061",
+      "url": "https://dorar.net/hadith/sharh/126061",
+      "capturedAt": "2026-10-06T12:40:41.700197Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "eafac825f0835d763f2533824b076cc20f3dc7bc0652d777eb96a44dd9ae3918",
+      "captureFileSha256": "71ae2738278a1e146846c7e736a0962f6e26d4c70f687d945ee4ad3756b41dac"
+    },
+    {
+      "name": "sharh_126177",
+      "url": "https://dorar.net/hadith/sharh/126177",
+      "capturedAt": "2026-10-06T12:40:42.865895Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "eb533d29ad17f4cb278f06ae92bcb82115758d8a33f36204b08931b307121590",
+      "captureFileSha256": "a6dcdd45162b8e2787b11a9ec0b24aad832bbf069c2604de75fc1c5fcbb7bdf8"
+    },
+    {
+      "name": "sharh_137940",
+      "url": "https://dorar.net/hadith/sharh/137940",
+      "capturedAt": "2026-10-06T12:14:52.209511Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "e69d42f445a3adfae00205f552227c6eaf6ed05a8127ac1ba1704b8626d3ca2f",
+      "captureFileSha256": "5bb247a94a5f588ded300735a4a2224ecc99bfd7b73576195adb3af393af4d9c"
+    },
+    {
+      "name": "sharh_148939",
+      "url": "https://dorar.net/hadith/sharh/148939",
+      "capturedAt": "2026-10-06T12:15:00.538039Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "673c13f56f5d530bd6b0e02b0eab01a10e8f05b492d9d0297188fe63c45c17d3",
+      "captureFileSha256": "62789906581f1c71ba2acf0118dc1a6cc4c342861af6ff833149cc6b4a92f756"
+    },
+    {
+      "name": "sharh_165117",
+      "url": "https://dorar.net/hadith/sharh/165117",
+      "capturedAt": "2026-10-06T12:40:43.875798Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "608cabce247c39da6ac90bccddf534fa384bf93eea6bf607c010c723aec6fa43",
+      "captureFileSha256": "9ca8e2f73733956880ab5ef7dad63dbbcb2bc3b3190728896f324d27b6680710"
+    },
+    {
+      "name": "sharh_203759",
+      "url": "https://dorar.net/hadith/sharh/203759",
+      "capturedAt": "2026-10-06T12:14:56.824178Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "e161b96991c44df450375077600a98e1caab304b7a17789aec6fa3547ea69cb3",
+      "captureFileSha256": "e4f0e7c8d0c664f462b1cd7d428ddc6f2d93119cc1c03852f983d387edc6f8a7"
+    },
+    {
+      "name": "sharh_2065",
+      "url": "https://dorar.net/hadith/sharh/2065",
+      "capturedAt": "2026-10-06T12:14:58.939434Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "96abd3413c0288c7fafc61d75d107ad163cebcd28789189012d2c9464b7c579d",
+      "captureFileSha256": "6d5a4b39dfae26f19a873f8d5a3b2c99fce6b896b3964178e8cba596aaa8923f"
+    },
+    {
+      "name": "sharh_211139",
+      "url": "https://dorar.net/hadith/sharh/211139",
+      "capturedAt": "2026-10-06T12:14:57.350802Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "7ecffc78c97e8852becc401280f49e9e19b5f4e23a4ddc36729e4dcf02db22b5",
+      "captureFileSha256": "3540689f369509f61159352c2b2388fc3a0560e4a8cddeed995cee9b5381d560"
+    },
+    {
+      "name": "sharh_220598",
+      "url": "https://dorar.net/hadith/sharh/220598",
+      "capturedAt": "2026-10-06T12:14:53.660362Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "50324fb01829ae8535722445428bda6bba74f79997470a5c9c2ff04a44da5dc9",
+      "captureFileSha256": "87ef3f28afd21c477bd419df0c496b7f5fafb7526192f9c290d05aedb9b5f502"
+    },
+    {
+      "name": "sharh_220599",
+      "url": "https://dorar.net/hadith/sharh/220599",
+      "capturedAt": "2026-10-06T12:14:54.176382Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "d7de1126ce39012679eb8bfb6ae67af82bb91bfa8ad1e4af038fc57474b9deee",
+      "captureFileSha256": "3ae59f7f2ede25cc78d5c8ae835b0d446266549aefd811554e20c5aa9a242c87"
+    },
+    {
+      "name": "sharh_220601",
+      "url": "https://dorar.net/hadith/sharh/220601",
+      "capturedAt": "2026-10-06T12:14:53.130231Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "8d2fee4e390ac11b7e4a970b150918cc19b7404f20dee08ba72146c6e35c0c41",
+      "captureFileSha256": "de8d3715a8bf90ee561cf70f41197c0c5cc689e12f6450fbf9e7e2808101bf92"
+    },
+    {
+      "name": "sharh_226191",
+      "url": "https://dorar.net/hadith/sharh/226191",
+      "capturedAt": "2026-10-06T12:14:58.405986Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "4fec97abce3af2665d0c282f8db6294153762f2b1f50a13a69d0a7c30846ac52",
+      "captureFileSha256": "88ddc39dd724875fa9b8ed72c11357732ff0c4535d484f5d794134b1f5bf0867"
+    },
+    {
+      "name": "sharh_229936",
+      "url": "https://dorar.net/hadith/sharh/229936",
+      "capturedAt": "2026-10-06T12:14:54.700780Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "f10903e99c3801e2a4e911d37f15402fac63ad76bc6b55b0374c5d0eabb50585",
+      "captureFileSha256": "046c9828f92cd995f30fce56387cb3e8b2040a75187c3cb4ec7a9e7729cf08b9"
+    },
+    {
+      "name": "sharh_229938",
+      "url": "https://dorar.net/hadith/sharh/229938",
+      "capturedAt": "2026-10-06T12:14:55.768514Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "d5181bcf13d0ecfe1baf1565ac2d620f21d156892451040a8b636818edf90f39",
+      "captureFileSha256": "705e25872cc10fae47545f202a2e727d5e021015970c99be2ef4d19b0a40fabf"
+    },
+    {
+      "name": "sharh_229941",
+      "url": "https://dorar.net/hadith/sharh/229941",
+      "capturedAt": "2026-10-06T12:14:55.229063Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "be3e63ccc64e61b896e13c5f9486fb444f8b0c41a995acd33224187fb3875071",
+      "captureFileSha256": "4b9527b50ccfba073539c7ffc774de59669932ebfd9b2bdcf29e4140d6628f51"
+    },
+    {
+      "name": "sharh_231281",
+      "url": "https://dorar.net/hadith/sharh/231281",
+      "capturedAt": "2026-10-06T12:14:59.464721Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "5488e2ce94e5d5fa8988011d393233c4bc20b5fb5017036716d1c5761c644a7b",
+      "captureFileSha256": "4016be70613660490893cb789184e49ac85ce721434bc358f63abb042b819ee4"
+    },
+    {
+      "name": "sharh_28565",
+      "url": "https://dorar.net/hadith/sharh/28565",
+      "capturedAt": "2026-10-06T12:15:01.062232Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "a88fd913ed14d44873286ab3b40d295a4a6d4aa40f187d3915e8e088e8dde9c9",
+      "captureFileSha256": "dce9e4778b84894d61b4a6230c7548d13e6631d885b93cb555496cd3162bd99a"
+    },
+    {
+      "name": "sharh_2981",
+      "url": "https://dorar.net/hadith/sharh/2981",
+      "capturedAt": "2026-10-06T12:15:00.010799Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "62fba8456e78a7cc96ab86c7ca869b81a668eb76af067a855c2c0f5af4910952",
+      "captureFileSha256": "3ef6b0185c931d3c970bef9fe57572856f372bb77ce1dfdca7901a09f6967021"
+    },
+    {
+      "name": "sharh_74201",
+      "url": "https://dorar.net/hadith/sharh/74201",
+      "capturedAt": "2026-10-06T12:14:56.290766Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "87f00815b35bf99fe35290499861a63c4eb1a9e32f1bb6320879dc648382a685",
+      "captureFileSha256": "87666b9863d48c800a613064482442901618772f6df026b94afd0ca5d83a5b51"
+    },
+    {
+      "name": "sharh_78440",
+      "url": "https://dorar.net/hadith/sharh/78440",
+      "capturedAt": "2026-10-06T12:40:43.369901Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "cb07cfe1c5b133e7dbbd7eb53c773e4662140da720e6edded2e331f9b45ccd08",
+      "captureFileSha256": "ea8d3bcb6ba7909d152d315054c8008372e8709b207dacaee73fe55941325016"
+    },
+    {
+      "name": "sort_0",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&sort=degree",
+      "capturedAt": "2026-10-06T12:15:31.736519Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "345eac9787007aad57b60c049b27906e3ec0077b70c35d3b3fc33e46a0304e1a",
+      "captureFileSha256": "430027a85bda394c1ffe501848b706ad836193d2e8f33e0520a34d349996d70d"
+    },
+    {
+      "name": "sort_1",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&sort=degree",
+      "capturedAt": "2026-10-06T12:15:40.902558Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "903cdaa84c7bcd154e2ce94d3e5efd7608a50fe0130fda08a1a10f44ce087bb5",
+      "captureFileSha256": "9c003cf8c444e288f76ed7f0672bb9f80cad47762643ac6406e03005fe0ea50e"
+    },
+    {
+      "name": "type_0_0",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&t%5B%5D=0",
+      "capturedAt": "2026-10-06T12:15:23.505524Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "312224a98280fc1f2e2691534efce19a56909788534049f6d305bd17b6ddbe3c",
+      "captureFileSha256": "d5fa4012c778fc24717ee1d7b08a3f83cdc8a86de801865b88cdda21960761ee"
+    },
+    {
+      "name": "type_0_1",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&t%5B%5D=1",
+      "capturedAt": "2026-10-06T12:15:24.931029Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "2e54d30a0f4290ee6d3733dc98c01f7371ccea38878f7a85c199c4bc41bc4827",
+      "captureFileSha256": "2fbae065fcbf3a1475d31dd0b76f1c94d31a979ff4536754167b647307bfb99c"
+    },
+    {
+      "name": "type_0_2",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&t%5B%5D=2",
+      "capturedAt": "2026-10-06T12:15:26.344214Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "e874e19dc12ae251e9b3f995cee0862d9e864cd51a66a8392805cc38e738eba6",
+      "captureFileSha256": "fb78799d0c89a598e146892465eaa41a89eef0fe0ca6ee4f9eb1ad7e92326a94"
+    },
+    {
+      "name": "type_0_4",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9&t%5B%5D=4",
+      "capturedAt": "2026-10-06T12:15:27.659185Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "19085111f3b40b49898f03da5723a57c6c522ab4aa50239368dca84a87c1c054",
+      "captureFileSha256": "ae6cd5becbfcbd194a9134271001cf5230ec0d3ccf8c367b7655e76b907ebadc"
+    },
+    {
+      "name": "type_1_0",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&t%5B%5D=0",
+      "capturedAt": "2026-10-06T12:15:32.809233Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "35c3782d206209d008798752263c49a5370dce2c81a2238542e2587b9baf262f",
+      "captureFileSha256": "ea5165ea9310f666f28077c3d7040636101149c171fce0c7ae8864bdba6dee72"
+    },
+    {
+      "name": "type_1_1",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&t%5B%5D=1",
+      "capturedAt": "2026-10-06T12:15:33.925935Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "ad939ed1854855774e84b6029454f0bad63ee1797ce45b28bccd23cb885c4491",
+      "captureFileSha256": "934b51ba1d63d15a7f163965a008bcf8e221c10bf8139641d20e7d53c4cf0c10"
+    },
+    {
+      "name": "type_1_2",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&t%5B%5D=2",
+      "capturedAt": "2026-10-06T12:15:35.004080Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "b97fe5fa32ab7df74be8d18b0c217eb7220771cd0bb44f685595b348f17c7ca7",
+      "captureFileSha256": "09e525e061d07ba7b67e67f3e492942f6754ef97befa25414ba824d7f423ad49"
+    },
+    {
+      "name": "type_1_4",
+      "url": "https://dorar.net/hadith/search?q=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&t%5B%5D=4",
+      "capturedAt": "2026-10-06T12:15:35.944948Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "0b8f68ac1b82ef8860ac61ee8c682aa1ad3d9794a02c644e2e9f81ab37f59770",
+      "captureFileSha256": "78a6170bf7c6e9743d28d0f46ade7af29661d631f99e8522794a56c546085804"
+    },
+    {
+      "name": "usul_61NF8fB7",
+      "url": "https://dorar.net/h/61NF8fB7?osoul=1",
+      "capturedAt": "2026-10-06T12:15:12.970472Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "5fee02aa90c929e26bfce94a81fd4be8781400f13f98a2e31392c6358fe07c11",
+      "captureFileSha256": "04211d9cb7ce2b9e0e8f4cb2eaec0a04a836699e29a2db99aeec4fe43edad045"
+    },
+    {
+      "name": "usul_BRpyQaPP",
+      "url": "https://dorar.net/h/BRpyQaPP?osoul=1",
+      "capturedAt": "2026-10-06T12:40:44.892401Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "3d203a6f8c5e133c60e1e917a91aa511c78f7500375b7ddfea6fd52ef0ba4426",
+      "captureFileSha256": "351bebf2a44fe7f3f05f424a93e7916d63eb7ea03ef1e939c4f514abe1b598a3"
+    },
+    {
+      "name": "usul_Hc3w2JF0",
+      "url": "https://dorar.net/h/Hc3w2JF0?osoul=1",
+      "capturedAt": "2026-10-06T12:40:45.388798Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "d99129b5dd773b297c8bb942fc50977bb5b210bbcce5905d3e1af9b583dddea0",
+      "captureFileSha256": "2cf15303189d79d106d7c18873171089c6c3ae4e6f2b86c29cb8a4681c50906e"
+    },
+    {
+      "name": "usul_Q0jZhzCM",
+      "url": "https://dorar.net/h/Q0jZhzCM?osoul=1",
+      "capturedAt": "2026-10-06T12:40:45.886210Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "98d8a9c9bec44462db50bb4a27db46bb34de8c2d208d19ade2957cceaa19487b",
+      "captureFileSha256": "db1a9a025f441b1b93c810c98dc7688901194ae666198805057772d28718bb70"
+    },
+    {
+      "name": "usul_i9N1PTUu",
+      "url": "https://dorar.net/h/i9N1PTUu?osoul=1",
+      "capturedAt": "2026-10-06T12:40:44.386013Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "f2fc6bec17c5c0ff17325a0d4a2df325ebe893be35f566a69dcb31be9d373ba3",
+      "captureFileSha256": "36dbf2ddbcf8bf6fa44e0499722ca8fa645cc475fcc3380d95580df235210b45"
+    },
+    {
+      "name": "usul_is6eZe9m",
+      "url": "https://dorar.net/h/is6eZe9m?osoul=1",
+      "capturedAt": "2026-10-06T12:40:46.454799Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "43629936170fb46ed3484daed12f8f91a17c3b07ec6e22383a1ff6b83b528e9e",
+      "captureFileSha256": "f870af7b6503490920be9ad8fa68723d93283b3341b0574aa2059c84691a7963"
+    },
+    {
+      "name": "usul_j0j8uiR3",
+      "url": "https://dorar.net/h/j0j8uiR3?osoul=1",
+      "capturedAt": "2026-10-06T12:15:13.785471Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "58a5f5faa8444f4e7ba3e7ed3a2dae4cd36f729f166ba265c4b64e09620597ca",
+      "captureFileSha256": "52a24192c3b19e6537f8678a5b06dffd2c501f0a564d0a859c9d4ab981aff7d3"
+    },
+    {
+      "name": "usul_xa4BE1oU",
+      "url": "https://dorar.net/h/xa4BE1oU?osoul=1",
+      "capturedAt": "2026-10-06T12:15:14.601699Z",
+      "statusCode": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "2837cba5cc9925f4f4afe32f1bca2bb352c09b8402236abd9c9823ec9bd0585a",
+      "captureFileSha256": "50a71ac049977056c958c7341a4e2d4f7c94fa30fa6483094611f885c32f03ed"
+    }
+  ]
+}

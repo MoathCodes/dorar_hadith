@@ -101,7 +101,7 @@ void main() {
 
         expect(cache.has('key1'), isTrue);
 
-        await Future.delayed(const Duration(milliseconds: 60));
+        await Future<void>.delayed(const Duration(milliseconds: 60));
 
         expect(cache.has('key1'), isFalse);
         expect(cache.get('key1'), isNull);

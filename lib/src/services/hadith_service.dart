@@ -2,666 +2,526 @@ import 'dart:convert';
 
 import 'package:html/dom.dart' as dom;
 
+import '../http/cached_transport.dart';
 import '../http/endpoints.dart';
 import '../http/http_client.dart';
 import '../http/query_serializer.dart';
 import '../models/api_response.dart';
-import '../models/cache_entry.dart';
 import '../models/hadith.dart';
+import '../models/related_content.dart';
+import '../models/result_details.dart';
 import '../models/search_metadata.dart';
 import '../models/search_params.dart';
-import '../models/sharh_metadata.dart';
+import '../models/source_content.dart';
 import '../models/usul_hadith.dart';
+import '../parsers/collection_parser.dart';
+import '../parsers/document_parser.dart';
 import '../parsers/hadith_parser.dart';
 import '../parsers/html_helper.dart';
-import '../parsers/usul_hadith_parser.dart';
+import '../parsers/record_parser.dart';
 import '../utils/exceptions.dart';
-import '../utils/html_stripper.dart';
 import '../utils/validators.dart';
 import 'cache_service.dart';
 
-/// Service for searching and retrieving hadiths from Dorar.net.
+/// Endpoint-specific search and related records, backed by raw source caching.
 class HadithService {
-  /// Page size returned by the Dorar API endpoint (~15 results per page).
-  static const int apiPageSize = 15;
-
-  /// Page size returned by the Dorar site endpoint (~30 results per page).
-  static const int sitePageSize = 30;
-
-  /// Dorar site search only serves this many pages (~300 results).
-  ///
-  /// Tab totals can imply far more pages via [sitePageSize], but requests
-  /// beyond this cap return empty HTML.
-  static const int siteMaxPages = 10;
-
-  final DorarHttpClient _client;
+  static const apiPageSize = 15;
+  static const sitePageSize = 30;
+  static const siteMaxPages = 10;
   final CacheService _cache;
+  final CachedDorarTransport _transport;
+  HadithService({
+    required DorarHttpClient client,
+    required CacheService cache,
+    CachedDorarTransport? transport,
+  }) : _cache = cache,
+       _transport =
+           transport ?? CachedDorarTransport(client: client, cache: cache);
+  Future<void> clearCache() => _cache.clear();
 
-  HadithService({required DorarHttpClient client, required CacheService cache})
-    : _client = client,
-      _cache = cache;
-
-  /// Clear all cached hadith data.
-  Future<void> clearCache() async {
-    await _cache.clear();
+  Future<SourceResponse> _detail(String id, String url) {
+    Validators.validateHadithId(id);
+    return _transport.get(
+      url,
+      endpoint: 'record',
+      accepts: (body) =>
+          HtmlHelper.parseHtml(body)
+              .querySelector('.border-bottom article, .border-bottom > div') !=
+          null,
+    );
   }
 
-  /// Get the alternate sahih version of a hadith.
-  ///
-  /// Validates [hadithId] and throws [DorarValidationException] if invalid.
-  /// May throw other [DorarException] subclasses for network/timeouts or server errors.
-  ///
-  /// [hadithId] - Hadith ID
-  /// [removeHtml] - Strip HTML tags (default: true)
-  ///
-  /// Returns alternate [DetailedHadith] or null if none exists.
-  Future<DetailedHadith?> getAlternate(
-    String hadithId, {
+  DetailedHadith _record(
+    dom.Element block,
+    SourceResponse source, {
     bool removeHtml = true,
-  }) async {
-    final validatedId = Validators.validateHadithId(hadithId);
+    String? expectedId,
+    HadithTextCleanMode mode = HadithTextCleanMode.detail,
+  }) => RecordParser.parse(
+    block,
+    sourceUri: source.provenance.sourceUri,
+    removeHtml: removeHtml,
+    expectedId: expectedId,
+    mode: mode,
+  ).copyWith(provenance: source.provenance);
 
-    final url = DorarEndpoints.alternateHadith(validatedId);
-
-    final cached = await _cache.get(url);
-    if (cached != null) {
-      return DetailedHadith.fromJson(jsonDecode(cached.body));
-    }
-
-    final html = await _client.getHtml(url);
-    final doc = HtmlHelper.parseHtml(html);
-
-    final borderElements = doc.querySelectorAll('.border-bottom');
-
-    // The alternate hadith is the second element (index 1)
-    if (borderElements.length < 2) {
-      return null;
-    }
-
-    try {
-      final hadith = _parseHadithFromBorderElement(
-        borderElements[1],
-        removeHtml: removeHtml,
-        textCleanMode: HadithTextCleanMode.detail,
-      );
-
-      await _cache.set(
-        CacheEntry(
-          key: url,
-          body: jsonEncode(hadith.toJson()),
-          header: '',
-          createdAt: DateTime.now(),
-          expiresAt: DateTime.now().add(const Duration(days: 7)),
-        ),
-      );
-
-      return hadith;
-    } catch (e) {
-      return null;
-    }
-  }
-
-  /// Get hadith by ID.
-  ///
-  /// Validates [hadithId] and throws [DorarValidationException] if invalid.
-  /// May throw [DorarServerException] if the response structure is unexpected,
-  /// and other [DorarException] subclasses for HTTP or parsing errors.
-  ///
-  /// [hadithId] - Hadith ID
-  /// [removeHtml] - Strip HTML tags (default: true)
   Future<DetailedHadith> getById(
     String hadithId, {
     bool removeHtml = true,
   }) async {
-    final validatedId = Validators.validateHadithId(hadithId);
-
-    final url = DorarEndpoints.hadithById(validatedId);
-
-    final cached = await _cache.get(url);
-    if (cached != null) {
-      return DetailedHadith.fromJson(jsonDecode(cached.body));
-    }
-
-    final html = await _client.getHtml(url);
-    final doc = HtmlHelper.parseHtml(html);
-
-    final borderElement = doc.querySelector('.border-bottom');
-    if (borderElement == null) {
-      throw const DorarServerException(
-        'Invalid response structure from Dorar',
-        statusCode: 502,
+    final source = await _detail(hadithId, DorarEndpoints.hadithById(hadithId));
+    try {
+      return _record(
+        HtmlHelper.parseHtml(source.body).querySelector('.border-bottom')!,
+        source,
+        removeHtml: removeHtml,
+        expectedId: hadithId,
+      );
+    } on FormatException catch (e) {
+      throw DorarParseException(
+        'Invalid hadith record: ${e.message}',
+        details: {'id': hadithId},
+        cause: e,
       );
     }
-
-    final hadith = _parseHadithFromBorderElement(
-      borderElement,
-      removeHtml: removeHtml,
-      textCleanMode: HadithTextCleanMode.detail,
-    );
-
-    await _cache.set(
-      CacheEntry(
-        key: url,
-        body: jsonEncode(hadith.toJson()),
-        header: '',
-        createdAt: DateTime.now(),
-
-        expiresAt: DateTime.now().add(const Duration(days: 7)),
-      ),
-    );
-
-    return hadith;
   }
 
-  /// Get similar hadiths.
-  ///
-  /// Validates [hadithId] and throws [DorarValidationException] if invalid.
-  /// May throw other [DorarException] subclasses for network/timeouts or server errors.
-  ///
-  /// [hadithId] - Hadith ID
-  /// [removeHtml] - Strip HTML tags (default: true)
+  /// Retrieves every authentic alternative in source order, excluding the seed.
+  Future<ApiResponse<RelatedHadithResult>> getAlternates(
+    String id, {
+    bool removeHtml = true,
+    ParsePolicy parsePolicy = ParsePolicy.strict,
+  }) => _related(id, RelatedHadithKind.alternate, removeHtml, parsePolicy);
+  Future<ApiResponse<RelatedHadithResult>> getSimilarResult(
+    String id, {
+    bool removeHtml = true,
+    ParsePolicy parsePolicy = ParsePolicy.strict,
+  }) => _related(id, RelatedHadithKind.similar, removeHtml, parsePolicy);
+  Future<ApiResponse<RelatedHadithResult>> _related(
+    String id,
+    RelatedHadithKind kind,
+    bool removeHtml,
+    ParsePolicy policy,
+  ) async {
+    final url = kind == RelatedHadithKind.alternate
+        ? DorarEndpoints.alternateHadith(id)
+        : DorarEndpoints.similarHadith(id);
+    final source = await _detail(id, url);
+    final blocks = HtmlHelper.parseHtml(source.body)
+        .querySelectorAll('.border-bottom');
+    final parsed = parseCollection(
+      blocks,
+      (block, index) => _record(block, source, removeHtml: removeHtml),
+      policy: policy,
+      stage: 'related',
+      recordId: HadithParser.getHadithId,
+    );
+    final seed = parsed.items.where((r) => r.hadithId == id).firstOrNull;
+    if (seed == null && policy == ParsePolicy.strict) {
+      throw DorarParseException(
+        'Requested seed record not identified',
+        details: {'id': id, 'stage': 'seedIdentity'},
+      );
+    }
+    final diagnostics = seed == null
+        ? ParseDiagnostics(
+            candidateCount: parsed.diagnostics.candidateCount,
+            parsedCount: parsed.diagnostics.parsedCount,
+            completeness: ParseCompleteness.partial,
+            warnings: [
+              ...parsed.diagnostics.warnings,
+              ParseWarning(
+                stage: 'seedIdentity',
+                recordId: id,
+                message: 'Requested seed could not be resolved; all parsed records retained',
+              ),
+            ],
+          )
+        : parsed.diagnostics;
+    final related = parsed.items.where((r) => !identical(r, seed)).toList();
+    return ApiResponse(
+      data: RelatedHadithResult(
+        requestedId: id,
+        source: seed,
+        kind: kind,
+        related: List.unmodifiable(related),
+      ),
+      metadata: SearchMetadata(
+        length: related.length,
+        isCached: source.provenance.isCached,
+        provenance: source.provenance,
+        diagnostics: diagnostics,
+      ),
+    );
+  }
+
+  /// Legacy first-alternative convenience. Errors are never converted to null.
+  Future<DetailedHadith?> getAlternate(
+    String id, {
+    bool removeHtml = true,
+  }) async => (await getAlternates(
+    id,
+    removeHtml: removeHtml,
+  )).data.related.firstOrNull;
+
+  /// Legacy list preserves seed inclusion. New code uses getSimilarResult.
   Future<List<DetailedHadith>> getSimilar(
-    String hadithId, {
+    String id, {
     bool removeHtml = true,
   }) async {
-    final validatedId = Validators.validateHadithId(hadithId);
-
-    final url = DorarEndpoints.similarHadith(validatedId);
-
-    final cached = await _cache.get(url);
-    if (cached != null) {
-      final List<dynamic> jsonList = jsonDecode(cached.body);
-      return jsonList.map((e) => DetailedHadith.fromJson(e)).toList();
-    }
-
-    final html = await _client.getHtml(url);
-    final doc = HtmlHelper.parseHtml(html);
-
-    final borderElements = doc.querySelectorAll('.border-bottom');
-    final hadiths = <DetailedHadith>[];
-
-    for (final borderElement in borderElements) {
-      try {
-        final hadith = _parseHadithFromBorderElement(
-          borderElement,
-          removeHtml: removeHtml,
-          textCleanMode: HadithTextCleanMode.detail,
-        );
-        hadiths.add(hadith);
-      } catch (e) {
-        continue;
-      }
-    }
-
-    await _cache.set(
-      CacheEntry(
-        key: url,
-        body: jsonEncode(hadiths.map((e) => e.toJson()).toList()),
-        header: '',
-        createdAt: DateTime.now(),
-
-        expiresAt: DateTime.now().add(const Duration(days: 7)),
-      ),
-    );
-
-    return hadiths;
+    final result = await getSimilarResult(id, removeHtml: removeHtml);
+    return [result.data.source!, ...result.data.related];
   }
 
-  /// Get usul hadith (sources).
-  ///
-  /// Validates [hadithId] and throws [DorarValidationException] if invalid.
-  /// Throws [DorarNotFoundException] when no usul hadith are available.
-  /// May also throw other [DorarException] subclasses for network or server errors.
-  ///
-  /// Returns the main hadith along with all its source chains and narrations.
-  ///
-  /// [hadithId] - Hadith ID
-  /// [removeHtml] - Strip HTML tags (default: true)
-  /// Get usul hadith (sources) wrapped in ApiResponse with metadata.
-  ///
-  /// Metadata:
-  /// - isCached: whether response came from cache
-  /// - length: always 1 (single hadith object)
-  /// - usulSourcesCount: number of usul sources
-  Future<ApiResponse<UsulHadith>> getUsul(
-    String hadithId, {
+  Future<ApiResponse<AsbabResult>> getAsbab(
+    String id, {
     bool removeHtml = true,
+    ParsePolicy parsePolicy = ParsePolicy.strict,
   }) async {
-    final validatedId = Validators.validateHadithId(hadithId);
-    final url = DorarEndpoints.usulHadith(validatedId);
-
-    // If cached, return with isCached = true
-    final cached = await _cache.get(url);
-    if (cached != null) {
-      final response = ApiResponse<UsulHadith>.fromJson(
-        jsonDecode(cached.body),
-        (json) => UsulHadith.fromJson(json as Map<String, dynamic>),
-      );
-      return response.copyWith(
-        metadata: response.metadata.copyWith(isCached: true),
-      );
-    }
-
-    // Not cached: fetch and build
-    final html = await _client.getHtml(url);
-    final doc = HtmlHelper.parseHtml(html);
-
-    final mainBorderElement = doc.querySelector('.border-bottom');
-    if (mainBorderElement == null) {
-      throw const DorarNotFoundException(
-        'No usul hadith found',
-        resource: 'usul_hadith',
-      );
-    }
-
-    final mainHadith = _parseHadithFromBorderElement(
-      mainBorderElement,
-      removeHtml: removeHtml,
-      textCleanMode: HadithTextCleanMode.detail,
-      includeUsulFlag: true,
+    final source = await _detail(
+      id,
+      '${DorarEndpoints.hadithById(id)}?asbab=1',
     );
-
-    final parsedSources = UsulHadithParser.parseUsulSources(doc);
-    final sources = parsedSources
+    final doc = HtmlHelper.parseHtml(source.body);
+    final blocks = doc.querySelectorAll('.border-bottom');
+    final parsed = parseCollection(
+      blocks,
+      (block, i) => _record(
+        block,
+        source,
+        removeHtml: removeHtml,
+        expectedId: i == 0 ? id : null,
+      ),
+      policy: parsePolicy,
+      stage: 'asbab',
+      recordId: HadithParser.getHadithId,
+    );
+    final seed = parsed.items.where((r) => r.hadithId == id).firstOrNull;
+    if (seed == null) {
+      throw const DorarParseException('Context seed record not identified');
+    }
+    final heading = doc
+        .querySelectorAll('h4, h3')
+        .map((e) => e.text)
+        .where((t) => t.contains('سبب') || t.contains('أسباب'))
+        .join(' ');
+    final contexts = parsed.items
+        .where((r) => !identical(r, seed))
         .map(
-          (ps) => UsulSource(
-            source: ps.source,
-            chain: ps.chain,
-            hadithText: ps.hadithText,
+          (r) => AsbabNarration(
+            hadith: r,
+            document: r.content!,
+            rawLabel: heading,
+            relationship: RecordParser.relationship(heading),
           ),
         )
         .toList();
-
-    final usul = UsulHadith(
-      hadith: mainHadith,
-      sources: sources,
-      count: sources.length,
-    );
-
-    final response = ApiResponse<UsulHadith>(
-      data: usul,
+    return ApiResponse(
+      data: AsbabResult(
+        requestedId: id,
+        source: seed,
+        narrations: List.unmodifiable(contexts),
+      ),
       metadata: SearchMetadata(
-        length: 1, // single hadith object
-        usulSourcesCount: sources.length,
-        isCached: false,
+        length: contexts.length,
+        provenance: source.provenance,
+        isCached: source.provenance.isCached,
+        diagnostics: parsed.diagnostics,
       ),
     );
-
-    await _cache.set(
-      CacheEntry(
-        key: url,
-        body: jsonEncode(response.toJson((data) => data.toJson())),
-        header: '',
-        createdAt: DateTime.now(),
-
-        expiresAt: DateTime.now().add(const Duration(days: 7)),
-      ),
-    );
-    return response;
   }
 
-  /// Search hadiths via API endpoint (~15 results, faster).
-  ///
-  /// Validates [params.value] and [params.page] and throws
-  /// [DorarValidationException] on invalid input.
-  /// Throws [DorarServerException] if the API response is invalid,
-  /// and can throw other [DorarException] subclasses for network/timeouts.
-  ///
-  /// [params] - Search parameters (text, page, filters, removeHtml)
-  ///
-  /// Validates [params.value] and [params.page] and throws
-  /// [DorarValidationException] on invalid input.
-  ///
-  /// Returns [Hadith] entries with only the fields exposed by the
-  /// public API. Use [HadithService.searchViaSite] when you need the full
-  /// metadata payload.
+  Future<ApiResponse<UsulHadith>> getUsul(
+    String id, {
+    bool removeHtml = true,
+    ParsePolicy parsePolicy = ParsePolicy.strict,
+  }) async {
+    final source = await _detail(id, DorarEndpoints.usulHadith(id));
+    final doc = HtmlHelper.parseHtml(source.body);
+    late DetailedHadith seed;
+    try {
+      seed = _record(
+        doc.querySelector('.border-bottom')!,
+        source,
+        removeHtml: removeHtml,
+        expectedId: id,
+      );
+    } on FormatException catch (error) {
+      throw DorarParseException(
+        'Invalid source-chain seed: ${error.message}',
+        cause: error,
+        details: {'id': id, 'stage': 'seedIdentity'},
+      );
+    }
+    final articles = doc
+        .querySelectorAll('article')
+        .where(
+          (a) =>
+              a.querySelector(
+                'span[style*="color:maroon"], span[style*="color: maroon"], span[style*="color:blue"], span[style*="color: blue"]',
+              ) !=
+              null,
+        )
+        .toList();
+    final parsed = parseCollection(
+      articles,
+      (article, i) {
+        final h5 = article.querySelector('h5');
+        if (h5 == null) {
+          throw const FormatException('Source narration heading not found');
+        }
+        final sourceNode = h5.querySelector(
+          'span[style*="color:maroon"], span[style*="color: maroon"]',
+        );
+        final chainNode = h5.querySelector(
+          'span[style*="color:blue"], span[style*="color: blue"]',
+        );
+        final clone = h5.clone(true);
+        clone
+            .querySelectorAll(
+              'span[style*="color:maroon"], span[style*="color: maroon"], span[style*="color:blue"], span[style*="color: blue"]',
+            )
+            .forEach((e) => e.remove());
+        if (sourceNode == null || chainNode == null) {
+          throw const FormatException('Source reference or chain missing');
+        }
+        final chain = DocumentParser.parse(
+          chainNode.innerHtml,
+          sourceUri: source.provenance.sourceUri,
+          defaultKind: BlockKind.chain,
+        );
+        final narration = DocumentParser.parse(
+          clone.innerHtml,
+          sourceUri: source.provenance.sourceUri,
+          defaultKind: BlockKind.narration,
+        );
+        return UsulSource(
+          source: sourceNode.text.trim(),
+          chain: chain.plainText.trim(),
+          hadithText: removeHtml ? narration.plainText.trim() : clone.innerHtml,
+          citation: Citation(source: sourceNode.text.trim()),
+          chainContent: chain,
+          narrationContent: narration,
+        );
+      },
+      policy: parsePolicy,
+      stage: 'usul',
+    );
+    return ApiResponse(
+      data: UsulHadith(
+        hadith: seed,
+        sources: parsed.items,
+        count: parsed.items.length,
+      ),
+      metadata: SearchMetadata(
+        length: 1,
+        usulSourcesCount: parsed.items.length,
+        provenance: source.provenance,
+        isCached: source.provenance.isCached,
+        diagnostics: parsed.diagnostics,
+      ),
+    );
+  }
+
   Future<ApiResponse<List<Hadith>>> searchViaApi(
     HadithSearchParams params,
   ) async {
-    Validators.validateSearchText(params.value);
-    Validators.validatePage(params.page);
-
-    final queryParams = QuerySerializer.serializeHadithParams(
+    final query = QuerySerializer.serializeHadithParams(
       params,
       isApiEndpoint: true,
     );
-    final url = DorarEndpoints.hadithSearchApi(queryParams);
-
-    // Return cached with isCached=true if available
-    final cached = await _cache.get(url);
-    if (cached != null) {
-      final response = ApiResponse<List<Hadith>>.fromJson(
-        jsonDecode(cached.body),
-        (json) => (json as List<dynamic>)
-            .map((e) => Hadith.fromJson(e as Map<String, dynamic>))
-            .toList(),
-      );
-      return response.copyWith(
-        metadata: response.metadata.copyWith(isCached: true),
-      );
-    }
-
-    // Not cached: fetch and parse
-    final response = await _client.get(url);
-    final data = jsonDecode(response);
-
-    if (data['ahadith'] == null || data['ahadith']['result'] == null) {
-      throw const DorarServerException(
-        'Invalid response from Dorar API',
-        statusCode: 502,
-      );
-    }
-
-    final htmlContent = HtmlUtils.decodeHtmlEntities(
-      data['ahadith']['result'] as String,
+    final source = await _transport.get(
+      DorarEndpoints.hadithSearchApi(query),
+      endpoint: 'quickSearch',
+      accepts: _acceptQuick,
     );
-    final doc = HtmlHelper.parseHtml(htmlContent);
-
-    final hadithInfoElements = doc.querySelectorAll('.hadith-info');
-    final hadiths = <Hadith>[];
-
-    for (final info in hadithInfoElements) {
-      try {
-        final hadithElement = info.previousElementSibling;
-        if (hadithElement == null) continue;
-
-        final rawText = params.removeHtml
-            ? hadithElement.text
-            : hadithElement.innerHtml;
-        final hadithText = HadithParser.cleanHadithText(
-          rawText,
-          HadithTextCleanMode.search,
-        );
-
-        // Extract metadata using the info-subtitle pattern
-        // The HTML structure can be:
-        // 1. <span class="info-subtitle">Label:</span> Value<span ...>
-        // 2. <span class="info-subtitle">Label:</span><span>Value</span>
-        final infoHtml = info.innerHtml;
-
-        // Helper to extract value after a subtitle
-        String extractValue(String label) {
-          // Try pattern 1: text directly after subtitle (real API)
-          final pattern1 = RegExp(
-            '<span class="info-subtitle">$label:</span>\\s*([^<]+)',
-          );
-          var match = pattern1.firstMatch(infoHtml);
-          if (match != null && match.group(1)!.trim().isNotEmpty) {
-            return match.group(1)!.trim();
-          }
-
-          // Try pattern 2: value in next span with possible nested tags (mock responses)
-          // Use non-greedy matching and match until </span>
-          final pattern2 = RegExp(
-            '<span class="info-subtitle">$label:</span>\\s*<span[^>]*>(.*?)</span>',
-            dotAll: true,
-          );
-          match = pattern2.firstMatch(infoHtml);
-          if (match != null) {
-            // Extract text content from HTML (handles nested <a> tags)
-            final fragment = HtmlHelper.parseFragment(match.group(1)!);
-            final text = fragment.text?.trim() ?? '';
-            if (text.isNotEmpty) return text;
-          }
-
-          return '';
+    final data = jsonDecode(source.body) as Map<String, dynamic>;
+    final doc = HtmlHelper.parseHtml(
+      (data['ahadith'] as Map<String, dynamic>)['result'] as String,
+    );
+    final infos = doc.querySelectorAll('.hadith-info');
+    if (infos.isEmpty && !_emptyQuick(doc)) {
+      throw const DorarParseException('Unknown empty quick-search layout');
+    }
+    final parsed = parseCollection(
+      infos,
+      (info, i) {
+        final narration = info.previousElementSibling;
+        if (narration == null) {
+          throw const FormatException('Quick narration not found');
         }
-
-        final rawi = extractValue('الراوي');
-        final mohdith = extractValue('المحدث');
-        final book = extractValue('المصدر');
-        final numberOrPage = extractValue('الصفحة أو الرقم');
-        final grade = extractValue('خلاصة حكم المحدث');
-
-        hadiths.add(
-          Hadith(
-            hadith: hadithText,
-            rawi: rawi,
-            mohdith: mohdith,
-            book: book,
-            numberOrPage: numberOrPage,
-            grade: grade,
-          ),
+        final metadata = HadithParser.parseHadithInfo(info);
+        final document = DocumentParser.parse(
+          narration.innerHtml,
+          defaultKind: BlockKind.narration,
+          sourceUri: source.provenance.sourceUri,
         );
-      } catch (e) {
-        // Skip malformed hadiths
-        continue;
-      }
-    }
-
-    if (hadiths.isEmpty) {
-      throw const DorarServerException(
-        'No hadith found in the response',
-        statusCode: 502,
-      );
-    }
-
-    // Calculate pagination metadata (limited - API doesn't provide total count)
-    final currentPage = params.page;
-    final hasNextPage = hadiths.length == apiPageSize;
-    final hasPrevPage = currentPage > 1;
-
-    final result = ApiResponse<List<Hadith>>(
-      data: hadiths,
+        if (document.plainText.trim().isEmpty ||
+            metadata.rawi.isEmpty ||
+            metadata.book.isEmpty) {
+          throw const FormatException('Incomplete quick-search record');
+        }
+        return Hadith(
+          hadith: params.removeHtml
+              ? HadithParser.cleanHadithText(
+                  document.plainText,
+                  HadithTextCleanMode.search,
+                )
+              : narration.innerHtml,
+          rawi: metadata.rawi,
+          mohdith: metadata.mohdith,
+          book: metadata.book,
+          numberOrPage: metadata.numberOrPage,
+          grade: metadata.grade,
+        );
+      },
+      policy: params.parsePolicy,
+      stage: 'quickSearch',
+    );
+    final next = parsed.items.length == apiPageSize;
+    return ApiResponse(
+      data: parsed.items,
       metadata: SearchMetadata(
-        length: hadiths.length,
-        currentPageCount: hadiths.length,
-        page: currentPage,
-        hasNextPage: hasNextPage,
-        hasPrevPage: hasPrevPage,
+        length: parsed.items.length,
+        currentPageCount: parsed.items.length,
+        page: params.page,
+        hasNextPage: next,
+        hasPrevPage: params.page > 1,
         removeHtml: params.removeHtml,
-        isCached: false,
-      ),
-    );
-
-    await _cache.set(
-      CacheEntry(
-        key: url,
-        body: jsonEncode(
-          result.toJson((data) => data.map((e) => e.toJson()).toList()),
+        isCached: source.provenance.isCached,
+        provenance: source.provenance,
+        diagnostics: parsed.diagnostics,
+        pagination: PageMetadata(
+          page: params.page,
+          pageSize: apiPageSize,
+          hasNextPage: next,
+          nextPageEvidence: NextPageEvidence.pageSizeHint,
         ),
-        header: '',
-        createdAt: DateTime.now(),
-
-        expiresAt: DateTime.now().add(const Duration(days: 7)),
       ),
     );
-    return result;
   }
 
-  /// Search hadiths via site endpoint (~30 results with full metadata, slower).
-  ///
-  /// Validates [params.value] and [params.page] and throws
-  /// [DorarValidationException] on invalid input. Can throw other
-  /// [DorarException] subclasses for network/timeouts or server errors.
-  ///
-  /// Provides detailed results including hadith IDs, sharh metadata, and related URLs.
-  ///
-  /// [params] - Search parameters (text, page, specialist tab, filters,
-  /// removeHtml)
+  static bool _emptyQuick(dom.Document doc) =>
+      doc.querySelector('link[rel="canonical"][href*="dorar_api.json"]') !=
+          null &&
+      doc.querySelector('a[href*="/hadith/search"]') != null;
+  static bool _acceptQuick(String body) {
+    try {
+      final json = jsonDecode(body);
+      if (json is! Map ||
+          json['ahadith'] is! Map ||
+          json['ahadith']['result'] is! String) {
+        return false;
+      }
+      final doc = HtmlHelper.parseHtml(json['ahadith']['result'] as String);
+      return doc.querySelector('.hadith-info') != null || _emptyQuick(doc);
+    } on FormatException {
+      return false;
+    }
+  }
+
   Future<ApiResponse<List<DetailedHadith>>> searchViaSite(
     HadithSearchParams params,
   ) async {
-    Validators.validateSearchText(params.value);
-    Validators.validatePage(params.page);
-
-    final queryParams = QuerySerializer.serializeHadithParams(
-      params,
-      isApiEndpoint: false,
-    );
-    final url = DorarEndpoints.hadithSearchSite(
-      queryParams,
+    final query = QuerySerializer.serializeHadithParams(params);
+    if (params.page > siteMaxPages) {
+      throw const DorarValidationException(
+        'Ordinary search serves at most ten pages; thematic browsing has its own limits',
+        field: 'page',
+      );
+    }
+    return searchSiteUrl(
+      DorarEndpoints.hadithSearchSite(query, specialist: params.specialist),
+      page: params.page,
       specialist: params.specialist,
+      removeHtml: params.removeHtml,
+      parsePolicy: params.parsePolicy,
     );
-
-    // Return cached with isCached=true if available
-    final cached = await _cache.get(url);
-    if (cached != null) {
-      final response = ApiResponse<List<DetailedHadith>>.fromJson(
-        jsonDecode(cached.body),
-        (json) => (json as List<dynamic>)
-            .map((e) => DetailedHadith.fromJson(e as Map<String, dynamic>))
-            .toList(),
-      );
-      return response.copyWith(
-        metadata: response.metadata.copyWith(isCached: true),
-      );
-    }
-
-    // Not cached: fetch and parse
-    final html = await _client.getHtml(url);
-    final doc = HtmlHelper.parseHtml(html);
-
-    final tabName = params.specialist ? 'specialist' : 'home';
-    final tabElement = doc.querySelector('#$tabName');
-
-    if (tabElement == null) {
-      throw const DorarServerException(
-        'Invalid response structure from Dorar',
-        statusCode: 502,
-      );
-    }
-
-    // Extract result counts
-    final numberOfNonSpecialist =
-        int.tryParse(
-          doc
-                  .querySelector('a[aria-controls="home"]')
-                  ?.text
-                  .replaceAll(RegExp(r'[^\d]'), '') ??
-              '0',
-        ) ??
-        0;
-
-    final numberOfSpecialist =
-        int.tryParse(
-          doc
-                  .querySelector('a[aria-controls="specialist"]')
-                  ?.text
-                  .replaceAll(RegExp(r'[^\d]'), '') ??
-              '0',
-        ) ??
-        0;
-
-    final borderElements = tabElement.querySelectorAll('.border-bottom');
-    final hadiths = <DetailedHadith>[];
-
-    for (final borderElement in borderElements) {
-      try {
-        final hadith = _parseHadithFromBorderElement(
-          borderElement,
-          removeHtml: params.removeHtml,
-          textCleanMode: HadithTextCleanMode.search,
-        );
-        hadiths.add(hadith);
-      } catch (e) {
-        // Skip malformed hadiths
-        continue;
-      }
-    }
-
-    // Calculate pagination metadata
-    final currentPage = params.page;
-    final total = params.specialist
-        ? numberOfSpecialist
-        : numberOfNonSpecialist;
-    final rawPages = total > 0 ? (total / sitePageSize).ceil() : 0;
-    // Dorar's site UI only exposes pages 1..siteMaxPages; beyond that is empty.
-    final totalPages = rawPages.clamp(0, siteMaxPages);
-    final hasNextPage = currentPage < totalPages;
-    final hasPrevPage = currentPage > 1;
-
-    final result = ApiResponse<List<DetailedHadith>>(
-      data: hadiths,
-      metadata: SearchMetadata(
-        length: hadiths.length,
-        currentPageCount: hadiths.length,
-        total: total,
-        page: currentPage,
-        totalPages: totalPages,
-        hasNextPage: hasNextPage,
-        hasPrevPage: hasPrevPage,
-        removeHtml: params.removeHtml,
-        specialist: params.specialist,
-        numberOfNonSpecialist: numberOfNonSpecialist,
-        numberOfSpecialist: numberOfSpecialist,
-        isCached: false,
-      ),
-    );
-
-    await _cache.set(
-      CacheEntry(
-        key: url,
-        body: jsonEncode(
-          result.toJson((data) => data.map((e) => e.toJson()).toList()),
-        ),
-        header: '',
-        createdAt: DateTime.now(),
-
-        expiresAt: DateTime.now().add(const Duration(days: 7)),
-      ),
-    );
-    return result;
   }
 
-  /// Internal helper to parse a hadith from a .border-bottom element.
-  DetailedHadith _parseHadithFromBorderElement(
-    dom.Element borderElement, {
-    required bool removeHtml,
-    required HadithTextCleanMode textCleanMode,
-    bool includeUsulFlag = false,
-  }) {
-    // Extract hadith text from first child
-    final hadithElement = borderElement.children.isNotEmpty
-        ? borderElement.children[0]
-        : null;
-
-    if (hadithElement == null) {
-      throw const FormatException('Hadith element not found');
+  /// Shared scoped tab parsing for ordinary search and thematic browsing.
+  Future<ApiResponse<List<DetailedHadith>>> searchSiteUrl(
+    String url, {
+    required int page,
+    bool specialist = false,
+    bool removeHtml = true,
+    ParsePolicy parsePolicy = ParsePolicy.strict,
+    bool category = false,
+  }) async {
+    final tab = specialist ? 'specialist' : 'home';
+    final source = await _transport.get(
+      url,
+      endpoint: category ? 'categoryBrowse' : 'siteSearch',
+      accepts: (body) =>
+          HtmlHelper.parseHtml(body).querySelector('#$tab') != null,
+    );
+    final doc = HtmlHelper.parseHtml(source.body);
+    final candidates = doc
+        .querySelector('#$tab')!
+        .querySelectorAll('.border-bottom');
+    final parsed = parseCollection(
+      candidates,
+      (block, i) => _record(
+        block,
+        source,
+        removeHtml: removeHtml,
+        mode: HadithTextCleanMode.search,
+      ),
+      policy: parsePolicy,
+      stage: category ? 'categoryBrowse' : 'siteSearch',
+      recordId: HadithParser.getHadithId,
+    );
+    int? count(String name) {
+      final label = doc.querySelector('a[aria-controls="$name"]')?.text;
+      if (label == null) return null;
+      return int.tryParse(label.replaceAll(RegExp(r'[^0-9]'), ''));
     }
 
-    final rawText = removeHtml ? hadithElement.text : hadithElement.innerHtml;
-    final hadithText = HadithParser.cleanHadithText(rawText, textCleanMode);
-
-    // Extract metadata from second child
-    final infoElement = borderElement.children.length > 1
-        ? borderElement.children[1]
-        : null;
-
-    if (infoElement == null) {
-      throw const FormatException('Info element not found');
-    }
-
-    final parsedInfo = HadithParser.parseHadithInfo(infoElement);
-    final hadithId = HadithParser.getHadithId(borderElement);
-    final similarUrl = HadithParser.getSimilarHadithUrl(borderElement);
-    final alternateUrl = HadithParser.getAlternateHadithUrl(borderElement);
-    final usulUrl = HadithParser.getUsulHadithUrl(borderElement);
-    final categories = HadithParser.parseHadithCategories(borderElement);
-
-    return DetailedHadith(
-      hadith: hadithText,
-      rawi: parsedInfo.rawi,
-      mohdith: parsedInfo.mohdith,
-      mohdithId: parsedInfo.mohdithId,
-      book: parsedInfo.book,
-      bookId: parsedInfo.bookId,
-      numberOrPage: parsedInfo.numberOrPage,
-      grade: parsedInfo.grade,
-      explainGrade: parsedInfo.explainGrade,
-      takhrij: parsedInfo.takhrij,
-      hadithId: hadithId,
-      categories: categories,
-      hasSimilarHadith: similarUrl != null,
-      hasAlternateHadithSahih: alternateUrl != null,
-      hasUsulHadith: includeUsulFlag || usulUrl != null,
-      similarHadithDorar: similarUrl,
-      alternateHadithSahihDorar: alternateUrl,
-      usulHadithDorar: usulUrl,
-      hasSharhMetadata: parsedInfo.sharhId != null,
-      sharhMetadata: parsedInfo.sharhId != null
-          ? SharhMetadata(id: parsedInfo.sharhId!, isContainSharh: false)
-          : null,
+    final home = count('home'), special = count('specialist');
+    final total = specialist ? special : home;
+    final size = category ? 20 : sitePageSize;
+    final displayedPages = total == null ? null : (total / size).ceil();
+    final accessible = category
+        ? displayedPages
+        : displayedPages?.clamp(0, siteMaxPages);
+    final next = accessible == null ? null : page < accessible;
+    return ApiResponse(
+      data: parsed.items,
+      metadata: SearchMetadata(
+        length: parsed.items.length,
+        currentPageCount: parsed.items.length,
+        page: page,
+        total: total,
+        totalPages: accessible,
+        hasNextPage: next,
+        hasPrevPage: page > 1,
+        specialist: specialist,
+        removeHtml: removeHtml,
+        numberOfNonSpecialist: home,
+        numberOfSpecialist: special,
+        provenance: source.provenance,
+        isCached: source.provenance.isCached,
+        diagnostics: parsed.diagnostics,
+        pagination: PageMetadata(
+          page: page,
+          pageSize: size,
+          displayedTotal: total,
+          displayedTotalPages: displayedPages,
+          accessiblePageLimit: category ? null : siteMaxPages,
+          reachableTotalUpperBound: category
+              ? total
+              : total?.clamp(0, sitePageSize * siteMaxPages),
+          truncated: category
+              ? false
+              : total == null
+              ? null
+              : total > sitePageSize * siteMaxPages,
+          hasNextPage: next,
+          nextPageEvidence: category
+              ? NextPageEvidence.upstreamNavigation
+              : NextPageEvidence.knownLimit,
+        ),
+      ),
     );
   }
 }

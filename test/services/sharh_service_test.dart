@@ -1,5 +1,4 @@
 import 'package:dorar_hadith/dorar_hadith.dart';
-import 'package:dorar_hadith/src/database/cache_database.dart';
 import 'package:dorar_hadith/src/services/cache_service.dart';
 import 'package:drift/native.dart';
 import 'package:http/testing.dart';
@@ -48,7 +47,7 @@ void main() {
           return createUtf8Response('''
 <html><body>
   <div id="home">
-    <div class="border-bottom"><a xplain="0">No sharh</a></div>
+    <div class="border-bottom"><article><h5>No sharh</h5></article><div class="d-block"><strong>الراوي: <span>عمر</span></strong><strong>المحدث: <span>البخاري</span></strong><strong>المصدر: <span>صحيح البخاري</span></strong><a xplain="0">No sharh</a></div></div>
   </div>
 </body></html>
 ''', 200);
@@ -100,7 +99,7 @@ void main() {
       expect(sharh2.hadith.hadith, contains('إنما الأعمال'));
 
       // Verify cache hit
-      final cacheKey = 'https://www.dorar.net/hadith/sharh/123';
+      final cacheKey = 'raw:sharh:https://www.dorar.net/hadith/sharh/123';
       expect(await cacheService.get(cacheKey), isNotNull);
     });
 
@@ -183,13 +182,7 @@ void main() {
         final url = request.url.toString();
         requestedUrls.add(url);
         if (url.contains('/hadith/search')) {
-          return createUtf8Response('''
-<html><body>
-  <div id="home">
-    <div class="border-bottom"><a xplain="123">Hadith</a></div>
-  </div>
-</body></html>
-''', 200);
+          return createUtf8Response(mockSharhSearchResponse, 200);
         }
         if (url.contains('/hadith/sharh/123')) {
           return createUtf8Response(mockSharhPageResponse, 200);
@@ -226,7 +219,8 @@ void main() {
       final sharh2 = await service.getByText('salah');
       expect(sharh2.hadith.hadith, isNotEmpty);
 
-      final cacheKey = 'https://www.dorar.net/hadith/search?q=salah';
+      final cacheKey =
+          'raw:siteSearch:https://www.dorar.net/hadith/search?q=salah&page=1';
       expect(await cacheService.get(cacheKey), isNotNull);
     });
 
@@ -239,7 +233,7 @@ void main() {
           return createUtf8Response('''
 <html><body>
   <div id="specialist">
-    <div class="border-bottom"><a xplain="789">Specialist hadith</a></div>
+    <div class="border-bottom"><article><h5>Specialist hadith</h5></article><div class="d-block"><strong>الراوي: <span>عمر</span></strong><strong>المحدث: <span>البخاري</span></strong><strong>المصدر: <span>صحيح البخاري</span></strong><a xplain="789">شرح الحديث</a></div></div>
   </div>
 </body></html>
 ''', 200);
@@ -345,11 +339,15 @@ void main() {
 
       // Both should be cached
       expect(
-        await cacheService.get('https://www.dorar.net/hadith/sharh/123'),
+        await cacheService.get(
+          'raw:sharh:https://www.dorar.net/hadith/sharh/123',
+        ),
         isNotNull,
       );
       expect(
-        await cacheService.get('https://www.dorar.net/hadith/sharh/456'),
+        await cacheService.get(
+          'raw:sharh:https://www.dorar.net/hadith/sharh/456',
+        ),
         isNotNull,
       );
     });

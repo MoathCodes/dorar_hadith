@@ -11,6 +11,7 @@ String getExceptionMessage(DorarException exception) {
     DorarServerException() =>
       'Server error (${exception.statusCode}): ${exception.message}',
     DorarParseException() => 'Failed to parse response: ${exception.message}',
+    DorarSubrequestException() => getExceptionMessage(exception.cause),
     DorarRateLimitException() =>
       'Rate limit exceeded. ${exception.resetAt != null ? 'Try again after ${exception.resetAt}' : 'Please try again later.'}',
   };
@@ -65,11 +66,13 @@ final class DorarParseException extends DorarException {
 
   /// The type that was expected
   final Type? expectedType;
+  final Object? cause;
 
   const DorarParseException(
     super.message, {
     this.rawData,
     this.expectedType,
+    this.cause,
     super.details,
   }) : super(statusCode: null);
 
@@ -157,4 +160,23 @@ final class DorarValidationException extends DorarException {
     if (rule != null) parts.add('rule: $rule');
     return parts.join(', ');
   }
+}
+
+/// A failed associated explanation, retaining transport/parser category as [cause].
+final class DorarSubrequestException extends DorarException {
+  DorarSubrequestException({
+    required this.cause,
+    required this.referenceId,
+    this.requestedRecordId,
+  }) : super(
+         'Associated explanation request failed',
+         statusCode: cause.statusCode,
+         details: {
+           'referenceId': referenceId,
+           'requestedRecordId': requestedRecordId,
+         },
+       );
+  final DorarException cause;
+  final String referenceId;
+  final String? requestedRecordId;
 }

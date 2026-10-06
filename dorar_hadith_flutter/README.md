@@ -1,119 +1,86 @@
 # Dorar Hadith Flutter
 
-Flutter adapter for [`dorar_hadith`](https://pub.dev/packages/dorar_hadith). It wires `rootBundle` asset loading and copies the offline `rawi.db` narrator database into a persistent application directory.
+[العربية](README_AR.md)
 
-Pure Dart/CLI consumers should continue using `dorar_hadith` directly. Flutter Web apps should also use the core package (WebAssembly database + HTTP asset loading); this package targets **native Flutter** (Android, iOS, Linux, macOS, Windows).
+Flutter setup for `dorar_hadith`, with verified bundled references, native snapshot upgrades, persistent API cache and browser asset initialization.
 
-## Installation
+## Contents
 
-```bash
-flutter pub add dorar_hadith_flutter
-```
+- [Setup](#setup)
+- [Native storage and initialization](#storage)
+- [Browser setup](#browser)
+- [Custom storage](#custom)
+- [Asset keys](#assets)
+- [Upgrading from 0.5.x](#migration)
 
-This pulls in `dorar_hadith` transitively, including bundled JSON and database assets. You do **not** need to re-declare `rawi.db` or the reference JSON files in your app `pubspec.yaml` — Flutter bundles transitive assets from `dorar_hadith` automatically.
+<a id="setup"></a>
 
 ## Setup
 
-Call `ensureInitialized()` once in `main()` before `runApp()` and before any offline reference or narrator APIs:
+Install the adapter. Version 0.6.0 requires Dart 3.13.0 and Flutter 3.47.5 or later.
+
+```sh
+flutter pub add dorar_hadith_flutter
+```
+
+Initialize it before creating a Dorar client:
 
 ```dart
 import 'package:dorar_hadith_flutter/dorar_hadith_flutter.dart';
 import 'package:flutter/material.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await DorarHadithFlutter.ensureInitialized();
   runApp(const MyApp());
 }
 ```
 
-### What `ensureInitialized()` does
+The core dependency supplies JSON, database and manifest assets automatically. You do not need to declare them in your app. Initialization validates the bundled manifest and hashes offline before making the asset and database factories available.
 
-1. **`configureFlutterAssetLoader`** — registers `FlutterAssetLoader` with `rootBundle.loadString` so `BookReferenceService` and `MohdithReferenceService` read bundled JSON.
-2. **`RawiDatabase.configureConnection`** — installs a factory that copies `rawi.db` from the asset bundle into a writable directory, then opens it with Drift `NativeDatabase`.
-3. **`CacheDatabase.configureConnection`** — opens `cache.db` in the same writable directory so API response caching persists in the application support folder instead of the process working directory.
+<a id="storage"></a>
 
-The method is **idempotent**: after the first successful call, `DorarHadithFlutter.isInitialized` is `true` and further calls return immediately without reconfiguring. A different `databaseDirectory` on a later call is **ignored** (the first directory wins).
+## Native storage and initialization
 
-### Default database directory
-
-When `databaseDirectory` is omitted, `ensureInitialized()` uses `getApplicationSupportDirectory()` from `path_provider`. The copied `rawi.db` persists across app restarts.
-
-Pass a custom writable directory when you need a different location:
+Native Flutter installs references atomically under a verified, snapshot-specific filename in application support storage and opens them read-only. The mutable API cache uses a separate `cache.db`. Upgrades preserve old `rawi.db`, old snapshots, cache, custom files and unrelated storage. Application favorites and history remain untouched.
 
 ```dart
-await DorarHadithFlutter.ensureInitialized(
-  databaseDirectory: myWritableDirectory,
-);
+await DorarHadithFlutter.ensureInitialized(databaseDirectory: myDirectory);
 ```
 
-### Asset keys
+Concurrent calls with the same configuration share one future. Failed initialization can be retried and leaves `isInitialized` false. Changing the directory configuration raises `DorarFlutterAdapterException`. Its failure kinds distinguish missing assets, schema mismatch, integrity failure, installation failure and configuration conflict; `cause` retains the underlying error.
 
-`FlutterAssetLoader` resolves service paths to Flutter asset bundle keys:
+<a id="browser"></a>
 
-| Service default path | Bundle key used |
-|---|---|
-| `assets/data/book.json` | `packages/dorar_hadith/assets/data/book.json` |
-| `assets/data/mohdith.json` | `packages/dorar_hadith/assets/data/mohdith.json` |
-| (database copy source) | `packages/dorar_hadith/assets/database/rawi.db` |
+## Browser setup
 
-Paths that already start with `packages/` are passed through unchanged. Provide a custom `keyResolver` to `configureFlutterAssetLoader` when your asset layout differs.
+The browser entry point configures bundled JSON and the core WebAssembly databases. Omit `databaseDirectory` on web. Serve compatible `sqlite3.wasm` and `drift_worker.dart.js` at the application base URL. Reference storage identity includes snapshot version, schema and hash; API cache identity is separate.
 
-## Failure modes
+The [example guide](example/README.md) explains worker and Wasm setup. Direct Dorar site and quick-API requests were blocked by CORS from the tested browser origin. For online access, inject an application-owned server transport through `DorarHttpClient(client: yourHttpClient)`. Offline asset initialization does not contact Dorar.
 
-| Situation | What happens |
-|---|---|
-| Offline APIs used **before** `ensureInitialized()` | `BookReferenceService` / `MohdithReferenceService`: `AssetLoaderException` (`Asset file not found…`) because the core package's `FileAssetLoader` cannot read Flutter bundles. `RawiReferenceService`: `Exception` (`Database file not found…`) from the default CLI connection factory. |
-| Missing bundled asset at runtime | `FlutterError` from `rootBundle` (typically `Unable to load asset: packages/dorar_hadith/…`). Not wrapped as `AssetLoaderException`. |
-| `ensureInitialized()` called twice | No error; second call is a no-op. |
-| `databaseDirectory` not writable | Platform `File` I/O error when copying `rawi.db` (not a library-specific exception). |
-| Invalid JSON in bundled files | `FormatException` from `json.decode` after a successful asset load. |
+<a id="custom"></a>
 
-Network/API errors (`DorarException` hierarchy) are unchanged and documented in the [core README](../README.md).
+## Custom storage
 
-## Advanced customization
+`createFlutterConnectionFactory` preserves ownership of custom filenames. Supply `manifest` for managed, verified installation under a versioned filename. Without a manifest, the caller manages the reference lifecycle. Existing custom files are never overwritten and must use schema 2. Use the core `migrateReferenceDatabase` helper to create and verify a separate schema-2 copy of a schema-1 input.
 
-For manual control without `ensureInitialized()`, the package re-exports:
+`createFlutterCacheConnectionFactory` opens a separate writable cache. `configureFlutterAssetLoader` supports custom JSON loading. `installManagedReferenceSnapshot` supports explicit managed native installation. Native file installation helpers are unavailable in browsers.
 
-- **`configureFlutterAssetLoader`** — set `bundleLoader` (typically `rootBundle.loadString`) and optional `keyResolver`.
-- **`createFlutterConnectionFactory`** — copy-on-first-open database wiring with `loadDatabaseBytes`, optional `targetDirectory`, and `databaseFileName`.
-- **`createFlutterCacheConnectionFactory`** — opens `cache.db` in a writable directory (no asset copy).
+<a id="assets"></a>
 
-If `targetDirectory` is omitted in `createFlutterConnectionFactory`, the database is copied into a **system temp** directory (not persistent across restarts). `ensureInitialized()` always prefers the application support directory unless you override `databaseDirectory`.
+## Asset keys
 
-Example (manual setup equivalent to `ensureInitialized()`):
+The core package supplies these bundle keys:
 
-```dart
-import 'package:dorar_hadith/dorar_hadith.dart';
-import 'package:dorar_hadith_flutter/dorar_hadith_flutter.dart';
-import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart';
+- `packages/dorar_hadith/assets/data/book.json`
+- `packages/dorar_hadith/assets/data/mohdith.json`
+- `packages/dorar_hadith/assets/data/reference_manifest.json`
+- `packages/dorar_hadith/assets/database/rawi.db`
 
-final supportDir = await getApplicationSupportDirectory();
+ByteData conversions preserve the returned view's offset and length. Bytes outside that view are excluded from database content.
 
-configureFlutterAssetLoader(bundleLoader: rootBundle.loadString);
+<a id="migration"></a>
 
-RawiDatabase.configureConnection(
-  createFlutterConnectionFactory(
-    targetDirectory: supportDir,
-    loadDatabaseBytes: () async {
-      final data = await rootBundle.load(
-        'packages/dorar_hadith/assets/database/rawi.db',
-      );
-      return data.buffer.asUint8List();
-    },
-  ),
-);
-```
+## Upgrading from 0.5.x
 
-## API usage
-
-After initialization, use `dorar_hadith` APIs as documented in the [core README](../README.md):
-
-```dart
-import 'package:dorar_hadith/dorar_hadith.dart';
-
-final client = DorarClient();
-final books = await client.searchBooks('صحيح');
-await client.dispose();
-```
+Read the [core migration guide](https://github.com/MoathCodes/dorar_hadith/blob/main/doc/MIGRATION_0_6_0.md) for structured explanation rendering, reviewed speaker attribution, filters, pagination, cache format 3 and saved JSON compatibility. The [release guide](https://github.com/MoathCodes/dorar_hadith/blob/main/doc/RELEASE_0_6_0.md) records publication checks. Tawaq application adoption is a separate task.

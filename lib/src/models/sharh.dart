@@ -1,6 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'hadith.dart';
+import 'source_content.dart';
+import 'result_details.dart';
 import 'sharh_metadata.dart';
 
 part 'sharh.freezed.dart';
@@ -11,7 +13,12 @@ part 'sharh.g.dart';
 abstract class Sharh with _$Sharh {
   const Sharh._();
   const factory Sharh({
-    required ExplainedHadith hadith,
+    required DetailedHadith hadith,
+    SourcedDocument? document,
+    DetailedHadith? embeddedHadith,
+    String? requestedHadithId,
+    ExplanationReference? explanationReference,
+    ResultProvenance? provenance,
 
     /// The sharh metadata (including the explanation text)
     SharhMetadata? sharhMetadata,

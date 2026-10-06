@@ -25,10 +25,9 @@ class FlutterAssetLoader implements AssetLoader {
 
   final String Function(String path) _keyResolver;
   FlutterAssetLoader({
-    required Future<String> Function(String key) bundleLoader,
+    required this._bundleLoader,
     String Function(String path)? keyResolver,
-  }) : _bundleLoader = bundleLoader,
-       _keyResolver = keyResolver ?? _defaultResolver;
+  }) : _keyResolver = keyResolver ?? _defaultResolver;
 
   @override
   Future<String> loadString(String path) {

@@ -23,7 +23,7 @@ mixin _$BookInfo {
  String get reviewer;/// Publisher
  String get publisher;/// Edition number
  String get edition;/// Year of the edition
- String get editionYear;
+ String get editionYear; EditionDate? get editionDate;
 /// Create a copy of BookInfo
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -37,20 +37,20 @@ $BookInfoCopyWith<BookInfo> get copyWith => _$BookInfoCopyWithImpl<BookInfo>(thi
 @override
 bool operator ==(Object other) {
   final _this = this as BookInfo;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BookInfo&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.bookId, _this.bookId) || other.bookId == _this.bookId)&&(identical(other.author, _this.author) || other.author == _this.author)&&(identical(other.reviewer, _this.reviewer) || other.reviewer == _this.reviewer)&&(identical(other.publisher, _this.publisher) || other.publisher == _this.publisher)&&(identical(other.edition, _this.edition) || other.edition == _this.edition)&&(identical(other.editionYear, _this.editionYear) || other.editionYear == _this.editionYear));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BookInfo&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.bookId, _this.bookId) || other.bookId == _this.bookId)&&(identical(other.author, _this.author) || other.author == _this.author)&&(identical(other.reviewer, _this.reviewer) || other.reviewer == _this.reviewer)&&(identical(other.publisher, _this.publisher) || other.publisher == _this.publisher)&&(identical(other.edition, _this.edition) || other.edition == _this.edition)&&(identical(other.editionYear, _this.editionYear) || other.editionYear == _this.editionYear)&&(identical(other.editionDate, _this.editionDate) || other.editionDate == _this.editionDate));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as BookInfo;
-  return Object.hash(runtimeType,_this.name,_this.bookId,_this.author,_this.reviewer,_this.publisher,_this.edition,_this.editionYear);
+  return Object.hash(runtimeType,_this.name,_this.bookId,_this.author,_this.reviewer,_this.publisher,_this.edition,_this.editionYear,_this.editionDate);
 }
 
 @override
 String toString() {
   final _this = this as BookInfo;
-  return 'BookInfo(name: ${_this.name}, bookId: ${_this.bookId}, author: ${_this.author}, reviewer: ${_this.reviewer}, publisher: ${_this.publisher}, edition: ${_this.edition}, editionYear: ${_this.editionYear})';
+  return 'BookInfo(name: ${_this.name}, bookId: ${_this.bookId}, author: ${_this.author}, reviewer: ${_this.reviewer}, publisher: ${_this.publisher}, edition: ${_this.edition}, editionYear: ${_this.editionYear}, editionDate: ${_this.editionDate})';
 }
 
 
@@ -61,7 +61,7 @@ abstract mixin class $BookInfoCopyWith<$Res>  {
   factory $BookInfoCopyWith(BookInfo value, $Res Function(BookInfo) _then) = _$BookInfoCopyWithImpl;
 @useResult
 $Res call({
- String name, String bookId, String author, String reviewer, String publisher, String edition, String editionYear
+ String name, String bookId, String author, String reviewer, String publisher, String edition, String editionYear, EditionDate? editionDate
 });
 
 
@@ -78,7 +78,7 @@ class _$BookInfoCopyWithImpl<$Res>
 
 /// Create a copy of BookInfo
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? bookId = null,Object? author = null,Object? reviewer = null,Object? publisher = null,Object? edition = null,Object? editionYear = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? bookId = null,Object? author = null,Object? reviewer = null,Object? publisher = null,Object? edition = null,Object? editionYear = null,Object? editionDate = freezed,}) {
   return _then(BookInfo(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,bookId: null == bookId ? _self.bookId : bookId // ignore: cast_nullable_to_non_nullable
@@ -87,7 +87,8 @@ as String,reviewer: null == reviewer ? _self.reviewer : reviewer // ignore: cast
 as String,publisher: null == publisher ? _self.publisher : publisher // ignore: cast_nullable_to_non_nullable
 as String,edition: null == edition ? _self.edition : edition // ignore: cast_nullable_to_non_nullable
 as String,editionYear: null == editionYear ? _self.editionYear : editionYear // ignore: cast_nullable_to_non_nullable
-as String,
+as String,editionDate: freezed == editionDate ? _self.editionDate : editionDate // ignore: cast_nullable_to_non_nullable
+as EditionDate?,
   ));
 }
 
@@ -172,10 +173,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  String bookId,  String author,  String reviewer,  String publisher,  String edition,  String editionYear)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  String bookId,  String author,  String reviewer,  String publisher,  String edition,  String editionYear,  EditionDate? editionDate)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BookInfo() when $default != null:
-return $default(_that.name,_that.bookId,_that.author,_that.reviewer,_that.publisher,_that.edition,_that.editionYear);case _:
+return $default(_that.name,_that.bookId,_that.author,_that.reviewer,_that.publisher,_that.edition,_that.editionYear,_that.editionDate);case _:
   return orElse();
 
 }
@@ -193,10 +194,10 @@ return $default(_that.name,_that.bookId,_that.author,_that.reviewer,_that.publis
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  String bookId,  String author,  String reviewer,  String publisher,  String edition,  String editionYear)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  String bookId,  String author,  String reviewer,  String publisher,  String edition,  String editionYear,  EditionDate? editionDate)  $default,) {final _that = this;
 switch (_that) {
 case _BookInfo():
-return $default(_that.name,_that.bookId,_that.author,_that.reviewer,_that.publisher,_that.edition,_that.editionYear);case _:
+return $default(_that.name,_that.bookId,_that.author,_that.reviewer,_that.publisher,_that.edition,_that.editionYear,_that.editionDate);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -213,10 +214,10 @@ return $default(_that.name,_that.bookId,_that.author,_that.reviewer,_that.publis
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  String bookId,  String author,  String reviewer,  String publisher,  String edition,  String editionYear)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  String bookId,  String author,  String reviewer,  String publisher,  String edition,  String editionYear,  EditionDate? editionDate)?  $default,) {final _that = this;
 switch (_that) {
 case _BookInfo() when $default != null:
-return $default(_that.name,_that.bookId,_that.author,_that.reviewer,_that.publisher,_that.edition,_that.editionYear);case _:
+return $default(_that.name,_that.bookId,_that.author,_that.reviewer,_that.publisher,_that.edition,_that.editionYear,_that.editionDate);case _:
   return null;
 
 }
@@ -228,7 +229,7 @@ return $default(_that.name,_that.bookId,_that.author,_that.reviewer,_that.publis
 @JsonSerializable()
 
 class _BookInfo implements BookInfo {
-  const _BookInfo({required this.name, required this.bookId, required this.author, required this.reviewer, required this.publisher, required this.edition, required this.editionYear});
+  const _BookInfo({required this.name, required this.bookId, required this.author, required this.reviewer, required this.publisher, required this.edition, required this.editionYear, this.editionDate});
   factory _BookInfo.fromJson(Map<String, dynamic> json) => _$BookInfoFromJson(json);
 
 /// Name of the book
@@ -245,6 +246,7 @@ class _BookInfo implements BookInfo {
 @override final  String edition;
 /// Year of the edition
 @override final  String editionYear;
+@override final  EditionDate? editionDate;
 
 /// Create a copy of BookInfo
 /// with the given fields replaced by the non-null parameter values.
@@ -259,18 +261,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _BookInfo&&(identical(other.name, name) || other.name == name)&&(identical(other.bookId, bookId) || other.bookId == bookId)&&(identical(other.author, author) || other.author == author)&&(identical(other.reviewer, reviewer) || other.reviewer == reviewer)&&(identical(other.publisher, publisher) || other.publisher == publisher)&&(identical(other.edition, edition) || other.edition == edition)&&(identical(other.editionYear, editionYear) || other.editionYear == editionYear));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _BookInfo&&(identical(other.name, name) || other.name == name)&&(identical(other.bookId, bookId) || other.bookId == bookId)&&(identical(other.author, author) || other.author == author)&&(identical(other.reviewer, reviewer) || other.reviewer == reviewer)&&(identical(other.publisher, publisher) || other.publisher == publisher)&&(identical(other.edition, edition) || other.edition == edition)&&(identical(other.editionYear, editionYear) || other.editionYear == editionYear)&&(identical(other.editionDate, editionDate) || other.editionDate == editionDate));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,name,bookId,author,reviewer,publisher,edition,editionYear);
+    return Object.hash(runtimeType,name,bookId,author,reviewer,publisher,edition,editionYear,editionDate);
 }
 
 @override
 String toString() {
-    return 'BookInfo(name: $name, bookId: $bookId, author: $author, reviewer: $reviewer, publisher: $publisher, edition: $edition, editionYear: $editionYear)';
+    return 'BookInfo(name: $name, bookId: $bookId, author: $author, reviewer: $reviewer, publisher: $publisher, edition: $edition, editionYear: $editionYear, editionDate: $editionDate)';
 }
 
 
@@ -281,7 +283,7 @@ abstract mixin class _$BookInfoCopyWith<$Res> implements $BookInfoCopyWith<$Res>
   factory _$BookInfoCopyWith(_BookInfo value, $Res Function(_BookInfo) _then) = __$BookInfoCopyWithImpl;
 @override @useResult
 $Res call({
- String name, String bookId, String author, String reviewer, String publisher, String edition, String editionYear
+ String name, String bookId, String author, String reviewer, String publisher, String edition, String editionYear, EditionDate? editionDate
 });
 
 
@@ -298,7 +300,7 @@ class __$BookInfoCopyWithImpl<$Res>
 
 /// Create a copy of BookInfo
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? bookId = null,Object? author = null,Object? reviewer = null,Object? publisher = null,Object? edition = null,Object? editionYear = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? bookId = null,Object? author = null,Object? reviewer = null,Object? publisher = null,Object? edition = null,Object? editionYear = null,Object? editionDate = freezed,}) {
   return _then(_BookInfo(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,bookId: null == bookId ? _self.bookId : bookId // ignore: cast_nullable_to_non_nullable
@@ -307,7 +309,8 @@ as String,reviewer: null == reviewer ? _self.reviewer : reviewer // ignore: cast
 as String,publisher: null == publisher ? _self.publisher : publisher // ignore: cast_nullable_to_non_nullable
 as String,edition: null == edition ? _self.edition : edition // ignore: cast_nullable_to_non_nullable
 as String,editionYear: null == editionYear ? _self.editionYear : editionYear // ignore: cast_nullable_to_non_nullable
-as String,
+as String,editionDate: freezed == editionDate ? _self.editionDate : editionDate // ignore: cast_nullable_to_non_nullable
+as EditionDate?,
   ));
 }
 

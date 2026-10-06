@@ -2,6 +2,10 @@ import 'package:drift/drift.dart';
 import 'package:drift/wasm.dart';
 import 'package:http/http.dart' as http;
 
+import 'dart:convert';
+
+import '../../models/reference_manifest.dart';
+
 /// Opens a connection to the cache database for web platforms.
 DatabaseConnection openCacheConnection() {
   return DatabaseConnection.delayed(
@@ -33,8 +37,16 @@ DatabaseConnection openCacheConnection() {
 DatabaseConnection openConnection() {
   return DatabaseConnection.delayed(
     Future(() async {
+      final manifestBytes = await _loadAssetBytes(
+        'data/reference_manifest.json',
+      );
+      if (manifestBytes == null) {
+        throw const FormatException('Missing browser reference manifest');
+      }
+      final manifest = ReferenceManifest.decode(utf8.decode(manifestBytes));
       final result = await WasmDatabase.open(
-        databaseName: 'dorar_hadith_rawi_db',
+        databaseName:
+            'dorar_hadith_rawi_${manifest.snapshotVersion}_${manifest.schemaVersion}_${manifest.rawiHash}',
         sqlite3Uri: Uri.parse('sqlite3.wasm'),
         driftWorkerUri: Uri.parse('drift_worker.dart.js'),
         initializeDatabase: () async {
@@ -48,6 +60,7 @@ DatabaseConnection openConnection() {
               '  - assets/database/rawi.db (app-provided fallback)\n',
             );
           }
+          manifest.validateBytes('rawi', bytes);
           return bytes;
         },
       );
@@ -60,15 +73,18 @@ DatabaseConnection openConnection() {
   );
 }
 
-Future<Uint8List?> _loadBundledDatabaseBytes() async {
+Future<Uint8List?> _loadBundledDatabaseBytes() =>
+    _loadAssetBytes('database/rawi.db');
+
+Future<Uint8List?> _loadAssetBytes(String asset) async {
   // Try common web asset locations, in order.
   final candidates = <String>[
     // Flutter Web-packed package assets
-    'assets/packages/dorar_hadith/assets/database/rawi.db',
+    'assets/packages/dorar_hadith/assets/$asset',
     // Some serving setups expose package assets without the leading assets/
-    'packages/dorar_hadith/assets/database/rawi.db',
+    'packages/dorar_hadith/assets/$asset',
     // App-managed fallback (if consumers copy the DB asset themselves)
-    'assets/database/rawi.db',
+    'assets/$asset',
   ];
 
   for (final path in candidates) {

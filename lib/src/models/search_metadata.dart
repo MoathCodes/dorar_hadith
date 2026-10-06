@@ -1,5 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'result_details.dart';
+
 part 'search_metadata.freezed.dart';
 part 'search_metadata.g.dart';
 
@@ -9,6 +11,11 @@ abstract class SearchMetadata with _$SearchMetadata {
   const factory SearchMetadata({
     /// Number of results returned
     @Default(0) int length,
+    ParseDiagnostics? diagnostics,
+    ResultProvenance? provenance,
+    PageMetadata? pagination,
+    ReferenceCoverage? referenceCoverage,
+    @Default([]) List<String> selectedScholarIds,
 
     /// Number of results on this page (same as length for consistency with Node.js API)
     int? currentPageCount,

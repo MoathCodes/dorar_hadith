@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$BookItem {
 
-@JsonKey(name: 'key') String get id;@JsonKey(name: 'value') String get name;
+@JsonKey(name: 'key') String get id;@JsonKey(name: 'value') String get name; bool get currentSelectable; List<String> get historicalNames;
 /// Create a copy of BookItem
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -30,20 +30,20 @@ $BookItemCopyWith<BookItem> get copyWith => _$BookItemCopyWithImpl<BookItem>(thi
 @override
 bool operator ==(Object other) {
   final _this = this as BookItem;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BookItem&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.name, _this.name) || other.name == _this.name));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BookItem&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.currentSelectable, _this.currentSelectable) || other.currentSelectable == _this.currentSelectable)&&const DeepCollectionEquality().equals(other.historicalNames, _this.historicalNames));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as BookItem;
-  return Object.hash(runtimeType,_this.id,_this.name);
+  return Object.hash(runtimeType,_this.id,_this.name,_this.currentSelectable,const DeepCollectionEquality().hash(_this.historicalNames));
 }
 
 @override
 String toString() {
   final _this = this as BookItem;
-  return 'BookItem(id: ${_this.id}, name: ${_this.name})';
+  return 'BookItem(id: ${_this.id}, name: ${_this.name}, currentSelectable: ${_this.currentSelectable}, historicalNames: ${_this.historicalNames})';
 }
 
 
@@ -54,7 +54,7 @@ abstract mixin class $BookItemCopyWith<$Res>  {
   factory $BookItemCopyWith(BookItem value, $Res Function(BookItem) _then) = _$BookItemCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'key') String id,@JsonKey(name: 'value') String name
+@JsonKey(name: 'key') String id,@JsonKey(name: 'value') String name, bool currentSelectable, List<String> historicalNames
 });
 
 
@@ -71,11 +71,13 @@ class _$BookItemCopyWithImpl<$Res>
 
 /// Create a copy of BookItem
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? currentSelectable = null,Object? historicalNames = null,}) {
   return _then(BookItem(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,
+as String,currentSelectable: null == currentSelectable ? _self.currentSelectable : currentSelectable // ignore: cast_nullable_to_non_nullable
+as bool,historicalNames: null == historicalNames ? _self.historicalNames : historicalNames // ignore: cast_nullable_to_non_nullable
+as List<String>,
   ));
 }
 
@@ -160,10 +162,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'key')  String id, @JsonKey(name: 'value')  String name)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'key')  String id, @JsonKey(name: 'value')  String name,  bool currentSelectable,  List<String> historicalNames)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BookItem() when $default != null:
-return $default(_that.id,_that.name);case _:
+return $default(_that.id,_that.name,_that.currentSelectable,_that.historicalNames);case _:
   return orElse();
 
 }
@@ -181,10 +183,10 @@ return $default(_that.id,_that.name);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'key')  String id, @JsonKey(name: 'value')  String name)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'key')  String id, @JsonKey(name: 'value')  String name,  bool currentSelectable,  List<String> historicalNames)  $default,) {final _that = this;
 switch (_that) {
 case _BookItem():
-return $default(_that.id,_that.name);case _:
+return $default(_that.id,_that.name,_that.currentSelectable,_that.historicalNames);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -201,10 +203,10 @@ return $default(_that.id,_that.name);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'key')  String id, @JsonKey(name: 'value')  String name)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'key')  String id, @JsonKey(name: 'value')  String name,  bool currentSelectable,  List<String> historicalNames)?  $default,) {final _that = this;
 switch (_that) {
 case _BookItem() when $default != null:
-return $default(_that.id,_that.name);case _:
+return $default(_that.id,_that.name,_that.currentSelectable,_that.historicalNames);case _:
   return null;
 
 }
@@ -216,11 +218,13 @@ return $default(_that.id,_that.name);case _:
 @JsonSerializable()
 
 class _BookItem implements BookItem {
-  const _BookItem({@JsonKey(name: 'key') required this.id, @JsonKey(name: 'value') required this.name});
+  const _BookItem({@JsonKey(name: 'key') required this.id, @JsonKey(name: 'value') required this.name, this.currentSelectable = true, this.historicalNames = const []});
   factory _BookItem.fromJson(Map<String, dynamic> json) => _$BookItemFromJson(json);
 
 @override@JsonKey(name: 'key') final  String id;
 @override@JsonKey(name: 'value') final  String name;
+@override@JsonKey() final  bool currentSelectable;
+@override@JsonKey() final  List<String> historicalNames;
 
 /// Create a copy of BookItem
 /// with the given fields replaced by the non-null parameter values.
@@ -235,18 +239,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _BookItem&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _BookItem&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.currentSelectable, currentSelectable) || other.currentSelectable == currentSelectable)&&const DeepCollectionEquality().equals(other.historicalNames, historicalNames));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,id,name);
+    return Object.hash(runtimeType,id,name,currentSelectable,const DeepCollectionEquality().hash(historicalNames));
 }
 
 @override
 String toString() {
-    return 'BookItem(id: $id, name: $name)';
+    return 'BookItem(id: $id, name: $name, currentSelectable: $currentSelectable, historicalNames: $historicalNames)';
 }
 
 
@@ -257,7 +261,7 @@ abstract mixin class _$BookItemCopyWith<$Res> implements $BookItemCopyWith<$Res>
   factory _$BookItemCopyWith(_BookItem value, $Res Function(_BookItem) _then) = __$BookItemCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'key') String id,@JsonKey(name: 'value') String name
+@JsonKey(name: 'key') String id,@JsonKey(name: 'value') String name, bool currentSelectable, List<String> historicalNames
 });
 
 
@@ -274,11 +278,13 @@ class __$BookItemCopyWithImpl<$Res>
 
 /// Create a copy of BookItem
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? currentSelectable = null,Object? historicalNames = null,}) {
   return _then(_BookItem(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,
+as String,currentSelectable: null == currentSelectable ? _self.currentSelectable : currentSelectable // ignore: cast_nullable_to_non_nullable
+as bool,historicalNames: null == historicalNames ? _self.historicalNames : historicalNames // ignore: cast_nullable_to_non_nullable
+as List<String>,
   ));
 }
 

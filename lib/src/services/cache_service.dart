@@ -9,7 +9,7 @@ class CacheService implements CacheStore {
   ///
   /// Keys are stored as `v{formatVersion}:…`, so older payloads are ignored
   /// immediately after upgrade instead of being served until TTL expiry.
-  static const int formatVersion = 2;
+  static const int formatVersion = 3;
 
   static const int _maintenanceInterval = 50;
 
@@ -228,7 +228,7 @@ class InMemoryCacheManager {
   /// ```
   Future<CacheEntry> getOrSet(
     String key,
-    Future Function() factory, {
+    Future<CacheEntry> Function() factory, {
     Duration? ttl,
   }) async {
     // Try to get from cache

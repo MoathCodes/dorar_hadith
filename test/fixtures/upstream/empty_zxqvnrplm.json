@@ -1,0 +1,8 @@
+{
+  "url": "https://dorar.net/dorar_api.json?skey=zxqvnrplm&st=p",
+  "capturedAt": "2026-10-06T12:15:41.385009Z",
+  "statusCode": 200,
+  "contentType": "application/json",
+  "sha256": "21b94f916a681acac93e7a72ba0ce0eff1470e38645d67695a11f033617436cd",
+  "body": "{\"ahadith\":{\"result\":\"<head>\\n    <link rel=\\\"canonical\\\" href=\\\"https:\\/\\/dorar.net\\/dorar_api.json\\\">\\n<\\/head>\\n<br\\/><br\\/>\\n<a href=\\\"https:\\/\\/dorar.net\\/hadith\\/search?q=zxqvnrplm\\\">المزيد<\\/a>\\n\"}}"
+}

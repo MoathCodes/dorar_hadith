@@ -38,28 +38,13 @@ bool fuzzyMatch(String text, String query) {
 /// normalizeArabicSearch('إبراهيم'); // Returns: 'ابراهيم'
 /// ```
 String normalizeArabicSearch(String text) {
-  String normalized = text;
-
-  // Remove common Arabic diacritics (harakat)
-  const diacritics = [
-    '\u064B', // Fathatan (ً)
-    '\u064C', // Dammatan (ٌ)
-    '\u064D', // Kasratan (ٍ)
-    '\u064E', // Fatha (َ)
-    '\u064F', // Damma (ُ)
-    '\u0650', // Kasra (ِ)
-    '\u0651', // Shadda (ّ)
-    '\u0652', // Sukun (ْ)
-    '\u0653', // Maddah (ٓ)
-    '\u0654', // Hamza above (ٔ)
-    '\u0655', // Hamza below (ٕ)
-    '\u0656', // Subscript Alef (ٖ)
-    '\u0670', // Superscript Alef (ٰ)
-  ];
-
-  for (final diacritic in diacritics) {
-    normalized = normalized.replaceAll(diacritic, '');
-  }
+  var normalized = text
+      .replaceAll(RegExp(r'[\u064B-\u065F\u0670\u06D6-\u06ED]'), '')
+      .replaceAll('ـ', '')
+      .replaceAll(
+        RegExp(r'[\u061C\u200E\u200F\u202A-\u202E\u2066-\u2069]'),
+        '',
+      );
 
   // Normalize Alef variations
   normalized = normalized

@@ -1,0 +1,8 @@
+{
+  "url": "https://dorar.net/dorar_api.json?skey=%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D9%85&rawi%5B%5D=1633",
+  "capturedAt": "2026-10-06T12:40:54.980920Z",
+  "statusCode": 200,
+  "contentType": "application/json",
+  "sha256": "b7561e62aafdc82a6730dcacfb4e52fb6cf772720a0e344168f27b2dede1c847",
+  "body": "{\"ahadith\":{\"result\":\"<head>\\n    <link rel=\\\"canonical\\\" href=\\\"https:\\/\\/dorar.net\\/dorar_api.json\\\">\\n<\\/head>\\n<br\\/><br\\/>\\n<a href=\\\"https:\\/\\/dorar.net\\/hadith\\/search?q=الصيام\\\">المزيد<\\/a>\\n\"}}"
+}

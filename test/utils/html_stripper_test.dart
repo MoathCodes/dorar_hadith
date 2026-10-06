@@ -110,7 +110,7 @@ void main() {
         // so multiple newlines become a single space
         expect(
           HtmlUtils.cleanWhitespace('Line1\n\n\n\nLine2'),
-          equals('Line1 Line2'),
+          equals('Line1\n\nLine2'),
         );
       });
 

@@ -1,6 +1,11 @@
 import 'package:html/dom.dart' as dom;
 
 import 'html_helper.dart';
+import 'record_parser.dart';
+import 'document_parser.dart';
+import 'hadith_parser.dart';
+import '../models/source_content.dart';
+import '../models/hadith.dart';
 
 /// Data class holding parsed sharh information.
 class ParsedSharhData {
@@ -30,6 +35,9 @@ class ParsedSharhData {
 
   /// The sharh ID.
   final String sharhId;
+  final DetailedHadith record;
+  final SourcedDocument document;
+  final DetailedHadith? embeddedHadith;
 
   const ParsedSharhData({
     required this.hadith,
@@ -41,6 +49,9 @@ class ParsedSharhData {
     required this.takhrij,
     required this.sharh,
     required this.sharhId,
+    required this.record,
+    required this.document,
+    this.embeddedHadith,
   });
 
   @override
@@ -140,71 +151,83 @@ class SharhParser {
     String html,
     String sharhId, {
     bool removeHtml = true,
+    Uri? sourceUri,
   }) {
     final doc = HtmlHelper.parseHtml(html);
 
-    // Extract hadith text from article element
-    final article = doc.querySelector('article');
-    if (article == null) {
-      throw const FormatException(
-        'Invalid response structure: article not found',
+    final uri =
+        sourceUri ?? Uri.parse('https://dorar.net/hadith/sharh/$sharhId');
+    final header = doc.querySelector('.border-bottom');
+    if (header == null) {
+      throw const FormatException('Explanation record header not found');
+    }
+    final record = RecordParser.parse(
+      header,
+      sourceUri: uri,
+      removeHtml: removeHtml,
+    );
+    final content =
+        doc.querySelector('#sharh-text-content') ??
+        doc.querySelector('.text-justify')?.nextElementSibling;
+    if (content == null) {
+      throw const FormatException('Explanation body not found');
+    }
+    final embedded = content.querySelector('.app-hadith-info')?.parent;
+    Citation? citation;
+    DetailedHadith? embeddedHadith;
+    if (embedded != null) {
+      final metadata = HadithParser.parseHadithInfo(embedded);
+      citation = Citation(
+        source: metadata.book,
+        locator: metadata.numberOrPage,
+        rawVerdict: metadata.grade,
+        takhrij: metadata.takhrij,
+        narrator: metadata.rawi,
+        scholar: metadata.mohdith,
+        sourceId: metadata.bookId,
+        scholarId: metadata.mohdithId,
       );
+      if (metadata.rawi.isNotEmpty &&
+          metadata.mohdith.isNotEmpty &&
+          metadata.book.isNotEmpty) {
+        final narration = embedded.children.firstOrNull;
+        if (narration != null &&
+            !narration.classes.contains('app-hadith-info')) {
+          final narrationDocument = DocumentParser.parse(
+            narration.innerHtml,
+            sourceUri: uri,
+            defaultKind: BlockKind.narration,
+          );
+          embeddedHadith = DetailedHadith(
+            hadith: removeHtml
+                ? narrationDocument.plainText.trim()
+                : narration.innerHtml,
+            rawi: metadata.rawi,
+            mohdith: metadata.mohdith,
+            book: metadata.book,
+            numberOrPage: metadata.numberOrPage,
+            grade: metadata.grade,
+            bookId: metadata.bookId,
+            mohdithId: metadata.mohdithId,
+            takhrij: metadata.takhrij,
+            content: narrationDocument,
+          );
+        }
+      }
     }
-
-    // Clean hadith text (remove dash separators)
-    final hadithText = removeHtml
-        ? article.text.replaceAll(RegExp(r'-\s*'), '').trim()
-        : article.innerHtml.replaceAll(RegExp(r'-\s*'), '').trim();
-
-    // Extract metadata from primary-text-color elements
-    // API can return different numbers of elements:
-    // 4 elements: rawi, mohdith, book, number (no grade, no takhrij)
-    // 5 elements: rawi, mohdith, book, number, takhrij (no grade)
-    // 6 elements: rawi, mohdith, book, number, grade, takhrij (full data)
-    final metadataElements = doc.querySelectorAll('.primary-text-color');
-
-    if (metadataElements.length < 4) {
-      throw FormatException(
-        'Invalid metadata structure: expected at least 4 elements, found ${metadataElements.length}',
-      );
-    }
-
-    final rawi = metadataElements[0].text.trim();
-    final mohdith = metadataElements[1].text.trim();
-    final book = metadataElements[2].text.trim();
-    final numberOrPage = metadataElements[3].text.trim();
-
-    // Handle optional grade and takhrij based on element count
-    String grade = '';
-    String takhrij = '';
-
-    if (metadataElements.length >= 6) {
-      // 6 elements: includes grade and takhrij
-      grade = metadataElements[4].text.trim();
-      takhrij = metadataElements[5].text.trim();
-    } else if (metadataElements.length == 5) {
-      // 5 elements: no grade, last is takhrij
-      takhrij = metadataElements[4].text.trim();
-    }
-    // else: 4 elements, no grade and no takhrij (leave as empty strings)
-
-    // Extract sharh text
-    // Find the .text-justify element, then get its next sibling
-    final textJustifyElement = doc.querySelector('.text-justify');
-    if (textJustifyElement == null) {
-      throw const FormatException(
-        'Sharh structure not found: .text-justify not found',
-      );
-    }
-
-    final sharhElement = HtmlHelper.getNextElementSibling(textJustifyElement);
-    if (sharhElement == null) {
-      throw const FormatException('Sharh content not found');
-    }
-
+    final document = DocumentParser.parse(
+      content.innerHtml,
+      sourceUri: uri,
+      defaultKind: BlockKind.commentary,
+      embeddedCitation: citation,
+    );
+    final hadithText = record.hadith;
+    final rawi = record.rawi, mohdith = record.mohdith, book = record.book;
+    final numberOrPage = record.numberOrPage, grade = record.grade;
+    final takhrij = record.takhrij ?? '';
     final sharhText = removeHtml
-        ? sharhElement.text.trim()
-        : sharhElement.innerHtml.trim();
+        ? document.plainText.trim()
+        : content.innerHtml;
 
     return ParsedSharhData(
       hadith: hadithText,
@@ -216,6 +239,9 @@ class SharhParser {
       takhrij: takhrij,
       sharh: sharhText,
       sharhId: sharhId,
+      record: record,
+      document: document,
+      embeddedHadith: embeddedHadith,
     );
   }
 }

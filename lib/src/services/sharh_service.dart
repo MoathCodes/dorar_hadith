@@ -1,292 +1,270 @@
-import 'dart:convert';
-
+import '../http/cached_transport.dart';
 import '../http/endpoints.dart';
 import '../http/http_client.dart';
 import '../http/query_serializer.dart';
 import '../models/api_response.dart';
-import '../models/cache_entry.dart';
-import '../models/hadith.dart';
+import '../models/related_content.dart';
+import '../models/result_details.dart';
 import '../models/search_metadata.dart';
 import '../models/search_params.dart';
 import '../models/sharh.dart';
 import '../models/sharh_metadata.dart';
+import '../models/source_content.dart';
+import '../parsers/collection_parser.dart';
+import '../parsers/document_parser.dart';
 import '../parsers/html_helper.dart';
 import '../parsers/sharh_parser.dart';
 import '../utils/exceptions.dart';
 import '../utils/validators.dart';
 import 'cache_service.dart';
+import 'hadith_service.dart';
 
-/// Service for fetching sharh (hadith explanations) from Dorar.net.
+/// Associated explanations and prose snippets have separate response contracts.
 class SharhService {
-  final DorarHttpClient _client;
+  SharhService({
+    required DorarHttpClient client,
+    required CacheService cache,
+    CachedDorarTransport? transport,
+  }) : _cache = cache,
+       _transport =
+           transport ?? CachedDorarTransport(client: client, cache: cache),
+       _hadith = HadithService(
+         client: client,
+         cache: cache,
+         transport: transport,
+       );
   final CacheService _cache;
-
-  SharhService({required DorarHttpClient client, required CacheService cache})
-    : _client = client,
-      _cache = cache;
-
-  /// Clear all cached sharh data.
-  Future<void> clearCache() async {
-    await _cache.clear();
+  final CachedDorarTransport _transport;
+  final HadithService _hadith;
+  Future<void> clearCache() => _cache.clear();
+  Future<Sharh> getById(String id, {bool removeHtml = true}) async {
+    Validators.validateSharhId(id);
+    final source = await _transport.get(
+      DorarEndpoints.sharhById(id),
+      endpoint: 'sharh',
+      expectedType: Sharh,
+      ttl: const Duration(days: 30),
+      accepts: (body) {
+        final doc = HtmlHelper.parseHtml(body);
+        return doc.querySelector('.border-bottom article') != null &&
+            (doc.querySelector('#sharh-text-content') != null ||
+                doc.querySelector('.text-justify')?.nextElementSibling != null);
+      },
+    );
+    try {
+      final parsed = SharhParser.parseSharhPage(
+        source.body,
+        id,
+        removeHtml: removeHtml,
+        sourceUri: source.provenance.sourceUri,
+      );
+      return Sharh(
+        hadith: parsed.record.copyWith(
+          hasSharhMetadata: true,
+          provenance: source.provenance,
+        ),
+        document: parsed.document,
+        embeddedHadith: parsed.embeddedHadith,
+        provenance: source.provenance,
+        sharhMetadata: SharhMetadata(
+          id: id,
+          isContainSharh: true,
+          sharh: parsed.sharh,
+        ),
+      );
+    } on FormatException catch (error) {
+      throw DorarParseException(
+        'Failed to parse explanation: ${error.message}',
+        details: {'id': id},
+      );
+    }
   }
 
-  /// Get sharh by ID.
-  ///
-  /// Fetches a single sharh with complete hadith text and explanation.
-  ///
-  /// [sharhId] - The unique identifier of the sharh.
-  /// [removeHtml] - Whether to strip HTML tags from text fields (default: true).
-  ///
-  /// Returns a [Sharh] object with hadith and explanation.
-  ///
-  /// Throws [DorarValidationException] if the sharhId is invalid.
-  /// Throws [DorarNotFoundException] if the sharh is not found.
-  /// Throws [DorarParseException] if the response cannot be parsed.
-  ///
-  /// Example:
-  /// ```dart
-  /// final sharh = await sharhService.getById('12345');
-  /// print('Hadith: ${sharh.hadith}');
-  /// print('Sharh: ${sharh.sharhText}');
-  /// ```
-  Future<Sharh> getById(String sharhId, {bool removeHtml = true}) async {
-    final validatedId = Validators.validateSharhId(sharhId);
-    return _getSharhById(validatedId, removeHtml: removeHtml);
-  }
-
-  /// Get sharh by hadith text.
-  ///
-  /// Searches for a hadith by text and returns the first sharh found.
-  ///
-  /// [text] - The hadith text to search for.
-  /// [specialist] - When `true`, limit results to hadiths that include takhrij
-  /// in their metadata (default: false).
-  /// [removeHtml] - Whether to strip HTML tags from text fields (default: true).
-  ///
-  /// Returns a [Sharh] object with hadith and explanation.
-  ///
-  /// Throws [DorarValidationException] if the text is invalid.
-  /// Throws [DorarNotFoundException] if no sharh is found.
-  ///
-  /// Example:
-  /// ```dart
-  /// final sharh = await sharhService.getByText('إنما الأعمال بالنيات');
-  /// print('Found sharh: ${sharh.sharhText}');
-  /// ```
+  /// First associated reference in source order; text does not prove identity.
   Future<Sharh> getByText(
     String text, {
     bool specialist = false,
     bool removeHtml = true,
   }) async {
-    final validatedText = Validators.validateSearchText(text, field: 'text');
-
-    final tabName = specialist ? 'specialist' : 'home';
-    final url = DorarEndpoints.sharhByText(
-      validatedText,
-      specialist: specialist,
+    Validators.validateSearchText(text, field: 'text');
+    final matches = await _hadith.searchViaSite(
+      HadithSearchParams(
+        value: text,
+        specialist: specialist,
+        removeHtml: removeHtml,
+      ),
     );
-
-    final cached = await _cache.get(url);
-    if (cached != null) {
-      return Sharh.fromJson(jsonDecode(cached.body));
-    }
-
-    final html = await _client.getHtml(url);
-    final doc = HtmlHelper.parseHtml(html);
-
-    final sharhId = SharhParser.extractFirstSharhId(doc, tabName);
-
-    if (sharhId == null) {
-      throw const DorarNotFoundException(
-        'No sharh found for the given text',
+    final record = matches.data
+        .where((r) => r.explanationReference != null)
+        .firstOrNull;
+    if (record == null) {
+      throw DorarNotFoundException(
+        'No sharh found: no explanation reference',
         resource: 'sharh',
       );
     }
-
-    final result = await _getSharhById(sharhId, removeHtml: removeHtml);
-
-    await _cache.set(
-      CacheEntry(
-        key: url,
-        body: jsonEncode(result.toJson()),
-        header: '',
-        createdAt: DateTime.now(),
-
-        expiresAt: DateTime.now().add(const Duration(days: 7)),
-      ),
+    final reference = record.explanationReference!;
+    final explanation = await getById(reference.id, removeHtml: removeHtml);
+    return explanation.copyWith(
+      requestedHadithId: record.hadithId,
+      explanationReference: reference,
     );
-
-    return result;
   }
 
-  /// Search for all sharh matching a query.
-  ///
-  /// Searches for hadiths, extracts all sharh IDs from the results,
-  /// then fetches each sharh individually. This matches the Node.js
-  /// `getAllSharhUsingSiteDorar` endpoint behavior.
-  ///
-  /// [params] - Search parameters (text, page, specialist, etc.)
-  ///
-  /// Returns an [ApiResponse] containing a list of [Sharh] objects.
-  ///
-  /// Example:
-  /// ```dart
-  /// final results = await sharhService.search(
-  ///   HadithSearchParams(value: 'الصلاة', page: 1),
-  /// );
-  /// for (var sharh in results.data) {
-  ///   print('${sharh.hadithText} - ${sharh.sharhText}');
-  /// }
-  /// ```
+  /// Full explanations associated with matching hadith records. Repeated
+  /// explanation IDs retain their independently observed originating links.
   Future<ApiResponse<List<Sharh>>> search(HadithSearchParams params) async {
-    Validators.validateSearchText(params.value);
-    Validators.validatePage(params.page);
-
-    final queryParams = QuerySerializer.serializeHadithParams(
-      params,
-      isApiEndpoint: false,
-    );
-    final url = DorarEndpoints.sharhSearch(
-      queryParams,
-      specialist: params.specialist,
-    );
-
-    // Return cached if available
-    final cached = await _cache.get(url);
-    if (cached != null) {
-      final response = ApiResponse<List<Sharh>>.fromJson(
-        jsonDecode(cached.body),
-        (json) => (json as List<dynamic>)
-            .map((e) => Sharh.fromJson(e as Map<String, dynamic>))
-            .toList(),
-      );
-      return response.copyWith(
-        metadata: response.metadata.copyWith(isCached: true),
-      );
-    }
-
-    final html = await _client.getHtml(url);
-    final doc = HtmlHelper.parseHtml(html);
-
-    final tabName = params.specialist ? 'specialist' : 'home';
-    final tabElement = doc.querySelector('#$tabName');
-    if (tabElement == null) {
-      throw const DorarServerException(
-        'Invalid response structure from Dorar',
-        statusCode: 502,
-      );
-    }
-
-    // Extract all sharh IDs from search results
-    final sharhIds = SharhParser.extractSharhIds(doc, tabName);
-
-    if (sharhIds.isEmpty) {
-      final result = ApiResponse<List<Sharh>>(
-        data: [],
-        metadata: SearchMetadata(
-          length: 0,
-          page: params.page,
-          removeHtml: params.removeHtml,
-          specialist: params.specialist,
-          isCached: false,
-        ),
-      );
-      return result;
-    }
-
-    // Fetch each sharh individually
-    final sharhList = <Sharh>[];
-    for (final sharhId in sharhIds) {
+    final results = await _hadith.searchViaSite(params);
+    final references = results.data
+        .where((r) => r.explanationReference != null)
+        .toList();
+    final explanations = <Sharh>[];
+    final warnings = <ParseWarning>[...?results.metadata.diagnostics?.warnings];
+    for (var i = 0; i < references.length; i++) {
+      final record = references[i];
+      final reference = record.explanationReference!;
       try {
-        final sharh = await _getSharhById(
-          sharhId,
+        final explanation = await getById(
+          reference.id,
           removeHtml: params.removeHtml,
         );
-        sharhList.add(sharh);
-      } catch (_) {
-        // Skip sharh that can't be fetched
-        continue;
+        explanations.add(
+          explanation.copyWith(
+            requestedHadithId: record.hadithId,
+            explanationReference: reference,
+          ),
+        );
+      } on DorarException catch (error) {
+        if (params.parsePolicy == ParsePolicy.strict) {
+          throw DorarSubrequestException(
+            cause: error,
+            referenceId: reference.id,
+            requestedRecordId: record.hadithId,
+          );
+        }
+        if (warnings.length < 50) {
+          warnings.add(
+            ParseWarning(
+              stage: 'explanationFetch',
+              index: i,
+              recordId: record.hadithId,
+              message: error.message,
+            ),
+          );
+        }
       }
     }
-
-    final result = ApiResponse<List<Sharh>>(
-      data: sharhList,
-      metadata: SearchMetadata(
-        length: sharhList.length,
-        page: params.page,
-        removeHtml: params.removeHtml,
-        specialist: params.specialist,
-        isCached: false,
-      ),
-    );
-
-    await _cache.set(
-      CacheEntry(
-        key: url,
-        body: jsonEncode(
-          result.toJson((data) => data.map((e) => e.toJson()).toList()),
+    return ApiResponse(
+      data: List.unmodifiable(explanations),
+      metadata: results.metadata.copyWith(
+        length: explanations.length,
+        diagnostics: ParseDiagnostics(
+          candidateCount: references.length,
+          parsedCount: explanations.length,
+          completeness: warnings.isEmpty
+              ? ParseCompleteness.complete
+              : ParseCompleteness.partial,
+          warnings: List.unmodifiable(warnings),
         ),
-        header: '',
-        createdAt: DateTime.now(),
-        expiresAt: DateTime.now().add(const Duration(days: 7)),
       ),
     );
-
-    return result;
   }
 
-  /// Internal helper to fetch a sharh by ID. Used by getById(), getByText(), and search().
-  Future<Sharh> _getSharhById(String sharhId, {bool removeHtml = true}) async {
-    final url = DorarEndpoints.sharhById(sharhId);
-
-    final cached = await _cache.get(url);
-    if (cached != null) {
-      return Sharh.fromJson(jsonDecode(cached.body));
-    }
-
-    try {
-      final html = await _client.getHtml(url);
-      final parsedData = SharhParser.parseSharhPage(
-        html,
-        sharhId,
-        removeHtml: removeHtml,
+  /// Search inside explanation prose. Returned snippets are not full records.
+  Future<ApiResponse<List<SharhSnippet>>> searchText(
+    SharhTextSearchParams params,
+  ) async {
+    Validators.validateSearchText(params.value);
+    Validators.validatePage(params.page);
+    final url = QuerySerializer.buildUrl(
+      '${DorarEndpoints.siteUrl}/hadith/search',
+      {'q': params.value, 't': 3, 'page': params.page},
+    );
+    final fragment = params.page > 1;
+    final source = await _transport.get(
+      url,
+      endpoint: 'sharhTextSearch',
+      headers: fragment ? {'X-Requested-With': 'XMLHttpRequest'} : null,
+      accepts: (body) {
+        if (fragment && body.trim().isEmpty) return true;
+        final doc = HtmlHelper.parseHtml(body);
+        return !body.contains('id="home"') &&
+            (fragment
+                ? doc.querySelector(
+                        'article.border-bottom a[href*="/hadith/sharh/"]',
+                      ) !=
+                      null
+                : (doc.querySelector('#cntnt #results-end') != null ||
+                      (doc.querySelector('form#inner-search') != null &&
+                          doc
+                                  .querySelector('h5 img[alt="no-result"]')
+                                  ?.parent
+                                  ?.text
+                                  .contains('لا توجد نتائج') ==
+                              true)));
+      },
+    );
+    final doc = HtmlHelper.parseHtml(source.body);
+    final articles = doc.querySelectorAll(
+      fragment ? 'article.border-bottom' : '#cntnt article',
+    );
+    final parsed = parseCollection(
+      articles,
+      (article, i) {
+        final link = article.querySelector('a[href*="/hadith/sharh/"]');
+        final href = link?.attributes['href'];
+        final uri = href == null
+            ? null
+            : source.provenance.sourceUri.resolve(href);
+        final id = uri == null
+            ? null
+            : RegExp(r'^/hadith/sharh/(\d+)$').firstMatch(uri.path)?[1];
+        if (id == null || link == null) {
+          throw const FormatException('Explanation snippet link missing');
+        }
+        return SharhSnippet(
+          id: id,
+          uri: uri!,
+          document: DocumentParser.parse(
+            link.innerHtml,
+            sourceUri: source.provenance.sourceUri,
+            defaultKind: BlockKind.commentary,
+          ),
+        );
+      },
+      policy: params.parsePolicy,
+      stage: 'sharhTextSearch',
+    );
+    final navigation = doc.querySelectorAll('a[href*="page="], a[rel="next"]');
+    final next = navigation.any((a) {
+      final uri = source.provenance.sourceUri.resolve(
+        a.attributes['href'] ?? '',
       );
-
-      final sharh = Sharh(
-        hadith: ExplainedHadith(
-          hadith: parsedData.hadith,
-          rawi: parsedData.rawi,
-          mohdith: parsedData.mohdith,
-          book: parsedData.book,
-          numberOrPage: parsedData.numberOrPage,
-          grade: parsedData.grade,
-          takhrij: parsedData.takhrij,
-          hasSharhMetadata: true,
+      return a.attributes['rel'] == 'next' ||
+          (int.tryParse(uri.queryParameters['page'] ?? '') ?? 0) > params.page;
+    });
+    final knownNavigation = navigation.isNotEmpty;
+    final nextPage = knownNavigation ? next : parsed.items.length == 15;
+    return ApiResponse(
+      data: parsed.items,
+      metadata: SearchMetadata(
+        length: parsed.items.length,
+        currentPageCount: parsed.items.length,
+        page: params.page,
+        hasNextPage: nextPage,
+        hasPrevPage: params.page > 1,
+        provenance: source.provenance,
+        isCached: source.provenance.isCached,
+        diagnostics: parsed.diagnostics,
+        pagination: PageMetadata(
+          page: params.page,
+          pageSize: 15,
+          hasNextPage: nextPage,
+          nextPageEvidence: knownNavigation
+              ? NextPageEvidence.upstreamNavigation
+              : NextPageEvidence.pageSizeHint,
         ),
-        sharhMetadata: SharhMetadata(
-          id: sharhId,
-          isContainSharh: true,
-          sharh: parsedData.sharh,
-        ),
-      );
-
-      await _cache.set(
-        CacheEntry(
-          key: url,
-          body: jsonEncode(sharh.toJson()),
-          header: '',
-          createdAt: DateTime.now(),
-
-          expiresAt: DateTime.now().add(const Duration(days: 30)),
-        ),
-      );
-
-      return sharh;
-    } on FormatException catch (e) {
-      throw DorarParseException(
-        'Failed to parse sharh data: ${e.message}',
-        expectedType: Sharh,
-      );
-    }
+      ),
+    );
   }
 }

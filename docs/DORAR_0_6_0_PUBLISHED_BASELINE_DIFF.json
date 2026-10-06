@@ -1,0 +1,157 @@
+{
+  "checkoutBaseline": "e08eb666697c2d2fb986d825f14d46042ec259ea",
+  "packages": {
+    "dorar_hadith": {
+      "version": "0.5.0",
+      "apiUrl": "https://pub.dev/api/packages/dorar_hadith/versions/0.5.0",
+      "archiveUrl": "https://pub.dev/api/archives/dorar_hadith-0.5.0.tar.gz",
+      "archiveSha256": "c78927c2bad3d3ddc7bfe3a4a90185dbb8e108174e7d2245dc82dba4316b8f80",
+      "archiveCompressedBytes": 18324036,
+      "publishedBuildFiles": 7,
+      "publishedPubspec": {
+        "name": "dorar_hadith",
+        "description": "A comprehensive Dart library for accessing Dorar.net hadith database. Search hadiths, get explanations (sharh), browse scholars, books, and narrators.",
+        "version": "0.5.0",
+        "homepage": "https://github.com/MoathCodes/dorar_hadith",
+        "repository": "https://github.com/MoathCodes/dorar_hadith",
+        "issue_tracker": "https://github.com/MoathCodes/dorar_hadith/issues",
+        "documentation": "https://pub.dev/documentation/dorar_hadith/latest/",
+        "platforms": {
+          "android": null,
+          "ios": null,
+          "linux": null,
+          "macos": null,
+          "windows": null,
+          "web": null
+        },
+        "topics": [
+          "hadith",
+          "islamic",
+          "dorar",
+          "arabic",
+          "religion"
+        ],
+        "false_secrets": [
+          "test/fixtures/api_snapshots/**"
+        ],
+        "environment": {
+          "sdk": ">=3.12.0 <4.0.0"
+        },
+        "dependencies": {
+          "equatable": "^2.0.7",
+          "html": "^0.15.6",
+          "http": "^1.6.0",
+          "drift": "^2.29.0",
+          "sqlite3": "^3.2.0",
+          "path": "^1.9.1",
+          "freezed_annotation": "^3.1.0",
+          "json_annotation": "^4.9.0"
+        },
+        "dev_dependencies": {
+          "drift_dev": "^2.29.0",
+          "build_runner": "^2.10.4",
+          "lints": "^6.0.0",
+          "test": "^1.26.3",
+          "freezed": "^3.2.3",
+          "json_serializable": "^6.11.2"
+        },
+        "flutter": {
+          "assets": [
+            "assets/data/",
+            "assets/database/"
+          ]
+        }
+      },
+      "changedBeforeImplementation": [
+        "lib/dorar_hadith.dart",
+        "lib/src/client/dorar_client.dart",
+        "lib/src/constants/book_reference.dart",
+        "lib/src/constants/rawi_reference.dart",
+        "lib/src/database/cache_database.dart",
+        "lib/src/database/cache_database.g.dart",
+        "lib/src/database/rawi_database.g.dart",
+        "lib/src/http/endpoints.dart",
+        "lib/src/http/http_client.dart",
+        "lib/src/http/query_serializer.dart",
+        "lib/src/models/api_response.freezed.dart",
+        "lib/src/models/book.freezed.dart",
+        "lib/src/models/book_item.dart",
+        "lib/src/models/book_item.freezed.dart",
+        "lib/src/models/book_item.g.dart",
+        "lib/src/models/cache_entry.freezed.dart",
+        "lib/src/models/hadith.dart",
+        "lib/src/models/hadith.freezed.dart",
+        "lib/src/models/hadith_category.freezed.dart",
+        "lib/src/models/mohdith.freezed.dart",
+        "lib/src/models/mohdith_item.freezed.dart",
+        "lib/src/models/rawi_item.freezed.dart",
+        "lib/src/models/search_metadata.dart",
+        "lib/src/models/search_metadata.freezed.dart",
+        "lib/src/models/search_params.dart",
+        "lib/src/models/search_params.freezed.dart",
+        "lib/src/models/sharh.freezed.dart",
+        "lib/src/models/sharh_metadata.freezed.dart",
+        "lib/src/models/usul_hadith.freezed.dart",
+        "lib/src/parsers/hadith_parser.dart",
+        "lib/src/services/book_reference_service.dart",
+        "lib/src/services/cache_service.dart",
+        "lib/src/services/hadith_service.dart",
+        "lib/src/services/mohdith_reference_service.dart",
+        "lib/src/services/sharh_service.dart",
+        "lib/src/utils/asset_loader/asset_loader_base.dart",
+        "lib/src/utils/asset_loader/asset_loader_web.dart"
+      ],
+      "addedBeforeImplementation": [],
+      "removedBeforeImplementation": []
+    },
+    "dorar_hadith_flutter": {
+      "version": "0.5.0",
+      "apiUrl": "https://pub.dev/api/packages/dorar_hadith_flutter/versions/0.5.0",
+      "archiveUrl": "https://pub.dev/api/archives/dorar_hadith_flutter-0.5.0.tar.gz",
+      "archiveSha256": "cce5c462d2725a8d550980a64d586bc2e22e5c769b43a3187729b68960ba2da2",
+      "archiveCompressedBytes": 17550987,
+      "publishedBuildFiles": 12,
+      "publishedPubspec": {
+        "name": "dorar_hadith_flutter",
+        "description": "Flutter integration for dorar_hadith. Wires asset loading and the offline rawi.db database for Flutter apps.",
+        "version": "0.5.0",
+        "homepage": "https://github.com/MoathCodes/dorar_hadith",
+        "repository": "https://github.com/MoathCodes/dorar_hadith",
+        "issue_tracker": "https://github.com/MoathCodes/dorar_hadith/issues",
+        "documentation": "https://pub.dev/documentation/dorar_hadith_flutter/latest/",
+        "topics": [
+          "hadith",
+          "islamic",
+          "dorar",
+          "arabic",
+          "religion"
+        ],
+        "environment": {
+          "sdk": ">=3.12.0 <4.0.0",
+          "flutter": ">=3.44.0"
+        },
+        "dependencies": {
+          "flutter": {
+            "sdk": "flutter"
+          },
+          "dorar_hadith": "^0.5.0",
+          "drift": "^2.29.0",
+          "path": "^1.9.1",
+          "path_provider": "^2.1.5"
+        },
+        "dev_dependencies": {
+          "flutter_test": {
+            "sdk": "flutter"
+          },
+          "flutter_lints": "^5.0.0"
+        }
+      },
+      "changedBeforeImplementation": [
+        "lib/dorar_hadith_flutter.dart",
+        "lib/src/connection_flutter.dart"
+      ],
+      "addedBeforeImplementation": [],
+      "removedBeforeImplementation": []
+    }
+  }
+}

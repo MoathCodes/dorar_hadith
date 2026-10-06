@@ -14,6 +14,8 @@ abstract class BookItem with _$BookItem implements ReferenceItem {
   const factory BookItem({
     @JsonKey(name: 'key') required String id,
     @JsonKey(name: 'value') required String name,
+    @Default(true) bool currentSelectable,
+    @Default([]) List<String> historicalNames,
   }) = _BookItem;
 
   factory BookItem.fromJson(Map<String, dynamic> json) =>

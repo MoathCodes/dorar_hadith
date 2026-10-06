@@ -1,0 +1,17 @@
+name: dorar_example
+description: Offline references and structured Dorar content example.
+publish_to: none
+version: 1.0.0+1
+environment:
+  sdk: '>=3.13.0 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  dorar_hadith: ^0.6.0
+  dorar_hadith_flutter: ^0.6.0
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+flutter:
+  uses-material-design: true

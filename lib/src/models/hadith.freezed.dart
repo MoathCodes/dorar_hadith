@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DetailedHadith {
 
- String get hadith; String get rawi; String get mohdith; String get book; String get numberOrPage; String get grade; String? get mohdithId; String? get bookId; String? get explainGrade; String? get takhrij; String? get hadithId;/// Thematic categories (التصنيف الموضوعي) for this hadith.
+ String get hadith; String get rawi; String get mohdith; String get book; String get numberOrPage; String get grade; String? get mohdithId; String? get bookId; String? get explainGrade; String? get takhrij; String? get hadithId; SourcedDocument? get content; List<SourceMetadataField> get rawMetadata; ExplanationReference? get explanationReference; Availability get usulAvailability; Availability get asbabAvailability; String? get asbabDorar; ResultProvenance? get provenance;/// Thematic categories (التصنيف الموضوعي) for this hadith.
  List<HadithCategory> get categories; bool get hasSimilarHadith; bool get hasAlternateHadithSahih; bool get hasUsulHadith; String? get similarHadithDorar; String? get alternateHadithSahihDorar; String? get usulHadithDorar; bool get hasSharhMetadata; SharhMetadata? get sharhMetadata;
 /// Create a copy of DetailedHadith
 /// with the given fields replaced by the non-null parameter values.
@@ -31,20 +31,20 @@ $DetailedHadithCopyWith<DetailedHadith> get copyWith => _$DetailedHadithCopyWith
 @override
 bool operator ==(Object other) {
   final _this = this as DetailedHadith;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DetailedHadith&&(identical(other.hadith, _this.hadith) || other.hadith == _this.hadith)&&(identical(other.rawi, _this.rawi) || other.rawi == _this.rawi)&&(identical(other.mohdith, _this.mohdith) || other.mohdith == _this.mohdith)&&(identical(other.book, _this.book) || other.book == _this.book)&&(identical(other.numberOrPage, _this.numberOrPage) || other.numberOrPage == _this.numberOrPage)&&(identical(other.grade, _this.grade) || other.grade == _this.grade)&&(identical(other.mohdithId, _this.mohdithId) || other.mohdithId == _this.mohdithId)&&(identical(other.bookId, _this.bookId) || other.bookId == _this.bookId)&&(identical(other.explainGrade, _this.explainGrade) || other.explainGrade == _this.explainGrade)&&(identical(other.takhrij, _this.takhrij) || other.takhrij == _this.takhrij)&&(identical(other.hadithId, _this.hadithId) || other.hadithId == _this.hadithId)&&const DeepCollectionEquality().equals(other.categories, _this.categories)&&(identical(other.hasSimilarHadith, _this.hasSimilarHadith) || other.hasSimilarHadith == _this.hasSimilarHadith)&&(identical(other.hasAlternateHadithSahih, _this.hasAlternateHadithSahih) || other.hasAlternateHadithSahih == _this.hasAlternateHadithSahih)&&(identical(other.hasUsulHadith, _this.hasUsulHadith) || other.hasUsulHadith == _this.hasUsulHadith)&&(identical(other.similarHadithDorar, _this.similarHadithDorar) || other.similarHadithDorar == _this.similarHadithDorar)&&(identical(other.alternateHadithSahihDorar, _this.alternateHadithSahihDorar) || other.alternateHadithSahihDorar == _this.alternateHadithSahihDorar)&&(identical(other.usulHadithDorar, _this.usulHadithDorar) || other.usulHadithDorar == _this.usulHadithDorar)&&(identical(other.hasSharhMetadata, _this.hasSharhMetadata) || other.hasSharhMetadata == _this.hasSharhMetadata)&&(identical(other.sharhMetadata, _this.sharhMetadata) || other.sharhMetadata == _this.sharhMetadata));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DetailedHadith&&(identical(other.hadith, _this.hadith) || other.hadith == _this.hadith)&&(identical(other.rawi, _this.rawi) || other.rawi == _this.rawi)&&(identical(other.mohdith, _this.mohdith) || other.mohdith == _this.mohdith)&&(identical(other.book, _this.book) || other.book == _this.book)&&(identical(other.numberOrPage, _this.numberOrPage) || other.numberOrPage == _this.numberOrPage)&&(identical(other.grade, _this.grade) || other.grade == _this.grade)&&(identical(other.mohdithId, _this.mohdithId) || other.mohdithId == _this.mohdithId)&&(identical(other.bookId, _this.bookId) || other.bookId == _this.bookId)&&(identical(other.explainGrade, _this.explainGrade) || other.explainGrade == _this.explainGrade)&&(identical(other.takhrij, _this.takhrij) || other.takhrij == _this.takhrij)&&(identical(other.hadithId, _this.hadithId) || other.hadithId == _this.hadithId)&&(identical(other.content, _this.content) || other.content == _this.content)&&const DeepCollectionEquality().equals(other.rawMetadata, _this.rawMetadata)&&(identical(other.explanationReference, _this.explanationReference) || other.explanationReference == _this.explanationReference)&&(identical(other.usulAvailability, _this.usulAvailability) || other.usulAvailability == _this.usulAvailability)&&(identical(other.asbabAvailability, _this.asbabAvailability) || other.asbabAvailability == _this.asbabAvailability)&&(identical(other.asbabDorar, _this.asbabDorar) || other.asbabDorar == _this.asbabDorar)&&(identical(other.provenance, _this.provenance) || other.provenance == _this.provenance)&&const DeepCollectionEquality().equals(other.categories, _this.categories)&&(identical(other.hasSimilarHadith, _this.hasSimilarHadith) || other.hasSimilarHadith == _this.hasSimilarHadith)&&(identical(other.hasAlternateHadithSahih, _this.hasAlternateHadithSahih) || other.hasAlternateHadithSahih == _this.hasAlternateHadithSahih)&&(identical(other.hasUsulHadith, _this.hasUsulHadith) || other.hasUsulHadith == _this.hasUsulHadith)&&(identical(other.similarHadithDorar, _this.similarHadithDorar) || other.similarHadithDorar == _this.similarHadithDorar)&&(identical(other.alternateHadithSahihDorar, _this.alternateHadithSahihDorar) || other.alternateHadithSahihDorar == _this.alternateHadithSahihDorar)&&(identical(other.usulHadithDorar, _this.usulHadithDorar) || other.usulHadithDorar == _this.usulHadithDorar)&&(identical(other.hasSharhMetadata, _this.hasSharhMetadata) || other.hasSharhMetadata == _this.hasSharhMetadata)&&(identical(other.sharhMetadata, _this.sharhMetadata) || other.sharhMetadata == _this.sharhMetadata));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as DetailedHadith;
-  return Object.hashAll([runtimeType,_this.hadith,_this.rawi,_this.mohdith,_this.book,_this.numberOrPage,_this.grade,_this.mohdithId,_this.bookId,_this.explainGrade,_this.takhrij,_this.hadithId,const DeepCollectionEquality().hash(_this.categories),_this.hasSimilarHadith,_this.hasAlternateHadithSahih,_this.hasUsulHadith,_this.similarHadithDorar,_this.alternateHadithSahihDorar,_this.usulHadithDorar,_this.hasSharhMetadata,_this.sharhMetadata]);
+  return Object.hashAll([runtimeType,_this.hadith,_this.rawi,_this.mohdith,_this.book,_this.numberOrPage,_this.grade,_this.mohdithId,_this.bookId,_this.explainGrade,_this.takhrij,_this.hadithId,_this.content,const DeepCollectionEquality().hash(_this.rawMetadata),_this.explanationReference,_this.usulAvailability,_this.asbabAvailability,_this.asbabDorar,_this.provenance,const DeepCollectionEquality().hash(_this.categories),_this.hasSimilarHadith,_this.hasAlternateHadithSahih,_this.hasUsulHadith,_this.similarHadithDorar,_this.alternateHadithSahihDorar,_this.usulHadithDorar,_this.hasSharhMetadata,_this.sharhMetadata]);
 }
 
 @override
 String toString() {
   final _this = this as DetailedHadith;
-  return 'DetailedHadith(hadith: ${_this.hadith}, rawi: ${_this.rawi}, mohdith: ${_this.mohdith}, book: ${_this.book}, numberOrPage: ${_this.numberOrPage}, grade: ${_this.grade}, mohdithId: ${_this.mohdithId}, bookId: ${_this.bookId}, explainGrade: ${_this.explainGrade}, takhrij: ${_this.takhrij}, hadithId: ${_this.hadithId}, categories: ${_this.categories}, hasSimilarHadith: ${_this.hasSimilarHadith}, hasAlternateHadithSahih: ${_this.hasAlternateHadithSahih}, hasUsulHadith: ${_this.hasUsulHadith}, similarHadithDorar: ${_this.similarHadithDorar}, alternateHadithSahihDorar: ${_this.alternateHadithSahihDorar}, usulHadithDorar: ${_this.usulHadithDorar}, hasSharhMetadata: ${_this.hasSharhMetadata}, sharhMetadata: ${_this.sharhMetadata})';
+  return 'DetailedHadith(hadith: ${_this.hadith}, rawi: ${_this.rawi}, mohdith: ${_this.mohdith}, book: ${_this.book}, numberOrPage: ${_this.numberOrPage}, grade: ${_this.grade}, mohdithId: ${_this.mohdithId}, bookId: ${_this.bookId}, explainGrade: ${_this.explainGrade}, takhrij: ${_this.takhrij}, hadithId: ${_this.hadithId}, content: ${_this.content}, rawMetadata: ${_this.rawMetadata}, explanationReference: ${_this.explanationReference}, usulAvailability: ${_this.usulAvailability}, asbabAvailability: ${_this.asbabAvailability}, asbabDorar: ${_this.asbabDorar}, provenance: ${_this.provenance}, categories: ${_this.categories}, hasSimilarHadith: ${_this.hasSimilarHadith}, hasAlternateHadithSahih: ${_this.hasAlternateHadithSahih}, hasUsulHadith: ${_this.hasUsulHadith}, similarHadithDorar: ${_this.similarHadithDorar}, alternateHadithSahihDorar: ${_this.alternateHadithSahihDorar}, usulHadithDorar: ${_this.usulHadithDorar}, hasSharhMetadata: ${_this.hasSharhMetadata}, sharhMetadata: ${_this.sharhMetadata})';
 }
 
 
@@ -55,7 +55,7 @@ abstract mixin class $DetailedHadithCopyWith<$Res>  {
   factory $DetailedHadithCopyWith(DetailedHadith value, $Res Function(DetailedHadith) _then) = _$DetailedHadithCopyWithImpl;
 @useResult
 $Res call({
- String hadith, String rawi, String mohdith, String book, String numberOrPage, String grade, String? mohdithId, String? bookId, String? explainGrade, String? takhrij, String? hadithId, List<HadithCategory> categories, bool hasSimilarHadith, bool hasAlternateHadithSahih, bool hasUsulHadith, String? similarHadithDorar, String? alternateHadithSahihDorar, String? usulHadithDorar, bool hasSharhMetadata, SharhMetadata? sharhMetadata
+ String hadith, String rawi, String mohdith, String book, String numberOrPage, String grade, String? mohdithId, String? bookId, String? explainGrade, String? takhrij, String? hadithId, SourcedDocument? content, List<SourceMetadataField> rawMetadata, ExplanationReference? explanationReference, Availability usulAvailability, Availability asbabAvailability, String? asbabDorar, ResultProvenance? provenance, List<HadithCategory> categories, bool hasSimilarHadith, bool hasAlternateHadithSahih, bool hasUsulHadith, String? similarHadithDorar, String? alternateHadithSahihDorar, String? usulHadithDorar, bool hasSharhMetadata, SharhMetadata? sharhMetadata
 });
 
 
@@ -72,7 +72,7 @@ class _$DetailedHadithCopyWithImpl<$Res>
 
 /// Create a copy of DetailedHadith
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? hadith = null,Object? rawi = null,Object? mohdith = null,Object? book = null,Object? numberOrPage = null,Object? grade = null,Object? mohdithId = freezed,Object? bookId = freezed,Object? explainGrade = freezed,Object? takhrij = freezed,Object? hadithId = freezed,Object? categories = null,Object? hasSimilarHadith = null,Object? hasAlternateHadithSahih = null,Object? hasUsulHadith = null,Object? similarHadithDorar = freezed,Object? alternateHadithSahihDorar = freezed,Object? usulHadithDorar = freezed,Object? hasSharhMetadata = null,Object? sharhMetadata = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? hadith = null,Object? rawi = null,Object? mohdith = null,Object? book = null,Object? numberOrPage = null,Object? grade = null,Object? mohdithId = freezed,Object? bookId = freezed,Object? explainGrade = freezed,Object? takhrij = freezed,Object? hadithId = freezed,Object? content = freezed,Object? rawMetadata = null,Object? explanationReference = freezed,Object? usulAvailability = null,Object? asbabAvailability = null,Object? asbabDorar = freezed,Object? provenance = freezed,Object? categories = null,Object? hasSimilarHadith = null,Object? hasAlternateHadithSahih = null,Object? hasUsulHadith = null,Object? similarHadithDorar = freezed,Object? alternateHadithSahihDorar = freezed,Object? usulHadithDorar = freezed,Object? hasSharhMetadata = null,Object? sharhMetadata = freezed,}) {
   return _then(DetailedHadith(
 hadith: null == hadith ? _self.hadith : hadith // ignore: cast_nullable_to_non_nullable
 as String,rawi: null == rawi ? _self.rawi : rawi // ignore: cast_nullable_to_non_nullable
@@ -85,7 +85,14 @@ as String?,bookId: freezed == bookId ? _self.bookId : bookId // ignore: cast_nul
 as String?,explainGrade: freezed == explainGrade ? _self.explainGrade : explainGrade // ignore: cast_nullable_to_non_nullable
 as String?,takhrij: freezed == takhrij ? _self.takhrij : takhrij // ignore: cast_nullable_to_non_nullable
 as String?,hadithId: freezed == hadithId ? _self.hadithId : hadithId // ignore: cast_nullable_to_non_nullable
-as String?,categories: null == categories ? _self.categories : categories // ignore: cast_nullable_to_non_nullable
+as String?,content: freezed == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
+as SourcedDocument?,rawMetadata: null == rawMetadata ? _self.rawMetadata : rawMetadata // ignore: cast_nullable_to_non_nullable
+as List<SourceMetadataField>,explanationReference: freezed == explanationReference ? _self.explanationReference : explanationReference // ignore: cast_nullable_to_non_nullable
+as ExplanationReference?,usulAvailability: null == usulAvailability ? _self.usulAvailability : usulAvailability // ignore: cast_nullable_to_non_nullable
+as Availability,asbabAvailability: null == asbabAvailability ? _self.asbabAvailability : asbabAvailability // ignore: cast_nullable_to_non_nullable
+as Availability,asbabDorar: freezed == asbabDorar ? _self.asbabDorar : asbabDorar // ignore: cast_nullable_to_non_nullable
+as String?,provenance: freezed == provenance ? _self.provenance : provenance // ignore: cast_nullable_to_non_nullable
+as ResultProvenance?,categories: null == categories ? _self.categories : categories // ignore: cast_nullable_to_non_nullable
 as List<HadithCategory>,hasSimilarHadith: null == hasSimilarHadith ? _self.hasSimilarHadith : hasSimilarHadith // ignore: cast_nullable_to_non_nullable
 as bool,hasAlternateHadithSahih: null == hasAlternateHadithSahih ? _self.hasAlternateHadithSahih : hasAlternateHadithSahih // ignore: cast_nullable_to_non_nullable
 as bool,hasUsulHadith: null == hasUsulHadith ? _self.hasUsulHadith : hasUsulHadith // ignore: cast_nullable_to_non_nullable
@@ -191,10 +198,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String hadith,  String rawi,  String mohdith,  String book,  String numberOrPage,  String grade,  String? mohdithId,  String? bookId,  String? explainGrade,  String? takhrij,  String? hadithId,  List<HadithCategory> categories,  bool hasSimilarHadith,  bool hasAlternateHadithSahih,  bool hasUsulHadith,  String? similarHadithDorar,  String? alternateHadithSahihDorar,  String? usulHadithDorar,  bool hasSharhMetadata,  SharhMetadata? sharhMetadata)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String hadith,  String rawi,  String mohdith,  String book,  String numberOrPage,  String grade,  String? mohdithId,  String? bookId,  String? explainGrade,  String? takhrij,  String? hadithId,  SourcedDocument? content,  List<SourceMetadataField> rawMetadata,  ExplanationReference? explanationReference,  Availability usulAvailability,  Availability asbabAvailability,  String? asbabDorar,  ResultProvenance? provenance,  List<HadithCategory> categories,  bool hasSimilarHadith,  bool hasAlternateHadithSahih,  bool hasUsulHadith,  String? similarHadithDorar,  String? alternateHadithSahihDorar,  String? usulHadithDorar,  bool hasSharhMetadata,  SharhMetadata? sharhMetadata)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DetailedHadith() when $default != null:
-return $default(_that.hadith,_that.rawi,_that.mohdith,_that.book,_that.numberOrPage,_that.grade,_that.mohdithId,_that.bookId,_that.explainGrade,_that.takhrij,_that.hadithId,_that.categories,_that.hasSimilarHadith,_that.hasAlternateHadithSahih,_that.hasUsulHadith,_that.similarHadithDorar,_that.alternateHadithSahihDorar,_that.usulHadithDorar,_that.hasSharhMetadata,_that.sharhMetadata);case _:
+return $default(_that.hadith,_that.rawi,_that.mohdith,_that.book,_that.numberOrPage,_that.grade,_that.mohdithId,_that.bookId,_that.explainGrade,_that.takhrij,_that.hadithId,_that.content,_that.rawMetadata,_that.explanationReference,_that.usulAvailability,_that.asbabAvailability,_that.asbabDorar,_that.provenance,_that.categories,_that.hasSimilarHadith,_that.hasAlternateHadithSahih,_that.hasUsulHadith,_that.similarHadithDorar,_that.alternateHadithSahihDorar,_that.usulHadithDorar,_that.hasSharhMetadata,_that.sharhMetadata);case _:
   return orElse();
 
 }
@@ -212,10 +219,10 @@ return $default(_that.hadith,_that.rawi,_that.mohdith,_that.book,_that.numberOrP
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String hadith,  String rawi,  String mohdith,  String book,  String numberOrPage,  String grade,  String? mohdithId,  String? bookId,  String? explainGrade,  String? takhrij,  String? hadithId,  List<HadithCategory> categories,  bool hasSimilarHadith,  bool hasAlternateHadithSahih,  bool hasUsulHadith,  String? similarHadithDorar,  String? alternateHadithSahihDorar,  String? usulHadithDorar,  bool hasSharhMetadata,  SharhMetadata? sharhMetadata)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String hadith,  String rawi,  String mohdith,  String book,  String numberOrPage,  String grade,  String? mohdithId,  String? bookId,  String? explainGrade,  String? takhrij,  String? hadithId,  SourcedDocument? content,  List<SourceMetadataField> rawMetadata,  ExplanationReference? explanationReference,  Availability usulAvailability,  Availability asbabAvailability,  String? asbabDorar,  ResultProvenance? provenance,  List<HadithCategory> categories,  bool hasSimilarHadith,  bool hasAlternateHadithSahih,  bool hasUsulHadith,  String? similarHadithDorar,  String? alternateHadithSahihDorar,  String? usulHadithDorar,  bool hasSharhMetadata,  SharhMetadata? sharhMetadata)  $default,) {final _that = this;
 switch (_that) {
 case _DetailedHadith():
-return $default(_that.hadith,_that.rawi,_that.mohdith,_that.book,_that.numberOrPage,_that.grade,_that.mohdithId,_that.bookId,_that.explainGrade,_that.takhrij,_that.hadithId,_that.categories,_that.hasSimilarHadith,_that.hasAlternateHadithSahih,_that.hasUsulHadith,_that.similarHadithDorar,_that.alternateHadithSahihDorar,_that.usulHadithDorar,_that.hasSharhMetadata,_that.sharhMetadata);case _:
+return $default(_that.hadith,_that.rawi,_that.mohdith,_that.book,_that.numberOrPage,_that.grade,_that.mohdithId,_that.bookId,_that.explainGrade,_that.takhrij,_that.hadithId,_that.content,_that.rawMetadata,_that.explanationReference,_that.usulAvailability,_that.asbabAvailability,_that.asbabDorar,_that.provenance,_that.categories,_that.hasSimilarHadith,_that.hasAlternateHadithSahih,_that.hasUsulHadith,_that.similarHadithDorar,_that.alternateHadithSahihDorar,_that.usulHadithDorar,_that.hasSharhMetadata,_that.sharhMetadata);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -232,10 +239,10 @@ return $default(_that.hadith,_that.rawi,_that.mohdith,_that.book,_that.numberOrP
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String hadith,  String rawi,  String mohdith,  String book,  String numberOrPage,  String grade,  String? mohdithId,  String? bookId,  String? explainGrade,  String? takhrij,  String? hadithId,  List<HadithCategory> categories,  bool hasSimilarHadith,  bool hasAlternateHadithSahih,  bool hasUsulHadith,  String? similarHadithDorar,  String? alternateHadithSahihDorar,  String? usulHadithDorar,  bool hasSharhMetadata,  SharhMetadata? sharhMetadata)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String hadith,  String rawi,  String mohdith,  String book,  String numberOrPage,  String grade,  String? mohdithId,  String? bookId,  String? explainGrade,  String? takhrij,  String? hadithId,  SourcedDocument? content,  List<SourceMetadataField> rawMetadata,  ExplanationReference? explanationReference,  Availability usulAvailability,  Availability asbabAvailability,  String? asbabDorar,  ResultProvenance? provenance,  List<HadithCategory> categories,  bool hasSimilarHadith,  bool hasAlternateHadithSahih,  bool hasUsulHadith,  String? similarHadithDorar,  String? alternateHadithSahihDorar,  String? usulHadithDorar,  bool hasSharhMetadata,  SharhMetadata? sharhMetadata)?  $default,) {final _that = this;
 switch (_that) {
 case _DetailedHadith() when $default != null:
-return $default(_that.hadith,_that.rawi,_that.mohdith,_that.book,_that.numberOrPage,_that.grade,_that.mohdithId,_that.bookId,_that.explainGrade,_that.takhrij,_that.hadithId,_that.categories,_that.hasSimilarHadith,_that.hasAlternateHadithSahih,_that.hasUsulHadith,_that.similarHadithDorar,_that.alternateHadithSahihDorar,_that.usulHadithDorar,_that.hasSharhMetadata,_that.sharhMetadata);case _:
+return $default(_that.hadith,_that.rawi,_that.mohdith,_that.book,_that.numberOrPage,_that.grade,_that.mohdithId,_that.bookId,_that.explainGrade,_that.takhrij,_that.hadithId,_that.content,_that.rawMetadata,_that.explanationReference,_that.usulAvailability,_that.asbabAvailability,_that.asbabDorar,_that.provenance,_that.categories,_that.hasSimilarHadith,_that.hasAlternateHadithSahih,_that.hasUsulHadith,_that.similarHadithDorar,_that.alternateHadithSahihDorar,_that.usulHadithDorar,_that.hasSharhMetadata,_that.sharhMetadata);case _:
   return null;
 
 }
@@ -247,7 +254,7 @@ return $default(_that.hadith,_that.rawi,_that.mohdith,_that.book,_that.numberOrP
 @JsonSerializable()
 
 class _DetailedHadith extends DetailedHadith {
-  const _DetailedHadith({required this.hadith, required this.rawi, required this.mohdith, required this.book, required this.numberOrPage, required this.grade, this.mohdithId, this.bookId, this.explainGrade, this.takhrij, this.hadithId, this.categories = const [], this.hasSimilarHadith = false, this.hasAlternateHadithSahih = false, this.hasUsulHadith = false, this.similarHadithDorar, this.alternateHadithSahihDorar, this.usulHadithDorar, this.hasSharhMetadata = false, this.sharhMetadata}): super._();
+  const _DetailedHadith({required this.hadith, required this.rawi, required this.mohdith, required this.book, required this.numberOrPage, required this.grade, this.mohdithId, this.bookId, this.explainGrade, this.takhrij, this.hadithId, this.content, this.rawMetadata = const [], this.explanationReference, this.usulAvailability = Availability.unknown, this.asbabAvailability = Availability.unknown, this.asbabDorar, this.provenance, this.categories = const [], this.hasSimilarHadith = false, this.hasAlternateHadithSahih = false, this.hasUsulHadith = false, this.similarHadithDorar, this.alternateHadithSahihDorar, this.usulHadithDorar, this.hasSharhMetadata = false, this.sharhMetadata}): super._();
   factory _DetailedHadith.fromJson(Map<String, dynamic> json) => _$DetailedHadithFromJson(json);
 
 @override final  String hadith;
@@ -261,6 +268,13 @@ class _DetailedHadith extends DetailedHadith {
 @override final  String? explainGrade;
 @override final  String? takhrij;
 @override final  String? hadithId;
+@override final  SourcedDocument? content;
+@override@JsonKey() final  List<SourceMetadataField> rawMetadata;
+@override final  ExplanationReference? explanationReference;
+@override@JsonKey() final  Availability usulAvailability;
+@override@JsonKey() final  Availability asbabAvailability;
+@override final  String? asbabDorar;
+@override final  ResultProvenance? provenance;
 /// Thematic categories (التصنيف الموضوعي) for this hadith.
 @override@JsonKey() final  List<HadithCategory> categories;
 @override@JsonKey() final  bool hasSimilarHadith;
@@ -285,18 +299,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _DetailedHadith&&(identical(other.hadith, hadith) || other.hadith == hadith)&&(identical(other.rawi, rawi) || other.rawi == rawi)&&(identical(other.mohdith, mohdith) || other.mohdith == mohdith)&&(identical(other.book, book) || other.book == book)&&(identical(other.numberOrPage, numberOrPage) || other.numberOrPage == numberOrPage)&&(identical(other.grade, grade) || other.grade == grade)&&(identical(other.mohdithId, mohdithId) || other.mohdithId == mohdithId)&&(identical(other.bookId, bookId) || other.bookId == bookId)&&(identical(other.explainGrade, explainGrade) || other.explainGrade == explainGrade)&&(identical(other.takhrij, takhrij) || other.takhrij == takhrij)&&(identical(other.hadithId, hadithId) || other.hadithId == hadithId)&&const DeepCollectionEquality().equals(other.categories, categories)&&(identical(other.hasSimilarHadith, hasSimilarHadith) || other.hasSimilarHadith == hasSimilarHadith)&&(identical(other.hasAlternateHadithSahih, hasAlternateHadithSahih) || other.hasAlternateHadithSahih == hasAlternateHadithSahih)&&(identical(other.hasUsulHadith, hasUsulHadith) || other.hasUsulHadith == hasUsulHadith)&&(identical(other.similarHadithDorar, similarHadithDorar) || other.similarHadithDorar == similarHadithDorar)&&(identical(other.alternateHadithSahihDorar, alternateHadithSahihDorar) || other.alternateHadithSahihDorar == alternateHadithSahihDorar)&&(identical(other.usulHadithDorar, usulHadithDorar) || other.usulHadithDorar == usulHadithDorar)&&(identical(other.hasSharhMetadata, hasSharhMetadata) || other.hasSharhMetadata == hasSharhMetadata)&&(identical(other.sharhMetadata, sharhMetadata) || other.sharhMetadata == sharhMetadata));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _DetailedHadith&&(identical(other.hadith, hadith) || other.hadith == hadith)&&(identical(other.rawi, rawi) || other.rawi == rawi)&&(identical(other.mohdith, mohdith) || other.mohdith == mohdith)&&(identical(other.book, book) || other.book == book)&&(identical(other.numberOrPage, numberOrPage) || other.numberOrPage == numberOrPage)&&(identical(other.grade, grade) || other.grade == grade)&&(identical(other.mohdithId, mohdithId) || other.mohdithId == mohdithId)&&(identical(other.bookId, bookId) || other.bookId == bookId)&&(identical(other.explainGrade, explainGrade) || other.explainGrade == explainGrade)&&(identical(other.takhrij, takhrij) || other.takhrij == takhrij)&&(identical(other.hadithId, hadithId) || other.hadithId == hadithId)&&(identical(other.content, content) || other.content == content)&&const DeepCollectionEquality().equals(other.rawMetadata, rawMetadata)&&(identical(other.explanationReference, explanationReference) || other.explanationReference == explanationReference)&&(identical(other.usulAvailability, usulAvailability) || other.usulAvailability == usulAvailability)&&(identical(other.asbabAvailability, asbabAvailability) || other.asbabAvailability == asbabAvailability)&&(identical(other.asbabDorar, asbabDorar) || other.asbabDorar == asbabDorar)&&(identical(other.provenance, provenance) || other.provenance == provenance)&&const DeepCollectionEquality().equals(other.categories, categories)&&(identical(other.hasSimilarHadith, hasSimilarHadith) || other.hasSimilarHadith == hasSimilarHadith)&&(identical(other.hasAlternateHadithSahih, hasAlternateHadithSahih) || other.hasAlternateHadithSahih == hasAlternateHadithSahih)&&(identical(other.hasUsulHadith, hasUsulHadith) || other.hasUsulHadith == hasUsulHadith)&&(identical(other.similarHadithDorar, similarHadithDorar) || other.similarHadithDorar == similarHadithDorar)&&(identical(other.alternateHadithSahihDorar, alternateHadithSahihDorar) || other.alternateHadithSahihDorar == alternateHadithSahihDorar)&&(identical(other.usulHadithDorar, usulHadithDorar) || other.usulHadithDorar == usulHadithDorar)&&(identical(other.hasSharhMetadata, hasSharhMetadata) || other.hasSharhMetadata == hasSharhMetadata)&&(identical(other.sharhMetadata, sharhMetadata) || other.sharhMetadata == sharhMetadata));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hashAll([runtimeType,hadith,rawi,mohdith,book,numberOrPage,grade,mohdithId,bookId,explainGrade,takhrij,hadithId,const DeepCollectionEquality().hash(categories),hasSimilarHadith,hasAlternateHadithSahih,hasUsulHadith,similarHadithDorar,alternateHadithSahihDorar,usulHadithDorar,hasSharhMetadata,sharhMetadata]);
+    return Object.hashAll([runtimeType,hadith,rawi,mohdith,book,numberOrPage,grade,mohdithId,bookId,explainGrade,takhrij,hadithId,content,const DeepCollectionEquality().hash(rawMetadata),explanationReference,usulAvailability,asbabAvailability,asbabDorar,provenance,const DeepCollectionEquality().hash(categories),hasSimilarHadith,hasAlternateHadithSahih,hasUsulHadith,similarHadithDorar,alternateHadithSahihDorar,usulHadithDorar,hasSharhMetadata,sharhMetadata]);
 }
 
 @override
 String toString() {
-    return 'DetailedHadith(hadith: $hadith, rawi: $rawi, mohdith: $mohdith, book: $book, numberOrPage: $numberOrPage, grade: $grade, mohdithId: $mohdithId, bookId: $bookId, explainGrade: $explainGrade, takhrij: $takhrij, hadithId: $hadithId, categories: $categories, hasSimilarHadith: $hasSimilarHadith, hasAlternateHadithSahih: $hasAlternateHadithSahih, hasUsulHadith: $hasUsulHadith, similarHadithDorar: $similarHadithDorar, alternateHadithSahihDorar: $alternateHadithSahihDorar, usulHadithDorar: $usulHadithDorar, hasSharhMetadata: $hasSharhMetadata, sharhMetadata: $sharhMetadata)';
+    return 'DetailedHadith(hadith: $hadith, rawi: $rawi, mohdith: $mohdith, book: $book, numberOrPage: $numberOrPage, grade: $grade, mohdithId: $mohdithId, bookId: $bookId, explainGrade: $explainGrade, takhrij: $takhrij, hadithId: $hadithId, content: $content, rawMetadata: $rawMetadata, explanationReference: $explanationReference, usulAvailability: $usulAvailability, asbabAvailability: $asbabAvailability, asbabDorar: $asbabDorar, provenance: $provenance, categories: $categories, hasSimilarHadith: $hasSimilarHadith, hasAlternateHadithSahih: $hasAlternateHadithSahih, hasUsulHadith: $hasUsulHadith, similarHadithDorar: $similarHadithDorar, alternateHadithSahihDorar: $alternateHadithSahihDorar, usulHadithDorar: $usulHadithDorar, hasSharhMetadata: $hasSharhMetadata, sharhMetadata: $sharhMetadata)';
 }
 
 
@@ -307,7 +321,7 @@ abstract mixin class _$DetailedHadithCopyWith<$Res> implements $DetailedHadithCo
   factory _$DetailedHadithCopyWith(_DetailedHadith value, $Res Function(_DetailedHadith) _then) = __$DetailedHadithCopyWithImpl;
 @override @useResult
 $Res call({
- String hadith, String rawi, String mohdith, String book, String numberOrPage, String grade, String? mohdithId, String? bookId, String? explainGrade, String? takhrij, String? hadithId, List<HadithCategory> categories, bool hasSimilarHadith, bool hasAlternateHadithSahih, bool hasUsulHadith, String? similarHadithDorar, String? alternateHadithSahihDorar, String? usulHadithDorar, bool hasSharhMetadata, SharhMetadata? sharhMetadata
+ String hadith, String rawi, String mohdith, String book, String numberOrPage, String grade, String? mohdithId, String? bookId, String? explainGrade, String? takhrij, String? hadithId, SourcedDocument? content, List<SourceMetadataField> rawMetadata, ExplanationReference? explanationReference, Availability usulAvailability, Availability asbabAvailability, String? asbabDorar, ResultProvenance? provenance, List<HadithCategory> categories, bool hasSimilarHadith, bool hasAlternateHadithSahih, bool hasUsulHadith, String? similarHadithDorar, String? alternateHadithSahihDorar, String? usulHadithDorar, bool hasSharhMetadata, SharhMetadata? sharhMetadata
 });
 
 
@@ -324,7 +338,7 @@ class __$DetailedHadithCopyWithImpl<$Res>
 
 /// Create a copy of DetailedHadith
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? hadith = null,Object? rawi = null,Object? mohdith = null,Object? book = null,Object? numberOrPage = null,Object? grade = null,Object? mohdithId = freezed,Object? bookId = freezed,Object? explainGrade = freezed,Object? takhrij = freezed,Object? hadithId = freezed,Object? categories = null,Object? hasSimilarHadith = null,Object? hasAlternateHadithSahih = null,Object? hasUsulHadith = null,Object? similarHadithDorar = freezed,Object? alternateHadithSahihDorar = freezed,Object? usulHadithDorar = freezed,Object? hasSharhMetadata = null,Object? sharhMetadata = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? hadith = null,Object? rawi = null,Object? mohdith = null,Object? book = null,Object? numberOrPage = null,Object? grade = null,Object? mohdithId = freezed,Object? bookId = freezed,Object? explainGrade = freezed,Object? takhrij = freezed,Object? hadithId = freezed,Object? content = freezed,Object? rawMetadata = null,Object? explanationReference = freezed,Object? usulAvailability = null,Object? asbabAvailability = null,Object? asbabDorar = freezed,Object? provenance = freezed,Object? categories = null,Object? hasSimilarHadith = null,Object? hasAlternateHadithSahih = null,Object? hasUsulHadith = null,Object? similarHadithDorar = freezed,Object? alternateHadithSahihDorar = freezed,Object? usulHadithDorar = freezed,Object? hasSharhMetadata = null,Object? sharhMetadata = freezed,}) {
   return _then(_DetailedHadith(
 hadith: null == hadith ? _self.hadith : hadith // ignore: cast_nullable_to_non_nullable
 as String,rawi: null == rawi ? _self.rawi : rawi // ignore: cast_nullable_to_non_nullable
@@ -337,7 +351,14 @@ as String?,bookId: freezed == bookId ? _self.bookId : bookId // ignore: cast_nul
 as String?,explainGrade: freezed == explainGrade ? _self.explainGrade : explainGrade // ignore: cast_nullable_to_non_nullable
 as String?,takhrij: freezed == takhrij ? _self.takhrij : takhrij // ignore: cast_nullable_to_non_nullable
 as String?,hadithId: freezed == hadithId ? _self.hadithId : hadithId // ignore: cast_nullable_to_non_nullable
-as String?,categories: null == categories ? _self.categories : categories // ignore: cast_nullable_to_non_nullable
+as String?,content: freezed == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
+as SourcedDocument?,rawMetadata: null == rawMetadata ? _self.rawMetadata : rawMetadata // ignore: cast_nullable_to_non_nullable
+as List<SourceMetadataField>,explanationReference: freezed == explanationReference ? _self.explanationReference : explanationReference // ignore: cast_nullable_to_non_nullable
+as ExplanationReference?,usulAvailability: null == usulAvailability ? _self.usulAvailability : usulAvailability // ignore: cast_nullable_to_non_nullable
+as Availability,asbabAvailability: null == asbabAvailability ? _self.asbabAvailability : asbabAvailability // ignore: cast_nullable_to_non_nullable
+as Availability,asbabDorar: freezed == asbabDorar ? _self.asbabDorar : asbabDorar // ignore: cast_nullable_to_non_nullable
+as String?,provenance: freezed == provenance ? _self.provenance : provenance // ignore: cast_nullable_to_non_nullable
+as ResultProvenance?,categories: null == categories ? _self.categories : categories // ignore: cast_nullable_to_non_nullable
 as List<HadithCategory>,hasSimilarHadith: null == hasSimilarHadith ? _self.hasSimilarHadith : hasSimilarHadith // ignore: cast_nullable_to_non_nullable
 as bool,hasAlternateHadithSahih: null == hasAlternateHadithSahih ? _self.hasAlternateHadithSahih : hasAlternateHadithSahih // ignore: cast_nullable_to_non_nullable
 as bool,hasUsulHadith: null == hasUsulHadith ? _self.hasUsulHadith : hasUsulHadith // ignore: cast_nullable_to_non_nullable

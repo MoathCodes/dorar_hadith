@@ -26,8 +26,19 @@ class $RawiTable extends Rawi with TableInfo<$RawiTable, RawiItem> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _normalizedValueMeta = const VerificationMeta(
+    'normalizedValue',
+  );
   @override
-  List<GeneratedColumn> get $columns => [key, value];
+  late final GeneratedColumn<String> normalizedValue = GeneratedColumn<String>(
+    'normalized_value',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [key, value, normalizedValue];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -54,6 +65,17 @@ class $RawiTable extends Rawi with TableInfo<$RawiTable, RawiItem> {
     } else if (isInserting) {
       context.missing(_valueMeta);
     }
+    if (data.containsKey('normalized_value')) {
+      context.handle(
+        _normalizedValueMeta,
+        normalizedValue.isAcceptableOrUnknown(
+          data['normalized_value']!,
+          _normalizedValueMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_normalizedValueMeta);
+    }
     return context;
   }
 
@@ -71,6 +93,10 @@ class $RawiTable extends Rawi with TableInfo<$RawiTable, RawiItem> {
         DriftSqlType.string,
         data['${effectivePrefix}value'],
       )!,
+      normalizedValue: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}normalized_value'],
+      )!,
     );
   }
 
@@ -83,24 +109,40 @@ class $RawiTable extends Rawi with TableInfo<$RawiTable, RawiItem> {
 class RawiCompanion extends UpdateCompanion<RawiItem> {
   final Value<int> key;
   final Value<String> value;
+  final Value<String> normalizedValue;
   const RawiCompanion({
     this.key = const Value.absent(),
     this.value = const Value.absent(),
+    this.normalizedValue = const Value.absent(),
   });
-  RawiCompanion.insert({this.key = const Value.absent(), required String value})
-    : value = Value(value);
+  RawiCompanion.insert({
+    this.key = const Value.absent(),
+    required String value,
+    required String normalizedValue,
+  }) : value = Value(value),
+       normalizedValue = Value(normalizedValue);
   static Insertable<RawiItem> custom({
     Expression<int>? key,
     Expression<String>? value,
+    Expression<String>? normalizedValue,
   }) {
     return RawValuesInsertable({
       if (key != null) 'key': key,
       if (value != null) 'value': value,
+      if (normalizedValue != null) 'normalized_value': normalizedValue,
     });
   }
 
-  RawiCompanion copyWith({Value<int>? key, Value<String>? value}) {
-    return RawiCompanion(key: key ?? this.key, value: value ?? this.value);
+  RawiCompanion copyWith({
+    Value<int>? key,
+    Value<String>? value,
+    Value<String>? normalizedValue,
+  }) {
+    return RawiCompanion(
+      key: key ?? this.key,
+      value: value ?? this.value,
+      normalizedValue: normalizedValue ?? this.normalizedValue,
+    );
   }
 
   @override
@@ -112,6 +154,9 @@ class RawiCompanion extends UpdateCompanion<RawiItem> {
     if (value.present) {
       map['value'] = Variable<String>(value.value);
     }
+    if (normalizedValue.present) {
+      map['normalized_value'] = Variable<String>(normalizedValue.value);
+    }
     return map;
   }
 
@@ -119,7 +164,8 @@ class RawiCompanion extends UpdateCompanion<RawiItem> {
   String toString() {
     return (StringBuffer('RawiCompanion(')
           ..write('key: $key, ')
-          ..write('value: $value')
+          ..write('value: $value, ')
+          ..write('normalizedValue: $normalizedValue')
           ..write(')'))
         .toString();
   }
@@ -136,10 +182,16 @@ abstract class _$RawiDatabase extends GeneratedDatabase {
   List<DatabaseSchemaEntity> get allSchemaEntities => [rawi];
 }
 
-typedef $$RawiTableCreateCompanionBuilder =
-    RawiCompanion Function({Value<int> key, required String value});
-typedef $$RawiTableUpdateCompanionBuilder =
-    RawiCompanion Function({Value<int> key, Value<String> value});
+typedef $$RawiTableCreateCompanionBuilder = RawiCompanion Function({
+  Value<int> key,
+  required String value,
+  required String normalizedValue,
+});
+typedef $$RawiTableUpdateCompanionBuilder = RawiCompanion Function({
+  Value<int> key,
+  Value<String> value,
+  Value<String> normalizedValue,
+});
 
 class $$RawiTableFilterComposer extends Composer<_$RawiDatabase, $RawiTable> {
   $$RawiTableFilterComposer({
@@ -156,6 +208,11 @@ class $$RawiTableFilterComposer extends Composer<_$RawiDatabase, $RawiTable> {
 
   ColumnFilters<String> get value => $composableBuilder(
     column: $table.value,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get normalizedValue => $composableBuilder(
+    column: $table.normalizedValue,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -177,6 +234,11 @@ class $$RawiTableOrderingComposer extends Composer<_$RawiDatabase, $RawiTable> {
     column: $table.value,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get normalizedValue => $composableBuilder(
+    column: $table.normalizedValue,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$RawiTableAnnotationComposer
@@ -193,6 +255,11 @@ class $$RawiTableAnnotationComposer
 
   GeneratedColumn<String> get value =>
       $composableBuilder(column: $table.value, builder: (column) => column);
+
+  GeneratedColumn<String> get normalizedValue => $composableBuilder(
+    column: $table.normalizedValue,
+    builder: (column) => column,
+  );
 }
 
 class $$RawiTableTableManager
@@ -225,12 +292,22 @@ class $$RawiTableTableManager
               ({
                 Value<int> key = const Value.absent(),
                 Value<String> value = const Value.absent(),
-              }) => RawiCompanion(key: key, value: value),
+                Value<String> normalizedValue = const Value.absent(),
+              }) => RawiCompanion(
+                key: key,
+                value: value,
+                normalizedValue: normalizedValue,
+              ),
           createCompanionCallback:
               ({
                 Value<int> key = const Value.absent(),
                 required String value,
-              }) => RawiCompanion.insert(key: key, value: value),
+                required String normalizedValue,
+              }) => RawiCompanion.insert(
+                key: key,
+                value: value,
+                normalizedValue: normalizedValue,
+              ),
           withReferenceMapper: (p0) => p0
               .map(
                 (e) => (

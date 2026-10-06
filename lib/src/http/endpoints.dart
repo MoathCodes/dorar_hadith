@@ -1,3 +1,5 @@
+import 'query_serializer.dart';
+
 /// API endpoints and URL builders for Dorar.net
 class DorarEndpoints {
   /// Base URL for Dorar.net
@@ -57,7 +59,7 @@ class DorarEndpoints {
 
   /// API endpoint for hadith search (returns JSON)
   ///
-  /// Query parameters (all same for API and Site except search text):
+  /// Query parameters (endpoint capability validation is applied by QuerySerializer):
   /// - `skey`: Search text (API endpoint only)
   /// - `q`: Search text (Site endpoint only)
   /// - `page`: Page number
@@ -80,7 +82,7 @@ class DorarEndpoints {
 
   /// Site endpoint for hadith search (returns HTML)
   ///
-  /// Query parameters (all same for API and Site except search text):
+  /// Query parameters (endpoint capability validation is applied by QuerySerializer):
   /// - `q`: Search text (Site endpoint only)
   /// - `skey`: Search text (API endpoint only)
   /// - `page`: Page number
@@ -151,33 +153,6 @@ class DorarEndpoints {
   /// - `{'page': 1, 'q': 'test'}` becomes `page=1&q=test`
   ///
   /// This matches the Node.js implementation in `serializeQueryParams.js`
-  static String _serializeQueryParams(Map<String, dynamic> params) {
-    final buffer = StringBuffer();
-    var isFirst = true;
-
-    params.forEach((key, value) {
-      if (value == null) return;
-
-      if (!isFirst) buffer.write('&');
-      isFirst = false;
-
-      if (value is List) {
-        // Handle array parameters
-        final arrayParts = value
-            .map(
-              (v) =>
-                  '${Uri.encodeComponent(key)}[]=${Uri.encodeComponent(v.toString())}',
-            )
-            .join('&');
-        buffer.write(arrayParts);
-      } else {
-        // Handle single value parameters
-        buffer.write(
-          '${Uri.encodeComponent(key)}=${Uri.encodeComponent(value.toString())}',
-        );
-      }
-    });
-
-    return buffer.toString();
-  }
+  static String _serializeQueryParams(Map<String, dynamic> params) =>
+      QuerySerializer.toQueryString(params);
 }

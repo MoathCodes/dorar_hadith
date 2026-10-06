@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dorar_hadith/dorar_hadith.dart';
 import 'package:dorar_hadith_flutter/dorar_hadith_flutter.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
 
 void main() {
@@ -23,9 +24,44 @@ void main() {
   });
 
   test(
+    'failed installation is retryable without publishing initialized state',
+    () async {
+      final blocker = File(p.join(tempDir.path, 'blocked'));
+      await blocker.writeAsString('existing file');
+      await expectLater(
+        DorarHadithFlutter.ensureInitialized(
+          databaseDirectory: Directory(p.join(blocker.path, 'child')),
+        ),
+        throwsA(isA<DorarFlutterAdapterException>()),
+      );
+      expect(DorarHadithFlutter.isInitialized, isFalse);
+      expect(await blocker.readAsString(), 'existing file');
+    },
+  );
+
+  test(
     'ensureInitialized loads bundled reference data and configures cache',
     () async {
-      await DorarHadithFlutter.ensureInitialized(databaseDirectory: tempDir);
+      final first = DorarHadithFlutter.ensureInitialized(
+        databaseDirectory: tempDir,
+      );
+      final concurrent = DorarHadithFlutter.ensureInitialized(
+        databaseDirectory: tempDir,
+      );
+      expect(identical(first, concurrent), isTrue);
+      await expectLater(
+        DorarHadithFlutter.ensureInitialized(
+          databaseDirectory: Directory(p.join(tempDir.path, 'different')),
+        ),
+        throwsA(
+          isA<DorarFlutterAdapterException>().having(
+            (e) => e.failure,
+            'failure',
+            FlutterAdapterFailure.configurationConflict,
+          ),
+        ),
+      );
+      await first;
 
       expect(DorarHadithFlutter.isInitialized, isTrue);
 
@@ -40,7 +76,12 @@ void main() {
       final rawiCount = await rawi.countRawi();
       expect(rawiCount, greaterThan(0));
 
-      final rawiFile = File(p.join(tempDir.path, 'rawi.db'));
+      final manifest = ReferenceManifest.decode(
+        await rootBundle.loadString(
+          'packages/dorar_hadith/assets/data/reference_manifest.json',
+        ),
+      );
+      final rawiFile = File(p.join(tempDir.path, manifest.databaseFileName));
       expect(await rawiFile.exists(), isTrue);
 
       final cacheDb = CacheDatabase();

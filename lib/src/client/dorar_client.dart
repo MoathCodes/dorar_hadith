@@ -1,5 +1,7 @@
+import '../models/result_details.dart';
 import '../database/cache_database.dart';
 import '../http/http_client.dart';
+import '../http/cached_transport.dart';
 import '../models/api_response.dart';
 import '../models/book_item.dart';
 import '../models/hadith.dart';
@@ -10,6 +12,9 @@ import '../models/sharh.dart';
 import '../models/usul_hadith.dart';
 import '../services/book_reference_service.dart';
 import '../services/book_service.dart';
+import '../services/category_service.dart';
+import '../services/reference_discovery_service.dart';
+import '../models/related_content.dart';
 import '../services/cache_service.dart';
 import '../services/hadith_service.dart';
 import '../services/mohdith_reference_service.dart';
@@ -97,23 +102,26 @@ class DorarClient {
   /// Service for book operations.
   late final BookService book;
 
+  late final CategoryService categories;
+  late final ReferenceDiscoveryService referenceDiscovery;
+
   // === Reference Services (Asset-based, lightweight references) ===
 
   /// Service for browsing and searching scholars (mohdith) references.
   ///
-  /// Browse 197 scholars from JSON assets.
+  /// Browse the dated current scholar selection snapshot.
   /// For detailed information, use [mohdith] service.
   late final MohdithReferenceService mohdithRef;
 
   /// Service for browsing and searching book references.
   ///
-  /// Browse 685 books from JSON assets.
+  /// Browse the dated current book selection snapshot.
   /// For detailed information, use [book] service.
   late final BookReferenceService bookRef;
 
   /// Service for browsing and searching narrator (rawi) references.
   ///
-  /// Browse 11,436 narrators from SQLite database.
+  /// Browse observed narrator choices from the bundled SQLite snapshot.
   late final RawiReferenceService rawiRef;
 
   /// Creates a new Dorar client.
@@ -136,17 +144,65 @@ class DorarClient {
     CacheService? cacheService,
   }) : _httpClient = httpClient ?? DorarHttpClient(timeout: timeout),
        _cacheService = cacheService ?? CacheService(database: CacheDatabase()) {
+    final transport = CachedDorarTransport(
+      client: _httpClient,
+      cache: _cacheService,
+    );
     // Initialize API services
-    hadith = HadithService(client: _httpClient, cache: _cacheService);
-    sharh = SharhService(client: _httpClient, cache: _cacheService);
-    mohdith = MohdithService(client: _httpClient, cache: _cacheService);
-    book = BookService(client: _httpClient, cache: _cacheService);
+    hadith = HadithService(
+      client: _httpClient,
+      cache: _cacheService,
+      transport: transport,
+    );
+    sharh = SharhService(
+      client: _httpClient,
+      cache: _cacheService,
+      transport: transport,
+    );
+    mohdith = MohdithService(
+      client: _httpClient,
+      cache: _cacheService,
+      transport: transport,
+    );
+    book = BookService(
+      client: _httpClient,
+      cache: _cacheService,
+      transport: transport,
+    );
+    categories = CategoryService(
+      client: _httpClient,
+      cache: _cacheService,
+      transport: transport,
+    );
+    referenceDiscovery = ReferenceDiscoveryService(
+      client: _httpClient,
+      cache: _cacheService,
+      transport: transport,
+    );
 
     // Initialize reference services (asset-based)
     mohdithRef = MohdithReferenceService();
     bookRef = BookReferenceService();
     rawiRef = RawiReferenceService();
   }
+
+  Future<ApiResponse<List<SharhSnippet>>> searchSharhText(
+    SharhTextSearchParams params,
+  ) => sharh.searchText(params);
+  Future<ApiResponse<RelatedHadithResult>> getAlternates(
+    String id, {
+    bool removeHtml = true,
+    ParsePolicy parsePolicy = ParsePolicy.strict,
+  }) => hadith.getAlternates(
+    id,
+    removeHtml: removeHtml,
+    parsePolicy: parsePolicy,
+  );
+  Future<ApiResponse<AsbabResult>> getAsbab(
+    String id, {
+    bool removeHtml = true,
+    ParsePolicy parsePolicy = ParsePolicy.strict,
+  }) => hadith.getAsbab(id, removeHtml: removeHtml, parsePolicy: parsePolicy);
 
   /// Clear all cached data.
   ///
@@ -397,7 +453,7 @@ class DorarClient {
   /// Search for narrators by name (lightweight, database-backed).
   ///
   /// This is a convenience method that delegates to [RawiReferenceService.searchRawi].
-  /// Use this for browsing and selecting narrators from the 11,436 narrator database.
+  /// Use this for browsing and selecting narrators from the bundled narrator-choice database.
   ///
   /// [query] - The search query text (Arabic, normalized automatically).
   /// [limit] - Maximum number of results (default: 20).
@@ -417,6 +473,16 @@ class DorarClient {
     int limit = 20,
     int offset = 0,
   }) => rawiRef.searchRawi(query, limit: limit, offset: offset);
+
+  Future<ApiResponse<RelatedHadithResult>> getSimilarResult(
+    String id, {
+    bool removeHtml = true,
+    ParsePolicy parsePolicy = ParsePolicy.strict,
+  }) => hadith.getSimilarResult(
+    id,
+    removeHtml: removeHtml,
+    parsePolicy: parsePolicy,
+  );
 
   /// Use the client safely with automatic disposal.
   ///
